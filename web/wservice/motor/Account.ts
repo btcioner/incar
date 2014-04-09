@@ -33,7 +33,6 @@ module Service{
         accDTO.last_login_time = new Date(0);
 
         // 写入数据库
-        var acc: Account;
         var dac = MySqlAccess.RetrievePool();
         dac.query('INSERT ?? SET ?',['t_staff_account', accDTO], (err, result)=>{
             if(!err){
@@ -438,7 +437,7 @@ module Service{
                 else{
                     dac.query("SELECT id, name, nick, status, email, phone, last_login_time, last_login_ip" +
                         " FROM t_staff_account WHERE id in (" +
-                        "    SELECT id FROM tmp_ids )", null, (ex, result)=>{
+                            "SELECT id FROM tmp_ids)", null, (ex, result)=>{
                         if(ex) { cb(new TaskException(-1, "读取用户数据失败", ex), null); return; }
                         else{
                             dac.query("DROP TABLE tmp_ids", null, (ex, r)=>{});

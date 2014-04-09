@@ -53,7 +53,7 @@ module Service{
             var idsForceNumber = Array();
             ids.forEach((obj)=>{   idsForceNumber.push(Number(obj));      });
             var dac = MySqlAccess.RetrievePool();
-            dac.query("DROP TABLE ?? ;", tmpName, (ex, result)=>{
+            dac.query("DROP TABLE IF EXISTS ?? ;", tmpName, (ex, result)=>{
                 dac.query("CREATE TABLE ?? (id INT UNSIGNED PRIMARY KEY) ENGINE = MEMORY", [tmpName], (ex, result)=>{
                     if(ex){ cb(new TaskException(-1, "数据库错误,创建临时表失败", ex), null); return; }
                     else{
