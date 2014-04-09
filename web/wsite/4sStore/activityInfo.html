@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="SActivityApp">
+<head>
+<title>活动信息</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="../css/uniform.css" />
+<link rel="stylesheet" href="../css/select2.css" />
+<link rel="stylesheet" href="../css/maruti-style.css" />
+<link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
+<link rel="stylesheet" type="text/css" href="../css/mycss/main.css" />
+</head>
+<body>
+<iframe src="header.html" width="100%" height="105px"></iframe>
+<div id="content" style="height:572px;margin-top: 30px">
+  <div id="content-header">
+      <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">活动信息</a></div>
+  </div>
+    <div style="width: 10%;float: left;margin: 2px">
+        <div class="accordion" id="collapse-group" >
+            <div class="accordion-group widget-box">
+                <div class="accordion-heading">
+                    <div class="widget-title"> <a  href="#main" data-toggle="collapse" > <span class="icon"><i class="icon-thumbs-up"></i></span>
+                        <h5>特价工位</h5>
+                    </a> </div>
+                </div>
+            </div>
+            <div class="accordion-group widget-box" style="margin-top: 2px">
+                <div class="accordion-heading">
+                    <div class="widget-title"> <a href="#promoteInfo" data-toggle="collapse"> <span class="icon"><i class="icon-question-sign"></i></span>
+                        <h5 >促销咨询</h5>
+                    </a> </div>
+                </div>
+            </div>
+            <div class="accordion-group widget-box" style="margin-top: 2px">
+                <div class="accordion-heading">
+                    <div class="widget-title"> <a  href="#redPackage" data-toggle="collapse"> <span class="icon"><i class="icon-briefcase"></i></span>
+                        <h5 >送红包</h5>
+                    </a> </div>
+                </div>
+             </div>
+            <div class="accordion-group widget-box" style="margin-top: 2px">
+                <div class="accordion-heading">
+                    <div class="widget-title"> <a  href="#lotteryTicket" data-toggle="collapse"> <span class="icon"><i class="icon-filter"></i></span>
+                        <h5 >送彩票</h5>
+                    </a> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div class="container-fluid" style="width: 86%;float: left">
+  	<div class="row-fluid" ng-view="">
+
+        </div>
+   </div>
+</div>
+</div>
+<div class="row-fluid">
+  <div id="footer" class="span12"> 2014 &copy; 英卡</div>
+</div>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.dataTables.min.js"></script>
+<script src="../js/jquery.uniform.js"></script>
+<script src="../js/jquery.ui.custom.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/select2.min.js"></script>
+<script src="../js/maruti.js"></script>
+<script src="../js/maruti.tables.js"></script>
+<script src="../js/angular.min.js"></script>
+<script src="../js/fun_js/common.js"></script>
+<script src="../js/angular-resource.min.js"></script>
+<script src="../js/angular-cookies.min.js"></script>
+<script src="../js/angular-sanitize.min.js"></script>
+<script src="../js/angular-route.min.js"></script>
+<script src="../js/fun_js/activityApp.js"></script>
+<script src="../js/fun_js/S_activityController.js"></script>
+<script src="../js/fun_js/S_specialStationController.js"></script>
+</body>
+</html>

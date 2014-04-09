@@ -1,0 +1,27 @@
+[{
+ "brand" :"宝马/BMW",
+ "id" : "1",
+ "items" : [{
+  "parentNode" : "宝马/BMW",
+  "series" : "宝马1系",
+  "id" : "1001"
+ },
+ {
+   "parentNode" : "宝马/BMW",
+  "series" : "宝马2系",
+  "id" : "1001"
+ }]
+},{
+ "brand" :"五十铃/ISUZU",
+ "id" : "2", 
+ "items" : [{
+ "parentNode" : "五十铃/ISUZU",
+  "series" : "五十铃皮卡",
+  "id" : "2001"
+ },
+ {
+ "parentNode" : "五十铃/ISUZU",
+  "series" : "其它",
+  "id" : "2002"
+ }]
+}]

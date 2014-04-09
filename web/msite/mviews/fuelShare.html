@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>油耗</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--rickshaw图表控件资源  -->
+    <script  src="../mscripts/d3.min.js"></script>
+    <script  src="../mscripts/rickshaw.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="../mstyles/graph.css">
+    <link type="text/css" rel="stylesheet" href="../mstyles/lines.css">
+    <!--rickshaw图表控件资源结束  -->
+
+    <script  src="../mscripts/jquery-1.7.1.min.js"></script>
+    <script  src="../mscripts/car.js"></script>
+    <style scoped>
+        #chart {
+            position: relative;
+            float: left;
+        }
+        #y_axis {
+            position: relative;
+            float: left;
+            width: 25px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var user;//用户openid
+        var fuelChartData;//图表数据
+        var start;
+        var end;
+        //本地数据，用于演示
+        fuelChartData = [
+            {data:[{x: 0,y: 3.128},
+                {x: 1, y: 7.345},{x: 2,y: 7.467},{x: 3, y: 7.098}, {x: 4, y: 7.761}, {x: 5, y: 7.257 }],
+                color: "#c05020"}
+        ];
+        //页面加载初始化
+        function init(){
+
+            user=getQueryString("user");
+            start=getQueryString("start");
+            end=getQueryString("end");
+           //获取最近一次行驶、最近7天、最近30天数据、默认图表数据
+            getDefaultData(user,start,end);
+
+        }
+
+        //获取默认数据
+        function getDefaultData(user,start,end){
+       $.ajax({
+                type: "post",
+                url: "/mservice/fuelData",
+                data: {'user':user,'start':start,'end':end},
+                dataType: "json",
+                success: function (result,status) {
+                    //alert(result.length);
+                    document.getElementById("lastFuel").innerHTML=result.fuelDataLastTime.fuel+"升/百公里";
+                    document.getElementById("lastMiles").innerHTML=result.fuelDataLastTime.mileage+"公里";
+                    document.getElementById("lastTotalFuel").innerHTML=result.fuelDataLastTime.totalFuel+"升";
+                    document.getElementById("weekFuel").innerHTML=result.fuelDataLastWeek.fuel+"升/百公里";
+                    document.getElementById("weekMiles").innerHTML=result.fuelDataLastWeek.mileage+"公里";
+                    document.getElementById("weekTotalFuel").innerHTML=result.fuelDataLastWeek.totalFuel+"升";
+                    document.getElementById("avgFuel").innerHTML=result.fuelDataLastInterval.fuel+"升/百公里";
+                    document.getElementById("miles").innerHTML=result.fuelDataLastInterval.mileage+"公里";
+                    document.getElementById("totalFuel").innerHTML=result.fuelDataLastInterval.totalFuel+"升";
+
+                    fuelChartData=chartDataConvert(result.fuelData);
+                    document.getElementById("chart").innerHTML="";
+                    document.getElementById("y_axis").innerHTML="";
+                    var beginDate=new Date(start);
+                    var endDate=new Date(end);
+                    document.getElementById("chartStart").innerHTML=beginDate.getFullYear()+"-"+(beginDate.getMonth()+1)+"-"+beginDate.getDate();
+                    document.getElementById("chartEnd").innerHTML=endDate.getFullYear()+"-"+(endDate.getMonth()+1)+"-"+endDate.getDate();
+                    createChart();
+
+                }
+            });
+        }
+    </script>
+</head>
+<body onLoad="init()" style="padding: 2px">
+
+<hr color="#CCCCCC" style="height:5px" >
+
+<div id="defaulDetail"  style="margin-bottom:5px; margin-top:5px">
+    <table style="font-size:14px;">
+        <tr><td style="text-align:right">最近一次行驶平均油耗为：</td><td id="lastFuel">7.0升/百公里</td></tr>
+        <tr><td style="text-align:right">行驶里程为：</td><td id="lastMiles">17.0公里</td></tr>
+        <tr><td style="text-align:right">耗油量为：</td><td id="lastTotalFuel">2.30升</td></tr>
+        <tr><td>&nbsp;</td></tr>
+        <tr><td style="text-align:right">本周行驶平均油耗为：</td><td id="weekFuel">7.2升/百公里</td></tr>
+        <tr><td style="text-align:right">行驶里程为：</td><td id="weekMiles">216.0公里</td></tr>
+        <tr><td style="text-align:right">耗油量为：</td><td id="weekTotalFuel">18.70升</td></tr>
+        <tr><td>&nbsp;</td></tr>
+        <tr><td style="text-align:right" id="fuelLable">本月行驶平均油耗为：</td><td id="avgFuel">7.1升/百公里</td></tr>
+        <tr><td style="text-align:right">行驶里程为：</td><td id="miles">468.0公里</td></tr>
+        <tr><td style="text-align:right">耗油量为：</td><td id="totalFuel">157.30升</td></tr>
+    </table>
+</div>
+<hr color="#CCCCCC" style="height:5px" >
+<div class="chart-wrapper" style="margin-bottom: 10px;">
+    <div id="y_axis"></div>
+    <div id="chart"></div>
+</div>
+<div id="note" style="text-align:center;margin-top: 20px;vertical-align: middle;margin-top: 215px;margin-left: 30px">
+    <div style="text-align: left;width: 49%;float: left" id="chartStart"></div>
+    <div style="text-align: right;width: 49%;float: left" id="chartEnd"></div><br>
+</div>
+<script>
+    //将传回的数据转换为图表控件所需格式
+    function chartDataConvert(data){
+        var fuelData=new Array();
+        fuelData[0]={};
+        fuelData[0].color="#c05020";
+        fuelData[0].data=new Array();
+        for(i=0;i<data.length;i++){
+            fuelData[0].data[i]={}
+            fuelData[0].data[i].x=i;
+            fuelData[0].data[i].y=parseFloat(data[i].fuel);
+        }
+        return fuelData;
+    }
+    var graph;
+    var y_ticks;
+    //创建曲线图
+    function createChart(){
+        graph = new Rickshaw.Graph( {
+            element: document.getElementById("chart"),
+            renderer: 'line',
+            height: 200,
+            width: 260,
+            series:fuelChartData
+        } );
+        y_ticks = new Rickshaw.Graph.Axis.Y( {
+            graph: graph,
+            orientation: 'left',
+            tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+            element: document.getElementById('y_axis')
+        } );
+        graph.render();
+    }
+
+</script>
+</body>
+</html>

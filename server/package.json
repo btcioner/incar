@@ -1,0 +1,16 @@
+{
+    "name": "serverApp",
+    "version": "0.0.1",
+    "description": "InCar Server Application.",
+    "main": "app.js",
+    "author": "Jesse Qu <jesse@baseware.net>",
+    "dependencies": {
+        "express": "latest",
+        "ejs": "latest",
+        "supervisor":"latest"
+    },
+    "repository": {
+        "type": "svn",
+        "url": "https://27.17.34.237:8443/svn/incar/Code/Incar/"
+    }
+}

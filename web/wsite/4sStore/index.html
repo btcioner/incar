@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="SIndexApp">
+<head>
+<title>4S店管理系统</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="../css/uniform.css" />
+<link rel="stylesheet" href="../css/select2.css" />
+<link rel="stylesheet" href="../css/maruti-style.css" />
+<link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
+<link rel="stylesheet" type="text/css" href="../css/mycss/main.css" />
+<link rel="shortcut icon" href="../img/favicon.ico" />
+</head>
+<body ng-controller="s_indexCtrl">
+<iframe src="header.html" width="100%" height="105px"></iframe>
+<div id="content" style="margin-top: 30px;height:583px;" >
+  <div id="content-header">
+      <div id="breadcrumb"> <a href="#" title="Go to Home" class=""><i class="icon-home"></i>首页</a></div>
+  </div>
+  <div class="container-fluid">
+  	<div class="row-fluid" style="height:400px" >
+        <div class="span2" style="width: 22%;height: 50%;margin-left: 35px;">
+            <div class="widget-box">
+                <div class="widget-content nopadding">
+                    <!--<table class="table table-bordered data-table">-->
+                    <table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th style="text-align: left;">服务预约：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeX">
+                            <td style="height:70px;">车主通过微信、APP、电话等渠道生成的预约保养、维修单。</td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-info btn-mini" href="repairInfo.html">查看</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="span2" style="width: 22%;height: 50%">
+            <div class="widget-box">
+                <div class="widget-content nopadding">
+                    <!--<table class="table table-bordered data-table">-->
+                    <table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th style="text-align: left;">提醒信息：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeX">
+                            <td style="height:70px;">依据车辆状态，如里程达到保养周期、发生故障等信息，生成客户关怀、提醒信息。</td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-info btn-mini" href="careInfo.html">查看</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="span2" style="width: 22%;height: 50%">
+            <div class="widget-box">
+                <div class="widget-content nopadding">
+                    <!--<table class="table table-bordered data-table">-->
+                    <table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th style="text-align: left;">客户管理</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeX">
+                            <td style="height:70px;">系统用户管理，包括微信用户、APP用户，包括分组等操作。</td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-info btn-mini" href="reservationService.html">查看</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="span2" style="width: 22%;height: 50%">
+            <div class="widget-box">
+                <div class="widget-content nopadding">
+                    <!--<table class="table table-bordered data-table">-->
+                    <table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th style="text-align: left;">活动管理</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeX">
+                            <td style="height:70px;">发布特价工位、试乘试驾、转盘、彩票、节油大赛等活动。</td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-info btn-mini" href="specialStation.html">查看</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="span2" style="width: 22%;height: 50%">
+            <!--提示信息 begin-->
+            <div class="widget-box">
+                <div class="widget-content nopadding">
+                    <!--<table class="table table-bordered data-table">-->
+                    <table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th style="text-align: left;">精品商城</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeX">
+                            <td style="height:70px;">精品微信、APP商城</td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-info btn-mini" href="maintainInfo.html">查看</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="span2" style="width: 22%;height: 50%">
+            <div class="widget-box">
+                <div class="widget-content nopadding">
+                    <!--<table class="table table-bordered data-table">-->
+                    <table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th style="text-align: left;">行车数据</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeX">
+                            <td style="height:70px;">所有车辆行驶数据</td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-info btn-mini" href="activityInfo.html">查看</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="span2" style="width: 22%;height: 50%">
+            <div class="widget-box">
+                <div class="widget-content nopadding">
+                    <!--<table class="table table-bordered data-table">-->
+                    <table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th style="text-align: left;">分析报表</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeX">
+                            <td style="height:70px;">用户、车辆、行为、绩效分析报表</td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-info btn-mini" href="#.html">查看</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><div class="span2" style="width: 22%;height: 50%">
+        <div class="widget-box">
+            <div class="widget-content nopadding">
+                <!--<table class="table table-bordered data-table">-->
+                <table class="table table-bordered ">
+                    <thead>
+                    <tr>
+                        <th style="text-align: left;">系统设置</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="gradeX">
+                        <td style="height:70px;">系统设置</td>
+                    </tr>
+                    <tr>
+                        <td><a class="btn btn-info btn-mini" href="#.html">查看</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            <!--提示信息 end-->
+        </div>
+   </div>
+</div>
+</div>
+<div class="row-fluid">
+  <div id="footer" class="span12"> 2014 &copy; 英卡</div>
+</div>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.dataTables.min.js"></script>
+<script src="../js/jquery.uniform.js"></script>
+<script src="../js/jquery.ui.custom.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/select2.min.js"></script>
+<script src="../js/maruti.js"></script>
+<script src="../js/maruti.tables.js"></script>
+<script src="../js/angular.min.js"></script>
+<script src="../js/fun_js/S_indexController.js"></script>
+
+</body>
+</html>

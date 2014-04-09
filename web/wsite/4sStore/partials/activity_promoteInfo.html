@@ -1,0 +1,54 @@
+<!--活动信息列表 begin-->
+<div class="widget-box" id="paramSetDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>活动信息列表</h5>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加活动</a>
+    </div>
+    <div class="widget-content nopadding">
+        <!--<table class="table table-bordered data-table">-->
+        <table class="table table-bordered data-table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>活动标题</th>
+                <th>活动内容</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>状态</th>
+                <th>发布时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="gradeX">
+                <td id="tdc">1</td>
+                <td id="tdc">三八妇女节优惠活动</td>
+                <td id="tdc" style="width:350px;">在活动期间来本店保养8折优惠，还有精美礼品赠送！</td>
+                <td id="tdc">2014/03/06</td>
+                <td id="tdc">2014/03/09</td>
+                <td id="tdc"><font color="#ff4500">过期</font></td>
+                <td id="tdc">2013/03/05</td>
+                <td id="tdc">
+                    <a class="btn btn-info btn-mini" ng-click="modify();">修改</a>
+                    <a class="btn btn-warning btn-mini" ng-click="modify();">取消</a>
+                </td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc">2</td>
+                <td id="tdc">2周年店庆</td>
+                <td id="tdc" style="width:350px;">在活动期间来本店保养8.8折优惠，还有精美礼品赠送！</td>
+                <td id="tdc">2014/03/21</td>
+                <td id="tdc">2014/04/01</td>
+                <td id="tdc"><font color="#32cd32">有效</font></td>
+                <td id="tdc">2013/03/20</td>
+                <td id="tdc">
+                    <a class="btn btn-info btn-mini" ng-click="modify();">修改</a>
+                    <a class="btn btn-warning btn-mini" ng-click="modify();">取消</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--活动信息列表 end-->

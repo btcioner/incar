@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="UserApp">
+<head>
+<title>系统用户</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="../css/uniform.css" />
+<link rel="stylesheet" href="../css/select2.css" />
+<link rel="stylesheet" href="../css/maruti-style.css" />
+<link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
+<link rel="stylesheet" type="text/css" href="../css/mycss/main.css" />
+</head>
+<body ng-controller="userCtrl">
+
+<!--Header-part-->
+<div id="header">
+  <h1>Admin后台</h1>
+</div>
+<!--close-Header-part--> 
+
+<!--top-Header-messaages-->
+<div class="btn-group rightzero"> <a class="top_message tip-left" title="Manage Files"><i class="icon-file"></i></a> <a class="top_message tip-bottom" title="Manage Users"><i class="icon-user"></i></a> <a class="top_message tip-bottom" title="Manage Comments"><i class="icon-comment"></i><span class="label label-important">5</span></a> <a class="top_message tip-bottom" title="Manage Orders"><i class="icon-shopping-cart"></i></a> </div>
+<!--close-top-Header-messaages--> 
+
+<!--top-Header-menu-->
+<div id="user-nav" class="navbar navbar-inverse">
+  <ul class="nav">
+  	<li style="color:white;vertical-align:middle; margin-top: 15px;"><span class="text">userAdmin</span></li>
+    <li class=""><a title="" href="../login.html"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
+  </ul>
+</div>
+<!--close-top-Header-menu-->
+
+<div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i>运营后台</a>
+    <ul>
+        <li class="active"><a href="deviceManage.html?token={{token}}"><i class="icon icon-home"></i> <span>设备管理</span></a> </li>
+        <li> <a href="driveData.html?token={{token}}"><i class="icon icon-signal"></i> <span>行车数据</span></a> </li>
+        <li> <a href="customer4s.html?token={{token}}"><i class="icon icon-inbox"></i> <span>4S客户</span></a> </li>
+        <li><a href="carOwners.html?token={{token}}"><i class="icon icon-th"></i> <span>车主</span></a></li>
+        <li><a href="userManage.html?token={{token}}"><i class="icon icon-fullscreen"></i> <span>系统用户</span></a></li>
+        <li> <a href="knowledgeBase.html?token={{token}}"><i class="icon icon-th-list"></i> <span>知识库</span></a></li>
+    </ul>
+</div>
+<div id="content" style="height:572px;">
+  <div id="content-header">
+      <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>主页</a> <a href="#" class="current">系统用户</a> </div>
+  </div>
+  <div class="container-fluid">
+  	<div class="row-fluid" id="productListDiv">
+      <div class="span12">
+          <!--添加系统用户 begin-->
+          <div class="widget-box" ng-show="userModifyDiv">
+              <div class="widget-title">
+                  <span class="icon"><i class="icon-th"></i></span>
+                  <h5>修改系统用户信息</h5>
+              </div>
+              <div class="widget-content nopadding">
+                  <form action="#" method="get" class="form-horizontal">
+                      <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">帐号：</label>
+                          <div class="controls">
+                              <input type="text" class="span11" style="width:200px;"  ng-model="userDetail.name" />
+                          </div>
+                      </div>
+                      <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">名字：</label>
+                          <div class="controls">
+                              <input type="text" class="span11" style="width:200px;" ng-model="userDetail.nick" />
+                          </div>
+                      </div>
+                      <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;" >角色：</label>
+                          <div class="controls">
+                              <select style="width:200px;" ng-model="userDetail.role" ng-options="role.name as role.name for role in roles">
+                                  <option selected>{{userDetail.role}}</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">联系电话：</label>
+                          <div class="controls">
+                              <input type="text" class="span11" style="width:200px;" ng-model="userDetail.phone" />
+                          </div>
+                      </div>
+                      <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;" ng-model="userDetail.mail">邮箱：</label>
+                          <div class="controls">
+                              <input type="text" class="span11"   style="width:200px;" ng-model="userDetail.email" />
+                          </div>
+                      </div>
+                      <div class="form-actions">
+                          <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="ModifyConfirm(userDetail.id)">保存</button>
+                          <button type="button" class="btn btn-danger"   ng-click="gotoBack(1)">取消</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          <!--修改 end-->
+          <!--添加系统用户 begin-->
+          <div class="widget-box" ng-show="userAddDiv">
+              <div class="widget-title">
+                  <span class="icon"><i class="icon-th"></i></span>
+                  <h5>添加系统用户</h5>
+              </div>
+              <div class="widget-content nopadding">
+                  <form action="#" method="get" class="form-horizontal">
+                      <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">帐号：</label>
+                          <div class="controls">
+                              <input type="text" class="span11" style="width:200px;"  ng-model="account" />
+                          </div>
+                      </div>
+                      <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">密码：</label>
+                          <div class="controls">
+                              <input type="text" class="span11" style="width:200px;" ng-model="password" />
+                          </div>
+                      </div>
+                      <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">用户名：</label>
+                          <div class="controls">
+                              <input type="text" class="span11" style="width:200px;" ng-model="nick"/>
+                          </div>
+                      </div>
+                      <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">角色：</label>
+                          <div class="controls">
+                              <select style="width:200px;" ng-model="roleName" ng-options="role.name as role.name for role in roles">
+                                  <option>ADMIN</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">联系电话：</label>
+                          <div class="controls">
+                              <input type="text" class="span11" style="width:200px;"  ng-model="phone"/>
+                          </div>
+                      </div>
+                      <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">邮箱：</label>
+                          <div class="controls">
+                              <input type="text" class="span11"   style="width:200px;" ng-model="email"/>
+                          </div>
+                      </div>
+                      <div class="form-actions">
+                          <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="AddConfirm()">保存</button>
+                          <button type="button" class="btn btn-danger"   ng-click="gotoBack(2)">取消</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          <!--添加 end-->
+        <!--系统用户列表 begin-->
+        <div class="widget-box" ng-show="userListDiv">
+          <div class="widget-title">
+             <span class="icon"><i class="icon-th"></i></span> 
+            <h5>用户列表</h5>
+              <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加用户</a>
+          </div>
+          <div class="widget-content nopadding">
+            <!--<table class="table table-bordered data-table">-->
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                    <th>帐号</th>
+                    <th>名字</th>
+                    <th>角色</th>
+                    <th>联系电话</th>
+                    <th>邮箱</th>
+                    <th>上次登录时间</th>
+                    <th>上次登录IP</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="productListBody">
+                <tr class="gradeX" ng-repeat="user in accounts">
+                    <td style="text-align: center">{{user.name}}</td>
+                    <td style="text-align: center">{{user.nick}}</td>
+                    <td style="text-align: center">{{user.role}}</td>
+                    <td style="text-align: center">{{user.phone}}</td>
+                    <td style="text-align: center">{{user.email}}</td>
+                    <td style="text-align: center">{{user.last_login_time}}</td>
+                    <td style="text-align: center">{{user.last_login_ip}}</td>
+                    <td style="text-align: center">{{user.status}}</td>
+                    <td style="text-align: center">
+                        <a class="btn btn-info btn-mini" ng-click="modify($index);">修改</a>
+                        <a class="{{user.class}}" ng-click="freeze($index);" id="freezeId{{$index}}">{{user.text}}</a>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+            <div><font color="red">{{tips}}</font></div>
+            <div class="pagination alternate" style="float:right;">
+                共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
+                跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
+                <option>1</option>
+            </select>页
+            </div>
+        </div>
+          <!--系统用户列表 end-->
+      </div>
+   </div>
+</div>
+</div>
+<div class="row-fluid">
+  <div id="footer" class="span12"> 2014 &copy; 英卡</div>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.dataTables.min.js"></script>
+<script src="../js/jquery.uniform.js"></script>
+<script src="../js/jquery.ui.custom.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/select2.min.js"></script>
+<script src="../js/maruti.js"></script>
+<script src="../js/maruti.tables.js"></script>
+<script src="../js/angular.min.js"></script>
+<script src="../js/fun_js/common.js"></script>
+<script src="../js/fun_js/userController.js"></script>
+<script src="../js/sha1.js"></script>
+</body>
+</html>

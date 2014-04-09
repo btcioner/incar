@@ -1,0 +1,138 @@
+<!--添加工位 start-->
+        <div class="widget-box" ng-show="slotAddDiv">
+            <div class="widget-title">
+                <span class="icon"><i class="icon-th"></i></span>
+                <h5>添加工位</h5>
+            </div>
+            <div class="widget-content nopadding">
+                <form action="#" method="get" class="form-horizontal">
+                    <div class="control-group" >
+                        <label class="control-label" style="margin-left:300px;">工位信息：</label>
+                        <div class="controls">
+                            <input type="text" class="span11" style="width:200px;"  ng-model="slot_location" />
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <label class="control-label" style="margin-left:300px;">工位时间：</label>
+                        <div class="controls">
+                            <input type="text" class="span11" ng-model="slot_time" style="width:200px;" />
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <label class="control-label" style="margin-left:300px;">优惠：</label>
+                        <div class="controls">
+                            <input type="text" class="span11" ng-model="benefit" style="width:200px;" />
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <label class="control-label" style="margin-left:300px;">优惠条例描述：</label>
+                        <div class="controls">
+                            <input type="text" class="span11" ng-model="description"  style="width:200px;" />
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <label class="control-label" style="margin-left:300px;">营销开始时间：</label>
+                        <div class="controls">
+                            <input type="text" class="span11"  style="width:200px;" ng-model="promotion_time" />
+                        </div>
+                    </div>
+                 <div class="form-actions">
+                    <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="AddConfirm();">确定</button>
+                    <button type="button" class="btn btn-danger"   ng-click="gotoBack(2);">取消</button>
+                 </div>
+                </form>
+            </div>
+        </div>
+        <!--添加工位 end-->
+        <!--修改工位 start-->
+        <div class="widget-box" ng-show="slotModifyDiv">
+            <div class="widget-title">
+                <span class="icon"><i class="icon-th"></i></span>
+                <h5>修改工位</h5>
+            </div>
+            <div class="widget-content nopadding">
+                <form action="#" method="get" class="form-horizontal">
+                    <div class="control-group" >
+                        <label class="control-label" style="margin-left:300px;">工位信息：</label>
+                        <div class="controls">
+                            <input type="text" class="span11" style="width:200px;"  ng-model="slotDetail.slot_location" />
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <label class="control-label" style="margin-left:300px;">工位时间：</label>
+                        <div class="controls">
+                            <input type="text" class="span11" ng-model="slotDetail.slot_time" style="width:200px;" />
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <label class="control-label" style="margin-left:300px;">优惠：</label>
+                        <div class="controls">
+                            <input type="text" class="span11" ng-model="slotDetail.benefit" style="width:200px;" />
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <label class="control-label" style="margin-left:300px;">优惠条例描述：</label>
+                        <div class="controls">
+                            <input type="text" class="span11" ng-model="slotDetail.description"  style="width:200px;" />
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <label class="control-label" style="margin-left:300px;">营销开始时间：</label>
+                        <div class="controls">
+                            <input type="text" class="span11"  style="width:200px;" ng-model="slotDetail.promotion_time" />
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="ModifyConfirm();">确定</button>
+                        <button type="button" class="btn btn-danger"   ng-click="gotoBack(1);">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--修改工位 end-->
+<!--特价工位列表 begin-->
+<div class="widget-box" ng-show="slotListDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>特价工位列表</h5>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加工位</a>
+    </div>
+    <div class="widget-content nopadding">
+        <!--<table class="table table-bordered data-table">-->
+        <table class="table table-bordered data-table">
+            <thead>
+            <tr>
+                <th>工位信息</th>
+                <th>工位时间</th>
+                <th>优惠</th>
+                <th>优惠条例描述</th>
+                <th>活动开始时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr class="gradeX" ng-repeat="slot in slots">
+                    <td id="tdc">{{slot.slot_location}}</td>
+                    <td id="tdc">{{slot.slot_time}}</td>
+                    <td id="tdc">{{slot.benefit}}</td>
+                    <td id="tdc">{{slot.description}}</td>
+                    <td id="tdc">{{slot.promotion_time}}</td>
+                    <td id="tdc">{{slot.promotion_status}}</td>
+                    <td id="tdc">
+                        <a class="btn btn-info btn-mini" ng-click="modify($index);">修改</a>
+                        <a class="btn btn-warning btn-mini" ng-click="delete($index);">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div><font color="red">{{tips}}</font></div>
+    <div class="pagination alternate" style="float:right;">
+        共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
+        跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption" ng-change="changePage(changeId);">
+        <option>1</option>
+    </select>页
+    </div>
+</div>
+<!--特价工位列表 end-->

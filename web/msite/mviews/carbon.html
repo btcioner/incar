@@ -1,0 +1,220 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>碳排放</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+    <script  src="../mscripts/jquery-1.7.1.min.js"></script>
+    <script  src="../mscripts/car.js"></script>
+
+    <!--日期控件资源  -->
+    <script  src="../mscripts/jqm-datebox-1.4.0.comp.flipbox.min.js"></script>
+    <script  src="../mscripts/jquery.mobile.min.js"></script>
+
+    <link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">
+    <link rel="stylesheet" href="../mstyles/jqm-datebox.min.css">
+    <!--日期控件资源结束  -->
+
+    <!--rickshaw图表控件资源  -->
+    <script  src="../mscripts/d3.min.js"></script>
+    <script  src="../mscripts/rickshaw.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="../mstyles/graph.css">
+    <link type="text/css" rel="stylesheet" href="../mstyles/lines.css">
+    <!--rickshaw图表控件资源结束  -->
+    <style scoped>
+        #chart {
+            position: relative;
+            float: left;
+        }
+        #y_axis {
+            position: relative;
+            float: left;
+            width: 30px;
+        }
+    </style>
+<script type="text/javascript">
+   var user;//用户openid
+   var carbonChartData;//图表数据
+   var today;
+   //本地数据，用于演示
+   carbonChartData = [
+       {data:[{x: 0,y: 3.128},
+           {x: 1, y: 7.345},{x: 2,y: 7.467},{x: 3, y: 7.098}, {x: 4, y: 7.761}, {x: 5, y: 7.257 }],
+           color: "#c05020"}
+   ];
+     // alert(getQueryString("id"));
+     //页面加载初始化
+        function init(){
+            user=getQueryString("user");
+			//获取当前日期，初始化日期控件
+			today = new Date();
+            year=today.getFullYear();    //获取完整的年份(4位,1970-????)
+            month=(today.getMonth()+1>9)?today.getMonth()+1:"0"+(today.getMonth()+1);     //获取当前月份(0-11,0代表1月)
+            day=today.getDate()>9?today.getDate():"0"+today.getDate();;        //获取当前日(1-31)
+            document.getElementById("start").value=year+"-"+month+"-01";
+            document.getElementById("end").value=year+"-"+month+"-"+day;
+            document.getElementById("chartStart").innerHTML=year+"-"+month+"-01";
+            document.getElementById("chartEnd").innerHTML=year+"-"+month+"-"+day;
+           //获取最近一次行驶、最近7天、最近30天数据
+           // createChart();//演示
+            getDefaultData(user);
+            //修改分享链接
+            shareToFriend();
+            shareToWeibo();
+            shareTo();
+		}
+		
+	   //按时间段查询
+	   function search(){
+		   //判断开始、结束时间是否合法
+           beginDate=new Date($('#start').val());
+           endDate=new Date($('#end').val());
+		  if(beginDate>=endDate) return;
+		   else {
+			   //获取指定时间段数据
+			  getdatafromdate(user,beginDate,endDate);
+              //修改分享链接
+              shareToFriend();
+              shareToWeibo();
+              shareTo();
+			   } 
+		   }
+    </script>
+</head>
+<body onLoad="init()">
+    <div id="carbon" >
+        <div id="datePicker">
+            <div style="float: left;margin-top: 10px">开始&nbsp;</div>
+            <div style="width: 37%;float: left;text-align: left;">
+                <input name="start" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" onchange="search()" id="start" style="vertical-align:middle;font-size: 14px" />
+            </div>
+            <div style="float: left;margin-top: 10px">&nbsp;&nbsp;结束&nbsp;</div>
+            <div style="width: 37%;float: left;text-align: left;font-size: 10px">
+                <input name="end" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" onchange="search()" id="end" style="vertical-align:middle;font-size: 14px" />
+            </div>
+            </div>
+     </div>
+      <hr color="#CCCCCC" style="height:5px;width: 100%" >
+    <div id="fuelDetail"  style="margin-bottom:5px; margin-top:5px">
+     <table style="font-size:18px;">
+       <tr><td style="text-align:right">本次行驶碳排放参考量为：</td><td id="lastCarbon">7.0kg</td></tr>
+       <tr><td style="text-align:right">本周行驶碳排放参考量为：</td><td id="weekCarbon">24kg</td></tr>
+       <tr><td style="text-align:right">本月行驶碳排放参考量为：</td><td id="monthCarbon">256kg</td></tr>
+       </table>
+    </div>
+    <hr color="#CCCCCC" style="height:5px" >
+    <div class="chart-wrapper" style="margin-bottom: 10px;">
+        <div id="y_axis"></div>
+        <div id="chart"></div>
+    </div>
+    <div id="note" style="text-align:center;margin-top: 20px;vertical-align: middle;margin-top: 215px;margin-left: 30px">
+        <div style="text-align: left;width: 49%;float: left" id="chartStart"></div>
+        <div style="text-align: right;width: 49%;float: left" id="chartEnd"></div><br>
+    </div>
+ <script>
+     //分享到微信朋友圈
+     function shareToFriend(){
+         str=location.href;
+         var beginDate=new Date($('#start').val());
+         var endDate=new Date($('#end').val());
+         title="我的排碳量";
+         desc="分享我的排碳量";
+         link=str.substring(0,str.lastIndexOf('/'))+"/carbonShare.html?user="+user+"&start="+beginDate.toDateString()+"&end="+endDate.toDateString();
+         weixinShareTimeline(title,desc,link,"");
+     }
+     //分享到腾讯微博
+     function shareToWeibo(){
+         str=location.href;
+         var beginDate=new Date($('#start').val());
+         var endDate=new Date($('#end').val());
+         title="我的排碳量";
+         link=str.substring(0,str.lastIndexOf('/'))+"/carbonShare.html?user="+user+"&start="+beginDate.toDateString()+"&end="+endDate.toDateString();
+         weixinShareWeibo(title,link);
+     }
+     // 发送给好友;
+     function shareTo(){
+         str=location.href;
+         var beginDate=new Date($('#start').val());
+         var endDate=new Date($('#end').val());
+         title="我的排碳量";
+         desc="分享我的排碳量";
+         link=str.substring(0,str.lastIndexOf('/'))+"/carbonShare.html?user="+user+"&start="+beginDate.toDateString()+"&end="+endDate.toDateString();
+         weixinShareFriend(title,desc,link,"");
+     }
+     //将传回的数据转换为图表控件所需格式
+     function carbonDataConvert(data){
+         var myData=new [];
+         myData[0].color="#c05020";
+         for(i=0;i<data.length;i++){
+             myData[0].data[i].x=i;
+             myData[0].data[i].y=data[i].carbon;
+         }
+         return myData;
+     }
+     //创建曲线图
+     function createChart(){
+         var graph = new Rickshaw.Graph( {
+             element: document.getElementById("chart"),
+             renderer: 'line',
+             height: 200,
+             width: 260,
+             series:carbonChartData
+         } );
+         var y_ticks = new Rickshaw.Graph.Axis.Y( {
+             graph: graph,
+             orientation: 'left',
+             tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+             element: document.getElementById('y_axis')
+         } );
+         graph.render();
+     }
+     //获取默认数据
+     function getDefaultData(user){
+         var start=new Date();
+         start.setDate(1);
+         $.ajax({
+             type: "post",
+             url: "/mservice/carbonData",
+             data: {'user':user,'start':start.toDateString(),'end':today.toDateString()},
+             dataType: "json",
+             success: function (result,status) {
+                 //alert(result.length);
+                 document.getElementById("lastCarbon").innerHTML=result.carbonDataLastTime.carbon+"kg";
+                 document.getElementById("weekCarbon").innerHTML=result.carbonDataLastWeek.carbon+"kg";
+                 document.getElementById("monthCarbon").innerHTML=result.carbonDataLastInterval.carbon+"kg";
+
+                 carbonChartData=carbonDataConvert(result.carbonData);
+                 createChart();
+
+             }
+         });
+     }
+     //访问webservice，查询并显示
+     function getdatafromdate(user,beginDate,endDate){
+         $.ajax({
+             type: "post",
+             url: "/mservice/carbonData",
+             data: {'user':user,'start':beginDate.toDateString(),'end':endDate.toDateString()}, //格式为：data:"{paraName:paraValue}",如果该方法无参数，则格式为：data:"{}"
+             dataType: "json",
+             success: function (result,status) {
+                 document.getElementById("lastCarbon").innerHTML=result.carbonDataLastTime.carbon+"kg";
+                 document.getElementById("weekCarbon").innerHTML=result.carbonDataLastWeek.carbon+"kg";
+                 document.getElementById("monthCarbon").innerHTML=result.carbonDataLastInterval.carbon+"kg";
+
+                 document.getElementById("chart").innerHTML="";
+                 document.getElementById("y_axis").innerHTML="";
+
+                 document.getElementById("chartStart").innerHTML=beginDate.getFullYear()+"-"+(beginDate.getMonth()+1)+"-"+beginDate.getDate();
+                 document.getElementById("chartEnd").innerHTML=endDate.getFullYear()+"-"+(endDate.getMonth()+1)+"-"+endDate.getDate();
+                 carbonChartData = carbonDataConvert(result.carbonData);
+                 createChart();
+
+             }
+         });
+     }
+ </script> 
+</body>
+</html>

@@ -1,0 +1,47 @@
+[
+    {
+        "ID":1,
+        "account": "csh0226@125.com",
+        "password": "123456",
+        "userName":"自然醒",
+        "mail": "123456@qq.com",
+        "tel": 15072335490,
+        "role":"管理员"
+    },
+    {
+        "ID":2,
+        "account": "jiangli@gmail.com",
+        "password": "123456",
+        "userName": "极乐鸟",
+        "mail": "tom@qq.com",
+        "tel": 15072335450,
+        "role":"管理员"
+    },
+    {
+        "ID":3,
+        "account": "353950631@qq.com",
+        "password": "123456",
+        "userName": "Mini",
+        "mail": "mini@qq.com",
+        "tel": 15072335590,
+        "role":"管理员"
+    },
+    {
+        "ID":4,
+        "account": "297081950@qq.com",
+        "password": "123456",
+        "userName": "Lohas",
+        "mail": "lohas@qq.com",
+        "tel": 15072345490,
+        "role":"管理员"
+    },
+    {
+        "ID":5,
+        "account": "14744726@qq.com",
+        "password": "123456",
+        "userName": "Jimmy",
+        "mail": "jimmy@qq.com",
+        "tel": 15072315490,
+        "role":"管理员"
+    }
+]

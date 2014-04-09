@@ -1,0 +1,112 @@
+<div id="content" style="height:572px;margin-top: 30px;" >
+    <div id="content-header">
+        <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">预约服务</a></div>
+    </div>
+    <div style="width: 13%;float: left;margin: 2px">
+        <div class="accordion" id="collapse-group">
+            <div class="accordion-group widget-box">
+                <div class="accordion-heading">
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne" data-toggle="collapse" class="collapsed"> <span class="icon"><i class="icon-magnet"></i></span>
+                        <h5>保养预约</h5>
+                    </a></div>
+                </div>
+                <div class="accordion-body collapse" id="collapseGOne" style="height: 0px;">
+                    <div class="widget-content" style="text-align: right;padding:0">
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(1)">新申请</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(2)">已拒绝</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(3)">已确认</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(4)">已完成</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(5)">未到店</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(6)">已取消</a>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group widget-box" style="margin-top: 2px">
+                <div class="accordion-heading">
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo" data-toggle="collapse"> <span class="icon"><i class="icon-wrench"></i></span>
+                        <h5 >维修预约</h5>
+                    </a> </div>
+                </div>
+                <div class="collapse accordion-body" id="collapseGTwo">
+                    <div class="widget-content" style="text-align: right;padding: 0">
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(1)">新申请</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(2)">已拒绝</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(3)">已确认</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(4)">已完成</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(5)">未到店</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(6)">已取消</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="width: 83%;float: left">
+        <div class="row-fluid" >
+            <!--维修预约列表 begin-->
+            <div class="widget-box" ng-show="repairDiv">
+                <div class="widget-title">
+                    <span class="icon"><i class="icon-th"></i></span>
+                    <h5>维修预约列表</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车主姓名： &nbsp;&nbsp;&nbsp;
+                                <input type="text" style="width:150px;">
+                            </th>
+                            <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车牌号：&nbsp;&nbsp;&nbsp;<select style="width:150px;">
+                                <option>请选择</option>
+                            </select></th>
+                            <th style="vertical-align: middle;">预约时间：&nbsp;&nbsp;&nbsp;<select style="width:150px;">
+                                <option>请选择</option>
+                            </select></th>
+                            <th  style="vertical-align: middle;"><a class="btn btn-success" style="" ng-click="">搜索</a></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>车主</th>
+                            <th>联系电话</th>
+                            <th>车型</th>
+                            <th>车牌号</th>
+                            <th>创建时间</th>
+                            <th>预约时间</th>
+                            <th>预约项目</th>
+                            <th>操作人</th>
+                            <th>状态</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="mt in reservationList">
+                        <tr class="gradeX">
+                            <td style="text-align: center">{{$index + 1}}</td>
+                            <td style="text-align: center">{{mt.test1}}</td>
+                            <td style="text-align: center">{{mt.test2}}</td>
+                            <td style="text-align: center">{{mt.test3}}</td>
+                            <td style="text-align: center">{{mt.test4}}</td>
+                            <td style="text-align: center">{{mt.test5}}</td>
+                            <td style="text-align: center">{{mt.test6}}</td>
+                            <td style="text-align: center">{{mt.test7}}</td>
+                            <td style="text-align: center">{{mt.test8}}</td>
+                            <td style="text-align: center">{{mt.test9}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination alternate" style="float:right;">
+                    共{{totalCount}}条&nbsp;页码{{currentPage+1}}/{{totalPage}} &nbsp;
+                    跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
+                    <option>1</option>
+                </select>页
+                </div>
+            </div>
+            <!--维修预约列表 end-->
+        </div>
+    </div>
+</div>
+</div>

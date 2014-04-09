@@ -1,0 +1,138 @@
+<div id="content" style="height:572px;margin-top: 30px;" >
+    <div id="content-header">
+        <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">预约服务</a></div>
+    </div>
+    <div style="width: 13%;float: left;margin: 2px">
+        <div class="accordion" id="collapse-group">
+            <div class="accordion-group widget-box">
+                <div class="accordion-heading">
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne" data-toggle="collapse" class="collapsed"> <span class="icon"><i class="icon-magnet"></i></span>
+                        <h5>保养预约</h5>
+                    </a></div>
+                </div>
+                <div class="accordion-body collapse" id="collapseGOne" style="height: 0px;">
+                    <div class="widget-content" style="text-align: right;padding:0">
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(1)">新申请</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(2)">已拒绝</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(3)">已确认</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(4)">已完成</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(5)">未到店</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(6)">已取消</a>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group widget-box" style="margin-top: 2px">
+                <div class="accordion-heading">
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo" data-toggle="collapse"> <span class="icon"><i class="icon-wrench"></i></span>
+                        <h5 >维修预约</h5>
+                    </a> </div>
+                </div>
+                <div class="collapse accordion-body" id="collapseGTwo">
+                    <div class="widget-content" style="text-align: right;padding: 0">
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(1)">新申请</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(2)">已拒绝</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(3)">已确认</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(4)">已完成</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(5)">未到店</a>
+                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(6)">已取消</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="width: 83%;float: left">
+        <div class="row-fluid" >
+            <!--Service_reservation info Begin-->
+            <div class="span2" style="width: 40%;height: 50%;margin-left: 70px;">
+                <div class="widget-box">
+                    <div class="widget-content nopadding">
+                        <!--<table class="table table-bordered data-table">-->
+                        <table class="table table-bordered ">
+                            <thead>
+                            <tr>
+                                <th style="text-align: left;">待处理保养申请：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX">
+                                <td style="height:70px;">车主已提出保养预约申请，未确认预约。</td>
+                            </tr>
+                            <tr>
+                                <td><a class="btn btn-info btn-mini" href="../repairInfo.html">查看</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="span2" style="width: 40%;height: 50%;margin-left: 70px;">
+                <div class="widget-box">
+                    <div class="widget-content nopadding">
+                        <!--<table class="table table-bordered data-table">-->
+                        <table class="table table-bordered ">
+                            <thead>
+                            <tr>
+                                <th style="text-align: left;">待完成保养：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX">
+                                <td style="height:70px;">已确认预约，但未完成保养。</td>
+                            </tr>
+                            <tr>
+                                <td><a class="btn btn-info btn-mini" href="../repairInfo.html">查看</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="span2" style="width: 40%;height: 50%;margin-left: 70px;">
+                <div class="widget-box">
+                    <div class="widget-content nopadding">
+                        <!--<table class="table table-bordered data-table">-->
+                        <table class="table table-bordered ">
+                            <thead>
+                            <tr>
+                                <th style="text-align: left;">待处理维修申请：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX">
+                                <td style="height:70px;">车主已提出维修预约申请，未确认预约。</td>
+                            </tr>
+                            <tr>
+                                <td><a class="btn btn-info btn-mini" href="../repairInfo.html">查看</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="span2" style="width: 40%;height: 50%;margin-left: 70px;">
+                <div class="widget-box">
+                    <div class="widget-content nopadding">
+                        <!--<table class="table table-bordered data-table">-->
+                        <table class="table table-bordered ">
+                            <thead>
+                            <tr>
+                                <th style="text-align: left;">待完成维修：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX">
+                                <td style="height:70px;">已确认预约，但未完成维修。</td>
+                            </tr>
+                            <tr>
+                                <td><a class="btn btn-info btn-mini" href="../repairInfo.html">查看</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--Service_reservation info End-->
+        </div>
+    </div>
+</div>
+</div>

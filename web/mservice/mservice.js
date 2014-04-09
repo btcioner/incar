@@ -1,0 +1,61 @@
+/**
+ * Created by Jesse Qu on 3/22/14.
+ */
+
+'use strict';
+
+var mysql = require('mysql');
+var path = require('path');
+
+var config = require('../config/config');
+
+var userService = require('./userService');
+var carService = require('./carService');
+var fuelService = require('./fuelService');
+var carbonService = require('./carbonService');
+var slotBookingService = require('./slotBookingService');
+
+var mservice = { get:{}, post:{}, delete:{}, put:{} };
+
+userService(mservice);
+carService(mservice);
+fuelService(mservice);
+carbonService(mservice);
+slotBookingService(mservice);
+
+(function(service) {
+
+    function entrance(req, res) {
+        var action = req.route.params[0].split('/')[0];
+        if (!action) {
+            res.send(404);
+            return;
+        }
+        var api;
+        switch (req.method) {
+            case 'GET':
+                api = service.get[action];
+                break;
+            case 'POST':
+                api = service.post[action];
+                break;
+            case 'DELETE':
+                api = service.delete[action];
+                break;
+            case 'PUT':
+                api = service.put[action];
+                break;
+        }
+        if (api) {
+            api.bind(service)(req, res);
+        } else {
+            res.send(404);
+        }
+    }
+    service.entrance = entrance;
+    service.db = require('../config/db');
+
+})(mservice);
+
+exports = module.exports = mservice;
+
