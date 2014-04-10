@@ -22,7 +22,7 @@
         #y_axis {
             position: relative;
             float: left;
-            width: 25px;
+            width: 35px;
         }
     </style>
 
@@ -52,7 +52,7 @@
         function getDefaultData(user,start,end){
             $.ajax({
                 type: "post",
-                url: "/mservice/fuelData",
+                url: "/mservice/carbonData",
                 data: {'user':user,'start':start,'end':end},
                 dataType: "json",
                 success: function (result,status) {
@@ -80,7 +80,7 @@
 <hr color="#CCCCCC" style="height:5px" >
 
 <div id="defaulDetail"  style="margin-bottom:5px; margin-top:5px">
-    <table style="font-size:18px;">
+    <table style="font-size:14px;">
         <tr><td style="text-align:right">本次行驶碳排放参考量为：</td><td id="lastCarbon">7.0kg</td></tr>
         <tr><td style="text-align:right">本周行驶碳排放参考量为：</td><td id="weekCarbon">24kg</td></tr>
         <tr><td style="text-align:right">本月行驶碳排放参考量为：</td><td id="monthCarbon">256kg</td></tr>
@@ -105,7 +105,7 @@
         for(i=0;i<data.length;i++){
             carbonData[0].data[i]={}
             carbonData[0].data[i].x=i;
-            carbonData[0].data[i].y=parseFloat(data[i].fuel);
+            carbonData[0].data[i].y=parseFloat(data[i].carbon);
         }
         return carbonData;
     }
