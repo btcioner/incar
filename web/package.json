@@ -7,7 +7,15 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "connect": "latest",
     "express": "latest",
+    "body-parser": "latest",
+    "method-override": "latest",
+    "cookie-parser": "latest",
+    "connect-multiparty": "latest",
+    "errorhandler": "latest",
+    "static-favicon": "latest",
+    "morgan": "latest",
     "crypto": "latest",
     "ejs": "latest",
     "querystring": "latest",
