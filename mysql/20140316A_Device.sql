@@ -18,13 +18,13 @@ CREATE TABLE IF NOT EXISTS t_car_info(
     id int auto_increment   COMMENT '车辆编号',
     obd_code VARCHAR(32)    COMMENT 'OBD设备唯一编码',
     sim_number VARCHAR(16)  COMMENT '插在OBD设备上的SIM卡的电话号码',
-    car_style   int         COMMENT '车款信息t_car外键'
+    brand int               COMMENT '品牌',
+    series int,             COMMENT '车型',
+    modelYear   int         COMMENT '年款',
     license varchar(30)     COMMENT '车牌号',
     mileage long            COMMENT '初始里程数',
     comment VARCHAR(32)     COMMENT '简要说明性文字',
     primary key (id));
-ALTER TABLE t_car_info
-    ADD CONSTRAINT FK_car_style FOREIGN KEY (car_style) REFERENCES t_car(id);
 CREATE TABLE IF NOT EXISTS t_car_obd(
     obd_code VARCHAR(32) COMMENT 'OBD设备唯一编码'),
     car_id int COMMENT '车辆编号',
