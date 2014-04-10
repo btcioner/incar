@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Created by LM on 14-4-3.
  * OBD编号
  * 微信号(隐式)
@@ -50,8 +50,8 @@
  *             建立关系时保存绑定时间。(当OBD要换车时，只需要在老车关联信息
  *             里填入解绑时间，以此标示该OBD在不同时间段服侍的主人，作为OBD信息在查询时的一个时间断点)
  */
-var dao=require("./dao");
-//var msgCentre=require("../../server/msgCentre");
+var dao=require("../api/dataAccess/dao");
+var msgCentre=require("../api/message/msgCentre");
 exports.checkOBDbyCar=function(req,res){
     var obdCode=req.params.obdCode;
     var sql="select oc.carId from t_obd_car oc where oc.unbindTime is null and oc.obdCode=?";
@@ -65,7 +65,7 @@ exports.checkOBDbyCar=function(req,res){
     });
 };
 
-/*exports.testOBD=function(req,res){
+exports.testOBD=function(req,res){
     var obdCode=req.params.obdCode;
     var sql= "select * from t_car";
     var paramArray=new Array();
@@ -87,7 +87,7 @@ exports.checkOBDbyCar=function(req,res){
         });
 
     });
-}*/
+}
 exports.bindOBD = function(req, res){
     var channel=req.params.channel;
     var bindJson=req.body;
