@@ -9,6 +9,7 @@ var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var multiPart = require('connect-multiparty');
 var favicon = require('static-favicon');
+var morganLogger = require('morgan');
 var path = require('path');
 var config = require('./config');
 var weixin = require('../api/weixin');
@@ -72,7 +73,7 @@ module.exports = function(app) {
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
 
-    // app.use(express.logger('dev'));
+    app.use(morganLogger('dev'));
 
     app.use(bodyParser);
 
