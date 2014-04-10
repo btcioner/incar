@@ -26,7 +26,8 @@ slotBookingService(mservice);
 (function(service) {
 
     function entrance(req, res) {
-        var action = req.route.params[0].split('/')[0];
+        // var action = req.route.params[0].split('/')[0];
+        var action = req.params[0].split('/')[0];
         if (!action) {
             res.send(404);
             return;
