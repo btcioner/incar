@@ -151,7 +151,7 @@
         $.ajax({
             type: "post",
             url: "/mservice/behaviorData",
-            data: {'user':user,'start':start,'end':today},
+            data: {'user':user,'start':start.toDateString(),'end':today.toDateString()},
             dataType: "json",
             success: function (result,status) {
                 //alert(result.length);
@@ -176,8 +176,8 @@
     function getdatafromdate(user,beginDate,endDate){
         $.ajax({
             type: "post",
-            url: "/mservice/fuelData",
-            data: {user:user,start:beginDate,end:endDate},
+            url: "/mservice/behaviorData",
+            data: {user:user,start:beginDate.toDateString(),end:endDate.toDateString()},
             dataType: "json",
             success: function (result,status) {
                 //alert(result.fuelData.length);
