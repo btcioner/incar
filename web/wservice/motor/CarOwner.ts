@@ -14,7 +14,6 @@ module Service{
                 "LEFT OUTER JOIN t_car_org AS CO ON CO.car_id = C.id " +
                 "LEFT OUTER JOIN t_staff_org AS O ON CO.org_id = O.id " +
                 "LEFT OUTER JOIN t_car AS S ON C.brand = S.brandCode and C.series = S.seriesCode " +
-                "LEFT OUTER JOIN t_car_obd as D ON U.car_id = D.car_id and D.act_type in (0,1) " +
             "WHERE U.user_type = 1";
         var args = new Array();
         if(req.query.org_id) {sql += " and CO.org_id = ?"; args.push(req.query.org_id);}
@@ -26,7 +25,7 @@ module Service{
 
         var sql2 = util.format(sql, "A.id AS acc_id, A.name AS acc_name, A.nick AS acc_nick, A.status AS acc_status, A.phone AS acc_phone, " +
             "O.name AS org_name, O.id AS org_id, " +
-            "C.id AS car_id, C.license AS car_license, C.brand AS brand_id, S.brand AS car_brand, C.series AS series_id, S.series AS car_series, D.obd_code");
+            "C.id AS car_id, C.license AS car_license, C.brand AS brand_id, S.brand AS car_brand, C.series AS series_id, S.series AS car_series, C.obd_code");
         if(page.IsValid()) sql2 += page.sql;
         var sql3 = util.format(sql, "COUNT(*) AS count");
 
@@ -69,12 +68,11 @@ module Service{
             "LEFT OUTER JOIN t_car_org AS CO ON CO.car_id = C.id " +
             "LEFT OUTER JOIN t_staff_org AS O ON CO.org_id = O.id " +
             "LEFT OUTER JOIN t_car AS S ON C.brand = S.brandCode and C.series = S.seriesCode " +
-            "LEFT OUTER JOIN t_car_obd AS D ON U.car_id = D.car_id and D.act_type in (0,1) "
             "WHERE U.user_type = 1 and U.acc_id = ?";
 
         var sql2 = util.format(sql, "A.id AS acc_id, A.name AS acc_name, A.nick AS acc_nick, A.status AS acc_status, A.phone AS acc_phone, " +
             "O.name AS org_name, O.id AS org_id, " +
-            "C.id AS car_id, C.license AS car_license, C.brand AS brand_id, S.brand AS car_brand, C.series AS series_id, S.series AS car_series, D.obd_code ");
+            "C.id AS car_id, C.license AS car_license, C.brand AS brand_id, S.brand AS car_brand, C.series AS series_id, S.series AS car_series, C.obd_code ");
 
         dac.query(sql2, [req.params.acc_id], (ex, result)=>{
             if(ex) {res.json(new TaskException(-1, "无法获取车主", ex)); return;}
@@ -128,7 +126,7 @@ module Service{
 
         task.createCar = (acc_id, org_id)=>{
             // 创建车
-            dac.query("INSERT t_car_info(brand,series,license) VALUES(?,?,?)", [data.brand_id, data.series_id, data.car_license], (ex, result)=>{
+            dac.query("INSERT t_car_info(brand,series,license,obd_code) VALUES(?,?,?,?)", [data.brand_id, data.series_id, data.car_license,data.obd_code], (ex, result)=>{
                 if(ex) { res.json(-1, "创建车失败", ex); return; }
                 else{
                     var car_id = result.insertId;
@@ -144,29 +142,14 @@ module Service{
                         task.finished ++;
                         task.end();
                     });
-                    // Create link between car and org
-                    if(data.obd_code && data.obd_code.trim().length > 0){
-                        dac.query("INSERT t_car_obd(car_id, obd_code) VALUES(?,?)",
-                            [car_id, data.obd_code.trim()], (ex, result)=>{
-                                task.C = {ex:ex, result:result};
-                                task.finished++;
-                                task.end();
-                            });
-                    }
-                    else{
-                        task.C = {ex:null, result:null};
-                        task.finished++;
-                        task.end();
-                    }
                 }
             });
         };
 
         task.end = ()=>{
-            if(task.finished < 3) return;
+            if(task.finished < 2) return;
             if(task.A.ex) { res.json(new TaskException(-1, "创建车主失败", task.A.ex)); return; }
             if(task.B.ex) { res.json(new TaskException(-1, "链接组织和车辆失败", task.B.ex)); return; }
-            if(task.C.ex) { res.json(new TaskException(-1, "链接车辆和OBD设备失败", task.C.ex)); return; }
             res.json({status:"ok"});
             return;
         };
