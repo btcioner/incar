@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS t_car_info(
     obd_code VARCHAR(32)    COMMENT 'OBD设备唯一编码',
     sim_number VARCHAR(16)  COMMENT '插在OBD设备上的SIM卡的电话号码',
     brand int               COMMENT '品牌',
-    series int,             COMMENT '车型',
+    series int              COMMENT '车型',
     modelYear   int         COMMENT '年款',
     license varchar(30)     COMMENT '车牌号',
     mileage long            COMMENT '初始里程数',
