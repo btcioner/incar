@@ -5,7 +5,7 @@ var siteCommon = require('../sitecommon');
 var msite = require('./msite');
 var wsite = require('./wsite');
 var wsCar=require('../wservice/car');
-var wsOBD=require('../wservice/obd');
+// var wsOBD=require('../wservice/obd');
 var wservice = require('../wservice/motor');
 var mservice = require('../mservice/mservice');
 
@@ -20,8 +20,8 @@ module.exports = function(app) {
     app.post('/wservice/car', wsCar.add);
     app.put('/wservice/car/:id', wsCar.update);
     //OBD数据相关
-    app.get('/wservice/obd/checkCar/:obdCode', wsOBD.checkOBDbyCar);
-    app.put('/wservice/obd/work/:channel', wsOBD.bindOBD);
+    // app.get('/wservice/obd/checkCar/:obdCode', wsOBD.checkOBDbyCar);
+    // app.put('/wservice/obd/work/:channel', wsOBD.bindOBD);
     // Routes for wsite service
     app.get('/wservice/organization', wservice.GetOrganization);
     app.post('/wservice/organization', wservice.AddOrganization);

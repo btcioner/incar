@@ -8,7 +8,7 @@ var mysql = require('mysql');
 
 exports = module.exports = function(service) {
     service.post.fuelData = fuelData;
-}
+};
 
 function fuelData(req, res) {
 
@@ -70,7 +70,7 @@ function getObdCode(db, userName, callback) {
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
-                pool.query('select obd_code from t_wx_user_obd where wx_user_id = ?', [rows[0].id], function(err, rows) {
+                pool.query('SELECT obdcode FROM t_account_obd o INNER JOIN t_wx_user t INNER JOIN t_account_channel c WHERE t.id = ? AND t.id=c.channelKey AND c.accountId=o.accountId;', [rows[0].id], function(err, rows) {
                     if (err) { callback(err); }
                     else {
                         if (rows && rows.length === 1) {
@@ -92,7 +92,7 @@ function getFuelData(db, obdCode, startDatetime, endDatetime, callback) {
     var sqlWithParameters = [
         'select SUM(currentAvgOilUsed*currentMileage) fuelTotal, SUM(currentMileage) mileTotal ',
         'from t_obd_drive ',
-        'where (fireTime < flameoutTime) and (fireTime > ?) and (fireTime < ?) and (obdCode = ?) ',
+        'where (fireTime < flameoutTime) and (fireTime > ?) and (fireTime < ?) and (obdCode = ?) '
     ].join('');
 
     var timeDuration = Math.ceil((endDatetime - startDatetime)/(24*60*60*1000));

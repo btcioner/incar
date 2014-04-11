@@ -33,11 +33,11 @@ function slotBooking(req, res) {
 
 function getOrgId(db, userName, callback) {
     var pool = db();
-    pool.query('select sopenid from t_wx_user where openid = ?;',[userName], function(err, rows){
+    pool.query('select id from t_wx_user where openid = ?;',[userName], function(err, rows){
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
-                pool.query('select id from t_staff_org where openid = ?;',[rows[0].sopenid], function(err, rows){
+                pool.query('select orgId from t_account_channel where channelKey = ?;',[rows[0].id], function(err, rows){
                     if (err) { callback(err); }
                     else {
                         if (rows && rows.length === 1) {

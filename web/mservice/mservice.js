@@ -14,6 +14,7 @@ var carService = require('./carService');
 var fuelService = require('./fuelService');
 var carbonService = require('./carbonService');
 var slotBookingService = require('./slotBookingService');
+var behaviorService = require('./behaviorService');
 
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
 
@@ -22,11 +23,13 @@ carService(mservice);
 fuelService(mservice);
 carbonService(mservice);
 slotBookingService(mservice);
+behaviorService(mservice);
 
 (function(service) {
 
     function entrance(req, res) {
-        var action = req.route.params[0].split('/')[0];
+        // var action = req.route.params[0].split('/')[0];
+        var action = req.params[0].split('/')[0];
         if (!action) {
             res.send(404);
             return;
