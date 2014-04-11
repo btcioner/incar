@@ -20,8 +20,6 @@ var api = require('../api/api');
  */
 
 function viewEnableMultiFolders(app) {
-    // Monkey-patch express to accept multiple paths for looking up views.
-    // this path may change depending on your setup.
     var lookup_proxy = app.get('view').prototype.lookup;
 
     app.get('view').prototype.lookup = function(viewName) {
@@ -75,7 +73,7 @@ module.exports = function(app) {
 
     app.use(morganLogger('dev'));
 
-    app.use(bodyParser);
+    app.use(bodyParser());
 
     app.use(methodOverride());
     app.use(cookieParser());
