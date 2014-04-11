@@ -74,7 +74,7 @@ function getObdCode(db, userName, callback) {
                     if (err) { callback(err); }
                     else {
                         if (rows && rows.length === 1) {
-                            callback(null, rows[0].obd_code);
+                            callback(null, rows[0].obdcode);
                         } else { callback(new Error('multiple rows returned for one wx user id being an owner of an obd device in fuel mservice.')); }
                     }
                 });
