@@ -74,13 +74,3 @@ CREATE TABLE IF NOT EXISTS t_staff_org_member(
 -- 20140316 XGH 内置'英卡科技'的管理员
 REPLACE t_staff_org_member(org_id, account_id, role)
     VALUES(1, 1, 'ADMIN');
-
--- 20140329 XGH 车的使用者
-CREATE TABLE IF NOT EXISTS t_car_user(
-    car_id INT COMMENT '车辆唯一ID',
-    acc_id INT UNSIGNED COMMENT '使用车辆的人',
-    user_type TINYINT COMMENT '0-无效 1-车主 2-其它使用人',
-    join_time TIMESTAMP COMMENT '时间戳',
-    INDEX IX_CAR_USER_1(car_id, acc_id),
-    INDEX IX_CAR_USER__2(acc_id, car_id)
-);
