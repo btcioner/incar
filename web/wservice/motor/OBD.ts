@@ -179,19 +179,14 @@ module Service {
     // 返回某个ORG的所有OBD
     export function GetOBDByOrg(req, res):void{
         var dac = MySqlAccess.RetrievePool();
-        var sql = "SELECT D.*" +
-            " FROM t_device_obd as D" +
-            " join t_device_obd_org as R on R.obd_code = D.obd_code" +
+        var sql = "SELECT C.*" +
+            " FROM t_car_info as C" +
+            " join t_car_org as R on R.car_id = C.id" +
             " WHERE R.org_id = ?;";
         dac.query(sql, [req.params.org_id], (ex, result)=>{
             if(ex) { res.json(new JsonError(ex)); return; }
             else{
-                var devs = new Array<OBDDevice>();
-                result.forEach((dto)=>{
-                    var dev = OBDDevice.CreateFromDTO(dto);
-                    devs.push(dev);
-                });
-                res.json({status:"ok", devs:devs});
+                res.json({status:"ok", devs:result});
             }
         });
     }
@@ -202,18 +197,16 @@ module Service {
 
         var dac = MySqlAccess.RetrievePool();
         var sql = "SELECT A.name, A.nick, A.phone,\n" +
-                         "\tR.act_type, D.obd_code, D.sim_number,\n" +
+                         "\tC.obd_code, C.sim_number,\n" +
                          "\tS.brand, S.series,\n" +
                          "\tO.city AS org_city, O.name AS org_name\n" +
-            "FROM t_device_obd AS D\n" +
-                "\tLEFT OUTER JOIN t_car_obd as R on R.obd_code = D.obd_code\n" +
-                "\tLEFT OUTER JOIN t_car_info as C on R.car_id = C.id\n" +
+            "FROM t_car_info AS C\n" +
                 "\tLEFT OUTER JOIN t_car as S on C.brand = S.brandcode and C.series = S.seriescode\n" +
                 "\tLEFT OUTER JOIN t_car_user as U on C.id = U.car_id\n" +
                 "\tLEFT OUTER JOIN t_staff_account as A on U.acc_id = A.id\n" +
-                "\tLEFT OUTER JOIN t_device_obd_org as R2 on R2.obd_code = D.obd_code\n" +
+                "\tLEFT OUTER JOIN t_car_org as R2 on R2.car_id = C.id\n" +
                 "\tLEFT OUTER JOIN t_staff_org as O on R2.org_id = O.id\n" +
-            "WHERE D.obd_code = ?";
+            "WHERE C.obd_code = ?";
 
         var task :any = {};
         task.begin = ()=>{
@@ -251,9 +244,10 @@ module Service {
         }
 
         var dac = MySqlAccess.RetrievePool();
-        var sql = "UPDATE t_device_obd set sim_number = ? WHERE obd_code = ?";
+        var sql = "UPDATE t_car_info set sim_number = ? WHERE obd_code = ?";
         dac.query(sql, [data.sim_number.trim(), req.params.obd_code], (ex, result)=>{
             if(ex){ res.json(new TaskException(-1, "写入SIM卡号失败", ex)); return;}
+            else if(result.affectedRows === 0){ res.json(new TaskException(-1, "OBD设备不存在", null)); return;}
             else{ res.json({status:"ok"}); return;}
         });
     }
