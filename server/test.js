@@ -1,5 +1,5 @@
 'use strict';
-var dao=require("./dao");
+var dao=require("./dao");;
 //var msgCentre=require("./msgCentre")
 function getRandom(start,end,decimal){
     decimal=decimal?decimal:0;
