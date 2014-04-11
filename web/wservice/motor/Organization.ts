@@ -27,7 +27,6 @@ module Service{
                             " and org_id in (SELECT id FROM tmp_ids)", null, (ex, result2)=>{
                             if(ex){ res.json(new JsonError(ex)); return;}
                             else{
-                                dac.query("DROP TABLE tmp_ids", null, (ex, r)=>{});
                                 var accRepo = new AccountRepository();
                                 var accIds = new Array<number>();
                                 result2.forEach((obj)=>{accIds.push(obj.account_id)});
