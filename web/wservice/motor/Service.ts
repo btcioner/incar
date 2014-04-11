@@ -91,17 +91,6 @@ module Service{
         }
     }
 
-    // 出错时,返回给客户端的Json对象
-    export class JsonError{
-        status:string;
-        detail:any;
-
-        constructor(ex:TaskException){
-            this.status = ex.status;
-            this.detail = ex.innerTaskException;
-        }
-    }
-
     // 分页
     export class Pagination{
         _page:number; // 原始请求第几页

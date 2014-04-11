@@ -13,7 +13,7 @@ module Service {
 
         Account.CreateFromToken(token, (err, account)=>{
             if(err){
-                res.json(new JsonError(err));
+                res.json(err);
             }
             else{
                 // 向OBD设备仓库中添加新设备
@@ -25,7 +25,7 @@ module Service {
                 dev.status = 0;
 
                 repo.Add(account, [dev], (err3, devs)=>{
-                    if(err3) res.json(new JsonError(err3));
+                    if(err3) res.json(err3);
                     else if(devs && devs.length === 1){
                         res.json({
                             status:"ok",
@@ -49,7 +49,7 @@ module Service {
 
         Account.CreateFromToken(token, (ex, account)=>{
             if(ex){
-                res.json(new JsonError(ex));
+                res.json(ex);
                 return;
             }
             else{
@@ -85,20 +85,18 @@ module Service {
 
         Account.CreateFromToken(token, (ex, account)=>{
             if(ex){
-                res.json(new JsonError(ex), null);
+                res.json(ex);
                 return;
             }
 
             var repo = new DeviceRepository();
-            repo.AllDriveInfos(filter, new Pagination(page, pagesize), (ex, drvInfos, count)=>{
-                if(ex){
-                    res.json(new JsonError(ex));
-                    return;
-                }
-                else{
-                    res.json({status:"ok", totalCount:count , drvInfos: drvInfos});
-                }
-            });
+            repo.AllDriveInfos(filter, new Pagination(page, pagesize),
+                (ex:TaskException, drvInfos:DTO.obd_drive[], count:number)=>{
+                    if(ex)
+                        res.json(ex);
+                    else
+                        res.json({status:"ok", totalCount:count , drvInfos: drvInfos});
+                });
         });
     }
 
@@ -114,7 +112,7 @@ module Service {
 
         Account.CreateFromToken(token, (ex, account)=>{
             if(ex){
-                res.json(new JsonError(ex), null);
+                res.json(ex);
                 return;
             }
 
@@ -153,16 +151,16 @@ module Service {
 
         Account.CreateFromToken(token, (ex, account)=>{
             if(ex){
-                res.json(new JsonError(ex));
+                res.json(ex);
                 return;
             }
             else{
                 var repo = new DeviceRepository();
                 repo.GetByCode(account, code, (ex, dev)=>{
-                    if(ex){ res.json(new JsonError(ex)); return; }
+                    if(ex){ res.json(ex); return; }
                     else{
                         dev.RetrieveDriveDetail(drive_id, page, (ex, count, drvDetails)=>{
-                            if(ex) { res.json(new JsonError(ex)); return; }
+                            if(ex) { res.json(ex); return; }
                             else{
                                 res.json({
                                     status:"ok",
@@ -185,7 +183,7 @@ module Service {
             " join t_car_org as R on R.car_id = C.id" +
             " WHERE R.org_id = ?;";
         dac.query(sql, [req.params.org_id], (ex, result)=>{
-            if(ex) { res.json(new JsonError(ex)); return; }
+            if(ex) { res.json(ex); return; }
             else{
                 res.json({status:"ok", devs:result});
             }
@@ -212,7 +210,7 @@ module Service {
         var task :any = {};
         task.begin = ()=>{
             dac.query(sql, [obdCode], (ex, result)=>{
-                if(ex) {res.json(new JsonError(new TaskException(-1, "获取OBD信息失败", ex))); return; }
+                if(ex) {res.json(new TaskException(-1, "获取OBD信息失败", ex)); return; }
                 else if(result.length === 0){ res.json(new TaskException(-1, util.format("OBD设备(%s)不存在!", obdCode), null)); return;}
                 else if(result.length > 1){ res.json(new TaskException(-1, "数据无效", null)); return; }
                 else{
@@ -326,10 +324,12 @@ module Service {
                     var i = 0;
                     dtos.forEach((obj)=>{
                         if(i > 0) strV += ",";
+                        var escape : (string)=>string;
+                        escape = this.dac.escape;
                         strV += util.format("(%s,%s,%s, CURRENT_TIMESTAMP)",
-                            this.dac.escape(obj.obd_code),
-                            this.dac.escape(obj.sim_number),
-                            this.dac.escape(obj.comment));
+                            escape(obj.obd_code),
+                            escape(obj.sim_number),
+                            escape(obj.comment));
                         i++;
                     });
                     this.dac.query("INSERT t_car_info (obd_code, sim_number, comment, created_date) VALUES " + strV, null, (err, result)=>{
@@ -360,7 +360,7 @@ module Service {
         }
 
         // 返回所有的行车基本数据
-        AllDriveInfos(filter: any, page:Pagination, cb:(ex:TaskException, devInfos:DTO.obd_drive[], totalCount?:number)=>void):void{
+        AllDriveInfos(filter: any, page:Pagination, cb:(ex:TaskException, devInfos:DTO.obd_drive[], totalCount:number)=>void):void{
             var task :any = { finished:0 };
             var dac =  MySqlAccess.RetrievePool();
             task.begin = ()=>{
@@ -416,7 +416,7 @@ module Service {
             task.end = ()=>{
                 if(task.finished === 3){
                     // 都完成了
-                    if(task.A.ex){ cb(new TaskException(-1, "查询OBD信息出错", task.A.ex), null); return;}
+                    if(task.A.ex){ cb(new TaskException(-1, "查询OBD信息出错", task.A.ex), null, 0); return;}
 
                     var totalCount = 0;
                     if(!task.B.ex){
@@ -426,7 +426,7 @@ module Service {
                     var drvInfos = new Array<DTO.obd_drive>();
                     if(!task.C.ex){
                         task.A.result.forEach((obj)=>{
-                            var dev = obj;
+                            var dev:any = obj;
                             drvInfos.push(dev);
                             // 解析brand
                             if(task.C.series
@@ -471,7 +471,7 @@ module Service {
                 }
                 else{
                     DeviceRepository.dictCarSeries = {};
-                    result.forEach((dto)=>{
+                    result.forEach((dto:any)=>{
                         var brandCode = dto.brandCode;
                         var seriesCode = dto.seriesCode;
                         if(brandCode !== undefined && seriesCode !== undefined){
@@ -538,7 +538,7 @@ module Service {
 
                 var drvInfos = new Array<DTO.obd_drive>();
                 task.A.result.forEach((obj)=>{
-                    var dev = obj;
+                    var dev:any = obj;
                     drvInfos.push(dev);
                     // 解析brand
                     if((!task.B.ex)
@@ -613,7 +613,7 @@ module Service {
                     var map : DictMap = task.C.result;
                     details.forEach((detail)=>{
                         if(detail.CarCondition.detail){
-                            detail.CarCondition.detail.forEach((obj)=>{
+                            detail.CarCondition.detail.forEach((obj:any)=>{
                                 if(obj && obj.id !== undefined && obj.id !== null){
                                     obj.tip = map[obj.id];
                                 }

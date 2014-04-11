@@ -13,27 +13,27 @@ module Service{
         var repoOrg = new OrgRepository();
         repoOrg.All(page, filter, (ex, totalCount, orgs)=> {
             if (ex) {
-                res.json(new JsonError(ex));
+                res.json(ex);
                 return;
             }
             else {
                 var orgIds = new Array<number>();
                 orgs.forEach((obj)=>{orgIds.push(obj.id);});
                 MySqlAccess.StoreIds("tmp_ids", orgIds, (ex:TaskException, result:string)=>{
-                    if(ex){ res.json(new JsonError(ex)); return;}
+                    if(ex){ res.json(ex); return;}
                     else{
                         var dac = MySqlAccess.RetrievePool();
                         dac.query("SELECT org_id, account_id FROM t_staff_org_member WHERE role = 'ADMIN'" +
                             " and org_id in (SELECT id FROM tmp_ids)", null, (ex, result2)=>{
-                            if(ex){ res.json(new JsonError(ex)); return;}
+                            if(ex){ res.json(ex); return;}
                             else{
                                 var accRepo = new AccountRepository();
                                 var accIds = new Array<number>();
-                                result2.forEach((obj)=>{accIds.push(obj.account_id)});
+                                result2.forEach((obj:any)=>{accIds.push(obj.account_id)});
                                 accRepo.BatchLoadAccount(accIds, (ex, accs)=>{
-                                    if(ex){ res.json(new JsonError(ex)); return;}
+                                    if(ex){ res.json(ex); return;}
                                     else{
-                                        result2.forEach((pair)=>{
+                                        result2.forEach((pair:any)=>{
                                             var org, acc;
                                             for(var i in orgs){
                                                 if(orgs[i].id === pair.org_id) {
@@ -106,7 +106,7 @@ module Service{
 
         var repo = new OrgRepository();
         repo.Add(org, (ex, org)=>{
-            if(ex) { res.json(new JsonError(ex)); return;}
+            if(ex) { res.json(ex); return;}
             else{
                 var accDTO = new DTO.staff_account();
                 accDTO.name = data.admin_name;
@@ -128,7 +128,7 @@ module Service{
                         //设置ADMIN
                         dac.query("INSERT t_staff_org_member(org_id, account_id, role) VALUES (?, ?, 'ADMIN')",
                             [org.id, result.insertId], (ex, result)=>{
-                                if(ex){ res.json(new JsonError(new TaskException(-1, "创建ADMIN关系失败", ex))); return; }
+                                if(ex){ res.json(new TaskException(-1, "创建ADMIN关系失败", ex)); return; }
                                 else{
                                     res.json({status:"ok", organization:org});
                                 }
@@ -167,7 +167,7 @@ module Service{
             // 获得需要修改的ORG
             var repoOrg = new OrgRepository();
             repoOrg.GetOrgById(req.params.org_id, (ex, org)=>{
-                if(ex){ res.json(new JsonError(ex)); return; }
+                if(ex){ res.json(ex); return; }
                 else{
                     var data = req.body;
                     if(data.name && data.name.trim() !== "")
@@ -182,27 +182,27 @@ module Service{
                         org.city = data.city.trim();
 
                     repoOrg.UpdateOrg(org, (ex, org)=>{
-                        if(ex) {res.json(new JsonError(ex)); return; }
+                        if(ex) {res.json(ex); return; }
                         else {
                             var dac = MySqlAccess.RetrievePool();
                             var sql = "SELECT account_id FROM t_staff_org_member" +
                                 " WHERE org_id = ? and role = 'ADMIN'";
                             dac.query(sql, [org.id], (ex, accids)=>{
-                                if(ex) {res.json(new JsonError(new TaskException(-1, "无法获取组织管理员", ex))); return; }
+                                if(ex) {res.json(new TaskException(-1, "无法获取组织管理员", ex)); return; }
                                 else{
                                     if(accids.length > 1){
-                                        res.json(new JsonError(new TaskException(-1, "组织的管理员不唯一", null)));
+                                        res.json(new TaskException(-1, "组织的管理员不唯一", null));
                                         return;
                                     }
                                     else if(accids.length === 0){
-                                        res.json(new JsonError(new TaskException(-1, "组织没有管理员", null)));
+                                        res.json(new TaskException(-1, "组织没有管理员", null));
                                         return;
                                     }
                                     else{
                                         var accRepo = new AccountRepository();
                                         accRepo.LoadAccountById(accids[0].account_id, (ex, acc)=> {
                                             if (ex) {
-                                                res.json(new JsonError(ex));
+                                                res.json(ex);
                                                 return;
                                             }
                                             else {
@@ -213,7 +213,7 @@ module Service{
 
                                                 accRepo.Update(acc, (ex, acc)=> {
                                                     if (ex) {
-                                                        res.json(new JsonError(ex));
+                                                        res.json(ex);
                                                         return;
                                                     }
                                                     else {
