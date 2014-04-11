@@ -197,7 +197,7 @@ module Service {
 
         var dac = MySqlAccess.RetrievePool();
         var sql = "SELECT A.name, A.nick, A.phone,\n" +
-                         "\tC.obd_code, C.sim_number,\n" +
+                         "\tC.obd_code, C.sim_number,C.act_type,\n" +
                          "\tS.brand, S.series,\n" +
                          "\tO.city AS org_city, O.name AS org_name\n" +
             "FROM t_car_info AS C\n" +
