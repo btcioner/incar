@@ -63,8 +63,8 @@ module Service{
             else res.json({
                 postData: {
                     code: "WFQ00012345",
-                    phone_number: "13912345678",
-                    comment: "4S测试店"
+                    sim_number: "13912345678",
+                    comment: "4S测试设备"
                 }
             });
         }

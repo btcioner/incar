@@ -7,7 +7,7 @@ module Service {
         var data = req.body;
         var token = req.cookies.token;
 
-        if(!data.token){res.json({status: "用户没有登录"});return;}
+        if(!token){res.json({status: "用户没有登录"});return;}
         if(!data.code){res.json({status: "缺少code参数"});return;}
         if(data.code.trim().length === 0) { res.json({status: "code不能为空白"}); return;}
 
@@ -107,6 +107,7 @@ module Service {
         var data = req.body;
         var token = req.cookies.token;
         var code : string = data.code;
+        var page = new Pagination(req.query.page, req.query.pagesize);
 
         if(!token){ res.json({status: "用户没有登录"}); return;}
         if(!code){ res.json({status: "缺少code参数"}); return; }
@@ -124,12 +125,12 @@ module Service {
                     return;
                 }
                 else{
-                    dev.RetrieveDriveInfo((ex, drvInfos)=>{
+                    dev.RetrieveDriveInfo(page, (ex, tc, drvInfos)=>{
                         if(ex){
                             res.json({status: ex.status});
                         }
                         else{
-                            res.json({status:"ok", drvInfos: drvInfos});
+                            res.json({status:"ok",totalCount:tc, drvInfos: drvInfos});
                         }
                     });
                 }
@@ -272,16 +273,15 @@ module Service {
                     var task:any={ finished : 0};
 
                     task.begin = ()=> {
-                        var sql = "SELECT D.*, R.join_time, R.act_type FROM t_device_obd AS D" +
-                                    " LEFT OUTER JOIN t_car_obd as R on D.obd_code = R.obd_code";
-                        if (page._offset >= 0 && page._pagesize > 0) sql += page.sql;
+                        var sql = "SELECT * FROM t_car_info WHERE obd_code IS NOT NULL"
+                        if (page.IsValid()) sql += page.sql;
                         this.dac.query(sql, null, (ex, result)=> {
                             task.A = {ex:ex, result:result};
                             task.finished++;
                             task.end();
                         });
 
-                        var sql = "SELECT COUNT(*) COUNT FROM t_device_obd";
+                        var sql = "SELECT COUNT(*) COUNT FROM t_car_info WHERE obd_code IS NOT NULL";
                         this.dac.query(sql, null, (ex, result)=>{
                             task.B = {ex:ex, result:result};
                             task.finished++;
@@ -332,7 +332,7 @@ module Service {
                             this.dac.escape(obj.comment));
                         i++;
                     });
-                    this.dac.query("INSERT t_device_obd (obd_code, sim_number, comment, created_date) VALUES " + strV, null, (err, result)=>{
+                    this.dac.query("INSERT t_car_info (obd_code, sim_number, comment, created_date) VALUES " + strV, null, (err, result)=>{
                         if(err) cb(new TaskException(-1, "插入数据失败", err), null);
                         else cb(null, devs);
                     });
@@ -348,7 +348,7 @@ module Service {
 
         // 获取指定的OBD设备
         GetByCode(oper:Account, code:string, cb:(error:TaskException, dev:OBDDevice)=>void):void{
-            this.dac.query("SELECT obd_code, sim_number, comment, created_date FROM t_device_obd WHERE obd_code = ?",
+            this.dac.query("SELECT * FROM t_car_info WHERE obd_code = ?",
                 [code], (error, result)=>{
                     if(error) cb(new TaskException(-1, error.toString(), null), null);
                     else if(result.length === 0) cb(new TaskException(-1, util.format("OBD设备(%s)不存在", code), null), null);
@@ -367,8 +367,8 @@ module Service {
                 // 1.查询OBD数据
                 var sql = "SELECT R.*" +
                          " FROM t_obd_drive AS R" +
-                              " JOIN t_device_obd as D on D.obd_code = R.obdcode" +
-                              " LEFT OUTER JOIN t_device_obd_org as R2 on R2.obd_code = D.obd_code" +
+                              " JOIN t_car_info as C on C.obd_code = R.obdcode" +
+                              " LEFT OUTER JOIN t_car_org as R2 on R2.car_id = C.id" +
                               " LEFT OUTER JOIN t_staff_org as O on R2.org_id = O.id" +
                          " WHERE 1=1";
                 var args = new Array();
@@ -391,8 +391,8 @@ module Service {
 
                 sql = "SELECT COUNT(*) TotalCount" +
                     " FROM t_obd_drive AS R" +
-                    " JOIN t_device_obd as D on D.obd_code = R.obdcode" +
-                    " LEFT OUTER JOIN t_device_obd_org as R2 on R2.obd_code = D.obd_code" +
+                    " JOIN t_car_info as C on C.obd_code = R.obdcode" +
+                    " LEFT OUTER JOIN t_car_org as R2 on R2.car_id = C.id" +
                     " LEFT OUTER JOIN t_staff_org as O on R2.org_id = O.id" +
                     " WHERE 1=1";
                 args = new Array();
@@ -499,14 +499,16 @@ module Service {
         }
 
         // 行车信息
-        RetrieveDriveInfo(cb:(error:TaskException, drvInfos: DTO.obd_drive[])=>void):void{
+        RetrieveDriveInfo(page:Pagination, cb:(error:TaskException,totalCount:number, drvInfos: DTO.obd_drive[])=>void):void{
             var task : any = { finished : 0 };
             var dac =  MySqlAccess.RetrievePool();
             task.begin = ()=>{
                 // 主要数据
-                dac.query("SELECT * " +
+                var sql = "SELECT * " +
                     "FROM t_obd_drive WHERE obdCode = ? " +
-                    "ORDER BY id DESC", [this.obd_code], (ex, result)=>{
+                    "ORDER BY id DESC";
+                if(page.IsValid()) sql += page.sql;
+                dac.query(sql, [this.obd_code], (ex, result)=>{
                     task.A = {ex:ex, result:result};
                     task.finished++;
                     task.end();
@@ -518,12 +520,21 @@ module Service {
                     task.finished++;
                     task.end();
                 });
+
+                dac.query("SELECT COUNT(*) count FROM t_obd_drive WHERE obdCode = ?", [this.obd_code], (ex, result)=>{
+                    task.C = {ex:ex, result:result};
+                    task.finished++;
+                    task.end();
+                });
             };
 
             task.end = ()=>{
-                if(task.finished < 2) return;
+                if(task.finished < 3) return;
                 // 所有任务已完成
-                if(task.A.ex) {cb(new TaskException(-1, "", task.A.ex), null); return; }
+                if(task.A.ex) {cb(new TaskException(-1, "", task.A.ex), 0, null); return; }
+
+                var totalCount = 0;
+                if(!task.C.ex) totalCount = task.C.result[0].count;
 
                 var drvInfos = new Array<DTO.obd_drive>();
                 task.A.result.forEach((obj)=>{
@@ -546,7 +557,7 @@ module Service {
                         }
                     }
                 });
-                cb(null, drvInfos);
+                cb(null, totalCount, drvInfos);
             };
 
             task.begin();
@@ -569,7 +580,7 @@ module Service {
                 var sql = "SELECT id, obdCode, obdDriveId, faultCode, avgOilUsed, mileage, carCondition, createTime \n" +
                     "FROM t_drive_detail \n" +
                     "WHERE obdCode = ? and obdDriveId = ? \n";
-                if(page.IsValid) sql += page.sql;
+                if(page.IsValid()) sql += page.sql;
                 dac.query(sql, [this.obd_code, detailId],(ex, result)=>{
                     task.B = {ex:ex, result:result};
                     task.finished++;
