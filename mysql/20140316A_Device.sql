@@ -1,3 +1,11 @@
+
+-- 20140329 此表仅供记录分配给组织的OBD设备,通常不应使用此表,通常应从车检索相关的OBD设备
+CREATE TABLE IF NOT EXISTS t_device_obd_org(
+    obd_code VARCHAR(32) COMMENT 'OBD设备唯一编码',
+    org_id INT UNSIGNED COMMENT '组织ID',
+    UNIQUE UNQ_DEVICE_OBD_ORG_1(obd_code, org_id),
+    INDEX IDX_DEVICE_OBD_ORG_2(org_id)
+);
 CREATE TABLE IF NOT EXISTS t_car_info(
     id int auto_increment   COMMENT '车辆编号',
     obd_code VARCHAR(32)    COMMENT 'OBD设备唯一编码',
