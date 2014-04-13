@@ -165,7 +165,6 @@ function deviceCtrl($scope, $http)
                 }
                 else
                 {
-                  $.changeContentHeight("850px");
                   $scope.detailDiv = true;
                   $scope.deviceList = false;
                   $scope.drvInfos = data.drvInfos;
@@ -196,7 +195,6 @@ function deviceCtrl($scope, $http)
                 }
                 else
                 {
-                    $.changeContentHeight("630px");
                     $scope.detailDiv = false;
                     $scope.oneDetailDiv = true;
                     $scope.details = data.details;
@@ -215,7 +213,6 @@ function deviceCtrl($scope, $http)
     //一分钟内的行车数据流记录
     $scope.GetOneMinuteDetail = function(index)
     {
-        $.changeContentHeight("1000px");
         $scope.omdds = $scope.details[index].CarCondition.detail;
         $scope.oneDetailDiv = false;
         $scope.oneMinuteDetailDiv = true;
@@ -223,7 +220,6 @@ function deviceCtrl($scope, $http)
 
     //修改OBD信息操作按钮
     $scope.modify = function(index){
-        $.changeContentHeight("630px");
         $scope.index = index;
         $scope.modifySim = true;
         $scope.deviceList = false;
