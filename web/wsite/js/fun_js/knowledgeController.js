@@ -2,8 +2,7 @@
  * Created by 003383 on 14-2-27.
  */
 
-var app = angular.module("KnowledgeApp", []);
-app.controller("knowledgeCtrl", function($scope, $http){
+function knowledgeBaseCtrl($scope, $http){
 
     $scope.knowledgeListDiv = true;
     $scope.modifyKnowledgeDiv = false;
@@ -80,8 +79,6 @@ app.controller("knowledgeCtrl", function($scope, $http){
             $scope.knowledgeListDiv = true;
             $scope.addKnowledgeDiv = false;
         });
-
-
     }
 
 
@@ -96,7 +93,6 @@ app.controller("knowledgeCtrl", function($scope, $http){
     //修改确认
     $scope.ModifyConfirm = function()
     {
-
         $("#formId_edit").ajaxForm(function(){
             alert("修改成功");
             GetFirstPageInfo();
@@ -121,12 +117,10 @@ app.controller("knowledgeCtrl", function($scope, $http){
         }
     }
 
-
-
     //delete function
-    $scope.delete = function(index){
+    $scope.deleteRecord = function(index){
        if(confirm("确定要删除吗？")){
-            $http.delete(baseurl + 'manual/'+$scope.manual[index].id).success(function(data){
+            $http({ method: "delete", url: baseurl + 'manual/'+$scope.manual[index].id}).success(function(data){
                 if(data.status == "ok")
                 {
                     alert("删除成功！");
@@ -143,7 +137,7 @@ app.controller("knowledgeCtrl", function($scope, $http){
     }
 
 
-})
+}
 
 function clickFileName(name)
 {

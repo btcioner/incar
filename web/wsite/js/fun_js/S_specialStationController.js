@@ -74,10 +74,12 @@
     //修改确认
     $scope.ModifyConfirm = function()
     {
+        $scope.slotDetail.promotion_status = $.changeSlotStatusToNum($scope.slotDetail.promotion_status);
         $http.put(baseurl + 'organization/'+$scope.slotDetail.storeId+'/promotionslot/'+$scope.slotDetail.id,$scope.slotDetail).success(function(data){
             if(data.status == "ok")
             {
                 alert("修改成功");
+                $scope.slotDetail.promotion_status = $.changeSlotStatus($scope.slotDetail.promotion_status);
                 $scope.slotListDiv = true;
                 $scope.slotModifyDiv = false;
             }
@@ -86,7 +88,7 @@
             }
         }).error(function(data){
                 alert("请求没响应");
-            });
+         });
     }
 
     //添加按钮

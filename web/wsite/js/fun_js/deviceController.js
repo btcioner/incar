@@ -2,7 +2,7 @@
  * Created by Liz on 14-03-25.
  */
 //获取url里面的token
-var app = angular.module('DeviceApp', ['ngResource']);
+
 //使用ngResource
 //app.factory('quickService',['$http',function($http){
 //    var baseUrl = "/wservice/organization";
@@ -13,21 +13,22 @@ var app = angular.module('DeviceApp', ['ngResource']);
 //        }
 //    }
 //}]);
-app.controller("deviceCtrl", function($scope, $http){
+function deviceCtrl($scope, $http)
+{
 
+    //alert($.cookie("username"));通过cookie来传值
     //定义各部分div初始的显示状态 -false为隐藏 true为显示
 //    quickService.query().success(function(data){
 //      alert(data.status);
 //    })
 
-  // alert($scope.test.status);
+
     $scope.addDiv=false;
     $scope.deviceList=true;
     $scope.modifySim=false;
     $scope.detailDiv = false;
     $scope.oneDetailDiv = false;
     $scope.oneMinuteDetailDiv = false;
-
     $scope.obd_code ="";
     $scope.postData = "";
 
@@ -78,30 +79,6 @@ app.controller("deviceCtrl", function($scope, $http){
         }
     }
 
-   //客户端分页
-//    function getCurrentRecord(devices)
-//    {
-//            $scope.pageRecord = 10;
-//            $scope.totalCount =  devices.length;
-//            $scope.totalPage = Math.ceil( devices.length /  $scope.pageRecord);
-//            $scope.currentPage = 0;
-//            $scope.record = 10;
-//            if($scope.currentPage ==  $scope.totalPage || $scope.totalPage < 2  && devices.length % 10 !=0)
-//            {
-//                $scope.record = $scope.totalCount % $scope.pageRecord;
-//            }
-//            $scope.currentRecord =[{}];
-//            for(var i=0;i< $scope.record;i++)
-//            {
-//                $scope.currentRecord[i]=devices[$scope.currentPage * $scope.pageRecord + i];
-//            }
-//            $scope.totalOption=[{}];
-//            for(var i = 0 ;i< $scope.totalPage;i++)
-//            {
-//                $scope.totalOption[i]={size:i+1};
-//        }
-//    }
-
    //分页跳转页面
     $scope.changePage=function(changeId,id)
     {
@@ -129,7 +106,7 @@ app.controller("deviceCtrl", function($scope, $http){
     //添加确定操作
     $scope.addDevice = function(){
         /*添加OBD设备 todo在填入设备好之后应该立即提示是否存在该设备号*/
-        $scope.postData = {token:$scope.token,code:$scope.obd_code};
+        $scope.postData = {code:$scope.obd_code};
         $scope.date = $.changeDate(new Date());
         $http.post(baseurl + 'AddOBDDevice',$scope.postData).success(function(data){
             if(data.status == "ok")
@@ -159,7 +136,6 @@ app.controller("deviceCtrl", function($scope, $http){
         $http.get(baseurl + 'obd/'+obd_code).success(function(data){
             if(data.status == "ok")
             {
-
                 $scope.deviceDetail = data.obd;
                 $scope.deviceDetail.obdNum = obd_code;
                 $scope.deviceDetail.act_type = $.changeStatus($scope.deviceDetail.act_type);
@@ -189,6 +165,7 @@ app.controller("deviceCtrl", function($scope, $http){
                 }
                 else
                 {
+                  $.changeContentHeight("850px");
                   $scope.detailDiv = true;
                   $scope.deviceList = false;
                   $scope.drvInfos = data.drvInfos;
@@ -217,7 +194,9 @@ app.controller("deviceCtrl", function($scope, $http){
                 {
                   alert("暂无行程数据");
                 }
-                else{
+                else
+                {
+                    $.changeContentHeight("630px");
                     $scope.detailDiv = false;
                     $scope.oneDetailDiv = true;
                     $scope.details = data.details;
@@ -236,6 +215,7 @@ app.controller("deviceCtrl", function($scope, $http){
     //一分钟内的行车数据流记录
     $scope.GetOneMinuteDetail = function(index)
     {
+        $.changeContentHeight("1000px");
         $scope.omdds = $scope.details[index].CarCondition.detail;
         $scope.oneDetailDiv = false;
         $scope.oneMinuteDetailDiv = true;
@@ -243,6 +223,7 @@ app.controller("deviceCtrl", function($scope, $http){
 
     //修改OBD信息操作按钮
     $scope.modify = function(index){
+        $.changeContentHeight("630px");
         $scope.index = index;
         $scope.modifySim = true;
         $scope.deviceList = false;
@@ -280,7 +261,6 @@ app.controller("deviceCtrl", function($scope, $http){
             case 2://修改OBD数据返回
               $scope.modifySim = false;
               $scope.deviceList = true;
-
                 GetFirstPageInfo();
               break;
             case 1://添加设备数据返回
@@ -305,11 +285,4 @@ app.controller("deviceCtrl", function($scope, $http){
               break;
         }
     }
-
-    //删除
-    $scope.delete = function(index){
-        if(confirm("确定要删除吗？")){
-            $scope.users.splice(index, 1);
-        }
-    }
-});
+}

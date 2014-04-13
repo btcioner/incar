@@ -2,3 +2,11 @@
     text-align: center;
     vertical-align: middle;
 }
+a:visited
+{
+    text-decoration: none;
+}
+a:active
+{
+    text-decoration: none;
+}

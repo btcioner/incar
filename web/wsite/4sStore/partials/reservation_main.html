@@ -1,4 +1,4 @@
-<div id="content" style="height:572px;margin-top: 30px;"  >
+<div id="content">
     <div id="content-header">
         <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">预约服务</a></div>
     </div>
@@ -69,24 +69,59 @@
                             <th style="background-color:#F9F9F9;">微信预约</th>
                         </tr>
                         <tr>
-                            <th>申请提交日</th>
-                            <th style="background-color:#F9F9F9;">2014-04-03</th>
-                            <th>申请提交时</th>
-                            <th style="background-color:#F9F9F9;">13:28</th>
-                            <th colspan="2"><a class="btn btn-success" ng-click="">确认申请</a></th>
+                            <th>申请提交时间</th>
+                            <th style="background-color:#F9F9F9;">2014-04-03 13:28</th>
+                            <th>预约保养时间</th>
+                            <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
+                            <th colspan="2" ng-show="newApplyOper"><a class='btn btn-success'  ng-click=''>确认</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-success'  ng-click=''>拒绝</a></th>
+                            <th colspan="2" ng-show="completeOper"><a class='btn btn-success'  ng-click=''>取消</a>&nbsp;&nbsp;&nbsp;
+                                                                         <a class='btn btn-success'  ng-click=''>未到店</a>&nbsp;&nbsp;&nbsp;
+                                                                         <a class='btn btn-success'  ng-click='OperationChild(1);'>已完成</a></th>
                         </tr>
-                        <tr>
-                            <th>预约保养日</th>
-                            <th style="background-color:#F9F9F9;">2014-04-04</th>
-                            <th>预约保养时</th>
-                            <th style="background-color:#F9F9F9;">13:00</th>
-                            <th colspan="2"><a class="btn btn-success"  ng-click=''>拒绝申请</a></th>
-                        </tr>
-                        <tr id="diffDiv">
-
+                        <tr ng-show="diffDiv">
+                            <th style='height:30px;vertical-align: middle'>拒绝原因</th><th style='background-color:#F9F9F9;vertical-align: middle;text-align: left' colspan='5' rowspan='2'>工位已满</th>
                         </tr>
                         </thead>
                     </table>
+                </div>
+                <div class="widget-content nopadding" ng-show="ReservationInfo">
+                    <form action="#" method="get" class="form-horizontal">
+                        <div class="control-group" >
+                            <label class="control-label" style="margin-left:300px;">保养项目：
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span11" style="width:200px;" ng-model="acc_name"  />
+                            </div>
+                        </div>
+                        <div class="control-group" >
+                            <label class="control-label" style="margin-left:300px;">保养费用：
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span11" style="width:200px;" ng-
+                                       model="acc_name"  />
+                            </div>
+                        </div>
+                        <div class="control-group" >
+                            <label class="control-label" style="margin-left:300px;">保养开始时间：
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span11" style="width:200px;" ng-
+                                       model="acc_name"  />
+                            </div>
+                        </div>
+                        <div class="control-group" >
+                            <label class="control-label" style="margin-left:300px;">保养结束时间：
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span11" style="width:200px;" ng-
+                                       model="acc_name"  />
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirm();">确定</button>
+                            <button type="button" class="btn btn-danger"   ng-click="cancel(1)">取消</button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <!--新申请操作 end-->
