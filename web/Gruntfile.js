@@ -121,7 +121,11 @@ module.exports = function (grunt) {
         options: {
           jshintrc: '.svr.jshintrc'
         },
-        src: [ 'api/{,*/}*.js', 'config/{,*/}*.js']
+        src: [ 'api/{,*/}*.js',
+            'config/{,*/}*.js',
+            'core/{,*/}*.js',
+            'mservice/{,*/}*.js', '!mservice/html/{,*/}*.js',
+            'wservice/{,*/}*.js', '!wservice/motor.js']
       },
       sites: [
       //  '<%= yeoman.appMsite %>/mscripts/{,*/}*.js'
