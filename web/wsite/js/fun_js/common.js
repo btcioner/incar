@@ -5,6 +5,7 @@
  */
 var baseurl="/wservice/";
 
+
 (function($){
     $.getUrlParam = function(name)
     {
@@ -45,6 +46,15 @@ var baseurl="/wservice/";
     {
         if(status == "1") return "有效";
         else if(status == "0" || status == null) return "失效";
+    }
+    $.changeSlotStatusToNum = function(status)
+    {
+        if(status == "有效") return "1";
+        else if(status == "失效" || status == null) return "0";
+    }
+    $.changeContentHeight = function(height)
+    {
+        $("#content").css("height",height);
     }
 })(jQuery);
 

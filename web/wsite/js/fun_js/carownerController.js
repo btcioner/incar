@@ -2,8 +2,7 @@
  * Created by Liz on 14-04-03.
  */
 
-var app = angular.module("CarOwnerApp", []);
-app.controller("carownerCtrl", function($scope, $http){
+function carOwnersCtrl($scope, $http){
     $scope.carOwnerDiv = true;
     $scope.carOwnerModifyDiv = false;
     $scope.carOwnerAddDiv = false;
@@ -195,4 +194,4 @@ app.controller("carownerCtrl", function($scope, $http){
         }
     }
 
-})
+}

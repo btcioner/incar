@@ -2,9 +2,7 @@
  * Created by Liz on 14-2-27.
  */
 
-angular.module("SReservationApp")
-    .controller("s_reservationCtrl", function($scope, $http, $location){
-
+   function s_reservationCtrl($scope, $http){
     $scope.reservationDiv = true;
     $scope.applyOperDiv = false;
     $scope.repairDiv = true;
@@ -60,16 +58,45 @@ angular.module("SReservationApp")
        switch(type)
        {
            case "新申请":
-               $("#diffDiv").html("");
+              $scope.newApplyOper = true;
               break;
            case "已拒绝":
-               $("#diffDiv").html("<th style='height:30px;vertical-align: middle'>拒绝原因</th>"
-                   +"<th style='background-color:#F9F9F9;vertical-align: middle;text-align: left' colspan='5' rowspan='2'>工位已满</th>");
+              $scope.diffDiv = true;
+               break;
+           case "已确认":
+              $scope.completeOper = true;
+               break;
+           case "已完成":
+
+               break;
+           case "未到店":
+
                break;
            case "已取消":
                break;
        }
    }
+
+    //详情里面的操作
+    $scope.OperationChild = function(id)
+    {
+         switch(id)
+         {
+             case 1:
+                 $scope.ReservationInfo = true;
+                 break;
+         }
+    }
+
+    $scope.cancel = function(id)
+    {
+        switch(id)
+        {
+            case 1:
+                $scope.ReservationInfo = false;
+                break;
+        }
+    }
 
     function changeView(id)
     {
@@ -78,6 +105,10 @@ angular.module("SReservationApp")
             case 1:
                 $scope.reservationDiv = false;
                 $scope.applyOperDiv = true;
+                $scope.ReservationInfo = false;
+                $scope.newApplyOper = false;
+                $scope.completeOper = false;
+                $scope.diffDiv = false;
                break;
             case 2:
                 $scope.reservationDiv = true;
@@ -115,4 +146,4 @@ angular.module("SReservationApp")
                 break;
         }
     }
-})
+}

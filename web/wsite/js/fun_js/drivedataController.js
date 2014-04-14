@@ -3,8 +3,7 @@
  */
 
 
-var app = angular.module("DriveDataApp", []);
-app.controller("drivedataCtrl", function($scope, $http){
+function driveDataCtrl($scope, $http){
 
     $scope.driveDiv = true;
     $scope.oneDetailDiv = false;
@@ -35,7 +34,7 @@ app.controller("drivedataCtrl", function($scope, $http){
                 {
                     $scope.tips="暂无数据！";
                 }
-
+               // $.changeContentHeight("850px");
                 $scope.drvInfos = data.drvInfos;
                 PagingInfo(data.totalCount);
             }
@@ -116,6 +115,7 @@ app.controller("drivedataCtrl", function($scope, $http){
                     alert("暂无行程数据");
                 }
                 else{
+                   // $.changeContentHeight("630px");
                     $scope.driveDiv = false;
                     $scope.oneDetailDiv = true;
                     $scope.details = data.details;
@@ -141,6 +141,7 @@ app.controller("drivedataCtrl", function($scope, $http){
         }
         else
         {
+           // $.changeContentHeight("1000px");
             $scope.omdds = $scope.details[index].CarCondition.detail;
             $scope.oneDetailDiv = false;
             $scope.oneMinuteDetailDiv = true;
@@ -171,11 +172,9 @@ app.controller("drivedataCtrl", function($scope, $http){
 
 
     //删除
-    $scope.delete = function(index){
+    $scope.deleteRecord = function(index){
         if(confirm("确定要删除吗？")){
             $scope.users.splice(index, 1);
         }
     }
-
-
-})
+}
