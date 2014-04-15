@@ -6,6 +6,9 @@ function carOwnersCtrl($scope, $http){
     $scope.carOwnerDiv = true;
     $scope.carOwnerModifyDiv = false;
     $scope.carOwnerAddDiv = false;
+    $scope.detailDiv = false;
+    $scope.oneDetailDiv = false;
+    $scope.oneMinuteDetailDiv = false;
 
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
@@ -178,6 +181,93 @@ function carOwnersCtrl($scope, $http){
             })
     }
 
+    //get owner and car info  缺少所属4s店
+    function GetOwnerInfo(obd_code)
+    {
+        $http.get(baseurl + 'obd/'+obd_code).success(function(data){
+            if(data.status == "ok")
+            {
+                $scope.deviceDetail = data.obd;
+                $scope.deviceDetail.obdNum = obd_code;
+                $scope.deviceDetail.act_type = $.changeStatus($scope.deviceDetail.act_type);
+            }
+            else
+            {
+                alert(data.status);
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            });
+    }
+
+    //查看一个OBD的行车数据
+    $scope.GetDriveInfo = function(obd_code)
+    {
+        $scope.choosedOC = obd_code;
+        GetOwnerInfo(obd_code);
+        $http.post(baseurl + 'GetDriveInfoAll?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord +'&obd_code='+obd_code)
+            .success(function(data){
+                if(data.status == "ok")
+                {
+                    if(data.drvInfos.length == 0)
+                    {
+                        alert("暂无行车数据");
+                    }
+                    else
+                    {
+                        $scope.detailDiv = true;
+                        $scope.carOwnerDiv = false;
+                        $scope.drvInfos = data.drvInfos;
+                        PagingInfo(data.totalCount);
+                    }
+                }
+                else
+                {
+                    alert(data.status);
+                }
+            }).error(function(data){
+                alert("请求无响应");
+            });
+    }
+    //查看一个OBD一次行程的数据
+    $scope.GetDriveDetail = function(obd_code,drive_id)
+    {
+        $scope.choosedOC = obd_code;
+        $scope.drive_id = drive_id;
+        $scope.postData = {token:$scope.token,code:obd_code,drive_id:drive_id};
+        GetOwnerInfo(obd_code);
+        $http.post(baseurl + 'GetDriveDetail?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord,$scope.postData).success(function(data){
+            if(data.status == "ok")
+            {
+                if(data.details.length== 0)
+                {
+                    alert("暂无行程数据");
+                }
+                else
+                {
+                    $scope.detailDiv = false;
+                    $scope.oneDetailDiv = true;
+                    $scope.details = data.details;
+                    PagingInfo(data.totalCount);
+                }
+            }
+            else
+            {
+                alert(data.status);
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            });
+    }
+
+    //一分钟内的行车数据流记录
+    $scope.GetOneMinuteDetail = function(index)
+    {
+        $scope.omdds = $scope.details[index].CarCondition.detail;
+        $scope.oneDetailDiv = false;
+        $scope.oneMinuteDetailDiv = true;
+    }
+
     //返回按钮
     $scope.gotoBack = function(id)
     {
@@ -186,10 +276,27 @@ function carOwnersCtrl($scope, $http){
             case 2:
                 $scope.carOwnerDiv = true;
                 $scope.carOwnerAddDiv = false;
+                GetFirstPageInfo();
                 break;
             case 1:
                 $scope.carOwnerDiv = true;
                 $scope.carOwnerModifyDiv = false;
+                GetFirstPageInfo();
+                break;
+            case 3://行程数据返回
+                $scope.oneDetailDiv = false;
+                $scope.detailDiv = true;
+                $scope.GetDriveInfo($scope.choosedOC);
+                break;
+            case 4://行车数据返回
+                $scope.detailDiv = false;
+                $scope.carOwnerDiv=true;
+                GetFirstPageInfo();
+                break;
+            case 5://数据流记录
+                $scope.oneMinuteDetailDiv = false;
+                $scope.oneDetailDiv = true;
+                $scope.GetDriveDetail($scope.choosedOC,$scope.drive_id);
                 break;
         }
     }
