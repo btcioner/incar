@@ -36,7 +36,10 @@ app.controller("loginCtrl", function($scope, $http){
             }
             else if(data.status == "ok" && data.organizations[0]["class"] =="4S")
             {
-               window.location.href='/4sStore/index.html';
+
+                $.cookie("nick",data.account.nick);
+                $.cookie("org_name",data.organizations[0]["name"]);
+                window.location.href='/4sStore/index.html';
             }
             else
             {

@@ -5,9 +5,7 @@
 // use ng-view for redirct load different page
 
 angular.module("SReservationApp", [
-    'ngCookies',
-    'ngResource',
-    'ngSanitize',
+
     'ngRoute'
 ]).config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.
@@ -15,18 +13,14 @@ angular.module("SReservationApp", [
             controller: 's_reservationCtrl',
             templateUrl: '/4sStore/partials/reservation_info.html'//主页显示统计信息
         })
-        .when('/collapseGOne',{
+        .when('/collapseGOne/:id',{
             controller:'s_reservationCtrl',
             templateUrl:'/4sStore/partials/reservation_main.html'//显示全部保养信息
         })
-        .when('/collapseGTwo',{
-            controller:'s_reservationCtrl',
+        .when('/collapseGTwo/:id',{
+            controller:'s_repairCtrl',
             templateUrl:'/4sStore/partials/repair_main.html'//显示全部维修信息
          })
-        .when('/applyOper',{
-            controller:'s_reservationCtrl',
-            templateUrl:'/4sStore/partials/reservation_apply_oper.html'//新申请操作
-        })
         .otherwise({
            redirectTo:'/main'//跳转到预约服务的主界面
         });
