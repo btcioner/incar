@@ -35,7 +35,7 @@ exports.get = function(req, res){
 
 //删除一辆车
 exports.delete = function(req, res){
-    var sql="delete from t_car_info where id=?"
+    var sql="delete from t_car_info where id=?";
     var carId= req.param('id');
     dao.executeBySql(sql,[carId],function(){
         res.send({status:"success"});
