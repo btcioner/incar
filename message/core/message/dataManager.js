@@ -61,7 +61,7 @@ exports.getBuffer=function(){
     return myDataBuffer.slice(0,myOffset);
 };
 exports.getOffset=function(){
-    return myOffset;
+    return myOffset
 };
 exports.setOffset=function(ofs){
     myOffset=ofs;
