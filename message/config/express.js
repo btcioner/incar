@@ -12,8 +12,6 @@ var favicon = require('static-favicon');
 var morganLogger = require('morgan');
 var path = require('path');
 var config = require('./config');
-var weixin = require('../api/weixin');
-var api = require('../api/api');
 
 /**
  *  Express patching
@@ -67,7 +65,7 @@ module.exports = function(app) {
 
     viewEnableMultiFolders(app);
     app.set('views', [ config.root + '/msite/mviews', config.root + '/wsite']);
-
+n ,
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
 
@@ -79,17 +77,6 @@ module.exports = function(app) {
     app.use(cookieParser());
     app.use(connect.session({secret: 'IncarTechnologies', cookie: {maxAge: 180000}}));
 
-    app.use('/api', weixin('wx__data_in_car')
-        .text(api.onTextMsg)
-        .image(api.onImageMsg)
-        .voice(api.onVoiceMsg)
-        .video(api.onVideoMsg)
-        .location(api.onLocationMsg)
-        .link(api.onLinkMsg)
-        .event(api.onEventMsg)
-        .middlewarify()
-    );
-    app.set('delayedInitializer', api.defineWXMenu('wx5de0018d8c7b0b0d', 'ea3cbd792917a19f7d043b02b7a7a0c6'));
 
     app.use('/wservice/manual', multiPart({keepExtensions: true, uploadDir: './data/manual',limit:10*1024*1024}));
 

@@ -1,29 +1,16 @@
 {
-  "name": "workServerApp",
-  "version": "0.0.1",
-  "description": "InCar data server and message service",
-  "private": true,
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "connect": "latest",
-    "express": "latest",
-    "body-parser": "latest",
-    "method-override": "latest",
-    "cookie-parser": "latest",
-    "connect-multiparty": "latest",
-    "errorhandler": "latest",
-    "static-favicon": "latest",
-    "morgan": "latest",
-    "crypto": "latest",
-    "ejs": "latest",
-    "querystring": "latest",
-    "formstream": "latest",
-    "urllib": "latest",
-    "xml2js": "latest",
-    "bufferhelper": "latest",
-    "mysql": "latest",
-    "iconv-lite": "latest"
-  }
+    "name": "nodejs-grunt",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "latest"
+    },
+    "devDependencies": {
+        "grunt": "latest",
+        "grunt-contrib-jshint":"latest",
+        "grunt-contrib-watch":"latest"
+    }
 }
