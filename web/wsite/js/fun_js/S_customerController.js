@@ -1,17 +1,9 @@
 /**
  * Created by 003383 on 14-2-27.
  */
-(function($){
-    $.getUrlParam = function(name)
-    {
-        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-        var r = window.location.search.substr(1).match(reg);
-        if (r!=null) return unescape(r[2]); return null;
-    }
-})(jQuery);
 
-var app = angular.module("SCustomerApp", []);
-app.controller("s_customerCtrl", function($scope, $http){
+
+function s_customerCtrl($scope, $http){
 
     $scope.cusDetailDiv = false;
     $scope.cusListDiv = true;
@@ -73,4 +65,4 @@ app.controller("s_customerCtrl", function($scope, $http){
 
 
 
-})
+}

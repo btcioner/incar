@@ -226,7 +226,6 @@ function deviceCtrl($scope, $http)
         GetOwnerInfo($scope.devices[index].obd_code);
      }
 
-
     //operate modify confirm //需要判断sim_number真实的修改以后才要
     $scope.ModifyConfrim = function(sim_number,obd_code)
     {
@@ -245,7 +244,7 @@ function deviceCtrl($scope, $http)
             }
         }).error(function(data){
                 alert("请求无响应");
-            });
+        });
     }
 
     //返回操作

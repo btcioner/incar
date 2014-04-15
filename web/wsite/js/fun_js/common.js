@@ -24,7 +24,7 @@ var baseurl="/wservice/";
         if(month < 10) month= "0" + month;
         if(hour < 10) hour = "0" + hour;
         if(minute < 10) minute= "0" + minute;
-        if(date == "0000-00-00 00:00:00") return null;
+        if(date == "0000-00-00 00:00:00" || date == null) return null;
         return (year+"-"+month+"-"+day+" "+hour+":"+minute);
     }
 

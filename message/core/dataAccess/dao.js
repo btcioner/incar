@@ -122,7 +122,7 @@ exports.initDB=function(){
     pool.getConnection(function(err,connection){
         /*-----------------------创建数据库---------------------------*/
         connection.query("use incar");
-        var argsArray=[];
+        var argsArray=new Array();
         argsArray.push({
             code:0x0000,
             unit:"伏特",
@@ -5661,7 +5661,7 @@ exports.initDB=function(){
             manufacturer:""
         });
 
-        for(i=0;i<argsArray.length;i++){
+        for(var i=0;i<argsArray.length;i++){
             connection.query("insert into t_car set ?",argsArray[i]);
         }
         console.log(argsArray);

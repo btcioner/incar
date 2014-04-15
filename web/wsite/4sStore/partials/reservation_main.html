@@ -4,7 +4,7 @@
     </div>
     <div style="width: 13%;float: left;margin: 2px">
         <div class="accordion" id="collapse-group">
-            <div class="accordion-group widget-box">
+            <div class="accordion-group widget-box" >
                 <div class="accordion-heading">
                     <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne" data-toggle="collapse" class="collapsed" ng-click="ReservationTab(0)"> <span class="icon"><i class="icon-magnet"></i></span>
                         <h5>保养预约</h5>
@@ -46,7 +46,7 @@
             <div class="widget-box" ng-show="applyOperDiv">
                 <div class="widget-title">
                     <span class="icon"><i class="icon-th"></i></span>
-                    <h5>保养申请操作</h5>
+                    <h5>保养预约详情</h5>
                 </div>
                 <div class="widget-content nopadding">
                     <table class="table table-bordered">
@@ -77,10 +77,23 @@
                             <th colspan="2" ng-show="completeOper"><a class='btn btn-success'  ng-click=''>取消</a>&nbsp;&nbsp;&nbsp;
                                                                          <a class='btn btn-success'  ng-click=''>未到店</a>&nbsp;&nbsp;&nbsp;
                                                                          <a class='btn btn-success'  ng-click='OperationChild(1);'>已完成</a></th>
+                            <th ng-show="reservationProTi">保养项目</th>
+                            <th ng-show="reservationProTe" style="background-color:#F9F9F9;"></th>
+                            <th ng-show="cancelTimeTi">取消时间</th>
+                            <th ng-show="cancelTimeTe" style="background-color:#F9F9F9;"></th>
                         </tr>
                         <tr ng-show="diffDiv">
                             <th style='height:30px;vertical-align: middle'>拒绝原因</th><th style='background-color:#F9F9F9;vertical-align: middle;text-align: left' colspan='5' rowspan='2'>工位已满</th>
                         </tr>
+                        <tr ng-show="completeTr">
+                            <th>保养费用</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                            <th>保养开始时间</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                            <th>保养结束时间</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                        </tr>
+
                         </thead>
                     </table>
                 </div>
