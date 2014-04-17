@@ -7,6 +7,7 @@ var baseurl="/wservice/";
 
 
 (function($){
+
     $.getUrlParam = function(name)
     {
         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -16,7 +17,9 @@ var baseurl="/wservice/";
     //把日期转换成可读日期
     $.changeDate = function(date)
     {
+        if(date == "0000-00-00 00:00:00" || date == null) return null;
         var year = new Date(Date.parse(date)).getFullYear();
+        if(isNaN(year)) return null;
         var month = (new Date(Date.parse(date)).getMonth()) + 1;
         var day = new Date(Date.parse(date)).getDate();
         var hour = new Date(Date.parse(date)).getHours();
@@ -24,7 +27,7 @@ var baseurl="/wservice/";
         if(month < 10) month= "0" + month;
         if(hour < 10) hour = "0" + hour;
         if(minute < 10) minute= "0" + minute;
-        if(date == "0000-00-00 00:00:00" || date == null) return null;
+
         return (year+"-"+month+"-"+day+" "+hour+":"+minute);
     }
 
@@ -41,6 +44,11 @@ var baseurl="/wservice/";
     {
         if(status == "1") return "正常";
         else if(status == "0" || status == null) return "冻结";
+    }
+    $.changeUserStatusToNum = function(status)
+    {
+        if(status == "正常") return "1";
+        else if(status == "冻结" || status == null) return "0";
     }
     $.changeSlotStatus = function(status)
     {

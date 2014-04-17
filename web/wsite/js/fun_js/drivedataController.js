@@ -9,7 +9,6 @@ function driveDataCtrl($scope, $http){
     $scope.oneDetailDiv = false;
     $scope.oneMinuteDetailDiv = false;
 
-
     //请求行车数据列表
     $scope.pageRecord = 10;
     $scope.currentPage = 1;

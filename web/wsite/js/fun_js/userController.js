@@ -123,6 +123,7 @@ function userManageCtrl($scope, $http){
     //修改确认
     $scope.ModifyConfirm = function()
     {
+        $scope.userDetail.status = $.changeUserStatusToNum( $scope.userDetail.status);
         $http.put(baseurl + 'organization/1/account/'+$scope.userDetail.id,$scope.userDetail).success(function(data){
             if(data.status == "ok")
             {
@@ -133,6 +134,7 @@ function userManageCtrl($scope, $http){
                         alert("修改成功");
                         $scope.userModifyDiv = false;
                         $scope.userListDiv = true;
+                        $scope.userDetail.status = $.changeUserStatus($scope.userDetail.status);
                     }
                     else{
                         alert(data.status);

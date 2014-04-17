@@ -324,12 +324,10 @@ module Service {
                     var i = 0;
                     dtos.forEach((obj)=>{
                         if(i > 0) strV += ",";
-                        var escape : (string)=>string;
-                        escape = this.dac.escape;
                         strV += util.format("(%s,%s,%s, CURRENT_TIMESTAMP)",
-                            escape(obj.obd_code),
-                            escape(obj.sim_number),
-                            escape(obj.comment));
+                            this.dac.escape(obj.obd_code),
+                            this.dac.escape(obj.sim_number),
+                            this.dac.escape(obj.comment));
                         i++;
                     });
                     this.dac.query("INSERT t_car_info (obd_code, sim_number, comment, created_date) VALUES " + strV, null, (err, result)=>{

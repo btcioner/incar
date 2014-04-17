@@ -2,11 +2,13 @@
     <div id="content-header">
         <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">预约服务</a></div>
     </div>
+    <div class="container-fluid">
+    <div class="row-fluid" >
     <div style="width: 13%;float: left;margin: 2px">
         <div class="accordion" id="collapse-group">
             <div class="accordion-group widget-box" >
                 <div class="accordion-heading">
-                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne" data-toggle="collapse" class="collapsed" ng-click="ReservationTab(0)"> <span class="icon"><i class="icon-magnet"></i></span>
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne/0" data-toggle="collapse" class="collapsed" ng-click="ReservationTab(0)"> <span class="icon"><i class="icon-magnet"></i></span>
                         <h5>保养预约</h5>
                     </a></div>
                 </div>
@@ -23,7 +25,7 @@
             </div>
             <div class="accordion-group widget-box" style="margin-top: 2px">
                 <div class="accordion-heading">
-                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo" data-toggle="collapse"> <span class="icon"><i class="icon-wrench"></i></span>
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo/0" data-toggle="collapse"> <span class="icon"><i class="icon-wrench"></i></span>
                         <h5 >维修预约</h5>
                     </a> </div>
                 </div>
@@ -196,15 +198,17 @@
                         </tbody>
                     </table>
                 </div>
-                <!--  <div class="pagination alternate" style="float:right;">
+                  <div class="pagination alternate" style="float:right;">
                       共{{totalCount}}条&nbsp;页码{{currentPage+1}}/{{totalPage}} &nbsp;
                       跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
                       <option>1</option>
                   </select>页
-                  </div>-->
+                  </div>
             </div>
             <!--预约服务列表 end-->
         </div>
     </div>
+</div>
+</div>
 </div>
 </div>

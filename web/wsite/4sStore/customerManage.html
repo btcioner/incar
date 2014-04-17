@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="../css/maruti-style.css" />
 <link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" type="text/css" href="../css/mycss/main.css" />
+
 </head>
 <body>
 <!--Header-part-->
@@ -25,8 +26,8 @@
 
 <!--top-Header-menu-->
 <div id="user-nav" class="navbar navbar-inverse">
-    <ul class="nav">
-        <li style="color:white;vertical-align:middle; margin-top: 15px;"><span class="text">userAdmin</span></li>
+    <ul class="nav" ng-controller="customerCtrl">
+        <li style="color:white;vertical-align:middle; margin-top: 15px;"><span class="text">{{nickName}}</span></li>
         <li class=""><a title="" href="../login.html"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
     </ul>
 </div>
@@ -49,7 +50,9 @@
 <div class="row-fluid">
   <div id="footer" class="span12"> 2014 &copy; 英卡</div>
 </div>
+<script src="../js/fun_js/common.js"></script>
 <script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.cookie.js"></script>
 <script src="../js/jquery.dataTables.min.js"></script>
 <script src="../js/jquery.uniform.js"></script>
 <script src="../js/jquery.ui.custom.js"></script>
