@@ -110,7 +110,7 @@ wxMenu.define = function(appid, appsecret){
                 console.log('Error occurred when weixin menu was newly defined - ' + err + '\n');
             }
             else {
-                console.log('Weixin menu was newly defined!!\n    ' + result + '\n');
+                console.log('Weixin menu was newly defined!!\n');
             }
         });
     };
