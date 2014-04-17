@@ -304,20 +304,20 @@
                         跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption" ng-change="changePage(changeId,3);">
                         <option>1</option>
                     </select>页
+                   </div>
+                    <div class="pagination alternate" style="float:right;" ng-show="paging2">
+                        共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
+                        跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption" ng-change="changePage(changeId,2);">
+                        <option>1</option>
+                    </select>页
                     </div>
-                        <div class="pagination alternate" style="float:right;" ng-show="paging2">
-                            共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
-                            跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption" ng-change="changePage(changeId,2);">
-                            <option>1</option>
-                        </select>页
-                        </div>
                     </div>
                     <div id="tab6" class="tab-pane">
                         正在开发中...
                     </div>
                     </div>
                 </div>
-            </div>
+
             <!--客户 begin-->
             <div class="widget-box" ng-show="cusListDiv">
                 <div class="widget-title">

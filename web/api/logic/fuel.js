@@ -44,6 +44,8 @@ function getObdCode(db, userName, serverName, callback) {
 
 function getFuelDataForLatestTime(db, obdCode, callback) {
 
+    console.log(obdCode);
+
     var pool = db();
 
     pool.query('select currentAvgOilUsed fuel, currentMileage mileage from t_obd_drive where fireTime < flameOutTime and obdCode= ? order by flameoutTime desc limit 1;',[obdCode], function(err, rows){

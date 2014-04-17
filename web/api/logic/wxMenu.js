@@ -134,7 +134,7 @@ wxMenu.onClick['MYCAR.FUEL'] = function(message, session, next) {
                 title: '油耗报告',
                 description: reportContent,
                 picurl: '',
-                url: 'http://linuxsrv.winphone.us/msite/fuel.html?user=' + message.FromUserName
+                url: 'http://linuxsrv.winphone.us/msite/fuel.html?user=' + message.FromUserName + '@' + message.ToUserName
             }]);
         }
     });
@@ -151,7 +151,7 @@ wxMenu.onClick['MYCAR.CARBON'] = function(message, session, next) {
                 title: '我的碳排放',
                 description: reportContent,
                 picurl: '',
-                url: 'http://linuxsrv.winphone.us/msite/carbon.html?user=' + message.FromUserName
+                url: 'http://linuxsrv.winphone.us/msite/carbon.html?user=' + message.FromUserName + '@' + message.ToUserName
             }]);
         }
     });
@@ -168,7 +168,7 @@ wxMenu.onClick['MYCAR.BEHAVIOR'] = function(message, session, next) {
                 title: '驾驶行为报告',
                 description: reportContent,
                 picurl: '',
-                url: 'http://linuxsrv.winphone.us/msite/drivingBehavior.html?user=' + message.FromUserName
+                url: 'http://linuxsrv.winphone.us/msite/drivingBehavior.html?user=' + message.FromUserName + '@' + message.ToUserName
             }]);
         }
     });
@@ -186,7 +186,7 @@ wxMenu.onClick['MY4S.BOOKING'] = function(message, session, next) {
             title: '预约保养',
             description: result,
             picurl: '',
-            url: 'http://linuxsrv.winphone.us/msite/booking?user=' + message.FromUserName
+            url: 'http://linuxsrv.winphone.us/msite/booking?user=' + message.FromUserName + '@' + message.ToUserName
         }]);
     });
 };
@@ -200,7 +200,7 @@ wxMenu.onClick['MY4S.MANUAL'] = function(message, session, next) {
             title: '行车手册',
             description: result,
             picurl: '',
-            url: 'http://linuxsrv.winphone.us/msite/manual?user=' + message.FromUserName
+            url: 'http://linuxsrv.winphone.us/msite/manual?user=' + message.FromUserName + '@' + message.ToUserName
         }]);
     });
 };

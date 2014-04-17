@@ -168,6 +168,7 @@ function s_customerCtrl($scope, $http){
             for(var i=1;i<7;i++)
             {
                 $("#tab"+i).hide();
+
                 if(i==id)
                 {
                     $("#tab"+i).show();
@@ -205,7 +206,7 @@ function s_customerCtrl($scope, $http){
    //查询行车数据
     function getDriveList()
     {
-        $scope.postData = "&org_id="+ $.cookie("org_id")+"$obd_code="+$scope.cusDetail.obd_code;
+        $scope.postData = "&org_id="+ $.cookie("org_id")+"&obd_code="+$scope.cusDetail.obd_code;
         $http.post(baseurl+'GetDriveInfoAll?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.postData).success(function(data){
             if(data.status == "ok")
             {
@@ -256,7 +257,6 @@ function s_customerCtrl($scope, $http){
                     alert("暂无行程数据");
                 }
                 else{
-                    // $.changeContentHeight("630px");
                     $scope.driveDiv = false;
                     $scope.oneDetailDiv = true;
                     $scope.paging2 = true;
