@@ -12,7 +12,7 @@ var wxMenu = {};
 
 wxMenu.define = function(appid, appsecret){
     return function() {
-        var api = new WXAPI('wx5de0018d8c7b0b0d', 'ea3cbd792917a19f7d043b02b7a7a0c6');
+        var api = new WXAPI(appid, appsecret);
         api.createMenu({
             "button":
                 [
@@ -105,8 +105,14 @@ wxMenu.define = function(appid, appsecret){
                             ]
                     }
                 ]
-        }, function(err, result){});
-        console.log('Weixin menu was newly defined!!\n');
+        }, function(err, result){
+            if (err) {
+                console.log('Error occurred when weixin menu was newly defined - ' + err + '\n');
+            }
+            else {
+                console.log('Weixin menu was newly defined!!\n');
+            }
+        });
     };
 };
 
