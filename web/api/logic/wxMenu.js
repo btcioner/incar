@@ -106,6 +106,7 @@ wxMenu.define = function(appid, appsecret){
                     }
                 ]
         }, function(err, result){});
+        console.log('Weixin menu was newly defined!!\n');
     };
 };
 
