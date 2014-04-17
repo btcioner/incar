@@ -113,7 +113,7 @@ function getCarbonDataForLatestMonth(db, obdCode, callback) {
                 if (rows.length === 0) {
                     return callback(null,  {carbon: null, percentage: null});
                 } else if (rows.length === 1) {
-                    return callback(null, { carbon: ((rows[0].fuelTotal * 2.24)/100), percentage: 94.6});
+                    return callback(null, { carbon: ((rows[0].fuelTotal * 2.24)/100), percentage: 96.8});
                 } else { return callback(new Error('multiple rows returned for carbon data of lasted month.')); }
             }
             else {
