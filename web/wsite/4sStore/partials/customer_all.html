@@ -63,7 +63,6 @@
                             <th style="background-color:#F9F9F9;">{{cusDetail.car_series}}</th>
                             <th>车牌号</th>
                             <th style="background-color:#F9F9F9;">{{cusDetail.car_license}}</th>
-
                         </tr>
                         </thead>
                     </table>
@@ -72,11 +71,12 @@
             <div class="widget-box" ng-show="cusTabDiv">
                 <div class="widget-title">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#tab1">保养记录</a></li>
-                        <li><a data-toggle="tab" href="#tab2">维修记录</a></li>
-                        <li><a data-toggle="tab" href="#tab3">关怀记录</a></li>
-                        <li><a data-toggle="tab" href="#tab4">联系记录</a></li>
-                        <li><a data-toggle="tab" href="#tab5">行车记录</a></li>
+                        <li class="active"><a data-toggle="tab"  ng-click="detailTab(1)">保养记录</a></li>
+                        <li><a data-toggle="tab"  ng-click="detailTab(2)">维修记录</a></li>
+                        <li><a data-toggle="tab"  ng-click="detailTab(3)">关怀记录</a></li>
+                        <li><a data-toggle="tab" ng-click="detailTab(4)">保险信息</a></li>
+                        <li><a data-toggle="tab"  ng-click="detailTab(5)">行车记录</a></li>
+                        <li><a data-toggle="tab"  ng-click="detailTab(6)">分组</a></li>
                     </ul>
                 </div>
                 <div class="widget-content tab-content">
@@ -86,43 +86,235 @@
                             <tr>
                                 <th>ID</th>
                                 <th>保养时间</th>
+                                <th>保养来源</th>
                                 <th>保养里程</th>
-                                <th>保养描述</th>
+                                <th>保养类型</th>
+                                <th>保养费用(RMB)</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr class="gradeX">
                                 <td id="tdc">1</td>
-                                <td id="tdc">2013/03/08</td>
-                                <td id="tdc">1000公里</td>
-                                <td id="tdc">车体保养</td>
+                                <td id="tdc">2013/03/08 13:00</td>
+                                <td id="tdc">微信</td>
+                                <td id="tdc">9765公里</td>
+                                <td id="tdc">常规保养</td>
+                                <td id="tdc">300</td>
                             </tr>
                             <tr class="gradeX">
                                 <td id="tdc">2</td>
-                                <td id="tdc">2013/03/08</td>
-                                <td id="tdc">1000公里</td>
-                                <td id="tdc">车体保养</td>
+                                <td id="tdc">2013/10/08 12:00</td>
+                                <td id="tdc">微信</td>
+                                <td id="tdc">20134公里</td>
+                                <td id="tdc">中型保养</td>
+                                <td id="tdc">580</td>
                             </tr>
                             <tr class="gradeX">
                                 <td id="tdc">3</td>
-                                <td id="tdc">2013/03/08</td>
-                                <td id="tdc">1000公里</td>
-                                <td id="tdc">车体保养</td>
+                                <td id="tdc">2014/03/08 19:00</td>
+                                <td id="tdc">微信</td>
+                                <td id="tdc">39231公里</td>
+                                <td id="tdc">大型保养</td>
+                                <td id="tdc">1000</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                     <div id="tab2" class="tab-pane">
-                        维修记录
+                        <table class="table table-bordered data-table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>维修时间</th>
+                                <th>维修来源</th>
+                                <th>维修项目</th>
+                                <th>维修里程</th>
+                                <th>维修费用</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX">
+                                <td id="tdc">1</td>
+                                <td id="tdc">2013/03/08 13:00</td>
+                                <td id="tdc">微信</td>
+                                <td id="tdc">喷漆</td>
+                                <td id="tdc">50000公里</td>
+                                <td id="tdc">3000</td>
+                            </tr>
+                            <tr class="gradeX">
+                                <td id="tdc">2</td>
+                                <td id="tdc">2013/10/08 12:00</td>
+                                <td id="tdc">微信</td>
+                                <td id="tdc">换胎</td>
+                                <td id="tdc">10982公里</td>
+                                <td id="tdc">200</td>
+                            </tr>
+                            <tr class="gradeX">
+                                <td id="tdc">3</td>
+                                <td id="tdc">2014/03/08 19:00</td>
+                                <td id="tdc">微信</td>
+                                <td id="tdc">换方向盘</td>
+                                <td id="tdc">23092公里</td>
+                                <td id="tdc">500</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div id="tab3" class="tab-pane">
-                        关怀记录
+                        <table class="table table-bordered data-table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>关怀时间</th>
+                                <th>关怀类类别</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX">
+                                <td id="tdc">1</td>
+                                <td id="tdc">2013/03/08 13:00</td>
+                                <td id="tdc">保养</td>
+
+                            </tr>
+                            <tr class="gradeX">
+                                <td id="tdc">2</td>
+                                <td id="tdc">2013/10/08 12:00</td>
+                                <td id="tdc">故障</td>
+
+                            </tr>
+                            <tr class="gradeX">
+                                <td id="tdc">3</td>
+                                <td id="tdc">2014/03/08 19:00</td>
+                                <td id="tdc">维修</td>
+
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div id="tab4" class="tab-pane">
-                        联系记录
+                        正在开发中...
                     </div>
                     <div id="tab5" class="tab-pane">
-                        行车记录
+                        <table class="table table-bordered" ng-show="driveDiv">
+                            <thead>
+                            <tr>
+                                <th>OBD编号</th>
+                                <th>win码</th>
+                                <th>品牌</th>
+                                <th>系列</th>
+                                <th>年款</th>
+                                <th>点火电压</th>
+                                <th>发动机运行时间</th>
+                                <th>行驶里程</th>
+                                <th>本次驾驶平均油耗</th>
+                                <th>超速行驶时间(>120km/h)</th>
+                                <th>急加速</th>
+                                <th>急减速</th>
+                                <th>急转弯</th>
+                                <th>熄火电压</th>
+                                <th>累计平均油耗</th>
+                                <th>累计行驶里程</th>
+                                <th>熄火后电压</th>
+                                <th>状态</th>
+                                <th>点火时间</th>
+                                <th>熄火时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX" ng-repeat="device in drvInfos">
+                                <td id="tdc">{{device.obdCode}}</td>
+                                <td id="tdc">{{device.vin}}</td>
+                                <td id="tdc">{{device.brand_name}}</td>
+                                <td id="tdc">{{device.series_name}}</td>
+                                <td id="tdc">{{device.modelYear}}</td>
+                                <td id="tdc">{{device.firingVoltage}}</td>
+                                <td id="tdc">{{device.runTime}}</td>
+                                <td id="tdc">{{device.currentMileage}}</td>
+                                <td id="tdc">{{device.currentAvgOilUsed}}</td>
+                                <td id="tdc">{{device.speedingTime}}</td>
+                                <td id="tdc">{{device.speedUp}}</td>
+                                <td id="tdc">{{device.speedDown}}</td>
+                                <td id="tdc">{{device.sharpTurn}}</td>
+                                <td id="tdc">{{device.flameVoltage}}</td>
+                                <td id="tdc">{{device.avgOilUsed}}</td>
+                                <td id="tdc">{{device.mileage}}</td>
+                                <td id="tdc">{{device.voltageAfter}}</td>
+                                <td id="tdc">{{device.carStatus}}</td>
+                                <td id="tdc">{{device.fireTime}}</td>
+                                <td id="tdc">{{device.flameOutTime}}</td>
+                                <td id="tdc">
+                                    <a class="btn btn-info btn-mini" ng-click="GetDriveDetail(device.obdCode,device.id);">查看</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!--一次行车数据 begin-->
+                        <table class="table table-bordered" ng-show="oneDetailDiv">
+                            <thead>
+                            <tr >
+                                <th style="text-align: right" colspan="6"><a ng-click="gotoBack(1);" class="btn btn-info btn-mini">返回</a></th>
+                            </tr>
+                            <tr >
+                                <th>OBD设备编号</th>
+                                <th>行驶编号</th>
+                                <th>累计平均油耗</th>
+                                <th>累计行驶里程</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX" ng-repeat="device in details">
+                                <td id="tdc">{{device.obdCode}}</td>
+                                <td id="tdc">{{device.id}}</td>
+                                <td id="tdc">{{device.avgOilUsed}}</td>
+                                <td id="tdc">{{device.mileage}}</td>
+                                <td id="tdc">{{device.createTime}}</td>
+                                <td id="tdc"><a class="btn btn-info btn-mini" ng-click="GetOneMinuteDetail($index);">详细数据</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--一个行车数据 end-->
+                    <!--一分钟数据流 begin-->
+                    <table class="table table-bordered" ng-show="oneMinuteDetailDiv">
+                        <thead>
+                        <tr >
+                            <th style="text-align: right" colspan="3"><a ng-click="gotoBack(2);" class="btn btn-info btn-mini">返回</a></th>
+                        </tr>
+                        <tr >
+                            <th>ID</th>
+                            <th>参数</th>
+                            <th>值</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeX" ng-repeat="omdd in omdds">
+                            <td id="tdc">{{omdd.id}}</td>
+                            <td id="tdc">{{omdd.tip}}</td>
+                            <td id="tdc">{{omdd.value}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!--一分钟数据流 end-->
+                    <div class="pagination alternate" style="float:right;" ng-show="paging1">
+                        共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
+                        跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption" ng-change="changePage(changeId,3);">
+                        <option>1</option>
+                    </select>页
+                    </div>
+                        <div class="pagination alternate" style="float:right;" ng-show="paging2">
+                            共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
+                            跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption" ng-change="changePage(changeId,2);">
+                            <option>1</option>
+                        </select>页
+                        </div>
+                    </div>
+                    <div id="tab6" class="tab-pane">
+                        正在开发中...
+                    </div>
                     </div>
                 </div>
             </div>
@@ -184,8 +376,8 @@
                             <td style="text-align: center">{{carowner.car_brand}}</td>
                             <td style="text-align: center">{{carowner.car_series}}</td>
                             <td style="text-align: center">{{carowner.obd_code}}</td>
-                            <td style="text-align: center"></td>
-                            <td style="text-align: center"></td>
+                            <td style="text-align: center">2014-04-15 13:00</td>
+                            <td style="text-align: center">保养提醒</td>
                             <td style="text-align: center">
                                 <a class="btn btn-info btn-mini" ng-click="customerDetail($index)">查看</a>
                             </td>
@@ -196,7 +388,7 @@
                 <div><font color="red">{{tips}}</font></div>
                 <div class="pagination alternate" style="float:right;">
                     共{{totalCount}}条&nbsp;页码{{currentPage}}/{{totalPage}} &nbsp;
-                    跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
+                    跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId,1);">
                     <option>1</option>
                 </select>页
                 </div>

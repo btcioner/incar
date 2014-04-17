@@ -15,11 +15,11 @@ angular.module("SReservationApp", [
             controller: 's_reservationCtrl',
             templateUrl: '/4sStore/partials/reservation_info.html'//主页显示统计信息
         })
-        .when('/collapseGOne/:id',{
+        .when('/collapseGOne',{
             controller:'s_reservationCtrl',
             templateUrl:'/4sStore/partials/reservation_main.html'//显示全部保养信息
         })
-        .when('/collapseGTwo/:id',{
+        .when('/collapseGTwo',{
             controller:'s_repairCtrl',
             templateUrl:'/4sStore/partials/repair_main.html'//显示全部维修信息
          })

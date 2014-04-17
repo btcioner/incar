@@ -24,6 +24,8 @@
               $scope.newApplyOper = true;
               break;
            case "已拒绝":
+               $scope.cancelTimeTi = true;
+               $scope.cancelTimeTe = true;
               $scope.diffDiv = true;
                break;
            case "已确认":
