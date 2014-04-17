@@ -134,7 +134,7 @@ wxMenu.onClick['MYCAR.FUEL'] = function(message, session, next) {
 };
 
 wxMenu.onClick['MYCAR.CARBON'] = function(message, session, next) {
-    myCar.carbonReport(message.FromUserName, function(err, reportContent){
+    myCar.carbonReport(message.FromUserName, message.ToUserName, function(err, reportContent){
         if (err) {
             // error handling ...
             next(err);
@@ -151,7 +151,7 @@ wxMenu.onClick['MYCAR.CARBON'] = function(message, session, next) {
 };
 
 wxMenu.onClick['MYCAR.BEHAVIOR'] = function(message, session, next) {
-    myCar.driveBehaviorReport(message.FromUserName, function(err, reportContent){
+    myCar.driveBehaviorReport(message.FromUserName, message.ToUserName, function(err, reportContent){
         if (err) {
             // error handling ...
             next(err);

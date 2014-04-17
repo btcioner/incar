@@ -50,7 +50,7 @@ myCar.fuelReport = function(userName, serverName, callback){
     });
 };
 
-myCar.carbonReport = function(userName, callback){
+myCar.carbonReport = function(userName, serverName, callback){
     // 模板将来要从数据库来读取
     var tpl = [
         '最近一次行驶碳排放参考量为：<%=carbonDataLastTime.carbon %>kg\n',
@@ -65,7 +65,7 @@ myCar.carbonReport = function(userName, callback){
 
     var compiled = ejs.compile(tpl);
 
-    carbon.getReport(userName, function(err, result) {
+    carbon.getReport(userName, serverName, function(err, result) {
         if (err) { callback(err);}
         else {
             if (result.carbonDataLastTime.carbon !== undefined && result.carbonDataLastTime.carbon !== null) { result.carbonDataLastTime.carbon = result.carbonDataLastTime.carbon.toFixed(2); }
@@ -77,7 +77,7 @@ myCar.carbonReport = function(userName, callback){
     });
 };
 
-myCar.driveBehaviorReport = function(userName, callback){
+myCar.driveBehaviorReport = function(userName, serverName, callback){
     // 模板将来要从数据库来读取
     var tpl = [
         '最近一次驾驶：\n',
@@ -99,7 +99,7 @@ myCar.driveBehaviorReport = function(userName, callback){
 
     var compiled = ejs.compile(tpl);
 
-    drive.getReport(userName, function(err, result) {
+    drive.getReport(userName, serverName, function(err, result) {
         if (err) { callback(err);}
         else {
             callback(null, compiled(result));
