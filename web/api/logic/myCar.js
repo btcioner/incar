@@ -56,10 +56,10 @@ myCar.carbonReport = function(userName, serverName, callback){
         '最近一次行驶碳排放参考量为：<%=carbonDataLastTime.carbon %>kg\n',
         '\n',
         '本周行驶碳排放总量参考量为：<%=carbonDataLastWeek.carbon %>kg\n',
-        '                优于其他94.3%车主\n',
+        '                优于其他<%=carbonDataLastWeek.percentage %>%车主\n',
         '\n',
         '本月行驶碳排放总量参考量为：<%=carbonDataLastMonth.carbon %>kg\n',
-        '                优于其他94.3%车主\n',
+        '                优于其他<%=carbonDataLastWeek.percentage %>车主\n',
         '\n'
     ].join('');
 

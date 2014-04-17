@@ -48,11 +48,15 @@ function getBehaviorForLatestTime(db, userName, serverName, callback) {
         if (err) { callback(err); }
         else {
             pool.query('select speedUp speedupLatestTime, speedDown speeddownLatestTime, sharpTurn turnLatestTime from t_obd_drive where fireTime < flameOutTime and obdCode= ? order by flameoutTime desc limit 1;',[obdCode], function(err, rows){
-                if (err) { callback(err); }
+                if (err) { return callback(err); }
                 else {
-                    if (rows && rows.length === 1) {
-                        return callback(null, rows[0]);
-                    } else { return callback(new Error('zero or multiple rows returned for behavior data of lasted time.')); }
+                    if (rows) {
+                        if (rows.length === 0) {
+                            return callback(null, {speedupLatestTime: null, speeddownLatestTime: null, turnLatestTime: null});
+                        } else if (rows.length === 1) {
+                            return callback(null, rows[0]);
+                        } else { return callback(new Error('multiple rows returned for behavior data of lasted time.')); }
+                    } else { return callback(new Error('undefined returned for behavior data query of lasted time.')); }
                 }
             });
         }
@@ -66,11 +70,15 @@ function getBehaviorForLatestWeek(db, userName, serverName, callback) {
         if (err) { callback(err); }
         else {
             pool.query('select SUM(speedUp) speedupLatestWeek, SUM(speedDown) speeddownLatestWeek, SUM(sharpTurn) turnLatestWeek from t_obd_drive where fireTime < flameOutTime and DATE_FORMAT(fireTime,"%Y-%U") = DATE_FORMAT(NOW(),"%Y-%U") and obdCode= ? ;', [obdCode], function(err, rows){
-                if (err) { callback(err); }
+                if (err) { return callback(err); }
                 else {
-                    if (rows && rows.length === 1) {
-                        callback(null, rows[0]);
-                    } else { callback(new Error('zero or multiple rows returned for behavior data of lasted week.')); }
+                    if (rows) {
+                        if (rows.length === 0) {
+                            return callback(null, {speedupLatestWeek: null, speeddownLatestWeek: null, turnLatestWeek: null});
+                        } else if (rows.length === 1) {
+                            return callback(null, rows[0]);
+                        } else { return callback(new Error('multiple rows returned for behavior data of lasted week.')); }
+                    } else { return callback(new Error('undefined returned for behavior data query of lasted week.')); }
                 }
             });
         }
@@ -84,11 +92,15 @@ function getBehaviorForLatestMonth(db, userName, serverName, callback) {
         if (err) { callback(err); }
         else {
             pool.query('select SUM(speedUp) speedupLatestMonth, SUM(speedDown) speeddownLatestMonth, SUM(sharpTurn) turnLatestMonth from t_obd_drive where fireTime < flameOutTime and DATE_FORMAT(fireTime,"%Y-%m") = DATE_FORMAT(NOW(),"%Y-%m") and obdCode= ? ;', [obdCode], function(err, rows){
-                if (err) { callback(err); }
+                if (err) { return callback(err); }
                 else {
-                    if (rows && rows.length === 1) {
-                        callback(null, rows[0]);
-                    } else { callback(new Error('zero or multiple rows returned for behavior data of lasted month.')); }
+                    if (rows) {
+                        if (rows.length === 0) {
+                            return callback(null, {speedupLatestMonth: null, speeddownLatestMonth: null, turnLatestMonth: null});
+                        } else if (rows.length === 1) {
+                            return callback(null, rows[0]);
+                        } else { return callback(new Error('multiple rows returned for behavior data of lasted month.')); }
+                    } else { return callback(new Error('undefined returned for behavior data query of lasted month.')); }
                 }
             });
         }
