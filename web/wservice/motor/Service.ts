@@ -63,8 +63,8 @@ module Service{
             else res.json({
                 postData: {
                     code: "WFQ00012345",
-                    phone_number: "13912345678",
-                    comment: "4S测试店"
+                    sim_number: "13912345678",
+                    comment: "4S测试设备"
                 }
             });
         }
@@ -88,17 +88,6 @@ module Service{
                     drive_id: 54
                 }
             });
-        }
-    }
-
-    // 出错时,返回给客户端的Json对象
-    export class JsonError{
-        status:string;
-        detail:any;
-
-        constructor(ex:TaskException){
-            this.status = ex.status;
-            this.detail = ex.innerTaskException;
         }
     }
 

@@ -1,12 +1,14 @@
-<div id="content" style="height:572px;margin-top: 30px;"  >
+<div id="content">
     <div id="content-header">
         <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">预约服务</a></div>
     </div>
+    <div class="container-fluid">
+    <div class="row-fluid" >
     <div style="width: 13%;float: left;margin: 2px">
         <div class="accordion" id="collapse-group">
-            <div class="accordion-group widget-box">
+            <div class="accordion-group widget-box" >
                 <div class="accordion-heading">
-                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne" data-toggle="collapse" class="collapsed" ng-click="ReservationTab(0)"> <span class="icon"><i class="icon-magnet"></i></span>
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne/0" data-toggle="collapse" class="collapsed" ng-click="ReservationTab(0)"> <span class="icon"><i class="icon-magnet"></i></span>
                         <h5>保养预约</h5>
                     </a></div>
                 </div>
@@ -23,7 +25,7 @@
             </div>
             <div class="accordion-group widget-box" style="margin-top: 2px">
                 <div class="accordion-heading">
-                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo" data-toggle="collapse"> <span class="icon"><i class="icon-wrench"></i></span>
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo/0" data-toggle="collapse"> <span class="icon"><i class="icon-wrench"></i></span>
                         <h5 >维修预约</h5>
                     </a> </div>
                 </div>
@@ -46,7 +48,7 @@
             <div class="widget-box" ng-show="applyOperDiv">
                 <div class="widget-title">
                     <span class="icon"><i class="icon-th"></i></span>
-                    <h5>保养申请操作</h5>
+                    <h5>保养预约详情</h5>
                 </div>
                 <div class="widget-content nopadding">
                     <table class="table table-bordered">
@@ -69,24 +71,72 @@
                             <th style="background-color:#F9F9F9;">微信预约</th>
                         </tr>
                         <tr>
-                            <th>申请提交日</th>
-                            <th style="background-color:#F9F9F9;">2014-04-03</th>
-                            <th>申请提交时</th>
-                            <th style="background-color:#F9F9F9;">13:28</th>
-                            <th colspan="2"><a class="btn btn-success" ng-click="">确认申请</a></th>
+                            <th>申请提交时间</th>
+                            <th style="background-color:#F9F9F9;">2014-04-03 13:28</th>
+                            <th>预约保养时间</th>
+                            <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
+                            <th colspan="2" ng-show="newApplyOper"><a class='btn btn-success'  ng-click=''>确认</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-success'  ng-click=''>拒绝</a></th>
+                            <th colspan="2" ng-show="completeOper"><a class='btn btn-success'  ng-click=''>取消</a>&nbsp;&nbsp;&nbsp;
+                                                                         <a class='btn btn-success'  ng-click=''>未到店</a>&nbsp;&nbsp;&nbsp;
+                                                                         <a class='btn btn-success'  ng-click='OperationChild(1);'>已完成</a></th>
+                            <th ng-show="reservationProTi">保养项目</th>
+                            <th ng-show="reservationProTe" style="background-color:#F9F9F9;"></th>
+                            <th ng-show="cancelTimeTi">取消时间</th>
+                            <th ng-show="cancelTimeTe" style="background-color:#F9F9F9;"></th>
                         </tr>
-                        <tr>
-                            <th>预约保养日</th>
-                            <th style="background-color:#F9F9F9;">2014-04-04</th>
-                            <th>预约保养时</th>
-                            <th style="background-color:#F9F9F9;">13:00</th>
-                            <th colspan="2"><a class="btn btn-success"  ng-click=''>拒绝申请</a></th>
+                        <tr ng-show="diffDiv">
+                            <th style='height:30px;vertical-align: middle'>拒绝原因</th><th style='background-color:#F9F9F9;vertical-align: middle;text-align: left' colspan='5' rowspan='2'>工位已满</th>
                         </tr>
-                        <tr id="diffDiv">
+                        <tr ng-show="completeTr">
+                            <th>保养费用</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                            <th>保养开始时间</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                            <th>保养结束时间</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                        </tr>
 
-                        </tr>
                         </thead>
                     </table>
+                </div>
+                <div class="widget-content nopadding" ng-show="ReservationInfo">
+                    <form action="#" method="get" class="form-horizontal">
+                        <div class="control-group" >
+                            <label class="control-label" style="margin-left:300px;">保养项目：
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span11" style="width:200px;" ng-model="acc_name"  />
+                            </div>
+                        </div>
+                        <div class="control-group" >
+                            <label class="control-label" style="margin-left:300px;">保养费用：
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span11" style="width:200px;" ng-
+                                       model="acc_name"  />
+                            </div>
+                        </div>
+                        <div class="control-group" >
+                            <label class="control-label" style="margin-left:300px;">保养开始时间：
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span11" style="width:200px;" ng-
+                                       model="acc_name"  />
+                            </div>
+                        </div>
+                        <div class="control-group" >
+                            <label class="control-label" style="margin-left:300px;">保养结束时间：
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span11" style="width:200px;" ng-
+                                       model="acc_name"  />
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirm();">确定</button>
+                            <button type="button" class="btn btn-danger"   ng-click="cancel(1)">取消</button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <!--新申请操作 end-->
@@ -148,15 +198,17 @@
                         </tbody>
                     </table>
                 </div>
-                <!--  <div class="pagination alternate" style="float:right;">
+                  <div class="pagination alternate" style="float:right;">
                       共{{totalCount}}条&nbsp;页码{{currentPage+1}}/{{totalPage}} &nbsp;
                       跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
                       <option>1</option>
                   </select>页
-                  </div>-->
+                  </div>
             </div>
             <!--预约服务列表 end-->
         </div>
     </div>
+</div>
+</div>
 </div>
 </div>

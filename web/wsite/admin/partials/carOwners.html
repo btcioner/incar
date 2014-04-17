@@ -1,47 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="CarOwnerApp">
-<head>
-<title>车主</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="../css/bootstrap.min.css" />
-<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
-<link rel="stylesheet" href="../css/uniform.css" />
-<link rel="stylesheet" href="../css/select2.css" />
-<link rel="stylesheet" href="../css/maruti-style.css" />
-<link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" type="text/css" href="../css/mycss/main.css" />
-</head>
-<body ng-controller="carownerCtrl">
-
-<!--Header-part-->
-<div id="header">
-  <h1>Admin后台</h1>
-</div>
-<!--close-Header-part--> 
-
-<!--top-Header-messaages-->
-<div class="btn-group rightzero"> <a class="top_message tip-left" title="Manage Files"><i class="icon-file"></i></a> <a class="top_message tip-bottom" title="Manage Users"><i class="icon-user"></i></a> <a class="top_message tip-bottom" title="Manage Comments"><i class="icon-comment"></i><span class="label label-important">5</span></a> <a class="top_message tip-bottom" title="Manage Orders"><i class="icon-shopping-cart"></i></a> </div>
-<!--close-top-Header-messaages-->
-<!--top-Header-menu-->
-<div id="user-nav" class="navbar navbar-inverse">
-  <ul class="nav">
-  	<li style="color:white;vertical-align:middle; margin-top: 15px;"><span class="text">userAdmin</span></li>
-    <li class=""><a title="" href="../login.html"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
-  </ul>
-</div>
-<!--close-top-Header-menu-->
-<div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i>运营后台</a>
-    <ul>
-        <li class="active"><a href="deviceManage.html?token={{token}}"><i class="icon icon-home"></i> <span>设备管理</span></a> </li>
-        <li> <a href="driveData.html?token={{token}}"><i class="icon icon-signal"></i> <span>行车数据</span></a> </li>
-        <li> <a href="customer4s.html?token={{token}}"><i class="icon icon-inbox"></i> <span>4S客户</span></a> </li>
-        <li><a href="carOwners.html?token={{token}}"><i class="icon icon-th"></i> <span>车主</span></a></li>
-        <li><a href="userManage.html?token={{token}}"><i class="icon icon-fullscreen"></i> <span>系统用户</span></a></li>
-        <li> <a href="knowledgeBase.html?token={{token}}"><i class="icon icon-th-list"></i> <span>知识库</span></a></li>
-    </ul>
-</div>
-<div id="content" style="height:572px;">
+<div id="content">
   <div id="content-header">
       <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>主页</a> <a href="#" class="current">车主</a> </div>
   </div>
@@ -188,6 +145,206 @@
               </div>
           </div>
           <!--添加 end-->
+          <!--一个OBD行车数据详情 start-->
+          <div class="widget-box" ng-show="detailDiv">
+              <div class="widget-title">
+                  <span class="icon"><i class="icon-th"></i></span>
+                  <h5>行车数据</h5>
+                  <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="gotoBack(4)" >返回</a>
+              </div>
+              <div class="widget-content nopadding">
+                  <table class="table table-bordered ">
+                      <thead>
+                      <tr>
+                          <th>OBD编号</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.obdNum}}</th>
+                          <th>SIM卡号</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.sim_number}}</th>
+                          <th>状态</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.act_type}}</th>
+                      </tr>
+                      <tr>
+                          <th>所属4S店</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.org_name}}</th>
+                          <th>品牌</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.brand}}</th>
+                          <th>车款</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.series}}</th>
+                      </tr>
+                      <tr>
+                          <th>城市</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.org_city}}</th>
+                          <th>车主</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.nick}}</th>
+                          <th>联系电话</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.phone}}</th>
+                      </tr>
+                      </thead>
+                  </table>
+              </div>
+              <div class="widget-content nopadding">
+                  <!--<table class="table table-bordered data-table">-->
+                  <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                          <th>OBD编号</th>
+                          <th>win码</th>
+                          <th>品牌</th>
+                          <th>系列</th>
+                          <th>年款</th>
+                          <th>点火电压</th>
+                          <th>发动机运行时间</th>
+                          <th>行驶里程</th>
+                          <th>本次驾驶平均油耗</th>
+                          <th>超速行驶时间(>120km/h)</th>
+                          <th>急加速</th>
+                          <th>急减速</th>
+                          <th>急转弯</th>
+                          <th>熄火电压</th>
+                          <th>累计平均油耗</th>
+                          <th>累计行驶里程</th>
+                          <th>熄火后电压</th>
+                          <th>状态</th>
+                          <th>点火时间</th>
+                          <th>熄火时间</th>
+                          <th>操作</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr class="gradeX" ng-repeat="device in drvInfos">
+                          <td id="tdc">{{device.obdCode}}</td>
+                          <td id="tdc">{{device.vin}}</td>
+                          <td id="tdc">{{device.brand_name}}</td>
+                          <td id="tdc">{{device.series_name}}</td>
+                          <td id="tdc">{{device.modelYear}}</td>
+                          <td id="tdc">{{device.firingVoltage}}</td>
+                          <td id="tdc">{{device.runTime}}</td>
+                          <td id="tdc">{{device.currentMileage}}</td>
+                          <td id="tdc">{{device.currentAvgOilUsed}}</td>
+                          <td id="tdc">{{device.speedingTime}}</td>
+                          <td id="tdc">{{device.speedUp}}</td>
+                          <td id="tdc">{{device.speedDown}}</td>
+                          <td id="tdc">{{device.sharpTurn}}</td>
+                          <td id="tdc">{{device.flameVoltage}}</td>
+                          <td id="tdc">{{device.avgOilUsed}}</td>
+                          <td id="tdc">{{device.mileage}}</td>
+                          <td id="tdc">{{device.voltageAfter}}</td>
+                          <td id="tdc">{{device.carStatus}}</td>
+                          <td id="tdc">{{device.fireTime}}</td>
+                          <td id="tdc">{{device.flameOutTime}}</td>
+                          <td id="tdc">
+                              <a class="btn btn-info btn-mini" ng-click="GetDriveDetail(device.obdCode,device.id);">查看</a>
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="pagination alternate" style="float:right;">
+                  共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
+                  跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId,2);">
+                  <option>1</option>
+              </select>页
+              </div>
+          </div>
+          <!--一个OBD行车数据详情 end-->
+          <!--一次行车数据详情 start-->
+          <div class="widget-box" ng-show="oneDetailDiv">
+              <div class="widget-title">
+                  <span class="icon"><i class="icon-th"></i></span>
+                  <h5>行程数据</h5>
+                  <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="gotoBack(3)" >返回</a>
+              </div>
+              <div class="widget-content nopadding">
+                  <table class="table table-bordered ">
+                      <thead>
+                      <tr>
+                          <th>OBD编号</th>
+                          <th style="background-color:#F9F9F9;">{{chooseOC}}</th>
+                          <th>SIM卡号</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.sim_number}}</th>
+                          <th>状态</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.act_type}}</th>
+                      </tr>
+                      <tr>
+                          <th>所属4S店</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.org_name}}</th>
+                          <th>品牌</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.brand}}</th>
+                          <th>车款</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.series}}</th>
+                      </tr>
+                      <tr>
+                          <th>城市</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.org_city}}</th>
+                          <th>车主</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.nick}}</th>
+                          <th>联系电话</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.phone}}</th>
+                      </tr>
+                      </thead>
+                  </table>
+              </div>
+              <div class="widget-content nopadding">
+                  <!--<table class="table table-bordered data-table">-->
+                  <table class="table table-bordered">
+                      <thead>
+                      <tr >
+                          <th>OBD设备编号</th>
+                          <th>行驶编号</th>
+                          <th>累计平均油耗</th>
+                          <th>累计行驶里程</th>
+                          <th>创建时间</th>
+                          <th>操作</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr class="gradeX" ng-repeat="device in details">
+                          <td id="tdc">{{device.obdCode}}</td>
+                          <td id="tdc">{{device.id}}</td>
+                          <td id="tdc">{{device.avgOilUsed}}</td>
+                          <td id="tdc">{{device.mileage}}</td>
+                          <td id="tdc">{{device.createTime}}</td>
+                          <td id="tdc"><a class="btn btn-info btn-mini" ng-click="GetOneMinuteDetail($index);">详细数据</a></td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="pagination alternate" style="float:right;">
+                  共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
+                  跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId,3);">
+                  <option>1</option>
+              </select>页
+              </div>
+          </div>
+          <!--一次行车数据详情 end-->
+          <!--一分钟行车数据详情 start-->
+          <div class="widget-box" ng-show="oneMinuteDetailDiv">
+              <div class="widget-title">
+                  <span class="icon"><i class="icon-th"></i></span>
+                  <h5>数据流记录</h5>
+                  <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="gotoBack(5)" >返回</a>
+              </div>
+              <div class="widget-content nopadding">
+                  <!--<table class="table table-bordered data-table">-->
+                  <table class="table table-bordered">
+                      <thead>
+                      <tr >
+                          <th>ID</th>
+                          <th>参数</th>
+                          <th>值</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr class="gradeX" ng-repeat="omdd in omdds">
+                          <td id="tdc">{{omdd.id}}</td>
+                          <td id="tdc">{{omdd.tip}}</td>
+                          <td id="tdc">{{omdd.value}}</td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+          <!--一分钟行车数据详情 end-->
           <!--车主信息列表 begin-->
         <div class="widget-box" ng-show="carOwnerDiv">
           <div class="widget-title">
@@ -202,7 +359,7 @@
                         <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;城市：&nbsp;&nbsp;
                             <select style="width:150px;padding-left:15px;" ng-model="city_name" ng-options="to.name as to.name for to in allCity">
                             <option>请选择</option>
-                        </select></th>
+                           </select></th>
                         <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4S店：&nbsp;&nbsp;
                             <select style="width:150px;" ng-model="org_id" ng-options="to.id as to.name for to in org">
                                 <option>请选择</option>
@@ -257,7 +414,7 @@
                     <td style="text-align: center">{{carowner.car_series}}</td>
                     <td style="text-align: center">
                         <a class="btn btn-success btn-info btn-mini" ng-click="modify($index);">修改</a>
-                        <a class="btn btn-danger btn-info btn-mini" ng-click="findDetail($index);">查看</a>
+                        <a class="btn btn-danger btn-info btn-mini" ng-click="GetDriveInfo(carowner.obd_code);">查看</a>
                     </td>
                 </tr>
               </tbody>
@@ -275,20 +432,3 @@
    </div>
 </div>
 </div>
-<div class="row-fluid">
-  <div id="footer" class="span12"> 2014 &copy; 英卡</div>
-</div>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/jquery.dataTables.min.js"></script>
-<script src="../js/jquery.uniform.js"></script>
-<script src="../js/jquery.ui.custom.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/select2.min.js"></script>
-<script src="../js/maruti.js"></script>
-<script src="../js/maruti.tables.js"></script>
-<script src="../js/angular.min.js"></script>
-<script src="../js/fun_js/common.js"></script>
-<script src="../js/fun_js/carownerController.js"></script>
-<script src="../js/sha1.js"></script>
-</body>
-</html>

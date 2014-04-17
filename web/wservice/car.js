@@ -17,7 +17,7 @@
 * 4、建立该车辆与obd_device之间的关系
 * */
 //获得所有车辆信息
-var dao=require('./dao');
+var dao=require("../core/dataAccess/dao");
 exports.list = function(req, res){
     var sql="select * from t_car_info";
     dao.findBySql(sql,null,function(rows){
@@ -35,7 +35,7 @@ exports.get = function(req, res){
 
 //删除一辆车
 exports.delete = function(req, res){
-    var sql="delete from t_car_info where id=?"
+    var sql="delete from t_car_info where id=?";
     var carId= req.param('id');
     dao.executeBySql(sql,[carId],function(){
         res.send({status:"success"});

@@ -4,7 +4,7 @@
 module Service{
     export function main(req : any, res : any):void{
         try{
-            var action = req.route.params[0];
+            var action = req.params[0];
             var actionAPI : (req, res)=>void;
             if(req.method === "GET"){
                 if(action){

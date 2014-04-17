@@ -3,8 +3,7 @@
  */
 
 
-var app = angular.module("UserApp", []);
-app.controller("userCtrl", function($scope, $http){
+function userManageCtrl($scope, $http){
 
     $scope.userAddDiv = false;
     $scope.userListDiv = true;
@@ -35,11 +34,11 @@ app.controller("userCtrl", function($scope, $http){
                     data.accounts[i].last_login_time= $.changeDate(data.accounts[i].last_login_time);
                     if(data.accounts[i].status == 0)
                     {
-                        data.accounts[i].class = "btn btn-info btn-mini";
+                        data.accounts[i]["class"] = "btn btn-info btn-mini";
                         data.accounts[i].text = "解冻";
                     };
                     if(data.accounts[i].status == 1){
-                        data.accounts[i].class = "btn btn-warning btn-mini";
+                        data.accounts[i]["class"] = "btn btn-warning btn-mini";
                         data.accounts[i].text = "冻结";
                     }
                     data.accounts[i].status= $.changeUserStatus(data.accounts[i].status);
@@ -124,6 +123,7 @@ app.controller("userCtrl", function($scope, $http){
     //修改确认
     $scope.ModifyConfirm = function()
     {
+        $scope.userDetail.status = $.changeUserStatusToNum( $scope.userDetail.status);
         $http.put(baseurl + 'organization/1/account/'+$scope.userDetail.id,$scope.userDetail).success(function(data){
             if(data.status == "ok")
             {
@@ -134,6 +134,7 @@ app.controller("userCtrl", function($scope, $http){
                         alert("修改成功");
                         $scope.userModifyDiv = false;
                         $scope.userListDiv = true;
+                        $scope.userDetail.status = $.changeUserStatus($scope.userDetail.status);
                     }
                     else{
                         alert(data.status);
@@ -208,6 +209,4 @@ app.controller("userCtrl", function($scope, $http){
             }
         }
     }
-
-
-})
+}

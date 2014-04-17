@@ -1,7 +1,10 @@
 /**
  * Created by 003383 on 14-2-27.
  */
+
 var app = angular.module("LoginApp", []);
+
+
 app.controller("loginCtrl", function($scope, $http){
    //注册的API
 //    var postData = {name:"jiangli",pwd:"123456",nick:"liz",email:"hyacinth0509@163.com",phone:"13296630210"};
@@ -26,13 +29,18 @@ app.controller("loginCtrl", function($scope, $http){
         $scope.postData = {name:$scope.username1,pwd:sha1_password,agent:"web"};
         $http.post(baseurl+'Login', $scope.postData)
             .success(function(data){
-            if(data.status == "ok" && data.organizations[0].class =="TOP")
+            if(data.status == "ok" && data.organizations[0]["class"] =="TOP")
             {
-                window.location.href='/admin/deviceManage.html';
+                $.cookie("nick",data.account.nick);
+               window.location.href='/admin/index.html';
             }
-            else if(data.status == "ok" && data.organizations[0].class =="4S")
+            else if(data.status == "ok" && data.organizations[0]["class"] =="4S")
             {
-               window.location.href='/4sStore/index.html';
+
+                $.cookie("nick",data.account.nick);
+                $.cookie("org_name",data.organizations[0]["name"]);
+                $.cookie("org_id",data.organizations[0]["id"]);
+                window.location.href='/4sStore/index.html';
             }
             else
             {
@@ -42,7 +50,7 @@ app.controller("loginCtrl", function($scope, $http){
             }
             }).error(function(data){
                 alert("请求无响应");
-        });
+            });
 
     }
 })

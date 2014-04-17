@@ -1,21 +1,21 @@
 /**
  * Created by LM on 14-3-15.
  */
+'use strict';
 var net = require('net');
 var server = net.createServer();
 function toString0X(dataBuffer){
-    var dataString="";
+    var dataString='';
     for(var i=0;i<dataBuffer.length;i++){
         var intVal=dataBuffer.readUInt8(i);
         if(intVal<0x10){
-            dataString+="0"+intVal+" ";
+            dataString+='0'+intVal+' ';
         }
         else{
             dataString+=intVal.toString(16).toUpperCase()+" ";
         }
     }
     return dataString;
-
 };
 
 var sp = require('serialport');

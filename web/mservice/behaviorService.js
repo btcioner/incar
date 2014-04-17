@@ -8,7 +8,7 @@ var mysql = require('mysql');
 
 exports = module.exports = function(service) {
     service.post.behaviorData = behaviorData;
-}
+};
 
 function behaviorData(req, res) {
 

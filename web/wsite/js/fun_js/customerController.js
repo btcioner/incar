@@ -2,8 +2,8 @@
  * Created by Liz on 14-03-26.
  */
 
-var app = angular.module("CustomerApp", []);
-app.controller("customerCtrl", function($scope, $http){
+
+function customerCtrl($scope, $http){
 
     $scope.customerListDiv = true;
     $scope.customerAddDiv = false;
@@ -33,7 +33,6 @@ app.controller("customerCtrl", function($scope, $http){
                 }
                 $scope.orgs = data.orgs;
                 PagingInfo(data.totalCount);
-
             }
             else
             {
@@ -66,8 +65,6 @@ app.controller("customerCtrl", function($scope, $http){
         }
     }
 
-
-
     //分页跳转页面
     $scope.changePage=function(changeId)
     {
@@ -99,7 +96,7 @@ app.controller("customerCtrl", function($scope, $http){
                     admin_nick:$scope.admin_nick,
                     admin_phone:$scope.admin_phone
                 }
-                 GetFirstPageInfo();
+                // GetFirstPageInfo();
                  alert("添加成功");
                 $scope.customerListDiv = true;
                 $scope.customerAddDiv = false;
@@ -182,10 +179,10 @@ app.controller("customerCtrl", function($scope, $http){
    }
 
     //删除
-    $scope.delete = function(index){
+    $scope.deleteRecord = function(index){
         if(confirm("确定要删除吗？")){
             $scope.users.splice(index, 1);
         }
     }
 
-})
+}

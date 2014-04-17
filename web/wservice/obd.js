@@ -52,12 +52,102 @@
  */
 var dao=require("../core/dataAccess/dao");
 var msgCentre=require("../core/message/msgCentre");
+function buildChannel(channel,accountId,params,cb){
+    if(channel==='wx'){
+        //获得用户和组织的微信号
+        var openId=params.openId;
+        var sopenId=params.sopenId;
+        var sql=" select sa.orgId,wu.id as channelKey,ac.accountId" +
+            " from t_wx_service_account sa" +
+            " left join t_wx_user wu on sa.openId=wu.sopenId" +
+            " left join t_account_channel ac on wu.id=ac.channelKey and ac.channelCode=?" +
+            " where wu.openId=? and sa.openId=?";
+        dao.findBySql(sql,['wx',openId,sopenId],function(rows){
+            if(rows.length>0){
+                var channelData=rows[0];
+                var orgId=channelData.orgId;
+                var aId=channelData.accountId;
+                var channelKey=channelData.channelKey;
+                //如果aId有值则说明渠道关系已建立
+                if(aId===null){
+                    var channelJson={
+                        accountId:accountId,
+                        orgId:orgId,
+                        channelCode:'wx',
+                        channelKey:channelKey
+                    };
+                    var sql="insert into t_account_channel set ?";
+                    dao.insertBySql(sql,[channelJson],function(info){
+                        var channelId=info.insertId;
+                        if(channelId){
+                            console.log("成功创建渠道关系"+channelId);
+                            channelJson.channelId=channelId;
+                            cb(null,channelJson);
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+function buildObdByAccount(accountId,param){
+    var obdCode=param.obdCode;
+    var sql="select ao.accountId,ao.obdCode,ao.owner " +
+        "from t_account_obd ao where ao.obdCode=?";
+    dao.findBySql(sql,[accountId,obdCode],function(rows){
+        sql="insert into t_account_obd set ?";
+        var aoJson={
+            accountId:accountId,
+            obdCode:obdCode
+        };
+        if(rows.length>0){
+            var owner=rows[0].owner;
+            var aId=rows[0].accountId;
 
+            if(accountId!==aId){
+                console.log("该OBD已经和别的用户产生绑定");
+                aoJson.owner=0;
+                dao.insertBySql(sql,[aoJson],function(info){
+                    console.log("建立用户-OBD关系，非owner");
+                });
+            }
+            else{
+                console.log("无需绑定");
+            }
+        }
+        else{
+            console.log("建立新绑定关系");
+            aoJson.owner=1;
+            dao.insertBySql(sql,[aoJson],function(info){
+                console.log("建立用户-OBD关系，owner");
+            });
+        }
+    });
+}
+function buildCarByObd(param){
+    var obdCode=param.obdCode;
+    var brand=param.brand;
+    var series=param.series;
+    var modelYear=param.modelYear;
+    var license=param.license;
+    var mileage=param.mileage;
 
+    var sql="update t_car_info set ? where obdCode=?";
+    var carJson={
+        brand:brand,
+        series:series,
+        modelYear:modelYear,
+        license:license,
+        mileage:mileage?mileage:0
+    };
+    dao.executeBySql(sql,[carJson,obdCode],function(){
+        console.log("更新成功");
+    });
+}
 exports.testOBD=function(req,res){
     var obdCode=req.params.obdCode;
     var sql= "select * from t_car";
-    var paramArray=new Array();
+    var paramArray=[];
     dao.findBySql(sql,[],function(rows){
         for(var i=0;i<rows.length;i++){
             var cJson=rows[i];
@@ -76,7 +166,7 @@ exports.testOBD=function(req,res){
         });
 
     });
-}
+};
 exports.bindOBD = function(req, res){
     var channel=req.params.channel;
     var bindJson=req.body;
@@ -109,101 +199,5 @@ exports.bindOBD = function(req, res){
 
 };
 
-function buildChannel(channel,accountId,params,cb){
-    if(channel==='wx'){
-        //获得用户和组织的微信号
-        var openId=params.openId;
-        var sopenId=params.sopenId;
-        var sql=" select sa.orgId,wu.id as channelKey,ac.accountId" +
-            " from t_wx_service_account sa" +
-            " left join t_wx_user wu on sa.openId=wu.sopenId" +
-            " left join t_account_channel ac on wu.id=ac.channelKey and ac.channelCode=?" +
-            " where wu.openId=? and sa.openId=?";
-        dao.findBySql(sql,['wx',openId,sopenId],function(rows){
-            if(rows.length>0){
-                var channelData=rows[0];
-                var orgId=channelData.orgId;
-                var aId=channelData.accountId;
-                var channelKey=channelData.channelKey;
-                //如果aId有值则说明渠道关系已建立
-                if(aId==null){
-                    var channelJson={
-                        accountId:accountId,
-                        orgId:orgId,
-                        channelCode:'wx',
-                        channelKey:channelKey
-                    }
-                    var sql="insert into t_account_channel set ?";
-                    dao.insertBySql(sql,[channelJson],function(info){
-                        var channelId=info.insertId;
-                        if(channelId){
-                            console.log("成功创建渠道关系"+channelId);
-                            channelJson.channelId=channelId;
-                            cb(null,channelJson);
-                        }
-                    });
-                }
-            }
-        });
-    }
-}
 
-function buildObdByAccount(accountId,param){
-    var obdCode=param.obdCode;
-    var sql="select ao.accountId,ao.obdCode,ao.owner " +
-        "from t_account_obd ao where ao.obdCode=?";
-    dao.findBySql(sql,[accountId,obdCode],function(rows){
-        sql="insert into t_account_obd set ?";
-        if(rows.length>0){
-            var owner=rows[0].owner;
-            var aId=rows[0].accountId;
 
-            if(accountId!=aId){
-                console.log("该OBD已经和别的用户产生绑定");
-
-                var aoJson={
-                    owner:0,
-                    accountId:accountId,
-                    obdCode:obdCode
-                };
-                dao.insertBySql(sql,[aoJson],function(info){
-                    console.log("建立用户-OBD关系，非owner");
-                });
-            }
-            else{
-                console.log("无需绑定");
-            }
-        }
-        else{
-            console.log("建立新绑定关系");
-            var aoJson={
-                owner:1,
-                accountId:accountId,
-                obdCode:obdCode
-            };
-            dao.insertBySql(sql,[aoJson],function(info){
-                console.log("建立用户-OBD关系，owner");
-            });
-        }
-    });
-}
-function buildCarByObd(param){
-    var obdCode=param.obdCode;
-    var brand=param.brand;
-    var series=param.series;
-    var modelYear=param.modelYear;
-    var license=param.license;
-    var mileage=param.mileage;
-
-    var sql="update t_car_info set ? where obdCode=?";
-    var carJson={
-        brand:brand,
-        series:series,
-        modelYear:modelYear,
-        license:license,
-        mileage:mileage?mileage:0
-    };
-    dao.executeBySql(sql,[carJson,obdCode],function(){
-        console.log("更新成功");
-    });
-}

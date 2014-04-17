@@ -1,0 +1,198 @@
+<div id="content">
+    <div id="content-header">
+        <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="customerManage.html" class="">客户管理</a></div>
+    </div>
+    <div class="container-fluid">
+    <div class="row-fluid" >
+    <div style="width: 10%;float: left;margin: 2px">
+        <div class="accordion" id="collapse-group">
+            <div class="accordion-group widget-box">
+                <div class="accordion-heading">
+                    <div class="widget-title"> <a  href="#collapseGOne" data-toggle="collapse" class="collapsed" ng-click="customerTab(0);"> <span class="icon"><i class="icon-align-justify"></i></span>
+                        <h5>全部车主</h5>
+                    </a> </div>
+                </div>
+            </div>
+            <div class="accordion-group widget-box" style="margin-top: 2px">
+                <div class="accordion-heading">
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo" data-toggle="collapse"> <span class="icon"><i class="icon-certificate"></i></span>
+                        <h5 >微信车主</h5>
+                    </a> </div>
+                </div>
+                <div class="collapse accordion-body" id="collapseGTwo">
+                    <div class="widget-content" style="text-align: right;padding: 0">
+                        <button class="btn btn-info" style="width: 100%;" >A组</button>
+                        <button class="btn btn-info" style="width: 100%;">B组</button>
+                        <button class="btn btn-info" style="width: 100%;">C组</button>
+                        <button class="btn btn-info" style="width: 100%;">D组</button>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group widget-box" style="margin-top: 2px">
+                <div class="accordion-heading">
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGThree" data-toggle="collapse"> <span class="icon"><i class="icon-globe"></i></span>
+                        <h5 >APP车主</h5>
+                    </a> </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<div class="container-fluid" style="width: 86%;float: left">
+    <div class="row-fluid" >
+        <div class="span12">
+            <div class="widget-box" ng-show="cusDetailDiv">
+                <div class="widget-title">
+                    <span class="icon"><i class="icon-th"></i></span>
+                    <h5>客户详情</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th>车主姓名</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                            <th>联系电话</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                            <th>OBD编号</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                        </tr>
+                        <tr>
+                            <th>车型</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                            <th>车牌号</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                            <th>里程</th>
+                            <th style="background-color:#F9F9F9;"></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="widget-box" ng-show="cusTabDiv">
+                <div class="widget-title">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab1">保养记录</a></li>
+                        <li><a data-toggle="tab" href="#tab2">维修记录</a></li>
+                        <li><a data-toggle="tab" href="#tab3">关怀记录</a></li>
+                        <li><a data-toggle="tab" href="#tab4">联系记录</a></li>
+                        <li><a data-toggle="tab" href="#tab5">行车记录</a></li>
+                    </ul>
+                </div>
+                <div class="widget-content tab-content">
+                    <div id="tab1" class="tab-pane active">
+                        <table class="table table-bordered data-table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>保养时间</th>
+                                <th>保养里程</th>
+                                <th>保养描述</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX">
+                                <td id="tdc">1</td>
+                                <td id="tdc">2013/03/08</td>
+                                <td id="tdc">1000公里</td>
+                                <td id="tdc">车体保养</td>
+                            </tr>
+                            <tr class="gradeX">
+                                <td id="tdc">2</td>
+                                <td id="tdc">2013/03/08</td>
+                                <td id="tdc">1000公里</td>
+                                <td id="tdc">车体保养</td>
+                            </tr>
+                            <tr class="gradeX">
+                                <td id="tdc">3</td>
+                                <td id="tdc">2013/03/08</td>
+                                <td id="tdc">1000公里</td>
+                                <td id="tdc">车体保养</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="tab2" class="tab-pane">
+                        维修记录
+                    </div>
+                    <div id="tab3" class="tab-pane">
+                        关怀记录
+                    </div>
+                    <div id="tab4" class="tab-pane">
+                        联系记录
+                    </div>
+                    <div id="tab5" class="tab-pane">
+                        行车记录
+                    </div>
+                </div>
+            </div>
+            <!--客户 begin-->
+            <div class="widget-box" ng-show="cusListDiv">
+                <div class="widget-title">
+                    <span class="icon"><i class="icon-th"></i></span>
+                    <h5>客户列表</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <!--<table class="table table-bordered data-table">-->
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;城市： &nbsp;&nbsp;&nbsp;<select style="width:150px;">
+                                <option>请选择</option>
+                            </select></th>
+                            <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4S店：&nbsp;&nbsp;&nbsp;<select style="width:150px;">
+                                <option>请选择</option>
+                            </select></th>
+                            <th style="vertical-align: middle;">品牌：&nbsp;&nbsp;&nbsp;<select style="width:150px;">
+                                <option>请选择</option>
+                            </select></th>
+                            <th  style="vertical-align: middle;"><a class="btn btn-success" style="" ng-click="">搜索</a></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="widget-content nopadding">
+                    <!--<table class="table table-bordered data-table">-->
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>车主</th>
+                            <th>联系电话</th>
+                            <th>车型</th>
+                            <th>车牌号</th>
+                            <th>OBD编号</th>
+                            <th>上次联系时间</th>
+                            <th>上次联系内容</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="mt in currentRecord">
+                        <tr class="gradeX">
+                            <td style="text-align: center">{{$index + 1}}</td>
+                            <td style="text-align: center"><a ng-click="customerDetail()">{{mt.test1}}</a></td>
+                            <td style="text-align: center">{{mt.test2}}</td>
+                            <td style="text-align: center">{{mt.test3}}</td>
+                            <td style="text-align: center">{{mt.test4}}</td>
+                            <td style="text-align: center">{{mt.test5}}</td>
+                            <td style="text-align: center">{{mt.test6}}</td>
+                            <td style="text-align: center">{{mt.test7}}</td>
+                            <td style="text-align: center">{{mt.test8}}</td>
+                            <td style="text-align: center">{{mt.test9}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination alternate" style="float:right;">
+                    共{{totalCount}}条&nbsp;页码{{currentPage+1}}/{{totalPage}} &nbsp;
+                    跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
+                    <option>1</option>
+                </select>页
+                </div>
+            </div>
+            <!--保养提醒列表 end-->
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

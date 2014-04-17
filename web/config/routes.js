@@ -51,6 +51,7 @@ module.exports = function(app) {
     app.delete('/wservice/carowner/:acc_id', wservice.DeleteCarOwner);
 
     app.get('/wservice/organization/:org_id/obd', wservice.GetOBDByOrg);
+    app.get('/wservice/obd', wservice.GetAllOBDDevices);
     app.get('/wservice/obd/:obd_code', wservice.GetOBDByCode);
     app.put('/wservice/obd/:obd_code', wservice.ModifyOBD);
 

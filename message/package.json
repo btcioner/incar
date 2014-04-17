@@ -1,0 +1,17 @@
+{
+    "name": "nodejs-grunt",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "latest"
+    },
+    "devDependencies": {
+        "grunt": "latest",
+        "jshint-stylish":"latest",
+        "grunt-contrib-jshint":"latest",
+        "grunt-contrib-watch":"latest"
+    }
+}
