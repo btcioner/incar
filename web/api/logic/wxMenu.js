@@ -117,7 +117,7 @@ wxMenu.textMsgRepliers['my4S.onManual'] = my4S.onManualMessages;
 wxMenu.onClick = [];
 
 wxMenu.onClick['MYCAR.FUEL'] = function(message, session, next) {
-    myCar.fuelReport(message.FromUserName, function(err, reportContent){
+    myCar.fuelReport(message.FromUserName, message.ToUserName, function(err, reportContent){
         if (err) {
             // error handling ...
             next(err);

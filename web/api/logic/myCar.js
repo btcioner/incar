@@ -11,7 +11,7 @@ var carbon = require('./carbon');
 
 var myCar = {};
 
-myCar.fuelReport = function(userName, callback){
+myCar.fuelReport = function(userName, serverName, callback){
     // 模板将来要从数据库来读取
     var tpl = [
         '最近一次驾驶：\n',
@@ -33,7 +33,7 @@ myCar.fuelReport = function(userName, callback){
 
     var compiled = ejs.compile(tpl);
 
-    fuel.getReport(userName, function(err, result) {
+    fuel.getReport(userName, serverName, function(err, result) {
         if (err) { callback(err);}
         else {
             if (result.fuelDataLastTime.fuel !== undefined && result.fuelDataLastTime.fuel !== null) { result.fuelDataLastTime.fuel = result.fuelDataLastTime.fuel.toFixed(2); }
