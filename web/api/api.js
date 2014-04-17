@@ -80,6 +80,7 @@ api.onEventMsg = function(message, req, res, next) {
                 });
             }
             else {
+                console.log('No function defined for the event key - ' + message.EventKey);
                 res.send(' ');
             }
             break;
