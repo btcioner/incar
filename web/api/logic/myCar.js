@@ -72,9 +72,9 @@ myCar.carbonReport = function(userName, serverName, callback){
             if (result.carbonDataLastWeek.carbon !== undefined && result.carbonDataLastWeek.carbon !== null) { result.carbonDataLastWeek.carbon = result.carbonDataLastWeek.carbon.toFixed(2); }
             if (result.carbonDataLastMonth.carbon !== undefined && result.carbonDataLastMonth.carbon !== null) { result.carbonDataLastMonth.carbon = result.carbonDataLastMonth.carbon.toFixed(2); }
 
-            if (result.carbonDataLastWeek.carbon === 0)
+            if (result.carbonDataLastWeek.carbon === 0.00)
                 result.carbonDataLastWeek.percentage = 100;
-            if (result.carbonDataLastMonth.carbon === 0)
+            if (result.carbonDataLastMonth.carbon === 0.00)
                 result.carbonDataLastMonth.percentage = 100;
 
             callback(null, compiled(result));
