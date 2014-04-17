@@ -4,7 +4,7 @@ angular.module('websiteApp')
     .controller('MainCtrl', function ($scope, $http) {
         $scope.testFuelData = function() {
             var postData = {};
-            postData.user = 'o1fUut4FYMq3xJP0zs_hNAjAbVvQ';
+            postData.user = 'o1fUut3BkIo8XM6-8HG-3ORAtvls@gh_895980ee6356';
             postData.end = new Date();
             postData.start = new Date('2014/03/01');
             $http.post('/mservice/fuelData', postData).success(function(data, status, headers, config) {
@@ -15,7 +15,7 @@ angular.module('websiteApp')
         };
         $scope.testCarbonData = function() {
             var postData = {};
-            postData.user = 'o1fUut4FYMq3xJP0zs_hNAjAbVvQ';
+            postData.user = 'o1fUut3BkIo8XM6-8HG-3ORAtvls@gh_895980ee6356';
             postData.end = new Date();
             postData.start = new Date('2014/02/01');
             $http.post('/mservice/carbonData', postData).success(function(data, status, headers, config) {
@@ -27,7 +27,7 @@ angular.module('websiteApp')
         $scope.testEnrollUser = function() {
 
             var postData = {};
-            postData.user = 'o1fUut4FYMq3xJP0zs_hNAjAbVvQ';
+            postData.user = 'o1fUut3BkIo8XM6-8HG-3ORAtvls@gh_895980ee6356';
             postData.obd_code = 'WFQ00013044';
             postData.owner_flag = 1;
             postData.enroll_time = new Date();
