@@ -5,7 +5,9 @@
 // use ng-view for redirct load different page
 
 angular.module("SReservationApp", [
-
+    'ngCookies',
+    'ngResource',
+    'ngSanitize',
     'ngRoute'
 ]).config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.

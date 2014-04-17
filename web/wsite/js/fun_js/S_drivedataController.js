@@ -49,6 +49,7 @@ angular.module("DriveDataApp", [])
 //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
+          $scope.queryString = "&org="+ $.cookie("org_name");
           if($scope.city_name=="请选择")$scope.city_name="";
           $scope.queryString  = $scope.queryString+"&obd_code="+$scope.obd_num+"&city="+$scope.city_name;
           GetFirstPageInfo();
@@ -65,8 +66,6 @@ angular.module("DriveDataApp", [])
             $scope.totalOption[i]={size:i+1};
         }
     }
-
-
 
 
     //paging redirct
@@ -166,9 +165,6 @@ angular.module("DriveDataApp", [])
 
         }
     }
-
-
-
 
     //删除
     $scope.deleteRecord = function(index){

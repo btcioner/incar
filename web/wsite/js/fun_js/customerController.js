@@ -33,7 +33,6 @@ function customerCtrl($scope, $http){
                 }
                 $scope.orgs = data.orgs;
                 PagingInfo(data.totalCount);
-
             }
             else
             {
@@ -65,8 +64,6 @@ function customerCtrl($scope, $http){
             $scope.totalOption[i]={size:i+1};
         }
     }
-
-
 
     //分页跳转页面
     $scope.changePage=function(changeId)

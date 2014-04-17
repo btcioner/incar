@@ -49,11 +49,12 @@ function deviceCtrl($scope, $http)
                 for(var i=0;i<data.devs.length;i++)
                 {
                     data.devs[i].act_type = $.changeStatus(data.devs[i].act_type);
+
                     data.devs[i].created_date = $.changeDate(data.devs[i].created_date);
-                    if(data.devs[i].join_time!=null)
-                    {
-                       data.devs[i].join_time = $.changeDate(data.devs[i].join_time);
-                    }
+
+
+                    data.devs[i].join_time = $.changeDate(data.devs[i].join_time);
+
                 }
                   $scope.devices= data.devs;
                   PagingInfo(data.totalCount);
@@ -233,7 +234,8 @@ function deviceCtrl($scope, $http)
         $http.put(baseurl + 'obd/'+obd_code,$scope.postData).success(function(data){
             if(data.status == "ok")
             {
-                alert("修改成功！")
+                alert("修改成功！");
+                GetFirstPageInfo();
                 $scope.modifySim = false;
                 $scope.deviceList = true;
                 $scope.devices[$scope.index].sim_number = sim_number;
