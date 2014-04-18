@@ -2,7 +2,8 @@
 'use strict';
 
 var errorHandler = require('errorHandler');
-
+var bodyParser=require("body-parser");
+var methodOverride=require("method-override");
 module.exports = function(app) {
     if (process.env.NODE_ENV === 'development') {
         app.use(function noCache(req, res, next) {
@@ -13,6 +14,8 @@ module.exports = function(app) {
         });
         app.use(errorHandler(),null);
     }
+    app.use(bodyParser());
+    app.use(methodOverride());
 };
 
 

@@ -6,7 +6,13 @@
         "start": "node server.js"
     },
     "dependencies": {
-        "express": "latest"
+        "express": "latest",
+        "connect": "latest",
+        "errorhandler":"latest",
+        "iconv-lite": "latest",
+        "serialport":"latest",
+        "body-parser":"latest",
+        "method-override": "latest"
     },
     "devDependencies": {
         "grunt": "latest",

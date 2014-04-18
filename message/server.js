@@ -20,7 +20,7 @@ require('./config/routes')(app);
 
 // Start server
 app.listen(config.port, function() {
-    console.log('Message server is listening on port %d in %s mode.\n\n', config.port, app.get('env'));
+    console.log('Message server is listening on port %d in %s mode.', config.port, app.get('env'));
 });
 
 // Expose app

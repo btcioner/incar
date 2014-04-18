@@ -2,9 +2,11 @@
  * Created by LM on 14-3-15.
  */
 'use strict'
+
 var net = require('net');
 var server = net.createServer();
 var dataManager = require('./dataManager');
+var message=require('./message');
 var byteCmd=[0xFE01,0xFE04,0xFE16,0xFE17,0xFE19];
 var wordCmd=[0xFE06,0xFE08,0xFE0A,0xFE0C,0xFE0D,0xFE0E,0xFE0F,0xFE11,0xFE12,0xFE1A];
 var longCmd=[0xFE03,0xFE14];
@@ -19,7 +21,7 @@ function getValueByID(id){
         return dataManager.nextLong();
     }
     if(id===0xFE00){
-        var faultCode=new Array();
+        var faultCode=[];
         var fcCount=dataManager.nextByte();               //故障码个数
         for(var i=0;i<fcCount;i++){
             var code=dataManager.nextString();             //故障码
@@ -30,15 +32,15 @@ function getValueByID(id){
         return faultCode;
     }
     if(id===0xFE10){
-        var interval=new Array();
-        for(var i=0;i<dataManager.nextByte();i++){
+        var interval=[];
+        for(i=0;i<dataManager.nextByte();i++){
             interval.push(dataManager.nextWord());
         }
         return interval;
     }
     if(id===0xFE15){
-        var voltage=new Array();
-        for(var i=0;i<dataManager.nextWord();i++){
+        var voltage=[];
+        for(i=0;i<dataManager.nextWord();i++){
             voltage.push(dataManager.nextByte());
         }
         return voltage;
@@ -71,7 +73,7 @@ function setValueByID(id,value){
     }
     if(id===0xFE15){
         dataManager.writeWord(value.length);
-        for(var i=0;i<value.length;i++){
+        for(i=0;i<value.length;i++){
             dataManager.writeByte(value[i]);
         }
         return;
@@ -88,14 +90,14 @@ function receive1621(dataBuffer){
     var series=dataManager.nextByte();                  //系列
     var modelYear=dataManager.nextByte();               //年款
 
-    var content=new Array();
+    var content=[];
     var contentCount=dataManager.nextWord();
     for(var i=0;i<contentCount;i++){
         var id=dataManager.nextWord();                  //ID
         var value=getValueByID(id);
         content.push({id:id,value:value});
     }
-    var json1621={
+    return {
         obdCode:obdCode,
         vin:vin,
         brand:brand,
@@ -103,7 +105,6 @@ function receive1621(dataBuffer){
         modelYear:modelYear,
         content:content
     };
-    return json1621;
 }
 function receive1625(dataBuffer){
     dataManager.init(dataBuffer,2);
@@ -117,7 +118,7 @@ function receive1625(dataBuffer){
     var firmwareVersion=dataManager.nextString();       //固件版本号
     var softwareVersion=dataManager.nextString();       //软件版本号
     var softType=dataManager.nextByte();                //软件类别
-    var json1625={
+    return {
         obdCode:obdCode,
         vin:vin,
         brand:brand,
@@ -128,7 +129,6 @@ function receive1625(dataBuffer){
         softwareVersion:softwareVersion,
         softType:softType
     };
-    return json1625;
 }
 //1622获得OBD相关信息，传入[id1,id2]返回{id1:val1,id2:val2},ID来源4.01以及4.02
 function send1621(sim,idArray){
@@ -140,7 +140,7 @@ function send1621(sim,idArray){
     for(var i=0;i<idArray.length;i++){
         dataManager.writeWord(idArray[i]);
     }
-    sendMessage(dataManager.getBuffer());
+    message.send(dataManager.getBuffer());
 }
 //1623设置OBD相关信息，传入{id1:val1,id2:val2},ID来源4.01
 function send1623(sim,obdInfo){
@@ -154,7 +154,7 @@ function send1623(sim,obdInfo){
         dataManager.writeWord(numKey);
         setValueByID(numKey,obdInfo[key]);
     }
-    sendMessage(dataManager.getBuffer());
+    message.send(dataManager.getBuffer());
 }
 //1624清空累计平均油耗
 function send1624(sim){
@@ -162,7 +162,7 @@ function send1624(sim){
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
     dataManager.writeWord(0x1624);
-    sendMessage(dataManager.getBuffer());
+    message.send(dataManager.getBuffer());
 }
 //1625获得OBD版本信息
 function send1625(sim){
@@ -170,7 +170,7 @@ function send1625(sim){
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
     dataManager.writeWord(0x1625);
-    sendMessage(dataManager.getBuffer());
+    message.send(dataManager.getBuffer());
 }
 //1626清除故障码
 function send1626(sim){
@@ -178,7 +178,7 @@ function send1626(sim){
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
     dataManager.writeWord(0x1626);
-    sendMessage(dataManager.getBuffer());
+    message.send(dataManager.getBuffer());
 }
 //16E0还原出厂设置
 function send16E0(sim){
@@ -186,24 +186,26 @@ function send16E0(sim){
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
     dataManager.writeWord(0x16E0);
-    sendMessage(dataManager.getBuffer());
+    message.send(dataManager.getBuffer());
 }
 
 
 
 //接收Web端发送短信的请求并完成短信发送
 exports.receiveMessageRequest=function(req,res){
+    console.log(req.body);
     var param=req.params;
     var sim=param.sim;
-    var cmd=param.cmd;
+    var cmd=parseInt(param.cmd);
     var body=req.body;
+    var back={status:'success'};
     switch(cmd){
-        case 0x1621:
-            var idArray=body.idArray;
+        case 0x1620:
+            var idArray=body['idArray'];
             send1621(sim,idArray);
             break;
         case 0x1623:
-            var obdInfo=body.obdInfo;
+            var obdInfo=body['obdInfo'];
             send1623(sim,obdInfo);
             break;
         case 0x1624:
@@ -219,11 +221,13 @@ exports.receiveMessageRequest=function(req,res){
             send16E0(sim);
             break;
     }
+    res.send(back);
 };
 //接收OBD数据端短信数据的回复并转给Web端
 exports.receiveMessageResponse=function(req,res){
     var returnJson={};
     var data=req.body.dataString;
+    var back={status:'success'};
     switch (commandWord) {
         case 0x1621:
             returnJson = receive1621(data);
@@ -232,4 +236,5 @@ exports.receiveMessageResponse=function(req,res){
             returnJson = receive1625(data);
             break;
     }
+    res.send(back);
 };
