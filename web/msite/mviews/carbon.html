@@ -32,7 +32,7 @@
         #y_axis {
             position: relative;
             float: left;
-            width: 30px;
+            width: 35px;
         }
     </style>
 <script type="text/javascript">
@@ -89,17 +89,17 @@
         <div id="datePicker">
             <div style="float: left;margin-top: 10px">开始&nbsp;</div>
             <div style="width: 37%;float: left;text-align: left;">
-                <input name="start" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" onchange="search()" id="start" style="vertical-align:middle;font-size: 14px" />
+                <input name="start" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" oninput="search()" id="start" style="vertical-align:middle;font-size: 14px" />
             </div>
             <div style="float: left;margin-top: 10px">&nbsp;&nbsp;结束&nbsp;</div>
             <div style="width: 37%;float: left;text-align: left;font-size: 10px">
-                <input name="end" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" onchange="search()" id="end" style="vertical-align:middle;font-size: 14px" />
+                <input name="end" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" oninput="search()" id="end" style="vertical-align:middle;font-size: 14px" />
             </div>
             </div>
      </div>
       <hr color="#CCCCCC" style="height:5px;width: 100%" >
     <div id="fuelDetail"  style="margin-bottom:5px; margin-top:5px">
-     <table style="font-size:18px;">
+     <table style="font-size:14px;">
        <tr><td style="text-align:right">本次行驶碳排放参考量为：</td><td id="lastCarbon">7.0kg</td></tr>
        <tr><td style="text-align:right">本周行驶碳排放参考量为：</td><td id="weekCarbon">24kg</td></tr>
        <tr><td style="text-align:right">本月行驶碳排放参考量为：</td><td id="monthCarbon">256kg</td></tr>
@@ -120,8 +120,8 @@
          str=location.href;
          var beginDate=new Date($('#start').val());
          var endDate=new Date($('#end').val());
-         title="我的排碳量";
-         desc="分享我的排碳量";
+         title="我的碳排放";
+         desc="分享我的碳排放";
          link=str.substring(0,str.lastIndexOf('/'))+"/carbonShare.html?user="+user+"&start="+beginDate.toDateString()+"&end="+endDate.toDateString();
          weixinShareTimeline(title,desc,link,"");
      }
@@ -130,7 +130,7 @@
          str=location.href;
          var beginDate=new Date($('#start').val());
          var endDate=new Date($('#end').val());
-         title="我的排碳量";
+         title="我的碳排放";
          link=str.substring(0,str.lastIndexOf('/'))+"/carbonShare.html?user="+user+"&start="+beginDate.toDateString()+"&end="+endDate.toDateString();
          weixinShareWeibo(title,link);
      }
@@ -139,20 +139,23 @@
          str=location.href;
          var beginDate=new Date($('#start').val());
          var endDate=new Date($('#end').val());
-         title="我的排碳量";
-         desc="分享我的排碳量";
+         title="我的碳排放";
+         desc="分享我的碳排放";
          link=str.substring(0,str.lastIndexOf('/'))+"/carbonShare.html?user="+user+"&start="+beginDate.toDateString()+"&end="+endDate.toDateString();
          weixinShareFriend(title,desc,link,"");
      }
      //将传回的数据转换为图表控件所需格式
-     function carbonDataConvert(data){
-         var myData=new [];
-         myData[0].color="#c05020";
+     function chartDataConvert(data){
+         var fuelData=new Array();
+         fuelData[0]={};
+         fuelData[0].color="#c05020";
+         fuelData[0].data=new Array();
          for(i=0;i<data.length;i++){
-             myData[0].data[i].x=i;
-             myData[0].data[i].y=data[i].carbon;
+             fuelData[0].data[i]={}
+             fuelData[0].data[i].x=i;
+             fuelData[0].data[i].y=parseFloat(data[i].carbon);
          }
-         return myData;
+         return fuelData;
      }
      //创建曲线图
      function createChart(){
@@ -186,7 +189,7 @@
                  document.getElementById("weekCarbon").innerHTML=result.carbonDataLastWeek.carbon+"kg";
                  document.getElementById("monthCarbon").innerHTML=result.carbonDataLastInterval.carbon+"kg";
 
-                 carbonChartData=carbonDataConvert(result.carbonData);
+                 carbonChartData=chartDataConvert(result.carbonData);
                  createChart();
 
              }
@@ -209,7 +212,9 @@
 
                  document.getElementById("chartStart").innerHTML=beginDate.getFullYear()+"-"+(beginDate.getMonth()+1)+"-"+beginDate.getDate();
                  document.getElementById("chartEnd").innerHTML=endDate.getFullYear()+"-"+(endDate.getMonth()+1)+"-"+endDate.getDate();
-                 carbonChartData = carbonDataConvert(result.carbonData);
+
+                 carbonChartData = chartDataConvert(result.carbonData);
+
                  createChart();
 
              }

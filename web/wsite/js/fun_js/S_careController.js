@@ -5,7 +5,7 @@
 function careCtrl($scope, $http){
     $scope.maintainListDiv = true;
     $scope.applyOperDiv = false;
-    $http.get('../js/fun_js/maintainInfo1.json').success(function(data){
+    $http.get('../js/fun_js/maintainInfo3.json').success(function(data){
         $scope.maintainList = data;
     });
 

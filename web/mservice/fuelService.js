@@ -8,7 +8,7 @@ var mysql = require('mysql');
 
 exports = module.exports = function(service) {
     service.post.fuelData = fuelData;
-}
+};
 
 function fuelData(req, res) {
 
@@ -65,21 +65,38 @@ function fuelData(req, res) {
 
 function getObdCode(db, userName, callback) {
     var pool = db();
+    var temp = userName.split('@');
+    var serverName = temp[1];
+    userName = temp[0];
 
-    pool.query('select id from t_wx_user where openid = ?;',[userName], function(err, rows){
+    pool.query('select id from t_wx_user where openid = ? and sopenid = ?;',[userName, serverName], function(err, rows){
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
-                pool.query('select obd_code from t_wx_user_obd where wx_user_id = ?', [rows[0].id], function(err, rows) {
+                pool.query('select accountId from t_account_channel where channelCode = "wx" and channelKey = ?', [userName + ':' + serverName], function(err, rows) {
                     if (err) { callback(err); }
                     else {
                         if (rows && rows.length === 1) {
-                            callback(null, rows[0].obd_code);
-                        } else { callback(new Error('multiple rows returned for one wx user id being an owner of an obd device in fuel mservice.')); }
+                            pool.query('select car_id from t_car_user where acc_id = ?', [rows[0].accountId], function(err, rows) {
+                                if (err) { callback(err); }
+                                else {
+                                    if (rows && rows.length === 1) {
+                                        pool.query('select obd_code from t_car_info where id = ?', [rows[0].car_id], function(err, rows) {
+                                            if (err) { callback(err); }
+                                            else {
+                                                if (rows && rows.length === 1) {
+                                                    callback(null, rows[0].obd_code);
+                                                } else { callback(new Error('zero of multiple rows returned for obd_code from car_info table.')); }
+                                            }
+                                        });
+                                    } else { callback(new Error('zero of multiple rows returned for one acct user from account-car map.')); }
+                                }
+                            });
+                        } else { callback(new Error('zero of multiple rows returned for one wx user from account-channel map.')); }
                     }
                 });
             } else {
-                callback(new Error('zero or multiple rows returned for one wx user openid in fuel mservice.'));
+                callback(new Error('zero or multiple rows returned for matched wx user from specified openid and sopenid.'));
             }
         }
     });
@@ -92,7 +109,7 @@ function getFuelData(db, obdCode, startDatetime, endDatetime, callback) {
     var sqlWithParameters = [
         'select SUM(currentAvgOilUsed*currentMileage) fuelTotal, SUM(currentMileage) mileTotal ',
         'from t_obd_drive ',
-        'where (fireTime < flameoutTime) and (fireTime > ?) and (fireTime < ?) and (obdCode = ?) ',
+        'where (fireTime < flameoutTime) and (fireTime > ?) and (fireTime < ?) and (obdCode = ?) '
     ].join('');
 
     var timeDuration = Math.ceil((endDatetime - startDatetime)/(24*60*60*1000));
