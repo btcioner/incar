@@ -1,7 +1,7 @@
 
 'use strict';
 
-var errorHandler = require('errorhandler');
+var errorHandler = require('errorHandler');
 
 module.exports = function(app) {
     if (process.env.NODE_ENV === 'development') {
@@ -11,7 +11,7 @@ module.exports = function(app) {
             res.header('Expires', 0);
             next();
         });
-        app.use(errorHandler());
+        app.use(errorHandler(),null);
     }
 };
 

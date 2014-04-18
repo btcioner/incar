@@ -1,57 +1,10 @@
 /**
  * Created by LM on 14-3-15.
  */
+'use strict'
 var net = require('net');
 var server = net.createServer();
 var dataManager = require('./dataManager');
-var callbackMapping={};
-function sendMessage(data){
-    var client=net.connect({host:'127.0.0.1',port: 12345},function() {
-        console.log('client connected');
-        client.write(data);
-        client.end();
-    });
-}
-
-server.on('connection', function(socket) {
-    console.log('\nmessage server: connection came in and connected. From:: ' + socket.remoteAddress + ':' + socket.remotePort + '\n');
-
-    //绑定数据接收的事件
-    socket.on('data', function(data) {
-        var dataBuffer = null;
-        if (Buffer.isBuffer(data))
-            dataBuffer = data;
-        else
-            dataBuffer = new Buffer(data);
-        var returnJson = undefined;
-        var commandWord = dataBuffer.readUInt16BE(0);
-        switch (commandWord) {
-            case 0x1621:
-                returnJson = packetProcess_1621(dataBuffer);
-                break;
-            case 0x1625:
-                returnJson = packetProcess_1625(dataBuffer);
-                break;
-        }
-        var cb=callbackMapping[returnJson.obdCode];
-        if(cb){
-            cb(returnJson);
-            callbackMapping.delete(returnJson.obdCode);
-        }
-    });
-
-    socket.on('end', function() {
-        console.log('\nmessage server connection closed. From:: ' + this._peername.address + ':' + this._peername.port + '\n');
-    });
-});
-
-server.on('close', function() {
-    console.log('\nmessage server is closing...\n');
-});
-
-server.listen(54321, function() {
-    console.log('message server start listenning on port 54321...\n============================================================\n');
-});
 var byteCmd=[0xFE01,0xFE04,0xFE16,0xFE17,0xFE19];
 var wordCmd=[0xFE06,0xFE08,0xFE0A,0xFE0C,0xFE0D,0xFE0E,0xFE0F,0xFE11,0xFE12,0xFE1A];
 var longCmd=[0xFE03,0xFE14];
@@ -125,7 +78,8 @@ function setValueByID(id,value){
     }
     dataManager.writeString(value);
 }
-function packetProcess_1621(dataBuffer){
+
+function receive1621(dataBuffer){
     dataManager.init(dataBuffer,2);
     //1、获得报文内容
     var obdCode=dataManager.nextString();               //OBD编号
@@ -151,7 +105,7 @@ function packetProcess_1621(dataBuffer){
     };
     return json1621;
 }
-function packetProcess_1625(dataBuffer){
+function receive1625(dataBuffer){
     dataManager.init(dataBuffer,2);
     //1、获得报文内容
     var obdCode=dataManager.nextString();               //OBD编号
@@ -176,12 +130,8 @@ function packetProcess_1625(dataBuffer){
     };
     return json1625;
 }
-
-
-
-
 //1622获得OBD相关信息，传入[id1,id2]返回{id1:val1,id2:val2},ID来源4.01以及4.02
-exports.getOBDRuntime=function(obdCode,sim,idArray,cb){
+function send1621(sim,idArray){
     dataManager.init(new Buffer(1024),0);
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
@@ -190,11 +140,10 @@ exports.getOBDRuntime=function(obdCode,sim,idArray,cb){
     for(var i=0;i<idArray.length;i++){
         dataManager.writeWord(idArray[i]);
     }
-    callbackMapping[obdCode]=cb;
     sendMessage(dataManager.getBuffer());
-};
+}
 //1623设置OBD相关信息，传入{id1:val1,id2:val2},ID来源4.01
-exports.setOBDInfo=function(obdCode,sim,obdInfo){
+function send1623(sim,obdInfo){
     dataManager.init(new Buffer(1024),0);
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
@@ -206,40 +155,81 @@ exports.setOBDInfo=function(obdCode,sim,obdInfo){
         setValueByID(numKey,obdInfo[key]);
     }
     sendMessage(dataManager.getBuffer());
-};
+}
 //1624清空累计平均油耗
-exports.clearAvgOilUsed=function(obdCode,sim,cb){
+function send1624(sim){
     dataManager.init(new Buffer(19),0);
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
     dataManager.writeWord(0x1624);
-    callbackMapping[obdCode]=cb;
     sendMessage(dataManager.getBuffer());
-};
+}
 //1625获得OBD版本信息
-exports.getOBDVersionInfo=function(obdCode,sim,cb){
+function send1625(sim){
     dataManager.init(new Buffer(19),0);
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
     dataManager.writeWord(0x1625);
-    callbackMapping[obdCode]=cb;
     sendMessage(dataManager.getBuffer());
-};
+}
 //1626清除故障码
-exports.clearFaultCode=function(obdCode,sim,cb){
+function send1626(sim){
     dataManager.init(new Buffer(19),0);
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
     dataManager.writeWord(0x1626);
-    callbackMapping[obdCode]=cb;
     sendMessage(dataManager.getBuffer());
-};
+}
 //16E0还原出厂设置
-exports.resetDefault=function(obdCode,sim,cb){
+function send16E0(sim){
     dataManager.init(new Buffer(19),0);
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
     dataManager.writeWord(0x16E0);
-    callbackMapping[obdCode]=cb;
     sendMessage(dataManager.getBuffer());
+}
+
+
+
+//接收Web端发送短信的请求并完成短信发送
+exports.receiveMessageRequest=function(req,res){
+    var param=req.params;
+    var sim=param.sim;
+    var cmd=param.cmd;
+    var body=req.body;
+    switch(cmd){
+        case 0x1621:
+            var idArray=body.idArray;
+            send1621(sim,idArray);
+            break;
+        case 0x1623:
+            var obdInfo=body.obdInfo;
+            send1623(sim,obdInfo);
+            break;
+        case 0x1624:
+            send1624(sim);
+            break;
+        case 0x1625:
+            send1625(sim);
+            break;
+        case 0x1626:
+            send1626(sim);
+            break;
+        case 0x16E0:
+            send16E0(sim);
+            break;
+    }
+};
+//接收OBD数据端短信数据的回复并转给Web端
+exports.receiveMessageResponse=function(req,res){
+    var returnJson={};
+    var data=req.body.dataString;
+    switch (commandWord) {
+        case 0x1621:
+            returnJson = receive1621(data);
+            break;
+        case 0x1625:
+            returnJson = receive1625(data);
+            break;
+    }
 };
