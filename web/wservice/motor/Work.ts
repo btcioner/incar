@@ -92,15 +92,41 @@ module Work{
         approve(req, res){
             if(this.step !== "applied") { res.json(new Service.TaskException(-1, "只有处于'已申请'状态才可以被批准", null)); return; }
 
-            var sql = "UPDATE t_work SET step = 'approved' WHERE id = ?";
+            var sql = "UPDATE t_work SET step = 'approved' WHERE id = ? and step = 'applied'";
             var dac = Service.MySqlAccess.RetrievePool();
             dac.query(sql, [this.id], (ex, result)=>{
                 if(ex) {res.json(new Service.TaskException(-1, "批准保养申请失败", ex)); return; }
+                else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "批准保养申请失败,请刷新重试", null)); return; } }
                 else{
                     this.step = "approved";
                     sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
                     dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                         if(ex) {res.json(new Service.TaskException(-1, "保养申请成功,但记录日志失败", ex)); return; }
+                        else{
+                            res.json({status:"ok"});
+                        }
+                    });
+                }
+            });
+        }
+
+        // 拒绝保养申请
+        reject(req, res){
+            if(this.step !== "applied") { res.json(new Service.TaskException(-1, "只有处于'已申请'状态才可以被拒绝", null)); return; }
+            if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
+
+            this.json_args = JSON.stringify({reason:req.body.reason});
+
+            var sql = "UPDATE t_work SET step = 'rejected', json_args = ? WHERE id = ? and step = 'applied'";
+            var dac = Service.MySqlAccess.RetrievePool();
+            dac.query(sql, [this.json_args, this.id], (ex, result)=>{
+                if(ex) {res.json(new Service.TaskException(-1, "拒绝保养申请失败", ex)); return; }
+                else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "拒绝保养申请失败,请刷新重试", null)); return; } }
+                else{
+                    this.step = "rejected";
+                    sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
+                    dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
+                        if(ex) {res.json(new Service.TaskException(-1, "拒绝申请成功,但记录日志失败", ex)); return; }
                         else{
                             res.json({status:"ok"});
                         }
