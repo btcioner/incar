@@ -9,3 +9,4 @@
 /// <reference path="CarOwner.ts" />
 /// <reference path="Manual.ts" />
 /// <reference path="PromotionSlot.ts" />
+/// <reference path="Work.ts" />

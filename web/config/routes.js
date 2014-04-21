@@ -61,6 +61,11 @@ module.exports = function(app) {
     app.post('/wservice/manual/:id', wservice.ModifyManual);
     app.delete('/wservice/manual/:id', wservice.DeleteManual);
 
+    app.get('/wservice/work/:work', wservice.GetWorkAll);
+    app.post('/wservice/work/:work', wservice.CreateWork);
+    app.get('/wservice/work/:work/:work_id', wservice.GetWork);
+    app.put('/wservice/work/:work/:work_id', wservice.UpdateWork);
+
     app.get('/wservice', wservice.html);
     app.all('/wservice/*', wservice.main);
 
