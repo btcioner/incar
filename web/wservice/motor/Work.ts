@@ -215,12 +215,17 @@ module Service{
         var pagination = new Pagination(req.query.page, req.query.pagesize);
 
         var dac = MySqlAccess.RetrievePool();
-        var sql = "SELECT %s FROM t_work WHERE work = ?";
+        var sql = "SELECT %s" +
+            "\nFROM t_work W" +
+            "\n\tLEFT OUTER JOIN t_staff_account A ON W.cust_id = A.id" +
+            "\n\tLEFT OUTER JOIN t_car_info C ON W.car_id = C.id" +
+            "\n\tLEFT OUTER JOIN t_car C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode" +
+            "\nWHERE W.work = ?";
         var args = new Array<any>();
         args.push(req.params.work);
 
         if(req.query.step){
-            sql += " and step = ?";
+            sql += " and W.step = ?";
             args.push(req.query.step);
         }
 
@@ -233,7 +238,7 @@ module Service{
                 task.end();
             });
 
-            var sql3 = util.format(sql, "*");
+            var sql3 = util.format(sql, "W.*, A.nick AS cust_nick, A.phone AS cust_phone, C.license, C2.brand, C2.series");
             if(pagination.IsValid()) sql3 += pagination.sql;
             dac.query(sql3, args, (ex, result)=>{
                 task.B = {ex:ex, result:result};
@@ -260,7 +265,12 @@ module Service{
 
     export function GetWork(req, res):void{
         var dac = MySqlAccess.RetrievePool();
-        var sql = "SELECT * FROM t_work WHERE id = ? and work = ?";
+        var sql = "SELECT W.*, A.nick AS cust_nick, A.phone AS cust_phone, C.license, C2.brand, C2.series" +
+            "\nFROM t_work W" +
+            "\n\tLEFT OUTER JOIN t_staff_account A ON W.cust_id = A.id" +
+            "\n\tLEFT OUTER JOIN t_car_info C ON W.car_id = C.id" +
+            "\n\tLEFT OUTER JOIN t_car C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode" +
+            "\nWHERE W.id = ? and W.work = ?";
         dac.query(sql, [req.params.work_id, req.params.work], (ex, result)=>{
             if(ex){ res.json(new TaskException(-1, "查询工作失败", ex)); return; }
             else if(result.length > 0){
@@ -270,7 +280,7 @@ module Service{
             }
             else if(result.length === 0){
                 // try to look in history
-                sql = "SELECT * FROM t_work_history WHERE id = ? and work = ?"
+                sql = "SELECT * FROM t_work_history WHERE id = ? and work = ?";
                 dac.query(sql, [req.params.work_id, req.params.work], (ex, result)=>{
                     if(ex){ res.json(new TaskException(-1, "查询历史工作失败", ex)); return; }
                     else if(result.length === 0){ res.json(new TaskException(-1, "指定的工作不存在", null)); return; }
