@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS t_work_history(
 CREATE TABLE IF NOT EXISTS t_work_log_history(
     id INT UNSIGNED PRIMARY KEY COMMENT '日志序号',
     work_id INT UNSIGNED NOT NULL COMMENT '业务唯一标识'
-        REFERENCES t_work(id),
+        REFERENCES t_work_history(id),
     work varchar(32) NOT NULL COMMENT '业务名称',
     step varchar(32) NOT NULL COMMENT '业务步骤',
     json_args varchar(2048) COMMENT 'JSON形式的参数',
