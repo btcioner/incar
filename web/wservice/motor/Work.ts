@@ -71,7 +71,7 @@ module Work{
             this.cust_id = data.cust_id;
             this.working_time = data.working_time;
 
-            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
                 else{
                     // 创建工作对象
@@ -98,7 +98,7 @@ module Work{
         approve(req, res){
             if(this.step !== "applied") { res.json(new Service.TaskException(-1, "只有处于'已申请'状态才可以被批准", null)); return; }
 
-            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
                     this.json_args = JSON.stringify({oper:userLogin});
@@ -127,7 +127,7 @@ module Work{
             if(this.step !== "applied") { res.json(new Service.TaskException(-1, "只有处于'已申请'状态才可以被拒绝", null)); return; }
             if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
 
-            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) { res.json(ex); return; }
                 else{
                     this.json_args = JSON.stringify({reason:req.body.reason, oper:userLogin});
@@ -156,7 +156,7 @@ module Work{
         cancel(req, res){
             if(this.step !== "applied" && this.step !== "approved") { res.json(new Service.TaskException(-1, "保养工作已不可被取消", null)); return; }
 
-            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
                     var args:any = { oper:userLogin };
@@ -189,7 +189,7 @@ module Work{
             if(this.step !== "approved") { res.json(new Service.TaskException(-1, "只有处于'已批准'状态才可以被中止", null)); return; }
             if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
 
-            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
                 else{
                     this.json_args = JSON.stringify({oper:userLogin, reason:req.body.reason});
@@ -218,7 +218,7 @@ module Work{
         done(req, res){
             if(this.step !== "approved") { res.json(new Service.TaskException(-1, "只有处于'已批准'状态才可以完成", null)); return; }
 
-            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
                     var data:any = req.body;
@@ -254,7 +254,7 @@ module Work{
 
 module Service{
     export function GetWorkAll(req, res):void{
-        res.setHeader("Accept-Query", "page,pagesize,step");
+        res.setHeader("Accept-Query", "page,pagesize,step,cust_nick,license");
         var pagination = new Pagination(req.query.page, req.query.pagesize);
 
         var dac = MySqlAccess.RetrievePool();
