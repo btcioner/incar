@@ -9,7 +9,7 @@ var opt = {
     port: 1234
 };
 function getSimByObdCode(obdCode,cb){
-    var sql="select sim_number as sim from t_car_info where obdCode=?";
+    var sql="select sim_number as sim from t_car_info where obd_code=?";
     dao.findBySql(sql,[obdCode],function(rows){
         if(rows.length>0){
             var sim=rows[0].sim;
@@ -19,30 +19,27 @@ function getSimByObdCode(obdCode,cb){
 }
 //发送获取OBD检测信息的短信          1622
 exports.obdTestSend=function(req,res){
+    //[故障码，累计平均油耗，累计行驶里程，本次平均油耗，本次行驶里程]
+    var idArray=[0xFE00,0xFE02,0xFE03,0xFE13,0xFE14];
     var obdCode=req.params.obdCode;
-    var sql= "select distinct code from t_car";
-    var paramArray=[];
-    dao.findBySql(sql,[],function(rows){
-        for(var i=0;i<rows.length;i++){
-            var cJson=rows[i];
-            paramArray.push(cJson.code);
+    getSimByObdCode(obdCode,function(sim){
+        var data ={idArray:idArray};
+        opt.method="post";
+        opt.path="/message/send/"+sim+"/"+0x1622;
+        opt.headers={
+            "Content-Type": "application/json",
+            "Content-Length":Buffer.byteLength(JSON.stringify(data))
         }
-        for(var j=0xFE00;j<=0xFE1A;j++){
-            paramArray.push(j);
-        }
-        getSimByObdCode(obdCode,function(sim){
-            opt.method="post";
-            opt.path="/message/send/"+sim+"/5665";
-            var data ={idArray:JSON.stringify(paramArray)};
-            data = queryString.stringify(data);
-            var req = http.request(opt, function (serverFeedback) {});
-            req.write(data);
-            req.end();
-        });
+        //data = queryString.stringify(data);
+        var req = http.request(opt, function (serverFeedback) {});
+        req.write(JSON.stringify(data));
+        req.end();
     });
 };
 //接收获取OBD检测信息短信的回复数据   1621
-exports.obdTestReceive=function(req,res){};
+exports.obdTestReceive=function(req,res){
+    console.log(req.body.dataString);
+};
 //发送获取OBD版本信息的短信         1625
 exports.obdVersionSend=function(req,res){};
 //接收获取OBD版本信息短信的回复数据   1625

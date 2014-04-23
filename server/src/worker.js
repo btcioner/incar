@@ -8,18 +8,18 @@ var dao = require('../core/dao');
 var dataManager = require('../core/dataManager');
 var http = require("http");
 
-function sendToMessageServer(dataBuffer,obdCode){
-    console.log("接收到短信回复：\n");
-    console.log(dataBuffer);
-    var dataJson={"dataString":dataBuffer};
+function sendToMessageServer(dataBuffer,commandWord){
+
+    console.log("接收到短信回复："+commandWord+"\n");
+    var dataJson={dataString:dataBuffer};
     var opt = {
         method: "POST",
         host: "localhost",
-        port: 80,
-        path: "/wservice/message/obdTestReceive/"+obdCode,
+        port: 1234,
+        path: "/message/receive/"+commandWord,
         headers: {
             "Content-Type": "application/json",
-            "Content-Length":dataJson.length
+            "Content-Length":Buffer.byteLength(JSON.stringify(dataJson))
         }
     };
     var req = http.request(opt, function (serverFeedback) {});
@@ -106,7 +106,7 @@ function packetProcess(packetInput,tag) {
     }
     //涉及到OBD短信的反馈一律发送到短信中心进行处理
     if(commandWord>=0x1621){
-        sendToMessageServer(dataBuffer,obdCode);
+        sendToMessageServer(dataBuffer,commandWord);
         responseBuffer=getOBDSuccess(commandWord);
     }
     //所有OBD发送过来的数据都会保存进历史表

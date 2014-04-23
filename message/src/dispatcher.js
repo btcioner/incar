@@ -3,8 +3,7 @@
  */
 'use strict'
 
-var net = require('net');
-var server = net.createServer();
+var http = require("http");
 var dataManager = require('./dataManager');
 var message=require('./message');
 var byteCmd=[0xFE01,0xFE04,0xFE16,0xFE17,0xFE19];
@@ -131,7 +130,7 @@ function receive1625(dataBuffer){
     };
 }
 //1622获得OBD相关信息，传入[id1,id2]返回{id1:val1,id2:val2},ID来源4.01以及4.02
-function send1621(sim,idArray){
+function send1622(sim,idArray){
     dataManager.init(new Buffer(1024),0);
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
@@ -197,11 +196,12 @@ exports.receiveMessageRequest=function(req,res){
     var sim=param.sim;
     var cmd=parseInt(param.cmd);
     var body=req.body;
+    console.log(body);
     var back={status:'success'};
     switch(cmd){
-        case 0x1621:
+        case 0x1622:
             var idArray=body['idArray'];
-            send1621(sim,idArray);
+            send1622(sim,idArray);
             break;
         case 0x1623:
             var obdInfo=body['obdInfo'];
@@ -225,16 +225,30 @@ exports.receiveMessageRequest=function(req,res){
 //接收OBD数据端短信数据的回复并转给Web端
 exports.receiveMessageResponse=function(req,res){
     var returnJson={};
+    var commandWord=parseInt(req.params.cmd);
     var data=req.body.dataString;
-    console.log(data);
-    var back={status:'success'};
+    var bf=new Buffer(data);
     switch (commandWord) {
         case 0x1621:
-            returnJson = receive1621(data);
+            returnJson = receive1621(bf);
             break;
         case 0x1625:
-            returnJson = receive1625(data);
+            returnJson = receive1625(bf);
             break;
     }
-    res.send(back);
+    console.log(returnJson);
+    var dataJson={dataString:returnJson};
+    var opt = {
+        method: "POST",
+        host: "localhost",
+        port: 80,
+        path: "/wservice/message/obdTestReceive/"+returnJson.obdCode,
+        headers: {
+            "Content-Type": "application/json",
+            "Content-Length":Buffer.byteLength(JSON.stringify(dataJson))
+        }
+    };
+    var req = http.request(opt, function (serverFeedback) {});
+    req.write(JSON.stringify(dataJson));
+    req.end();
 };

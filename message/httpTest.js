@@ -9,8 +9,8 @@ data = JSON.stringify(data);
 var opt = {
     method: "POST",
     host: "localhost",
-    port: 1234,
-    path: "/message/send/13007196492/5665",
+    port: 80,
+    path: "/wservice/message/obdTestSend/WFQ00011755",
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)
