@@ -5,9 +5,9 @@
 'use strict';
 
 var net = require('net');
-var packet = require('./packet');
+var packet = require('./src/packet');
 var workerProcessMgr = require('child_process');
-var workerProcess = workerProcessMgr.fork('worker.js', ['workerProcess']);
+var workerProcess = workerProcessMgr.fork('server/src/worker.js', ['workerProcess']);
 console.log('\n');
 console.log('Main   process id: ' + process.pid);
 console.log('Worker process id: ' + workerProcess.pid);

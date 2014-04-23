@@ -4,8 +4,9 @@
 var siteCommon = require('../sitecommon');
 var msite = require('./msite');
 var wsite = require('./wsite');
-var wsCar=require('../wservice/car');
-// var wsOBD=require('../wservice/obd');
+//var wsCar=require('../wservice/car');
+var wsOBD=require('../wservice/obd');
+var obdMessage=require('../wservice/obdMessage');
 var wservice = require('../wservice/motor');
 var mservice = require('../mservice/mservice');
 
@@ -14,14 +15,16 @@ var mservice = require('../mservice/mservice');
  */
 module.exports = function(app) {
     //车辆相关
-    app.get('/wservice/car', wsCar.list);
+    /*app.get('/wservice/car', wsCar.list);
     app.get('/wservice/car/:id', wsCar.get);
     app.delete('/wservice/car/:id', wsCar.delete);
     app.post('/wservice/car', wsCar.add);
-    app.put('/wservice/car/:id', wsCar.update);
-    //OBD数据相关
-    // app.get('/wservice/obd/checkCar/:obdCode', wsOBD.checkOBDbyCar);
-    // app.put('/wservice/obd/work/:channel', wsOBD.bindOBD);
+    app.put('/wservice/car/:id', wsCar.update);*/
+    //OBD绑定/注册
+    app.put('/wservice/obd/work/:channel', wsOBD.bindOBD);
+    //短信
+    app.post('/wservice/message/obdTestSend/:obdCode', obdMessage.obdTestSend);
+    app.post('/wservice/message/obdTestReceive/:obdCode', obdMessage.obdTestReceive());
     // Routes for wsite service
     app.get('/wservice/organization', wservice.GetOrganization);
     app.post('/wservice/organization', wservice.AddOrganization);

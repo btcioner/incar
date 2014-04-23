@@ -193,14 +193,13 @@ function send16E0(sim){
 
 //接收Web端发送短信的请求并完成短信发送
 exports.receiveMessageRequest=function(req,res){
-    console.log(req.body);
     var param=req.params;
     var sim=param.sim;
     var cmd=parseInt(param.cmd);
     var body=req.body;
     var back={status:'success'};
     switch(cmd){
-        case 0x1620:
+        case 0x1621:
             var idArray=body['idArray'];
             send1621(sim,idArray);
             break;
@@ -227,6 +226,7 @@ exports.receiveMessageRequest=function(req,res){
 exports.receiveMessageResponse=function(req,res){
     var returnJson={};
     var data=req.body.dataString;
+    console.log(data);
     var back={status:'success'};
     switch (commandWord) {
         case 0x1621:

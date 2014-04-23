@@ -51,7 +51,6 @@
  *             里填入解绑时间，以此标示该OBD在不同时间段服侍的主人，作为OBD信息在查询时的一个时间断点)
  */
 var dao=require("../core/dataAccess/dao");
-var msgCentre=require("../core/message/msgCentre");
 function buildChannel(channel,accountId,params,cb){
     if(channel==='wx'){
         //获得用户和组织的微信号
@@ -144,29 +143,7 @@ function buildCarByObd(param){
         console.log("更新成功");
     });
 }
-exports.testOBD=function(req,res){
-    var obdCode=req.params.obdCode;
-    var sql= "select * from t_car";
-    var paramArray=[];
-    dao.findBySql(sql,[],function(rows){
-        for(var i=0;i<rows.length;i++){
-            var cJson=rows[i];
-            paramArray.push(cJson.code);
-        }
-        for(var j=0xFE00;j<=0xFE1A;j++){
-            paramArray.push(j);
-        }
-        dao.findBySql("select sim_number as sim from t_device_obd where obdCode=?",[obdCode],function(rows){
-            if(rows.length>0){
-                var sim=rows[0].sim;
-                msgCentre.getOBDRuntime(obdCode,sim,paramArray,function(info){
-                    res.send(info);
-                });
-            }
-        });
 
-    });
-};
 exports.bindOBD = function(req, res){
     var channel=req.params.channel;
     var bindJson=req.body;
@@ -203,68 +180,3 @@ exports.bindOBD = function(req, res){
 
 
 
-/*
-
-
-//1622获得OBD相关信息，传入[id1,id2]返回{id1:val1,id2:val2},ID来源4.01以及4.02
-var getOBDRuntime=function(obdCode,sim,idArray){
-    dataManager.init(new Buffer(1024),0);
-    dataManager.writeString("SMS"+sim+"#LD");
-    dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
-    dataManager.writeWord(0x1622);
-    dataManager.writeWord(idArray.length);
-    for(var i=0;i<idArray.length;i++){
-        dataManager.writeWord(idArray[i]);
-    }
-    sendMessage(dataManager.getBuffer());
-};
-//1623设置OBD相关信息，传入{id1:val1,id2:val2},ID来源4.01
-exports.setOBDInfo=function(obdCode,sim,obdInfo){
-    dataManager.init(new Buffer(1024),0);
-    dataManager.writeString("SMS"+sim+"#LD");
-    dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
-    dataManager.writeWord(0x1623);
-    dataManager.writeByte(Object.keys(obdInfo).length);
-    for(var key in obdInfo){
-        var numKey=parseInt(key);
-        dataManager.writeWord(numKey);
-        setValueByID(numKey,obdInfo[key]);
-    }
-    sendMessage(dataManager.getBuffer());
-};
-//1624清空累计平均油耗
-exports.clearAvgOilUsed=function(obdCode,sim,cb){
-    dataManager.init(new Buffer(19),0);
-    dataManager.writeString("SMS"+sim+"#LD");
-    dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
-    dataManager.writeWord(0x1624);
-    callbackMapping[obdCode]=cb;
-    sendMessage(dataManager.getBuffer());
-};
-//1625获得OBD版本信息
-exports.getOBDVersionInfo=function(obdCode,sim,cb){
-    dataManager.init(new Buffer(19),0);
-    dataManager.writeString("SMS"+sim+"#LD");
-    dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
-    dataManager.writeWord(0x1625);
-    callbackMapping[obdCode]=cb;
-    sendMessage(dataManager.getBuffer());
-};
-//1626清除故障码
-exports.clearFaultCode=function(obdCode,sim,cb){
-    dataManager.init(new Buffer(19),0);
-    dataManager.writeString("SMS"+sim+"#LD");
-    dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
-    dataManager.writeWord(0x1626);
-    callbackMapping[obdCode]=cb;
-    sendMessage(dataManager.getBuffer());
-};
-//16E0还原出厂设置
-exports.resetDefault=function(obdCode,sim,cb){
-    dataManager.init(new Buffer(19),0);
-    dataManager.writeString("SMS"+sim+"#LD");
-    dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
-    dataManager.writeWord(0x16E0);
-    callbackMapping[obdCode]=cb;
-    sendMessage(dataManager.getBuffer());
-};*/
