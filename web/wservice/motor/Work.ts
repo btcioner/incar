@@ -134,6 +134,78 @@ module Work{
                 }
             });
         }
+
+        // 取消保保养申请
+        cancel(req, res){
+            if(this.step !== "applied" && this.step !== "approved") { res.json(new Service.TaskException(-1, "保养工作已不可被取消", null)); return; }
+            if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
+
+            this.json_args = JSON.stringify({reason:req.body.reason});
+
+            var sql = "UPDATE t_work SET step = 'cancelled', json_args = ? WHERE id = ? and step in ('applied', 'approved')";
+            var dac = Service.MySqlAccess.RetrievePool();
+            dac.query(sql, [this.json_args, this.id], (ex, result)=>{
+                if(ex) {res.json(new Service.TaskException(-1, "取消保养申请失败", ex)); return; }
+                else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "取消保养申请失败,请刷新重试", null)); return; } }
+                else{
+                    this.step = "cancelled";
+                    sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
+                    dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
+                        if(ex) {res.json(new Service.TaskException(-1, "取消申请成功,但记录日志失败", ex)); return; }
+                        else{
+                            res.json({status:"ok"});
+                        }
+                    });
+                }
+            });
+        }
+
+        //  中止保养申请
+        abort(req, res){
+            if(this.step !== "approved") { res.json(new Service.TaskException(-1, "只有处于'已批准'状态才可以被中止", null)); return; }
+            if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
+
+            this.json_args = JSON.stringify({reason:req.body.reason});
+
+            var sql = "UPDATE t_work SET step = 'aborted', json_args = ? WHERE id = ? and step = 'approved'";
+            var dac = Service.MySqlAccess.RetrievePool();
+            dac.query(sql, [this.json_args, this.id], (ex, result)=>{
+                if(ex) {res.json(new Service.TaskException(-1, "中止保养申请失败", ex)); return; }
+                else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "中止保养申请失败,请刷新重试", null)); return; } }
+                else{
+                    this.step = "aborted";
+                    sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
+                    dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
+                        if(ex) {res.json(new Service.TaskException(-1, "中止申请成功,但记录日志失败", ex)); return; }
+                        else{
+                            res.json({status:"ok"});
+                        }
+                    });
+                }
+            });
+        }
+
+        // 完成保养
+        done(req, res){
+            if(this.step !== "approved") { res.json(new Service.TaskException(-1, "只有处于'已批准'状态才可以完成", null)); return; }
+
+            var sql = "UPDATE t_work SET step = 'done' WHERE id = ? and step = 'approved'";
+            var dac = Service.MySqlAccess.RetrievePool();
+            dac.query(sql, [this.id], (ex, result)=>{
+                if(ex) {res.json(new Service.TaskException(-1, "完成保养失败", ex)); return; }
+                else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "完成保养失败,请刷新重试", null)); return; } }
+                else{
+                    this.step = "done";
+                    sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
+                    dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
+                        if(ex) {res.json(new Service.TaskException(-1, "完成保养成功,但记录日志失败", ex)); return; }
+                        else{
+                            res.json({status:"ok"});
+                        }
+                    });
+                }
+            });
+        }
     }
 }
 
@@ -177,6 +249,9 @@ module Service{
             var totalCount = 0;
             if(!task.A.ex) totalCount = task.A.result[0].count;
 
+            task.B.result.forEach((entry:Work.WorkBase)=>{
+                if(entry.json_args) entry.json_args = JSON.parse(entry.json_args);
+            });
             res.json({status:"ok", totalCount:totalCount, works: task.B.result});
         };
 
@@ -189,7 +264,9 @@ module Service{
         dac.query(sql, [req.params.work_id, req.params.work], (ex, result)=>{
             if(ex){ res.json(new TaskException(-1, "查询工作失败", ex)); return; }
             else if(result.length > 0){
-                res.json({status:"ok", work:result});
+                var entry:Work.WorkBase = result[0];
+                if(entry.json_args) entry.json_args = JSON.parse(entry.json_args);
+                res.json({status:"ok", work:entry});
             }
             else if(result.length === 0){
                 // try to look in history
@@ -198,7 +275,9 @@ module Service{
                     if(ex){ res.json(new TaskException(-1, "查询历史工作失败", ex)); return; }
                     else if(result.length === 0){ res.json(new TaskException(-1, "指定的工作不存在", null)); return; }
                     else{
-                        res.json({status:"ok", work:result});
+                        var entry = result[0];
+                        if(entry.json_args) entry.json_args = JSON.parse(entry.json_args);
+                        res.json({status:"ok", work:entry});
                     }
                 });
             }
