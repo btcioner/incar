@@ -24,7 +24,7 @@ module.exports = function(app) {
     app.put('/wservice/obd/work/:channel', wsOBD.bindOBD);
     //短信
     app.post('/wservice/message/obdTestSend/:obdCode', obdMessage.obdTestSend);
-    app.post('/wservice/message/obdTestReceive/:obdCode', obdMessage.obdTestReceive());
+    app.post('/wservice/message/obdTestReceive/:obdCode', obdMessage.obdTestReceive);
     // Routes for wsite service
     app.get('/wservice/organization', wservice.GetOrganization);
     app.post('/wservice/organization', wservice.AddOrganization);
