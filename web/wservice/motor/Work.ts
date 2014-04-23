@@ -254,7 +254,7 @@ module Work{
 
 module Service{
     export function GetWorkAll(req, res):void{
-        res.setHeader("Accept-Query", "page,pagesize,step,cust_nick,license");
+        res.setHeader("Accept-Query", "page,pagesize,step,cust_nick,license,working_time_begin,working_time_end");
         var pagination = new Pagination(req.query.page, req.query.pagesize);
 
         var dac = MySqlAccess.RetrievePool();
@@ -270,6 +270,22 @@ module Service{
         if(req.query.step){
             sql += " and W.step = ?";
             args.push(req.query.step);
+        }
+        if(req.query.cust_nick){
+            sql += " and A.nick = ?";
+            args.push(req.query.cust_nick);
+        }
+        if(req.query.license){
+            sql += " and C.license = ?";
+            args.push(req.query.license);
+        }
+        if(req.query.working_time_begin){
+            sql += " and W.working_time >= ?";
+            args.push(req.query.working_time_begin);
+        }
+        if(req.query.working_time_end){
+            sql += " and W.working_time <= ?";
+            args.push(req.query.working_time_end);
         }
 
         var task:any = { finished: 0 };
