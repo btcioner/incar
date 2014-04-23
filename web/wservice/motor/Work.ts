@@ -5,6 +5,7 @@ module Work{
         public id: number; // id
         public work: string; // work
         public step: string; // step
+        public work_ref_id: number; // ref
         public org_id: number; // 4s
         public car_id: number; // car
         public cust_id: number; // customer
@@ -60,6 +61,7 @@ module Work{
             if(!data.car_id) { error += "缺少car_id\n"; }
             if(!data.cust_id) { error += "缺少cust_id\n"; }
             if(!data.working_time) { error += "缺少working_time\n"; }
+            if(!data.slot) { error += "缺少工位slot\n"; }
             if(error){
                 res.json(new Service.TaskException(-1, error, null));
                 return;
@@ -74,22 +76,55 @@ module Work{
             Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
                 else{
-                    // 创建工作对象
-                    this.json_args = JSON.stringify({oper:userLogin.nick});
+                    var task:any = { finished: 0 };
                     var dac = Service.MySqlAccess.RetrievePool();
-                    var sql = "INSERT t_work SET ?";
-                    dac.query(sql, [this], (ex, result)=>{
-                        if(error){ res.json(new Service.TaskException(-1, "创建工作对象失败", ex)); return;}
-                        // 日志
-                        this.id = result.insertId;
-                        var log = new WorkLog(this);
-                        log.Save((ex, objLog)=>{
-                            if(ex){ res.json(ex); }
-                            else{
-                                res.json({status:"ok"});
-                            }
+                    task.begin = ()=>{
+                        // 向t_slot_booking中登记
+                        var sql = "INSERT t_slot_booking(storeId,slot_location,slot_time,promotion_id," +
+                            "channel,channel_specific,booking_time,booking_status,tc,ts)" +
+                            "\nVALUES(?,?,?,?,?,?,?,?,?,?)";
+                        var tmNow = new Date();
+                        var args = [this.org_id,
+                                    data.slot,
+                                    this.working_time,
+                                    data.promotion_id,
+                                    "website",
+                                    util.format("id:%s,name:%s,nick:%s", userLogin.id, userLogin.name, userLogin.nick),
+                                    tmNow,
+                                    "3",
+                                    userLogin.name,
+                                    tmNow
+                                ];
+                        dac.query(sql, args, (ex, result)=>{
+                            task.finished++;
+                            if(ex) { res.json(new Service.TaskException(-1,"登记工位失败",ex)); return; }
+
+                            task.RegistWork(result.insertId);
                         });
-                    });
+                    };
+
+                    task.RegistWork = (booking_id:number)=>{
+                        // 向t_work中登记
+                        this.json_args = JSON.stringify({oper:userLogin.nick});
+                        this.work_ref_id = booking_id;
+
+                        var sql2 = "INSERT t_work SET ?";
+                        dac.query(sql2, [this], (ex, result)=>{
+                            task.finished++;
+                            if(ex) { res.json(new Service.TaskException(-1, "创建工作对象失败", ex)); return; }
+
+                            this.id =result.insertId;
+                            var log = new WorkLog(this);
+                            log.Save((ex, objLog)=>{
+                                if(ex){ res.json(new Service.TaskException(-1, "创建工作对象成功,但记录日志失败", ex)); return; }
+                                else{
+                                    res.json({status:"ok"});
+                                }
+                            });
+                        });
+                    };
+
+                    task.begin();
                 }
             });
         }
@@ -113,7 +148,13 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "保养申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    res.json({status:"ok"});
+                                    sql = "UPDATE t_slot_booking SET booking_status = 3, tc = ?, ts = ? WHERE id = ?";
+                                    dac.query(sql, [userLogin.nick, new Date(), this.work_ref_id], (ex, result)=>{
+                                        if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
+                                        else{
+                                            res.json({status:"ok"});
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -143,7 +184,13 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "拒绝申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    res.json({status:"ok"});
+                                    sql = "UPDATE t_slot_booking SET booking_status = 2, tc = ?, ts = ? WHERE id = ?";
+                                    dac.query(sql, [userLogin.nick, new Date(), this.work_ref_id], (ex, result)=>{
+                                        if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
+                                        else{
+                                            res.json({status:"ok"});
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -175,7 +222,13 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "取消申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    res.json({status:"ok"});
+                                    sql = "UPDATE t_slot_booking SET booking_status = 4, tc = ?, ts = ? WHERE id = ?";
+                                    dac.query(sql, [userLogin.nick, new Date(), this.work_ref_id], (ex, result)=>{
+                                        if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
+                                        else{
+                                            res.json({status:"ok"});
+                                        }
+                                    });
                                 }
                             });
                         }
