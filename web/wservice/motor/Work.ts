@@ -75,7 +75,7 @@ module Work{
                 if(ex) {res.json(ex); return;}
                 else{
                     // 创建工作对象
-                    this.json_args = JSON.stringify({oper:userLogin});
+                    this.json_args = JSON.stringify({oper:userLogin.nick});
                     var dac = Service.MySqlAccess.RetrievePool();
                     var sql = "INSERT t_work SET ?";
                     dac.query(sql, [this], (ex, result)=>{
@@ -101,7 +101,7 @@ module Work{
             Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
-                    this.json_args = JSON.stringify({oper:userLogin});
+                    this.json_args = JSON.stringify({oper:userLogin.nick});
                     var sql = "UPDATE t_work SET step = 'approved', json_args = ? WHERE id = ? and step = 'applied'";
                     var dac = Service.MySqlAccess.RetrievePool();
                     dac.query(sql, [this.json_args, this.id], (ex, result)=>{
@@ -130,7 +130,7 @@ module Work{
             Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) { res.json(ex); return; }
                 else{
-                    this.json_args = JSON.stringify({reason:req.body.reason, oper:userLogin});
+                    this.json_args = JSON.stringify({reason:req.body.reason, oper:userLogin.nick});
 
                     var sql = "UPDATE t_work SET step = 'rejected', json_args = ? WHERE id = ? and step = 'applied'";
                     var dac = Service.MySqlAccess.RetrievePool();
@@ -159,7 +159,7 @@ module Work{
             Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
-                    var args:any = { oper:userLogin };
+                    var args:any = { oper:userLogin.nick };
                     if(req.body.reason) args.reason = req.body.reason;
 
                     this.json_args = JSON.stringify(args);
@@ -192,7 +192,7 @@ module Work{
             Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
                 else{
-                    this.json_args = JSON.stringify({oper:userLogin, reason:req.body.reason});
+                    this.json_args = JSON.stringify({oper:userLogin.nick, reason:req.body.reason});
 
                     var sql = "UPDATE t_work SET step = 'aborted', json_args = ? WHERE id = ? and step = 'approved'";
                     var dac = Service.MySqlAccess.RetrievePool();
@@ -223,7 +223,7 @@ module Work{
                 else{
                     var data:any = req.body;
                     this.json_args = JSON.stringify({
-                        oper: userLogin,
+                        oper: userLogin.nick,
                         care_items: data.care_items,
                         care_cost: data.care_cost,
                         begin_time: data.begin_time,
