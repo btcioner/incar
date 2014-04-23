@@ -71,20 +71,26 @@ module Work{
             this.cust_id = data.cust_id;
             this.working_time = data.working_time;
 
-            var dac = Service.MySqlAccess.RetrievePool();
-            // 创建工作对象
-            var sql = "INSERT t_work SET ?";
-            dac.query(sql, [this], (ex, result)=>{
-                if(error){ res.json(new Service.TaskException(-1, "创建工作对象失败", ex)); return;}
-                // 日志
-                this.id = result.insertId;
-                var log = new WorkLog(this);
-                log.Save((ex, objLog)=>{
-                    if(ex){ res.json(ex); }
-                    else{
-                        res.json({status:"ok"});
-                    }
-                });
+            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+                if(ex) {res.json(ex); return;}
+                else{
+                    // 创建工作对象
+                    this.json_args = JSON.stringify({oper:userLogin});
+                    var dac = Service.MySqlAccess.RetrievePool();
+                    var sql = "INSERT t_work SET ?";
+                    dac.query(sql, [this], (ex, result)=>{
+                        if(error){ res.json(new Service.TaskException(-1, "创建工作对象失败", ex)); return;}
+                        // 日志
+                        this.id = result.insertId;
+                        var log = new WorkLog(this);
+                        log.Save((ex, objLog)=>{
+                            if(ex){ res.json(ex); }
+                            else{
+                                res.json({status:"ok"});
+                            }
+                        });
+                    });
+                }
             });
         }
 
@@ -92,18 +98,24 @@ module Work{
         approve(req, res){
             if(this.step !== "applied") { res.json(new Service.TaskException(-1, "只有处于'已申请'状态才可以被批准", null)); return; }
 
-            var sql = "UPDATE t_work SET step = 'approved' WHERE id = ? and step = 'applied'";
-            var dac = Service.MySqlAccess.RetrievePool();
-            dac.query(sql, [this.id], (ex, result)=>{
-                if(ex) {res.json(new Service.TaskException(-1, "批准保养申请失败", ex)); return; }
-                else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "批准保养申请失败,请刷新重试", null)); return; } }
+            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+                if(ex) {res.json(ex); return; }
                 else{
-                    this.step = "approved";
-                    sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
-                    dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
-                        if(ex) {res.json(new Service.TaskException(-1, "保养申请成功,但记录日志失败", ex)); return; }
+                    this.json_args = JSON.stringify({oper:userLogin});
+                    var sql = "UPDATE t_work SET step = 'approved', json_args = ? WHERE id = ? and step = 'applied'";
+                    var dac = Service.MySqlAccess.RetrievePool();
+                    dac.query(sql, [this.json_args, this.id], (ex, result)=>{
+                        if(ex) {res.json(new Service.TaskException(-1, "批准保养申请失败", ex)); return; }
+                        else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "批准保养申请失败,请刷新重试", null)); return; } }
                         else{
-                            res.json({status:"ok"});
+                            this.step = "approved";
+                            sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
+                            dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
+                                if(ex) {res.json(new Service.TaskException(-1, "保养申请成功,但记录日志失败", ex)); return; }
+                                else{
+                                    res.json({status:"ok"});
+                                }
+                            });
                         }
                     });
                 }
@@ -115,20 +127,25 @@ module Work{
             if(this.step !== "applied") { res.json(new Service.TaskException(-1, "只有处于'已申请'状态才可以被拒绝", null)); return; }
             if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
 
-            this.json_args = JSON.stringify({reason:req.body.reason});
-
-            var sql = "UPDATE t_work SET step = 'rejected', json_args = ? WHERE id = ? and step = 'applied'";
-            var dac = Service.MySqlAccess.RetrievePool();
-            dac.query(sql, [this.json_args, this.id], (ex, result)=>{
-                if(ex) {res.json(new Service.TaskException(-1, "拒绝保养申请失败", ex)); return; }
-                else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "拒绝保养申请失败,请刷新重试", null)); return; } }
+            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+                if(ex) { res.json(ex); return; }
                 else{
-                    this.step = "rejected";
-                    sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
-                    dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
-                        if(ex) {res.json(new Service.TaskException(-1, "拒绝申请成功,但记录日志失败", ex)); return; }
+                    this.json_args = JSON.stringify({reason:req.body.reason, oper:userLogin});
+
+                    var sql = "UPDATE t_work SET step = 'rejected', json_args = ? WHERE id = ? and step = 'applied'";
+                    var dac = Service.MySqlAccess.RetrievePool();
+                    dac.query(sql, [this.json_args, this.id], (ex, result)=>{
+                        if(ex) {res.json(new Service.TaskException(-1, "拒绝保养申请失败", ex)); return; }
+                        else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "拒绝保养申请失败,请刷新重试", null)); return; } }
                         else{
-                            res.json({status:"ok"});
+                            this.step = "rejected";
+                            sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
+                            dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
+                                if(ex) {res.json(new Service.TaskException(-1, "拒绝申请成功,但记录日志失败", ex)); return; }
+                                else{
+                                    res.json({status:"ok"});
+                                }
+                            });
                         }
                     });
                 }
@@ -138,22 +155,29 @@ module Work{
         // 取消保保养申请
         cancel(req, res){
             if(this.step !== "applied" && this.step !== "approved") { res.json(new Service.TaskException(-1, "保养工作已不可被取消", null)); return; }
-            if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
 
-            this.json_args = JSON.stringify({reason:req.body.reason});
-
-            var sql = "UPDATE t_work SET step = 'cancelled', json_args = ? WHERE id = ? and step in ('applied', 'approved')";
-            var dac = Service.MySqlAccess.RetrievePool();
-            dac.query(sql, [this.json_args, this.id], (ex, result)=>{
-                if(ex) {res.json(new Service.TaskException(-1, "取消保养申请失败", ex)); return; }
-                else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "取消保养申请失败,请刷新重试", null)); return; } }
+            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+                if(ex) {res.json(ex); return; }
                 else{
-                    this.step = "cancelled";
-                    sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
-                    dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
-                        if(ex) {res.json(new Service.TaskException(-1, "取消申请成功,但记录日志失败", ex)); return; }
+                    var args:any = { oper:userLogin };
+                    if(req.body.reason) args.reason = req.body.reason;
+
+                    this.json_args = JSON.stringify(args);
+
+                    var sql = "UPDATE t_work SET step = 'cancelled', json_args = ? WHERE id = ? and step in ('applied', 'approved')";
+                    var dac = Service.MySqlAccess.RetrievePool();
+                    dac.query(sql, [this.json_args, this.id], (ex, result)=>{
+                        if(ex) {res.json(new Service.TaskException(-1, "取消保养申请失败", ex)); return; }
+                        else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "取消保养申请失败,请刷新重试", null)); return; } }
                         else{
-                            res.json({status:"ok"});
+                            this.step = "cancelled";
+                            sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
+                            dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
+                                if(ex) {res.json(new Service.TaskException(-1, "取消申请成功,但记录日志失败", ex)); return; }
+                                else{
+                                    res.json({status:"ok"});
+                                }
+                            });
                         }
                     });
                 }
@@ -165,20 +189,25 @@ module Work{
             if(this.step !== "approved") { res.json(new Service.TaskException(-1, "只有处于'已批准'状态才可以被中止", null)); return; }
             if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
 
-            this.json_args = JSON.stringify({reason:req.body.reason});
-
-            var sql = "UPDATE t_work SET step = 'aborted', json_args = ? WHERE id = ? and step = 'approved'";
-            var dac = Service.MySqlAccess.RetrievePool();
-            dac.query(sql, [this.json_args, this.id], (ex, result)=>{
-                if(ex) {res.json(new Service.TaskException(-1, "中止保养申请失败", ex)); return; }
-                else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "中止保养申请失败,请刷新重试", null)); return; } }
+            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+                if(ex) {res.json(ex); return;}
                 else{
-                    this.step = "aborted";
-                    sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
-                    dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
-                        if(ex) {res.json(new Service.TaskException(-1, "中止申请成功,但记录日志失败", ex)); return; }
+                    this.json_args = JSON.stringify({oper:userLogin, reason:req.body.reason});
+
+                    var sql = "UPDATE t_work SET step = 'aborted', json_args = ? WHERE id = ? and step = 'approved'";
+                    var dac = Service.MySqlAccess.RetrievePool();
+                    dac.query(sql, [this.json_args, this.id], (ex, result)=>{
+                        if(ex) {res.json(new Service.TaskException(-1, "中止保养申请失败", ex)); return; }
+                        else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "中止保养申请失败,请刷新重试", null)); return; } }
                         else{
-                            res.json({status:"ok"});
+                            this.step = "aborted";
+                            sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
+                            dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
+                                if(ex) {res.json(new Service.TaskException(-1, "中止申请成功,但记录日志失败", ex)); return; }
+                                else{
+                                    res.json({status:"ok"});
+                                }
+                            });
                         }
                     });
                 }
@@ -189,18 +218,32 @@ module Work{
         done(req, res){
             if(this.step !== "approved") { res.json(new Service.TaskException(-1, "只有处于'已批准'状态才可以完成", null)); return; }
 
-            var sql = "UPDATE t_work SET step = 'done' WHERE id = ? and step = 'approved'";
-            var dac = Service.MySqlAccess.RetrievePool();
-            dac.query(sql, [this.id], (ex, result)=>{
-                if(ex) {res.json(new Service.TaskException(-1, "完成保养失败", ex)); return; }
-                else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "完成保养失败,请刷新重试", null)); return; } }
+            Service.Account.CreateFromToken(req.cookie.token, (ex, userLogin)=>{
+                if(ex) {res.json(ex); return; }
                 else{
-                    this.step = "done";
-                    sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
-                    dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
-                        if(ex) {res.json(new Service.TaskException(-1, "完成保养成功,但记录日志失败", ex)); return; }
+                    var data:any = req.body;
+                    this.json_args = JSON.stringify({
+                        oper: userLogin,
+                        care_items: data.care_items,
+                        care_cost: data.care_cost,
+                        begin_time: data.begin_time,
+                        end_time: data.end_time
+                    });
+
+                    var sql = "UPDATE t_work SET step = 'done', json_args = ? WHERE id = ? and step = 'approved'";
+                    var dac = Service.MySqlAccess.RetrievePool();
+                    dac.query(sql, [this.json_args, this.id], (ex, result)=>{
+                        if(ex) {res.json(new Service.TaskException(-1, "完成保养失败", ex)); return; }
+                        else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "完成保养失败,请刷新重试", null)); return; } }
                         else{
-                            res.json({status:"ok"});
+                            this.step = "done";
+                            sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
+                            dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
+                                if(ex) {res.json(new Service.TaskException(-1, "完成保养成功,但记录日志失败", ex)); return; }
+                                else{
+                                    res.json({status:"ok"});
+                                }
+                            });
                         }
                     });
                 }
