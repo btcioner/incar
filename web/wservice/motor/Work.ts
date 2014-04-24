@@ -307,7 +307,7 @@ module Work{
 
 module Service{
     export function GetWorkAll(req, res):void{
-        res.setHeader("Accept-Query", "page,pagesize,step,cust_nick,license,working_time_begin,working_time_end");
+        res.setHeader("Accept-Query", "page,pagesize,step,car_id,cust_nick,license,working_time_begin,working_time_end");
         var pagination = new Pagination(req.query.page, req.query.pagesize);
 
         var dac = MySqlAccess.RetrievePool();
@@ -327,6 +327,10 @@ module Service{
         if(req.query.cust_nick){
             sql += " and A.nick = ?";
             args.push(req.query.cust_nick);
+        }
+        if(req.query.car_id){
+            sql += " and W.car_id = ?";
+            args.push(req.query.car_id);
         }
         if(req.query.license){
             sql += " and C.license = ?";
