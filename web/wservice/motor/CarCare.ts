@@ -52,4 +52,60 @@ module Service{
 
         task.begin();
     }
+
+    export function GetCareRecordInOrg(req, res){
+        res.setHeader("Accept-Query", "page,pagesize,acc_id,car_id");
+        var page = new Pagination(req.query.page, req.query.pagesize);
+        var sql = "SELECT R.*, O.name AS org_name, O.class AS org_class, C.license, C.comment,\n" +
+            "U.name AS cust_name, U.nick AS cust_nick, U.phone AS cust_phone,\n" +
+            "A.name AS acc_name, A.nick AS acc_nick\n" +
+            "FROM t_care_record R \n" +
+            "\tLEFT OUTER JOIN t_staff_org O ON R.org_id = O.id\n" +
+            "\tLEFT OUTER JOIN t_car_info C ON R.car_id = C.id\n" +
+            "\tLEFT OUTER JOIN t_staff_account U ON R.cust_id = U.id\n" +
+            "\tLEFT OUTER JOIN t_staff_account A ON R.acc_id = A.id\n" +
+            "WHERE R.org_id = ?";
+        var args = [req.params.org_id];
+
+        if(req.query.acc_id){
+            sql += " and R.acc_id = ?";
+            args.push(req.query.acc_id);
+        }
+
+        if(req.query.car_id){
+            sql += " and R.car_id = ?";
+            args.push(req.query.car_id);
+        }
+
+        var dac = MySqlAccess.RetrievePool();
+        var task:any = { finished : 0 };
+        task.begin = ()=>{
+            var sqlA = sql;
+            if(page.IsValid()) sqlA += page.sql;
+            dac.query(sqlA, args, (ex, result)=>{
+                task.A = {ex:ex, result:result};
+                task.finished++;
+                task.end();
+            });
+
+            var sqlB = util.format("SELECT COUNT(*) count FROM (\n%s\n) AS S", sql);
+            dac.query(sqlB, args, (ex, result)=>{
+                task.B = {ex:ex, result:result};
+                task.finished++;
+                task.end();
+            });
+        };
+
+        task.end = ()=>{
+            if(task.finished < 2) return;
+            if(task.A.ex) { res.json(new TaskException(-1, "查询关怀记录失败", task.A.ex)); return;}
+
+            var total = 0;
+            if(!task.B.ex) total = task.B.result[0].count;
+
+            res.json({status:"ok", totalCount:total, records:task.A.result});
+        };
+
+        task.begin();
+    }
 }

@@ -48,6 +48,7 @@ module.exports = function(app) {
     app.delete('/wservice/organization/:org_id/promotionslot/:slot_id', wservice.DeletePromotionSlotInOrg);
 
     app.get('/wservice/organization/:org_id/care', wservice.GetCareInOrg);
+    app.get('/wservice/organization/:org_id/carerecord', wservice.GetCareRecordInOrg);
 
     app.get('/wservice/carowner', wservice.GetCarOwnerAll);
     app.post('/wservice/carowner', wservice.AddCarOwner);
