@@ -47,6 +47,8 @@ module.exports = function(app) {
     app.put('/wservice/organization/:org_id/promotionslot/:slot_id', wservice.ModifyPromotionSlotInOrg);
     app.delete('/wservice/organization/:org_id/promotionslot/:slot_id', wservice.DeletePromotionSlotInOrg);
 
+    app.get('/wservice/organization/:org_id/care', wservice.GetCareInOrg);
+
     app.get('/wservice/carowner', wservice.GetCarOwnerAll);
     app.post('/wservice/carowner', wservice.AddCarOwner);
     app.get('/wservice/carowner/:acc_id', wservice.GetCarOwner);

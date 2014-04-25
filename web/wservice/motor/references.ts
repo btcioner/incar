@@ -11,3 +11,4 @@
 /// <reference path="PromotionSlot.ts" />
 /// <reference path="Work.ts" />
 /// <reference path="CarBrand.ts" />
+/// <reference path="CarCare.ts" />
