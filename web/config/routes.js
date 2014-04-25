@@ -69,6 +69,10 @@ module.exports = function(app) {
     app.get('/wservice/work/:work/:work_id', wservice.GetWork);
     app.put('/wservice/work/:work/:work_id', wservice.UpdateWork);
 
+    app.get('/wservice/brand', wservice.GetAllBrand);
+    app.get('/wservice/brand/:brand_id/series', wservice.GetBrandSeries);
+    app.get('/wservice/brand/:brand_id/series/:series_id', wservice.GetSeries);
+
     app.get('/wservice', wservice.html);
     app.all('/wservice/*', wservice.main);
 
