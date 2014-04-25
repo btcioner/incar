@@ -8,7 +8,8 @@ module Service{
 
         var dac = MySqlAccess.RetrievePool();
         var sql = "SELECT C.id, C.obd_code, C2.brand, C2.series,\n" +
-                "\tmax(D.mileage) AS max_mileage, sum(D.runtime) AS sum_runtime, max(care_time) AS last_care_time,\n" +
+                "\tmax(D.mileage)-ifnull(max(R.care_mileage),0) AS new_mileage, sum(D.runtime)/60-ifnull(max(R.care_hour),0) AS new_runtime\n," +
+                "\tmax(R.care_time) AS last_care_time,max(R.care_mileage) last_care_mileage, max(R.care_hour) last_care_hour,\n" +
                 "\tC2.care_mileage, C2.care_hour\n" +
             "FROM t_car_info C\n" +
             "\tJOIN t_car_org O ON C.id = O.car_id\n" +
@@ -17,7 +18,7 @@ module Service{
             "\tLEFT OUTER JOIN t_care_record R ON O.org_id = R.org_id and C.id = R.car_id\n" +
             "WHERE O.org_id = ?\n" +
             "GROUP BY C.id\n" +
-            "HAVING max_mileage >= C2.care_mileage OR sum_runtime/60 >= C2.care_hour";
+            "HAVING new_mileage >= C2.care_mileage OR new_runtime >= C2.care_hour";
         var args = [req.params.org_id];
         var dac = MySqlAccess.RetrievePool();
 
