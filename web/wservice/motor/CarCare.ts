@@ -108,4 +108,72 @@ module Service{
 
         task.begin();
     }
+
+    export function AddCareRecordInOrg(req, res){
+        if(Object.keys(req.body).length === 0){
+            res.json({
+                car_id:1,
+                cust_id:156,
+                work_id:122
+            });
+            return;
+        }
+
+        if(!req.body.car_id) {res.json(new TaskException(-1, "缺少参数car_id", null)); return;}
+
+        var dac = MySqlAccess.RetrievePool();
+        var task:any = { finished: 0};
+        task.begin = ()=>{
+            // 获取操作帐号ID
+            Account.CreateFromToken(req.cookies.token, (ex, acc)=>{
+                if(ex) {res.json(new TaskException(-1, "获取操作帐号失败", ex)); return; }
+                else{
+                    task.A = { oper: acc };
+                    task.finished++;
+                    task.FindCarStatus();
+                    return;
+                }
+            });
+        };
+
+        task.FindCarStatus = ()=>{
+            var sql = "SELECT max(D.mileage) AS max_mileage, sum(D.runtime) AS sum_runtime\n" +
+                "FROM t_car_info C JOIN t_obd_drive D ON C.obd_code = D.obdCode\n" +
+                "WHERE C.id = ?";
+            dac.query(sql, [req.body.car_id], (ex, result)=>{
+                if(ex) {res.json(new TaskException(-1, "查询车辆状态失败", ex)); return;}
+                else if(result.length === 0){
+                    task.B = {mileage:0, hour:0};
+                }
+                else{
+                    task.B = { mileage: result[0].max_mileage, hour: result[0].sum_runtime/60};
+                }
+                task.finished++;
+                task.end();
+            });
+        };
+
+        task.end = ()=>{
+            var sql = "INSERT t_care_record(org_id,acc_id,car_id,cust_id," +
+                "care_time,care_mileage,care_hour,work_id) VALUES(?,?,?,?,?,?,?,?)";
+            var args = [
+                req.params.org_id,
+                task.A.oper.id,
+                req.body.car_id,
+                req.body.cust_id,
+                new Date(),
+                task.B.mileage,
+                task.B.hour,
+                req.body.work_id
+            ];
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) {res.json(new TaskException(-1, "创建关怀记录失败", ex)); return;}
+                else{
+                    res.json({status:"ok", id:result.insertId});
+                }
+            });
+        };
+
+        task.begin();
+    }
 }

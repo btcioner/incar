@@ -49,6 +49,7 @@ module.exports = function(app) {
 
     app.get('/wservice/organization/:org_id/care', wservice.GetCareInOrg);
     app.get('/wservice/organization/:org_id/carerecord', wservice.GetCareRecordInOrg);
+    app.post('/wservice/organization/:org_id/carerecord', wservice.AddCareRecordInOrg)
 
     app.get('/wservice/carowner', wservice.GetCarOwnerAll);
     app.post('/wservice/carowner', wservice.AddCarOwner);
