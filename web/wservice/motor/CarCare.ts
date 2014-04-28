@@ -7,7 +7,7 @@ module Service{
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var dac = MySqlAccess.RetrievePool();
-        var sql = "SELECT C.id, C.obd_code, C2.brand, C2.series, A.nick AS owner_nick, A.phone As owner_phone,\n" +
+        var sql = "SELECT C.id, C.obd_code, C2.brand, C2.series,U.acc_id AS owner_id, A.nick AS owner_nick, A.phone As owner_phone,\n" +
                 "\tmax(D.mileage)-ifnull(max(R.care_mileage),0) AS new_mileage, sum(D.runtime)/60-ifnull(max(R.care_hour),0) AS new_runtime\n," +
                 "\tmax(R.care_time) AS last_care_time,max(R.care_mileage) last_care_mileage, max(R.care_hour) last_care_hour,\n" +
                 "\tC2.care_mileage, C2.care_hour\n" +
