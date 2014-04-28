@@ -4,19 +4,27 @@
 
 'use strict';
 
-var dao = require('./dao');
-var dataManager = require('./dataManager');
-var net = require('net');
-var msgCentreParam={
-    host:'127.0.0.1',
-    port:54321
-};
-function sendDataToMsgCentre(dataBuffer){
-    var client=net.connect(msgCentreParam,function() {
-        console.log('msgCentre connected,send message:\n'+toString0X(dataBuffer));
-        client.write(dataBuffer);
-        client.end();
-    });
+var dao = require('../core/dao');
+var dataManager = require('../core/dataManager');
+var http = require("http");
+
+function sendToMessageServer(dataBuffer,commandWord){
+
+    console.log("接收到短信回复："+commandWord+"\n");
+    var dataJson={dataString:dataBuffer};
+    var opt = {
+        method: "POST",
+        host: "localhost",
+        port: 1234,
+        path: "/message/receive/"+commandWord,
+        headers: {
+            "Content-Type": "application/json",
+            "Content-Length":Buffer.byteLength(JSON.stringify(dataJson))
+        }
+    };
+    var req = http.request(opt, function (serverFeedback) {});
+    req.write(JSON.stringify(dataJson));
+    req.end();
 }
 
 /**
@@ -78,13 +86,10 @@ function getOBDSuccess(cmd){
     return responseBuffer.slice(0, offset);
 }
 function packetProcess(packetInput,tag) {
-    var dataBuffer = null;
-    if (Buffer.isBuffer(packetInput))
-        dataBuffer = packetInput;
-    else
-        dataBuffer = new Buffer(packetInput);
-    var responseBuffer = undefined;
-    var commandWord = dataBuffer.readUInt16BE(0);
+    var responseBuffer=null;
+    var dataBuffer= dataManager.init(packetInput,0);
+    var commandWord = dataManager.nextWord();           //cmd
+    var obdCode=dataManager.nextString();               //OBD编号
     switch (commandWord) {
         case 0x1601:
             responseBuffer = packetProcess_1601(dataBuffer);
@@ -100,17 +105,14 @@ function packetProcess(packetInput,tag) {
             break;
     }
     //涉及到OBD短信的反馈一律发送到短信中心进行处理
-    console.log(1111);
     if(commandWord>=0x1621){
-        console.log(2222);
-        sendDataToMsgCentre(dataBuffer);
+        sendToMessageServer(dataBuffer,commandWord);
         responseBuffer=getOBDSuccess(commandWord);
     }
     //所有OBD发送过来的数据都会保存进历史表
     if ( !! responseBuffer) {
         dataManager.init(dataBuffer,2);
         //1、获得报文内容
-        var obdCode=dataManager.nextString();               //OBD编号
         var vin=dataManager.nextString();                   //VIN码
         var history={};
         history.obdCode=obdCode;

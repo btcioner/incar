@@ -48,7 +48,7 @@ exports.insertBySql=function(sql,args,callback){
                 console.log(err);
                 info={};
             }
-            callback(info);
+            callback(info,args);
             connection.release();
         });
     });

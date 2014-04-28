@@ -12,7 +12,7 @@ var wxMenu = {};
 
 wxMenu.define = function(appid, appsecret){
     return function() {
-        var api = new WXAPI('wx5de0018d8c7b0b0d', 'ea3cbd792917a19f7d043b02b7a7a0c6');
+        var api = new WXAPI(appid, appsecret);
         api.createMenu({
             "button":
                 [
@@ -105,7 +105,14 @@ wxMenu.define = function(appid, appsecret){
                             ]
                     }
                 ]
-        }, function(err, result){});
+        }, function(err, result){
+            if (err) {
+                console.log('Error occurred when weixin menu was newly defined - ' + err + '\n');
+            }
+            else {
+                console.log('Weixin menu was newly defined!!\n');
+            }
+        });
     };
 };
 
@@ -117,7 +124,7 @@ wxMenu.textMsgRepliers['my4S.onManual'] = my4S.onManualMessages;
 wxMenu.onClick = [];
 
 wxMenu.onClick['MYCAR.FUEL'] = function(message, session, next) {
-    myCar.fuelReport(message.FromUserName, function(err, reportContent){
+    myCar.fuelReport(message.FromUserName, message.ToUserName, function(err, reportContent){
         if (err) {
             // error handling ...
             next(err);
@@ -127,14 +134,14 @@ wxMenu.onClick['MYCAR.FUEL'] = function(message, session, next) {
                 title: '油耗报告',
                 description: reportContent,
                 picurl: '',
-                url: 'http://linuxsrv.winphone.us/msite/fuel.html?user=' + message.FromUserName
+                url: 'http://linuxsrv.winphone.us/msite/fuel.html?user=' + message.FromUserName + '@' + message.ToUserName
             }]);
         }
     });
 };
 
 wxMenu.onClick['MYCAR.CARBON'] = function(message, session, next) {
-    myCar.carbonReport(message.FromUserName, function(err, reportContent){
+    myCar.carbonReport(message.FromUserName, message.ToUserName, function(err, reportContent){
         if (err) {
             // error handling ...
             next(err);
@@ -144,14 +151,14 @@ wxMenu.onClick['MYCAR.CARBON'] = function(message, session, next) {
                 title: '我的碳排放',
                 description: reportContent,
                 picurl: '',
-                url: 'http://linuxsrv.winphone.us/msite/carbon.html?user=' + message.FromUserName
+                url: 'http://linuxsrv.winphone.us/msite/carbon.html?user=' + message.FromUserName + '@' + message.ToUserName
             }]);
         }
     });
 };
 
 wxMenu.onClick['MYCAR.BEHAVIOR'] = function(message, session, next) {
-    myCar.driveBehaviorReport(message.FromUserName, function(err, reportContent){
+    myCar.driveBehaviorReport(message.FromUserName, message.ToUserName, function(err, reportContent){
         if (err) {
             // error handling ...
             next(err);
@@ -161,7 +168,7 @@ wxMenu.onClick['MYCAR.BEHAVIOR'] = function(message, session, next) {
                 title: '驾驶行为报告',
                 description: reportContent,
                 picurl: '',
-                url: 'http://linuxsrv.winphone.us/msite/drivingBehavior.html?user=' + message.FromUserName
+                url: 'http://linuxsrv.winphone.us/msite/drivingBehavior.html?user=' + message.FromUserName + '@' + message.ToUserName
             }]);
         }
     });
@@ -179,7 +186,7 @@ wxMenu.onClick['MY4S.BOOKING'] = function(message, session, next) {
             title: '预约保养',
             description: result,
             picurl: '',
-            url: 'http://linuxsrv.winphone.us/msite/booking?user=' + message.FromUserName
+            url: 'http://linuxsrv.winphone.us/msite/booking?user=' + message.FromUserName + '@' + message.ToUserName
         }]);
     });
 };
@@ -193,7 +200,7 @@ wxMenu.onClick['MY4S.MANUAL'] = function(message, session, next) {
             title: '行车手册',
             description: result,
             picurl: '',
-            url: 'http://linuxsrv.winphone.us/msite/manual?user=' + message.FromUserName
+            url: ''  /**  http://linuxsrv.winphone.us/msite/manual?user=' + message.FromUserName + '@' + message.ToUserName **/
         }]);
     });
 };

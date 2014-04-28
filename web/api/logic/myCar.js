@@ -11,7 +11,7 @@ var carbon = require('./carbon');
 
 var myCar = {};
 
-myCar.fuelReport = function(userName, callback){
+myCar.fuelReport = function(userName, serverName, callback){
     // 模板将来要从数据库来读取
     var tpl = [
         '最近一次驾驶：\n',
@@ -33,7 +33,7 @@ myCar.fuelReport = function(userName, callback){
 
     var compiled = ejs.compile(tpl);
 
-    fuel.getReport(userName, function(err, result) {
+    fuel.getReport(userName, serverName, function(err, result) {
         if (err) { callback(err);}
         else {
             if (result.fuelDataLastTime.fuel !== undefined && result.fuelDataLastTime.fuel !== null) { result.fuelDataLastTime.fuel = result.fuelDataLastTime.fuel.toFixed(2); }
@@ -50,34 +50,39 @@ myCar.fuelReport = function(userName, callback){
     });
 };
 
-myCar.carbonReport = function(userName, callback){
+myCar.carbonReport = function(userName, serverName, callback){
     // 模板将来要从数据库来读取
     var tpl = [
         '最近一次行驶碳排放参考量为：<%=carbonDataLastTime.carbon %>kg\n',
         '\n',
         '本周行驶碳排放总量参考量为：<%=carbonDataLastWeek.carbon %>kg\n',
-        '                优于其他94.3%车主\n',
+        '                优于其他<%=carbonDataLastWeek.percentage %>%车主\n',
         '\n',
         '本月行驶碳排放总量参考量为：<%=carbonDataLastMonth.carbon %>kg\n',
-        '                优于其他94.3%车主\n',
+        '                优于其他<%=carbonDataLastWeek.percentage %>车主\n',
         '\n'
     ].join('');
 
     var compiled = ejs.compile(tpl);
 
-    carbon.getReport(userName, function(err, result) {
+    carbon.getReport(userName, serverName, function(err, result) {
         if (err) { callback(err);}
         else {
             if (result.carbonDataLastTime.carbon !== undefined && result.carbonDataLastTime.carbon !== null) { result.carbonDataLastTime.carbon = result.carbonDataLastTime.carbon.toFixed(2); }
             if (result.carbonDataLastWeek.carbon !== undefined && result.carbonDataLastWeek.carbon !== null) { result.carbonDataLastWeek.carbon = result.carbonDataLastWeek.carbon.toFixed(2); }
             if (result.carbonDataLastMonth.carbon !== undefined && result.carbonDataLastMonth.carbon !== null) { result.carbonDataLastMonth.carbon = result.carbonDataLastMonth.carbon.toFixed(2); }
 
+            if (result.carbonDataLastWeek.carbon === 0.00)
+                result.carbonDataLastWeek.percentage = 100;
+            if (result.carbonDataLastMonth.carbon === 0.00)
+                result.carbonDataLastMonth.percentage = 100;
+
             callback(null, compiled(result));
         }
     });
 };
 
-myCar.driveBehaviorReport = function(userName, callback){
+myCar.driveBehaviorReport = function(userName, serverName, callback){
     // 模板将来要从数据库来读取
     var tpl = [
         '最近一次驾驶：\n',
@@ -99,7 +104,7 @@ myCar.driveBehaviorReport = function(userName, callback){
 
     var compiled = ejs.compile(tpl);
 
-    drive.getReport(userName, function(err, result) {
+    drive.getReport(userName, serverName, function(err, result) {
         if (err) { callback(err);}
         else {
             callback(null, compiled(result));

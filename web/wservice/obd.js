@@ -51,7 +51,6 @@
  *             里填入解绑时间，以此标示该OBD在不同时间段服侍的主人，作为OBD信息在查询时的一个时间断点)
  */
 var dao=require("../core/dataAccess/dao");
-var msgCentre=require("../core/message/msgCentre");
 function buildChannel(channel,accountId,params,cb){
     if(channel==='wx'){
         //获得用户和组织的微信号
@@ -144,29 +143,7 @@ function buildCarByObd(param){
         console.log("更新成功");
     });
 }
-exports.testOBD=function(req,res){
-    var obdCode=req.params.obdCode;
-    var sql= "select * from t_car";
-    var paramArray=[];
-    dao.findBySql(sql,[],function(rows){
-        for(var i=0;i<rows.length;i++){
-            var cJson=rows[i];
-            paramArray.push(cJson.code);
-        }
-        for(var j=0xFE00;j<=0xFE1A;j++){
-            paramArray.push(j);
-        }
-        dao.findBySql("select sim_number as sim from t_device_obd where obdCode=?",[obdCode],function(rows){
-            if(rows.length>0){
-                var sim=rows[0].sim;
-                msgCentre.getOBDRuntime(obdCode,sim,paramArray,function(info){
-                    res.send(info);
-                });
-            }
-        });
 
-    });
-};
 exports.bindOBD = function(req, res){
     var channel=req.params.channel;
     var bindJson=req.body;
@@ -198,6 +175,8 @@ exports.bindOBD = function(req, res){
     });
 
 };
+
+
 
 
 

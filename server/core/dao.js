@@ -48,7 +48,7 @@ exports.insertBySql=function(sql,args,callback){
                 console.log(err);
                 info={};
             }
-            callback(info);
+            callback(info,args);
             connection.release();
         });
     });
@@ -122,7 +122,7 @@ exports.initDB=function(){
     pool.getConnection(function(err,connection){
         /*-----------------------创建数据库---------------------------*/
         connection.query("use incar");
-        var argsArray=new Array();
+        var argsArray=[];
         argsArray.push({
             code:0x0000,
             unit:"伏特",
@@ -5661,7 +5661,7 @@ exports.initDB=function(){
             manufacturer:""
         });
 
-        for(var i=0;i<argsArray.length;i++){
+        for(i=0;i<argsArray.length;i++){
             connection.query("insert into t_car set ?",argsArray[i]);
         }
         console.log(argsArray);

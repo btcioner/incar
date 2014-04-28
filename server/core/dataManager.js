@@ -2,11 +2,15 @@
  * Created by LM on 14-3-10.
  */
 var convert=require('iconv-lite');
-var myDataBuffer=new Buffer(1024);
+var myDataBuffer;
 var myOffset=0;
 exports.init=function(inBuffer,inOffset){
-    myDataBuffer=inBuffer;
+    if (Buffer.isBuffer(inBuffer))
+        myDataBuffer=inBuffer;
+    else
+        myDataBuffer = new Buffer(inBuffer);
     myOffset=inOffset;
+    return myDataBuffer;
 };
 exports.writeByte=function(data){
     myDataBuffer.writeUInt8(data,myOffset);
@@ -16,7 +20,15 @@ exports.writeWord=function(data){
     myDataBuffer.writeUInt16BE(data,myOffset);
     myOffset+=2;
 };
+exports.writeShort=function(data){
+    myDataBuffer.writeInt16BE(data,myOffset);
+    myOffset+=2;
+};
 exports.writeLong=function(data){
+    myDataBuffer.writeInt32BE(data,myOffset);
+    myOffset+=4;
+};
+exports.writeDoubleWord=function(data){
     myDataBuffer.writeUInt32BE(data,myOffset);
     myOffset+=4;
 };
@@ -39,7 +51,17 @@ exports.nextWord=function(){
     myOffset+=2;
     return content;
 };
+exports.nextShort=function(){
+    var content= myDataBuffer.readInt16BE(myOffset);
+    myOffset+=2;
+    return content;
+};
 exports.nextLong=function(){
+    var content= myDataBuffer.readInt32BE(myOffset);
+    myOffset+=4;
+    return content;
+};
+exports.nextDoubleWord=function(){
     var content= myDataBuffer.readUInt32BE(myOffset);
     myOffset+=4;
     return content;

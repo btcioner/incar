@@ -101,13 +101,25 @@ function s_customerCtrl($scope, $http){
         }
     }
 
-
     //分页跳转页面
-    $scope.changePage=function(changeId)
+    //paging redirct
+    $scope.changePage=function(changeId,id)
     {
-        $scope.currentPage = changeId
-        GetFirstPageInfo();
+        $scope.currentPage = changeId;
+        switch(id)
+        {
+            case 1:
+                GetFirstPageInfo();
+                break;
+            case 2:
+                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id);
+                break;
+            case 3:
+                getDriveList();
+                break;
+        }
     }
+
     function changeView(id)
     {
         switch(id)
@@ -151,6 +163,159 @@ function s_customerCtrl($scope, $http){
         $scope.cusTabDiv = true;
     }
 
+    $scope.detailTab = function(id)
+    {
+            for(var i=1;i<7;i++)
+            {
+                $("#tab"+i).hide();
+
+                if(i==id)
+                {
+                    $("#tab"+i).show();
+                    $("#tab"+id).removeClass();
+                    $("#tab"+id).addClass("tab-pane active");
+                }
+            }
+        switch(id)
+        {
+            case 1:
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+                $scope.driveDiv = true;
+                $scope.paging1 = true;
+                $scope.paging2 = false;
+                $scope.oneDetailDiv = false;
+                $scope.oneMinuteDetailDiv = false;
+                getDriveList();
+                break;
+            case 6:
+
+                break;
+        }
+    }
+   //查询行车数据
+    function getDriveList()
+    {
+        $scope.postData = "&org_id="+ $.cookie("org_id")+"&obd_code="+$scope.cusDetail.obd_code;
+        $http.post(baseurl+'GetDriveInfoAll?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.postData).success(function(data){
+            if(data.status == "ok")
+            {
+                if(data.drvInfos.length == 0)
+                {
+                    alert("暂无详细数据");
+                }
+                $scope.drvInfos = data.drvInfos;
+                PagingInfo(data.totalCount);
+            }
+            else
+            {
+                alert(data.status);
+            }
+        }).error(function(data){
+        alert("请求无响应");
+    })
+    }
+
+    //get owner and car info  缺少所属4s店
+    function GetOwnerInfo(obd_code)
+    {
+        $http.get(baseurl + 'obd/'+obd_code).success(function(data){
+            if(data.status == "ok")
+            {
+                $scope.deviceDetail = data.obd;
+            }
+            else
+            {
+                alert(data.status);
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            });
+    }
+    //查看一个OBD一次行程的数据
+    $scope.GetDriveDetail = function(obd_code,drive_id)
+    {
+        $scope.chooseOC = obd_code;
+        $scope.drive_id = drive_id;
+        $scope.postData = {token:$scope.token,code:obd_code,drive_id:drive_id};
+        GetOwnerInfo(obd_code);
+        $http.post(baseurl + 'GetDriveDetail?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord,$scope.postData).success(function(data){
+            if(data.status == "ok")
+            {
+                if(data.details.length== 0)
+                {
+                    alert("暂无行程数据");
+                }
+                else{
+                    $scope.driveDiv = false;
+                    $scope.oneDetailDiv = true;
+                    $scope.paging2 = true;
+                    $scope.paging1 = false;
+                    $scope.details = data.details;
+                    PagingInfo(data.totalCount);
+                }
+            }
+            else
+            {
+                alert(data.status);
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            });
+    }
+
+
+    //一分钟内的行车数据流记录
+    $scope.GetOneMinuteDetail = function(index)
+    {
+        if($scope.details[index].CarCondition.detail == null || $scope.details[index].CarCondition.detail.length == 0)
+        {
+            alert("暂无详细数据");
+        }
+        else
+        {
+            $scope.omdds = $scope.details[index].CarCondition.detail;
+            $scope.oneDetailDiv = false;
+            $scope.paging1 = false;
+            $scope.paging2 = false;
+            $scope.oneMinuteDetailDiv = true;
+        }
+    }
+//返回操作
+    $scope.gotoBack = function(id)
+    {
+        $scope.currentPage = 1;
+        switch(id)
+        {
+            case 1: //行程返回行车
+                $scope.driveDiv = true;
+                $scope.paging1 = true;
+                $scope.paging2 = false;
+                $scope.oneDetailDiv = false;
+                $scope.oneMinuteDetailDiv = false;
+                getDriveList();
+                break;
+            case 2: //数据流数据返回行程
+                $scope.driveDiv = false;
+                $scope.paging1 = false;
+                $scope.paging2 = true;
+                $scope.oneDetailDiv = true;
+                $scope.oneMinuteDetailDiv = false;
+                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id);
+                break;
+
+        }
+    }
 
 
 }

@@ -66,9 +66,6 @@ function driveDataCtrl($scope, $http){
         }
     }
 
-
-
-
     //paging redirct
     $scope.changePage=function(changeId,id)
     {

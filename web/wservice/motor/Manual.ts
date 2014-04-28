@@ -120,7 +120,8 @@ module Service {
                 if(data.keyword && data.keyword.trim().length > 0) manual.keyword = data.keyword.trim();
                 if(data.title && data.title.trim().length > 0) manual.title = data.title.trim();
                 if(data.description && data.description.trim().length > 0) manual.description = data.description.trim();
-                if(req.files.pro_img){
+                // Fix: ignore empty file uploaded.
+                if(req.files.pro_img && req.files.pro_img.size > 0){
                     var idx = req.files.pro_img.path.lastIndexOf("\\");
                     manual.filename = req.files.pro_img.path.slice(idx+1);
                 }

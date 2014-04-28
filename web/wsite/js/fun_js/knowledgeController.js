@@ -81,8 +81,6 @@ function knowledgeBaseCtrl($scope, $http){
         });
     }
 
-
-
     //修改
     $scope.modify = function(id){
         $scope.knowledgeListDiv = false;

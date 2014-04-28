@@ -45,24 +45,51 @@ var baseurl="/wservice/";
         if(status == "1") return "正常";
         else if(status == "0" || status == null) return "冻结";
     }
+    //把用户的状态从文字转成数字
     $.changeUserStatusToNum = function(status)
     {
         if(status == "正常") return "1";
         else if(status == "冻结" || status == null) return "0";
     }
+    //改变工位状态
     $.changeSlotStatus = function(status)
     {
         if(status == "1") return "有效";
         else if(status == "0" || status == null) return "失效";
     }
+    //把工位的状态从文字改成数字
     $.changeSlotStatusToNum = function(status)
     {
         if(status == "有效") return "1";
         else if(status == "失效" || status == null) return "0";
     }
-    $.changeContentHeight = function(height)
+    //改变预约保养和维修的状态
+    $.changeWorkStatus = function(step)
     {
-        $("#content").css("height",height);
+        switch(step)
+        {
+            case "applied":
+                return "新申请";
+                break;
+            case "approved":
+                return "已确认";
+                break;
+            case "rejected":
+                return "已拒绝";
+                break;
+            case "cancelled":
+                return "已取消";
+                break;
+            case "done":
+                return "已完成";
+                break;
+            case "aborted":
+                return "未到店";
+                break;
+
+        }
     }
+
+
 })(jQuery);
 

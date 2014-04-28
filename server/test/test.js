@@ -5,10 +5,11 @@ function getRandom(start,end,decimal){
     decimal=decimal?decimal:0;
     return Math.floor((start+Math.random()*(end+1-start))*Math.pow(10,decimal))/(Math.pow(10,decimal+1)*0.1);
 }
-function getRandomTime(){
+function getRandomTime(year,month){
     var d=new Date();
-    d.setYear(2013);
-    var m=getRandom(0,11,0);
+    var y=year?year:2014;
+    d.setYear(y);
+    var m=month?month:getRandom(0,11,0);
     d.setMonth(m);
     if(m===1){
         d.setDate(getRandom(1,28));
@@ -21,19 +22,32 @@ function getRandomTime(){
     d.setSeconds(getRandom(0,59));
     return d;
 }
-
-
-var sql="insert into t_obd_drive set ?";
+var faultCode=[
+    {
+        "code":"P0117",
+        "status":"存贮故障码",
+        "desc":"发动机冷却液温度传感器1电路低"
+    },{
+        "code":"P0195",
+        "status":"存贮故障码",
+        "desc":"机油温度传感器电路故障"
+    }
+];
+var sql="select distinct carCondition from t_drive_detail";
+dao.findBySql(sql,function(rows){
+    console.log(rows);
+});
+/*
+sql="insert into t_obd_drive set ?";
 for(var i=0;i<5000;i++){
     var runtime=getRandom(25,200,0);
     var fTime=getRandomTime();
-    var drive=null;
-    drive={
-        obdCode:"WFQ00012925",
+    var drive={
+        obdCode:"WFQ00013044",
         vin:"W0L0ZCF693108391A",
-        brand:11,
-        series:51,
-        modelYear:13,
+        brand:9,
+        series:84,
+        modelYear:0xFF,
         firingVoltage:getRandom(7,10,1),
         runTime:runtime,
         currentMileage:getRandom(6,100,1),
@@ -50,10 +64,10 @@ for(var i=0;i<5000;i++){
         fireTime:fTime,
         flameOutTime:new Date(fTime.valueOf()+runtime* 60 * 1000)
     };
-    dao.executeBySql([sql],[drive],function(){
+    dao.insertBySql([sql],[drive],function(info){
         console.log(drive);
     });
-}
+}*/
 
 /*msgCentre.getOBDRuntime("WFQ00011755",13007196492,[0xFE05,0xFE06,0xFE07,0xFE08,0xFE09,0xFE0A,0xFE0B,0xFE0C],function(returnJson){
     console.log("得到返回值:\n"+JSON.stringify(returnJson));

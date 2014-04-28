@@ -1,11 +1,11 @@
 /**
- * Created by Jesse Qu on 2/25/14.
+ * Created by LM on 14-4-17.
  */
 
 'use strict';
 
 /**
- * Load configuration
+ *  Load configuration
  */
 
 var path = require('path');
@@ -14,5 +14,7 @@ var rootPath = path.normalize(__dirname + '/..');
 
 module.exports = {
     root: rootPath,
-    port: process.env.PORT || 8899
+    baseUrl: 'http://linuxsrv.winphone.us',
+    port: process.env.PORT || 1234
 };
+

@@ -16,22 +16,22 @@ function toString0X(dataBuffer){
         }
     }
     return dataString;
-};
+}
 
 var sp = require('serialport');
 
 var SerialPort = sp.SerialPort;
 var serialPort = new SerialPort("COM4", {
-    baudrate: 9600,
-    databits: 8,
+    baudRate: 9600,
+    dataBits: 8,
     parity: 'none',
-    stopbits: 1
+    stopBits: 1
 }, false);
 serialPort.open(function() {
     console.log("端口打开");
 });
 var spInUse=false;
-var msgQueue=new Array();
+var msgQueue=[];
 function sendToSerialPort(){
     if(msgQueue.length==0)return;
     if(spInUse==false){
@@ -51,27 +51,9 @@ function sendToSerialPort(){
         });
     }
 }
-server.on('connection', function(socket) {
-    console.log('\nmessage server: connection came in and connected. From:: ' + socket.remoteAddress + ':' + socket.remotePort + '\n');
+exports.send=function(data){
+    msgQueue.push(data);
+    console.log(msgQueue);
+    sendToSerialPort();
+};
 
-    //绑定数据接收的事件
-    socket.on('data', function(data) {
-        msgQueue.push(data);
-        console.log(msgQueue);
-        sendToSerialPort();
-    });
-    socket.on('end', function() {
-        console.log('\nmessage server connection closed. From:: ' + this._peername.address + ':' + this._peername.port + '\n');
-    });
-});
-
-server.on('close', function() {
-    console.log('\nmessage server is closing...\n');
-    serialPort.close(function(){
-        console.log("端口关闭");
-    });
-});
-
-server.listen(12345, function() {
-    console.log('message server start listenning on port 12345...\n============================================================\n');
-});

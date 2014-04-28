@@ -42,7 +42,22 @@ exports.getPayload = function(datagram) {
         return null;
 
     console.log(dataBuffer.slice(0, packetLength+2));
+    console.log(toString0X(dataBuffer));
     return dataBuffer.slice(8, packetLength);
+};
+function toString0X(dataBuffer){
+    var dataString="";
+    for(var i=0;i<dataBuffer.length;i++){
+        var intVal=dataBuffer.readUInt8(i);
+        if(intVal<0x10){
+            dataString+="0"+intVal.toString(16).toUpperCase()+" ";
+        }
+        else{
+            dataString+=intVal.toString(16).toUpperCase()+" ";
+        }
+    }
+    return dataString;
+
 };
 //通过业务数据构建数据包
 exports.getPacket = function(datagram) {

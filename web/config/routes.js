@@ -4,8 +4,9 @@
 var siteCommon = require('../sitecommon');
 var msite = require('./msite');
 var wsite = require('./wsite');
-var wsCar=require('../wservice/car');
-// var wsOBD=require('../wservice/obd');
+//var wsCar=require('../wservice/car');
+var wsOBD=require('../wservice/obd');
+var obdMessage=require('../wservice/obdMessage');
 var wservice = require('../wservice/motor');
 var mservice = require('../mservice/mservice');
 
@@ -14,14 +15,16 @@ var mservice = require('../mservice/mservice');
  */
 module.exports = function(app) {
     //车辆相关
-    app.get('/wservice/car', wsCar.list);
+    /*app.get('/wservice/car', wsCar.list);
     app.get('/wservice/car/:id', wsCar.get);
     app.delete('/wservice/car/:id', wsCar.delete);
     app.post('/wservice/car', wsCar.add);
-    app.put('/wservice/car/:id', wsCar.update);
-    //OBD数据相关
-    // app.get('/wservice/obd/checkCar/:obdCode', wsOBD.checkOBDbyCar);
-    // app.put('/wservice/obd/work/:channel', wsOBD.bindOBD);
+    app.put('/wservice/car/:id', wsCar.update);*/
+    //OBD绑定/注册
+    app.put('/wservice/obd/work/:channel', wsOBD.bindOBD);
+    //短信
+    app.post('/wservice/message/obdTestSend/:obdCode', obdMessage.obdTestSend);
+    app.post('/wservice/message/obdTestReceive/:obdCode', obdMessage.obdTestReceive);
     // Routes for wsite service
     app.get('/wservice/organization', wservice.GetOrganization);
     app.post('/wservice/organization', wservice.AddOrganization);
@@ -44,6 +47,10 @@ module.exports = function(app) {
     app.put('/wservice/organization/:org_id/promotionslot/:slot_id', wservice.ModifyPromotionSlotInOrg);
     app.delete('/wservice/organization/:org_id/promotionslot/:slot_id', wservice.DeletePromotionSlotInOrg);
 
+    app.get('/wservice/organization/:org_id/care', wservice.GetCareInOrg);
+    app.get('/wservice/organization/:org_id/carerecord', wservice.GetCareRecordInOrg);
+    app.post('/wservice/organization/:org_id/carerecord', wservice.AddCareRecordInOrg)
+
     app.get('/wservice/carowner', wservice.GetCarOwnerAll);
     app.post('/wservice/carowner', wservice.AddCarOwner);
     app.get('/wservice/carowner/:acc_id', wservice.GetCarOwner);
@@ -60,6 +67,15 @@ module.exports = function(app) {
     app.get('/wservice/manual/:id', wservice.GetManual);
     app.post('/wservice/manual/:id', wservice.ModifyManual);
     app.delete('/wservice/manual/:id', wservice.DeleteManual);
+
+    app.get('/wservice/work/:work', wservice.GetWorkAll);
+    app.post('/wservice/work/:work', wservice.CreateWork);
+    app.get('/wservice/work/:work/:work_id', wservice.GetWork);
+    app.put('/wservice/work/:work/:work_id', wservice.UpdateWork);
+
+    app.get('/wservice/brand', wservice.GetAllBrand);
+    app.get('/wservice/brand/:brand_id/series', wservice.GetBrandSeries);
+    app.get('/wservice/brand/:brand_id/series/:series_id', wservice.GetSeries);
 
     app.get('/wservice', wservice.html);
     app.all('/wservice/*', wservice.main);

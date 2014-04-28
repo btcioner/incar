@@ -109,6 +109,8 @@ CREATE TABLE IF NOT EXISTS t_car(
     brand varchar(30),
     series varchar(30),
     manufacturer varchar(30),
+    care_mileage int COMMENT '保养里程间隔',
+    care_hour int COMMENT '发动机保养小时间隔',
     primary key (id));
 -- 处理主外键关系
 ALTER TABLE t_drive_detail

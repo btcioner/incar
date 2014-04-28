@@ -22,7 +22,7 @@ function slotBooking(req, res) {
     delete postData.bookingTime;
     console.log(postData);
 
-    getOrgId(self.db, postData.user, function(err, orgId) {
+    getOrgId(self.db, postData.user.split('@')[0], function(err, orgId) {
         if (err) { console.log(err); return res.send(400, err); }
         return self.db().query('insert into t_slot_booking(storeId, slot_location, slot_time, channel, channel_specific, booking_time, booking_status, tc, ts) values (?,?,?,?,?, now(), 1,?,now());', [orgId, '未指定', postData.timeSlot, 'weixin', postData.user, postData.user+'@weixin'], function(err, result) {
             if (err) { console.log(err); return res.send(400, err); }
