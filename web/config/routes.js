@@ -47,9 +47,12 @@ module.exports = function(app) {
     app.put('/wservice/organization/:org_id/promotionslot/:slot_id', wservice.ModifyPromotionSlotInOrg);
     app.delete('/wservice/organization/:org_id/promotionslot/:slot_id', wservice.DeletePromotionSlotInOrg);
 
+    app.get('/wservice/organization/:org_id/work/:work', wservice.GetWorkAll);
+    app.post('/wservice/organization/:org_id/work/:work', wservice.CreateWork);
+    app.get('/wservice/organization/:org_id/work/:work/:work_id', wservice.GetWork);
+    app.put('/wservice/organization/:org_id/work/:work/:work_id', wservice.UpdateWork);
+
     app.get('/wservice/organization/:org_id/care', wservice.GetCareInOrg);
-    app.get('/wservice/organization/:org_id/carerecord', wservice.GetCareRecordInOrg);
-    app.post('/wservice/organization/:org_id/carerecord', wservice.AddCareRecordInOrg)
 
     app.get('/wservice/carowner', wservice.GetCarOwnerAll);
     app.post('/wservice/carowner', wservice.AddCarOwner);
@@ -67,11 +70,6 @@ module.exports = function(app) {
     app.get('/wservice/manual/:id', wservice.GetManual);
     app.post('/wservice/manual/:id', wservice.ModifyManual);
     app.delete('/wservice/manual/:id', wservice.DeleteManual);
-
-    app.get('/wservice/work/:work', wservice.GetWorkAll);
-    app.post('/wservice/work/:work', wservice.CreateWork);
-    app.get('/wservice/work/:work/:work_id', wservice.GetWork);
-    app.put('/wservice/work/:work/:work_id', wservice.UpdateWork);
 
     app.get('/wservice/brand', wservice.GetAllBrand);
     app.get('/wservice/brand/:brand_id/series', wservice.GetBrandSeries);
