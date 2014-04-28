@@ -43,6 +43,7 @@ module Service{
                         // 无保养纪录,符合条件
                         entry.new_mileage = entry.max_mileage;
                         entry.new_hour = entry.max_hour;
+                        entry.last_care_time = null;
                         task.B.push(entry);
                     }
                     else{
@@ -53,6 +54,7 @@ module Service{
                                     // 扣除最后一次保养,仍然符合条件的
                                     entry.new_mileage = entry.max_mileage - json_args.care_mileage;
                                     entry.new_hour = entry.max_hour - json_args.care_hour;
+                                    entry.last_care_time = result[0].updated_time;
                                     task.B.push(entry);
                                 }
                             }
@@ -60,6 +62,7 @@ module Service{
                                 // 解析不出保养里程,也算符合条件
                                 entry.new_mileage = entry.max_mileage;
                                 entry.new_hour = entry.max_hour;
+                                entry.last_care_time = result[0].updated_time;
                                 task.B.push(entry);
                             }
                         }
@@ -67,6 +70,7 @@ module Service{
                             // 解析不出,也算符合条件
                             entry.new_mileage = entry.max_mileage;
                             entry.new_hour = entry.max_hour;
+                            entry.last_care_time = result[0].updated_time;
                             task.B.push(entry);
                             console.log(new TaskException(-1, "解析t_work.json_args失败", e));
                         }
@@ -82,7 +86,7 @@ module Service{
             if(page.IsValid()) {
                 var result = new Array();
                 var i = page._offset;
-                while(result.length < page._pagesize){
+                while(result.length < page._pagesize && i<task.B.length){
                     result.push(task.B[i]);
                     i++;
                 }
