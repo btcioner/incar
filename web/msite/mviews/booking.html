@@ -12,8 +12,10 @@
     <!--日期控件资源  -->
     <script  src="../mscripts/jquery.mobile.min.js"></script>
     <script  src="../mscripts/jqm-datebox-1.4.0.comp.flipbox.min.js"></script>
-    <link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">
+
     <link rel="stylesheet" href="../mstyles/jqm-datebox.min.css">
+    <link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">
+
     <!--日期控件资源结束  -->
 
     <style scoped>
@@ -36,7 +38,7 @@
               year=today.getFullYear();    //获取完整的年份(4位,1970-????)
             month=(today.getMonth()+1>9)?today.getMonth()+1:"0"+(today.getMonth()+1);     //获取当前月份(0-11,0代表1月)
             day=today.getDate()>9?today.getDate():"0"+today.getDate();;        //获取当前日(1-31)
-            document.getElementById("start").value=year+"-"+month+"-01";
+            document.getElementById("start").value=year+"-"+month+"-"+day;
 
              user=getQueryString("user");
 		}
@@ -86,11 +88,11 @@
     </div>
        <div id="bookStatus" style="width: 100%">
           <table style="font-size:16px; margin-top:5px" cellspacing="3px">
-             <tr><td class="tdStyle"> 车主姓名</td><td><input name="ownerName" type="text" class="textfield"/></td></tr>
-             <tr><td class="tdStyle"> 联系电话</td><td><input name="phone" type="text" class="textfield"/></td></tr>
-             <tr><td class="tdStyle"> 车牌号</td><td><input name="plateNum" type="text" class="textfield"/></td></tr>
-             <tr><td class="tdStyle"> 车型</td><td><input name="carType" type="text" class="textfield"/></td></tr>
-             <tr><td td class="tdStyle"> 里程</td><td><input name="mileage" type="text" class="textfield"/></td></tr>
+             <tr><td class="tdStyle"> 车主姓名</td><td><input name="ownerName" type="text" class="textfield" id="ownerName"/></td></tr>
+             <tr><td class="tdStyle"> 联系电话</td><td><input name="phone" type="text" class="textfield" id="phone"/></td></tr>
+             <tr><td class="tdStyle"> 车牌号</td><td><input name="plateNum" type="text" class="textfield" id="plateNum"/></td></tr>
+             <tr><td class="tdStyle"> 车型</td><td><input name="carType" type="text" class="textfield" id="carType"/></td></tr>
+             <tr><td td class="tdStyle"> 里程</td><td><input name="mileage" type="text" class="textfield" id="mileage"/></td></tr>
           </table>
          
        </div>
