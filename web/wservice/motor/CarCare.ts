@@ -7,7 +7,7 @@ module Service{
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var dac = MySqlAccess.RetrievePool();
-        var sql = "SELECT C.id, C.obd_code, C2.brand, C2.series,\n" +
+        var sql = "SELECT C.id, C.obd_code, C2.brand, C2.series, A.nick AS owner_nick, A.phone As owner_phone,\n" +
                 "\tmax(D.mileage)-ifnull(max(R.care_mileage),0) AS new_mileage, sum(D.runtime)/60-ifnull(max(R.care_hour),0) AS new_runtime\n," +
                 "\tmax(R.care_time) AS last_care_time,max(R.care_mileage) last_care_mileage, max(R.care_hour) last_care_hour,\n" +
                 "\tC2.care_mileage, C2.care_hour\n" +
@@ -16,6 +16,8 @@ module Service{
             "\tJOIN t_car C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode\n" +
             "\tJOIN t_obd_drive D ON C.obd_code = D.obdCode\n" +
             "\tLEFT OUTER JOIN t_care_record R ON O.org_id = R.org_id and C.id = R.car_id\n" +
+            "\tLEFT OUTER JOIN t_car_user U ON U.car_id = C.id and U.user_type = 1\n" +
+            "\tLEFT OUTER JOIN t_staff_account A ON A.id = U.acc_id\n" +
             "WHERE O.org_id = ?\n" +
             "GROUP BY C.id\n" +
             "HAVING new_mileage >= C2.care_mileage OR new_runtime >= C2.care_hour";
