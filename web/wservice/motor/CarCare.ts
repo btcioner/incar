@@ -99,4 +99,61 @@ module Service{
 
         task.begin();
     }
+
+    export function GetCareTeleRecordInOrg(req, res){
+        res.setHeader("Accept-Query", "page,pagesize,car_id");
+        var page = new Pagination(req.query.page, req.query.pagesize);
+
+        var dac = MySqlAccess.RetrievePool();
+        var sql = "SELECT %s\n" +
+            "FROM t_work_log L\n" +
+            "\tJOIN t_work W ON W.id = L.work_id\n" +
+            "WHERE W.work='care' and L.step in('applied', 'refused') and L.json_args LIKE '%\"via\":\"web\"%' and W.org_id = ?";
+        var args = [req.params.org_id];
+
+        if(req.query.car_id){
+            sql += " and W.car_id = ?";
+            args.push(req.query.car_id);
+        }
+
+        sql += "\nORDER BY L.log_time DESC"
+
+        var task:any = {finished:0};
+        task.begin = ()=>{
+            var sqlA = util.format(sql, "COUNT(L.id) count");
+            dac.query(sqlA, args, (ex, result)=>{
+                task.A = {ex:ex, result:result};
+                task.finished++;
+                task.end();
+            });
+
+            var sqlB = util.format(sql, "L.*");
+            if(page.IsValid()) sqlB += page.sql;
+            dac.query(sqlB, args, (ex, result)=>{
+                task.B = {ex:ex, result:result};
+                task.finished++;
+                task.end();
+            });
+        };
+
+        task.end = ()=>{
+            if(task.finished < 2) return;
+            if(task.B.ex) {res.json(new TaskException(-1, "查询电话关怀记录失败", task.B.ex)); return;}
+
+            task.B.result.forEach((entry:any)=>{
+                try {
+                    entry.json_args = JSON.parse(entry.json_args);
+                }
+                catch(e){
+                    console.log(e);
+                }
+            });
+
+            var total = 0;
+            if(!task.A.ex) total = task.A.result[0].count;
+            res.json({status:"ok", totalCount:total, records:task.B.result});
+        };
+
+        task.begin();
+    }
 }

@@ -53,6 +53,7 @@ module.exports = function(app) {
     app.put('/wservice/organization/:org_id/work/:work/:work_id', wservice.UpdateWork);
 
     app.get('/wservice/organization/:org_id/care', wservice.GetCareInOrg);
+    app.get('/wservice/organization/:org_id/care_tel_rec', wservice.GetCareTeleRecordInOrg);
 
     app.get('/wservice/carowner', wservice.GetCarOwnerAll);
     app.post('/wservice/carowner', wservice.AddCarOwner);

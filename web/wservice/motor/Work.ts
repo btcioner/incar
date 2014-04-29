@@ -315,6 +315,51 @@ module Work{
                 }
             });
         }
+
+        // 客户拒绝了保养
+        refuse(req, res){
+            if(!req.body.car_id){res.json(new Service.TaskException(-1, "缺少参数car_id", null)); return; }
+            if(!req.body.cust_id){res.json(new Service.TaskException(-1, "缺少参数cust_id", null)); return; }
+            if(!req.body.reason){res.json(new Service.TaskException(-1, "缺少参数reason", null)); return; }
+
+            this.step = 'refused';
+            this.car_id = req.body.car_id;
+            this.cust_id = req.body.cust_id;
+            this.org_id = req.params.org_id;
+
+            var dac = Service.MySqlAccess.RetrievePool();
+            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=> {
+                if (ex) { res.json(new Service.TaskException(-1, "获取操作员失败", ex)); return; }
+                else {
+                    var sql = "SELECT max(D.mileage) AS max_mileage, sum(D.runtime)/60 AS sum_hour\n" +
+                        "FROM t_obd_drive D, t_car_info C WHERE C.obd_code = D.obdCode and C.id = ?\n" +
+                        "GROUP BY C.id";
+                    dac.query(sql, [this.car_id], (ex, result)=>{
+                        var json_args = {via:"web", reason: req.body.reason, oper: userLogin.nick, care_mileage:0, care_hour:0 };
+                        if(!ex && result.length > 0){
+                            json_args.care_mileage = result[0].max_mileage;
+                            json_args.care_hour = result[0].sum_hour;
+                        }
+                        this.json_args = JSON.stringify(json_args);
+
+                        var sql = "INSERT t_work SET ?";
+                        dac.query(sql, [this], (ex, result)=>{
+                            if(ex) { res.json(new Service.TaskException(-1, "创建工作败", ex)); return; }
+                            else{
+                                this.id =result.insertId;
+                                var log = new WorkLog(this);
+                                log.Save((ex, objLog)=>{
+                                    if(ex){ res.json(new Service.TaskException(-1, "创建工作对象成功,但记录日志失败", ex)); return; }
+                                    else{
+                                        res.json({status:"ok", work:this});
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+        }
     }
 }
 
