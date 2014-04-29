@@ -22,7 +22,7 @@
     </style>
  <script type="text/javascript">
   var user;//用户openId
-  var webserviceurl;//webservice地址
+  //var webserviceurl;//webservice地址
   var today;//当天日期
   //获取传入的参数
   function getQueryString(name) {
@@ -51,11 +51,22 @@
 
   //提交注册数据
   function reg(){
+      if($('#password').val()!=$('#pwdagain').val()){
+          alert("密码不一致");
+          return;
+      }else{
       var postData = {};
-      postData.user = user;
+      postData.openid = user;
       postData.owner_flag = 1;
-      postData.obd_code = document.getElementById("obd_code").value;
+      postData.obdCode = document.getElementById("obd_code").value;
       postData.enroll_time = today;
+      postData.name=$("#ownername").val();
+      postData.phone=$("#phonenumber").val();
+      postData.brand=$("#brand").val();
+      postData.seriese=$("#selectSeries").val();
+      postData.modelYear=$("#manuyear").val();
+      postData.license=$("#platenumber").val();
+      postData.mileage=$("#currentMileage").val();
       $.ajax({
           type: "POST",
           url: "/mservice/enroll",
@@ -70,8 +81,8 @@
               alert("注册失败\n请检查OBD Id是否正确");
           }
       });
+   }
   }
-  
 </script>
 </head>
 <body onLoad="init()" style="padding: 2">
@@ -86,6 +97,8 @@
      <table style="font-size:14px;border-collapse: collapse; border-spacing:  0 " >
        <tr><td style="text-align:right;" width="35%">用户名<span style="color:red">*</span></td><td  width="65%"><input type="text" id="username" name="username" class="textfield"/></td></tr>
        <tr><td style="text-align:right;" width="35%">OBD&nbsp;Id<span style="color:red">*</span></td><td  width="65%"><input type="text" id="obd_code" name="obd_code" class="textfield" /></td></tr>
+         <tr><td style="text-align:right;">密码<span style="color:red">*</span></td><td><input type="password" id="password" name="password" class="textfield"/></td></tr>
+         <tr><td style="text-align:right;">重复密码<span style="color:red">*</span></td><td><input type="password" id="pwdagain" name="pwdagain" class="textfield"/></td></tr>
        <tr><td style="text-align:right;">汽车品牌<span style="color:red">*</span></td><td><select id="brand" name="brand"  style="font-size:20px" data-native-menu="true"><option value="-1" >请选择</option></select></td></tr>
        <tr><td style="text-align:right;">系列<span style="color:red">*</span></td><td><select id="selectSeries" name="selectSeries" style="font-size:20px"><option value="-1" >请选择</option></select></td></tr>
        <tr><td style="text-align:right;">年款<span style="color:red">*</span></td><td><select id="manuyear" name="manuyear" style="font-size:20px"><option value="-1">请选择</option><option>2000</option><option>2001</option><option>2002</option><option>2003</option><option>2004</option><option>2005</option><option>2006</option><option>2007</option><option>2008</option><option>2009</option><option>2010</option><option>2011</option><option>2012</option><option>2013</option><option>2014</option><option>2015</option></select></td></tr>
@@ -94,7 +107,7 @@
        <tr><td style="text-align:right;">车牌号</td><td><input type="text" id="platenumber" name="platenumber" class="textfield" /></td></tr>
        <tr><td style="text-align:right;">当前里程</td><td><input type="text" id="currentMileage" name="currentMileage" class="textfield" /></td></tr>
      </table>
-      </form>
+  </form>
      <div id="Tip"></div>
      <p align="center"><input type="button" value="&nbsp;注&nbsp;&nbsp;册&nbsp;"   class="textfield" style="width:100%; height:60px" onclick="reg()"/>
   </div>
