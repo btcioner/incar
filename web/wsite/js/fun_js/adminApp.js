@@ -35,6 +35,10 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
             controller:'knowledgeBaseCtrl',
             templateUrl:'/admin/partials/knowledgeBase.html'//行车手册
         })
+        .when('/paramSetting',{
+            controller:'s_paramCtrl',
+            templateUrl:'/admin/partials/paramSetting.html'//行车手册
+        })
         .otherwise({
            redirectTo:'/main'//跳转到设备管理
         });

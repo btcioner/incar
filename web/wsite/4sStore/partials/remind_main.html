@@ -27,14 +27,14 @@
                         <h5 >故障提醒</h5>
                     </a> </div>
                 </div>
-                <div class="collapse accordion-body" id="collapseGTwo">
+                <!--<div class="collapse accordion-body" id="collapseGTwo">
                     <div class="widget-content" style="text-align: right;padding: 0">
                         <button  class="btn btn-info" style="width: 100%;">新提醒</button>
                         <button  class="btn btn-info" style="width: 100%;">已处理</button>
                         <button  class="btn btn-info" style="width: 100%;">已预约</button>
                         <button  class="btn btn-info" style="width: 100%;">已保养</button>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="accordion-group widget-box" style="margin-top: 2px">
                 <div class="accordion-heading">
@@ -64,7 +64,7 @@
                             <table class="table table-bordered ">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: left;">新产生保养提醒：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                                    <th style="text-align: left;">新产生保养提醒：<font color="blue">{{careCount}}</font>&nbsp;辆</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -72,7 +72,7 @@
                                     <td style="height:70px;">系统自动生成保养提醒</td>
                                 </tr>
                                 <tr>
-                                    <td><a class="btn btn-info btn-mini" href="#/collapseGOne/1">查看</a></td>
+                                    <td><a class="btn btn-info btn-mini" href="#/collapseGOne">查看</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -86,7 +86,7 @@
                             <table class="table table-bordered ">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: left;">已处理保养提醒：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                                    <th style="text-align: left;">已处理保养提醒：<font color="blue">_</font>&nbsp;辆</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -108,7 +108,7 @@
                             <table class="table table-bordered ">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: left;">待处理故障提醒：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                                    <th style="text-align: left;">待处理故障提醒：<font color="blue">_</font>&nbsp;辆</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -116,7 +116,7 @@
                                     <td style="height:70px;">系统自动生成故障提醒。</td>
                                 </tr>
                                 <tr>
-                                    <td><a class="btn btn-info btn-mini" href="../repairInfo.html">查看</a></td>
+                                    <td><a class="btn btn-info btn-mini" href="#/collapseGTwo">查看</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -130,7 +130,7 @@
                             <table class="table table-bordered ">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: left;">已处理故障提醒：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                                    <th style="text-align: left;">已处理故障提醒：<font color="blue">_</font>&nbsp;辆</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -138,7 +138,7 @@
                                     <td style="height:70px;">已人工处理故障提醒。</td>
                                 </tr>
                                 <tr>
-                                    <td><a class="btn btn-info btn-mini" href="../repairInfo.html">查看</a></td>
+                                    <td><a class="btn btn-info btn-mini" href="#/collapseGTwo">查看</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -152,7 +152,7 @@
                             <table class="table table-bordered ">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: left;">保险到期提醒：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                                    <th style="text-align: left;">保险到期提醒：<font color="blue">_</font>&nbsp;辆</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -160,7 +160,7 @@
                                     <td style="height:70px;">系统自动生成保险到期提醒。</td>
                                 </tr>
                                 <tr>
-                                    <td><a class="btn btn-info btn-mini" href="../repairInfo.html">查看</a></td>
+                                    <td><a class="btn btn-info btn-mini" href="#/collapseGThree">查看</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -174,7 +174,7 @@
                             <table class="table table-bordered ">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: left;">已处理保险提醒：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                                    <th style="text-align: left;">已处理保险提醒：<font color="blue">_</font>&nbsp;辆</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -182,7 +182,7 @@
                                     <td style="height:70px;">已人工处理保险提醒。</td>
                                 </tr>
                                 <tr>
-                                    <td><a class="btn btn-info btn-mini" href="../repairInfo.html">查看</a></td>
+                                    <td><a class="btn btn-info btn-mini" href="#/collapseGThree">查看</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -194,5 +194,5 @@
         </div>
     </div>
 </div>
-        </div>
-    </div>
+</div>
+</div>

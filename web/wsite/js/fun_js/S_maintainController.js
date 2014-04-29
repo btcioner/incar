@@ -6,17 +6,60 @@
 function  s_maintainCtrl($scope, $http){
     $scope.maintainListDiv = true;
     $scope.applyOperDiv = false;
-    $http.get('../js/fun_js/maintainInfo3.json').success(function(data){
-        $scope.maintainList = data;
-    });
+    $scope.currentPage = 1;
+    $scope.pageRecord = 10;
+
+    GetFirstPageInfo();
+    function GetFirstPageInfo()
+    {
+        $scope.tips="";
+        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord)
+            .success(function(data){
+            if(data.status=="ok")
+            {
+                $scope.carList = data.cars;
+                PagingInfo(data.totalCount);
+                if($scope.carList.length == 0)
+                {
+                    $scope.tips="暂无数据";
+                }
+            }else{
+                alert(data.status);
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            });
+    }
+
+    //get paging param info
+    function PagingInfo(totalCount)
+    {
+        $scope.totalCount = totalCount;
+        $scope.totalPage = Math.ceil( $scope.totalCount /  $scope.pageRecord)
+        $scope.totalOption=[{}];
+        for(var i = 0 ;i< $scope.totalPage;i++)
+        {
+            $scope.totalOption[i]={size:i+1};
+        }
+    }
+
+    //分页跳转页面
+    $scope.changePage=function(changeId)
+    {
+        $scope.currentPage = changeId ;
+        GetFirstPageInfo();
+    }
+
 
     //查看保养预约详情
     $scope.Operation = function(index,type)
     {
+
         changeView(1);
         switch(type)
         {
             case "新提醒":
+                $scope.carDetails = $scope.carList[index];
                 $scope.buttonTh = true;
                 $scope.show1 = true;
                 break;
@@ -61,6 +104,25 @@ function  s_maintainCtrl($scope, $http){
         {
             case 1:
                 $scope.alreadyReserDiv = false;
+                break;
+            case 2:
+                $scope.refuseReasonDiv = false;
+                break;
+        }
+    }
+
+    //确认操作
+    $scope.confirmOper = function(id)
+    {
+        switch(id)
+        {
+            case 1:
+                $scope.postData = {"op":"apply","org_id":$.cookie("org_id"),"car_id":1,"cust_id":83,"working_time":$scope.working_time}
+                $http.post(baseurl+'organization/'+ $.cookie("org_id")+'/work/care',$scope.postData).success(function(data){
+
+                }).error(function(data){
+                        alert("请求无响应");
+                    });
                 break;
             case 2:
                 $scope.refuseReasonDiv = false;

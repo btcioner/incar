@@ -15,7 +15,7 @@
 //}]);
 function deviceCtrl($scope, $http)
 {
-
+    $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
     //alert($.cookie("username"));通过cookie来传值
     //定义各部分div初始的显示状态 -false为隐藏 true为显示
 //    quickService.query().success(function(data){

@@ -31,4 +31,6 @@ angular.module("SActivityApp", [
            redirectTo:'/main'//跳转到预约服务的主界面
         });
   //  $locationProvider.html5Mode(true);
-});
+}).controller("mainCtrl",function($scope){
+        $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+   });

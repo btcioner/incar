@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" ng-app="createApp">
 <head>
     <title>建设中……</title>
     <meta charset="UTF-8" />
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
     <link rel="stylesheet" type="text/css" href="../css/mycss/main.css" />
 </head>
-<body style="background: #ffffff">
+<body style="background: #ffffff" ng-controller="createCtrl">
 <!--Header-part-->
 <div id="header">
     <h1>4S店运营平台</h1>
@@ -26,7 +26,7 @@
 <!--top-Header-menu-->
 <div id="user-nav" class="navbar navbar-inverse">
     <ul class="nav">
-        <li style="color:white;vertical-align:middle; margin-top: 15px;"><span class="text">userAdmin</span></li>
+        <li style="color:white;vertical-align:middle; margin-top: 15px;"><span class="text">{{nickName}}</span></li>
         <li class=""><a title="" href="../login.html"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
     </ul>
 </div>
@@ -48,11 +48,9 @@
         <li> <a href="activityInfo.html" target="_parent"><i class="icon icon-pencil"></i> <span>活动发布</span></a> </li>
         <li><a href="driveData.html" target="_parent"><i class="icon icon-fullscreen"></i> <span>行车数据</span></a></li>
         <li> <a href="creating.html" target="_parent"><i class="icon icon-th-list"></i> <span>分析报表</span></a></li>
-        <li> <a href="paramSetting.html" target="_parent"><i class="icon icon-th-list"></i><span>参数设置</span></a></li>
     </ul>
 </div>
 <div id="content">
-
     <div class="container-fluid">
         <div class="row-fluid" ><h2 style="text-align: center;">正在开发中...</h2></div>
      </div>
@@ -60,5 +58,16 @@
 <div class="row-fluid">
     <div id="footer" class="span12"> 2014 &copy; 英卡</div>
 </div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.cookie.js"></script>
+<script src="../js/jquery.dataTables.min.js"></script>
+<script src="../js/jquery.uniform.js"></script>
+<script src="../js/jquery.ui.custom.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/select2.min.js"></script>
+<script src="../js/maruti.js"></script>
+<script src="../js/maruti.tables.js"></script>
+<script src="../js/angular.min.js"></script>
+<script src="../js/fun_js/S_createController.js"></script>
 </body>
 </html>

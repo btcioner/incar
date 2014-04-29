@@ -11,7 +11,7 @@ angular.module("SCustomerApp", [
 ]).config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.
         when('/main', {
-            controller: '',
+            controller: 's_statisticsCtrl',
             templateUrl: '/4sStore/partials/customer_main.html'//主页显示统计信息
         })
         .when('/collapseGOne',{
@@ -19,7 +19,7 @@ angular.module("SCustomerApp", [
             templateUrl:'/4sStore/partials/customer_all.html'//显示全部保养信息
         })
         .when('/collapseGTwo',{
-            controller:'s_customerCtrl',
+            controller:'',
             templateUrl:'/4sStore/partials/customer_weixin.html'//显示全部维修信息
          })
         .when('/collapseGThree',{
@@ -33,3 +33,10 @@ angular.module("SCustomerApp", [
 }).controller("customerCtrl",function($scope){
         $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
     });
+
+function s_statisticsCtrl($scope,$http)
+{
+    $http.get(baseurl+'carowner?page=1&pagesize=1&org_id='+ $.cookie("org_id")).success(function(data){
+        $scope.carOwnerCount = data.totalCount;
+    })
+}

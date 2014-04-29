@@ -27,201 +27,27 @@
                         <h5 >故障提醒</h5>
                     </a> </div>
                 </div>
-                <div class="collapse accordion-body" id="collapseGTwo">
+               <!-- <div class="collapse accordion-body" id="collapseGTwo">
                     <div class="widget-content" style="text-align: right;padding: 0">
                         <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(1)">新提醒</button>
                         <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(2)">已处理</button>
                         <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(3)">已预约</button>
                         <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(4)">已保养</button>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="accordion-group widget-box" style="margin-top: 2px">
                 <div class="accordion-heading">
                     <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGThree" data-toggle="collapse"> <span class="icon"><i class="icon-tint"></i></span>
                         <h5 >保险提醒</h5>
-                    </a> </div>
+                    </a>
+                    </div>
                 </div>
                
             </div>
         </div>
     </div>
-    <div class="container-fluid" style="float: left;width: 86%">
-        <div class="row-fluid" >
-            <div class="span12">
-                <div class="widget-box" ng-show="applyOperDiv">
-                    <div class="widget-title">
-                        <span class="icon"><i class="icon-th"></i></span>
-                        <h5>故障提醒详情</h5>
-                    </div>
-                    <div class="widget-content nopadding">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>车主姓名</th>
-                                <th style="background-color:#F9F9F9;">王明青</th>
-                                <th>联系电话
-                                <th style="background-color:#F9F9F9;">13296630211</th>
-                                </th>
-                                <th >车牌号</th>
-                                <th style="background-color:#F9F9F9;">京A9H044</th>
-                            </tr>
-                            <tr>
-                                <th>品牌</th>
-                                <th style="background-color:#F9F9F9;">奔驰/Mercedes-Benz</th>
-                                <th>系列</th>
-                                <th style="background-color:#F9F9F9;">奔驰C级(进口)</th>
-                                <th>OBD编号</th>
-                                <th style="background-color:#F9F9F9;">WFQ00013044</th>
-                            </tr>
-                            <tr>
-                                <th>上次维修里程</th>
-                                <th style="background-color:#F9F9F9;">9807</th>
-                                <th>上次维修时间</th>
-                                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                                <th colspan="2" rowspan="2" ng-show="buttonTh"><a class='btn btn-success'  ng-click='operationChild(1)'>已预约</a>
-                                    &nbsp;&nbsp;&nbsp;<a class='btn btn-success'  ng-click='operationChild(2)'>未预约</a></th>
-
-                                <th ng-show="remindMileTi">提醒时里程</th>
-                                <th style="background-color:#F9F9F9;" ng-show="remindMileTe">9800</th>
-                            </tr>
-                            <tr ng-show="show5">
-                                <th>提醒时间</th>
-                                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                                <th>未预约原因</th>
-                                <th colspan="3" style="text-align: left;background-color:#F9F9F9;">最近没有时间</th>
-                            </tr>
-                            <tr ng-show="show1">
-                                <th >提醒时里程</th>
-                                <th style="background-color:#F9F9F9;">9800</th>
-                                <th>提醒时间</th>
-                                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                            </tr>
-                            <tr ng-show="show2">
-                                <th>提醒时间</th>
-                                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                                <th>预约维修时间</th>
-                                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                                <th colspan="2"></th>
-                            </tr>
-                            <tr ng-show="show3">
-                                <th>提醒时间</th>
-                                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                                <th>预约维修时间</th>
-                                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                                <th>维修项目</th>
-                                <th style="background-color:#F9F9F9;">发动机检修</th>
-                            </tr>
-                            <tr ng-show="show4">
-                                <th>维修费用</th>
-                                <th style="background-color:#F9F9F9;">4000</th>
-                                <th>维修开始时间</th>
-                                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                                <th>维修结束时间</th>
-                                <th style="background-color:#F9F9F9;">2014-04-04 17:00</th>
-                            </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <div class="widget-content nopadding" ng-show="alreadyReserDiv">
-                        <form action="#" method="get" class="form-horizontal">
-                            <div class="control-group" >
-                                <label class="control-label" style="margin-left:300px;">预约维修时间：
-                                </label>
-                                <div class="controls">
-                                    <input type="text" class="span11" style="width:200px;"   />
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirm();">确定</button>
-                                <button type="button" class="btn btn-danger"   ng-click="cancel(1)">取消</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="widget-content nopadding" ng-show="refuseReasonDiv">
-                        <form action="#" method="get" class="form-horizontal">
-                            <div class="control-group" >
-                                <label class="control-label" style="margin-left:300px;">原因：
-                                </label>
-                                <div class="controls">
-                                    <textarea></textarea>
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirm();">确定</button>
-                                <button type="button" class="btn btn-danger"   ng-click="cancel(2)">取消</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!--查看详情 end-->
-                <!--保养提醒列表 begin-->
-                <div class="widget-box" ng-show="maintainListDiv">
-                    <div class="widget-title">
-                        <span class="icon"><i class="icon-th"></i></span>
-                        <h5>故障提醒列表</h5>
-                    </div>
-                    <div class="widget-content nopadding">
-                        <!--<table class="table table-bordered data-table">-->
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;城市： &nbsp;&nbsp;&nbsp;<select style="width:150px;">
-                                    <option>请选择</option>
-                                </select></th>
-                                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4S店：&nbsp;&nbsp;&nbsp;<select style="width:150px;">
-                                    <option>请选择</option>
-                                </select></th>
-                                <th style="vertical-align: middle;">品牌：&nbsp;&nbsp;&nbsp;<select style="width:150px;">
-                                    <option>请选择</option>
-                                </select></th>
-                                <th  style="vertical-align: middle;"><a class="btn btn-success" style="" ng-click="">搜索</a></th>
-                            </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <div class="widget-content nopadding" >
-                        <!--<table class="table table-bordered data-table">-->
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>车主姓名</th>
-                                <th>联系电话</th>
-                                <th>车型</th>
-                                <th>车牌号</th>
-                                <th>上次维修里程</th>
-                                <th>提醒时里程</th>
-                                <th>提醒时间</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                            <tbody ng-repeat="mt in maintainList">
-                            <tr class="gradeX">
-                                <td style="text-align: center">{{mt.test1}}</td>
-                                <td style="text-align: center">{{mt.test2}}</td>
-                                <td style="text-align: center">{{mt.test3}}</td>
-                                <td style="text-align: center">{{mt.test4}}</td>
-                                <td style="text-align: center">{{mt.test5}}</td>
-                                <td style="text-align: center">{{mt.test6}}</td>
-                                <td style="text-align: center">{{mt.test7}}</td>
-                                <td style="text-align: center">{{mt.test9}}</td>
-                                <td style="text-align: center"><a class="btn btn-info btn-mini" ng-click="Operation($index,mt.test9)">查看</a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="pagination alternate" style="float:right;">
-                        共{{totalCount}}条&nbsp;页码{{currentPage+1}}/{{totalPage}} &nbsp;
-                        跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
-                        <option>1</option>
-                    </select>页
-                    </div>
-                </div>
-                <!--保养提醒列表 end-->
-            </div>
-        </div>
-    </div>
+        <h2 style="text-align: center;">正在开发中...</h2>
 </div>
 </div>
 </div>

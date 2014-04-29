@@ -5,9 +5,23 @@
 function careCtrl($scope, $http){
     $scope.maintainListDiv = true;
     $scope.applyOperDiv = false;
-    $http.get('../js/fun_js/maintainInfo3.json').success(function(data){
-        $scope.maintainList = data;
-    });
+    $scope.currentPage = 1;
+    $scope.pageRecord = 10;
+
+    GetFirstPageInfo("");
+    function GetFirstPageInfo(str)
+    {
+        var queryStr = "";
+        $scope.tips="";
+        if(str!="") queryStr="&step="+str;
+        $http.get(baseurl+'work/organization/'+$.cookie("org_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+
+
+
+        }).error(function(data){
+                alert("请求无响应");
+            });
+    }
 
     //查看保养预约详情
     $scope.Operation = function(index,type)

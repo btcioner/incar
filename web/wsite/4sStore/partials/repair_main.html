@@ -29,185 +29,20 @@
                         <h5 >维修预约</h5>
                     </a> </div>
                 </div>
-                <div class="collapse accordion-body" id="collapseGTwo">
-                    <div class="widget-content" style="text-align: right;padding: 0">
-                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(1)">新申请</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(2)">已拒绝</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(3)">已确认</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(4)">已完成</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(5)">未到店</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(6)">已取消</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid" style="width: 83%;float: left">
-        <div class="row-fluid" >
-            <!--新申请操作 begin-->
-            <div class="widget-box" ng-show="applyOperDiv">
-                <div class="widget-title">
-                    <span class="icon"><i class="icon-th"></i></span>
-                    <h5>维修预约详情</h5>
-                </div>
-                <div class="widget-content nopadding">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>车主姓名</th>
-                            <th style="background-color:#F9F9F9;">江黎</th>
-                            <th>联系电话
-                            <th style="background-color:#F9F9F9;">13296630210</th>
-                            </th>
-                            <th >车牌号</th>
-                            <th style="background-color:#F9F9F9;">赣H95555</th>
-                        </tr>
-                        <tr>
-                            <th>品牌</th>
-                            <th style="background-color:#F9F9F9;">宝马</th>
-                            <th>系列</th>
-                            <th style="background-color:#F9F9F9;">Q5</th>
-                            <th>申请渠道</th>
-                            <th style="background-color:#F9F9F9;">微信预约</th>
-                        </tr>
-                        <tr>
-                            <th>申请提交时间</th>
-                            <th style="background-color:#F9F9F9;">2014-04-03 13:28</th>
-                            <th>预约维修时间</th>
-                            <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                            <th colspan="2" ng-show="newApplyOper"><a class='btn btn-success'  ng-click=''>确认</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-success'  ng-click=''>拒绝</a></th>
-                            <th colspan="2" ng-show="completeOper"><a class='btn btn-success'  ng-click=''>取消</a>&nbsp;&nbsp;&nbsp;
-                                <a class='btn btn-success'  ng-click=''>未到店</a>&nbsp;&nbsp;&nbsp;
-                                <a class='btn btn-success'  ng-click='OperationChild(1);'>已完成</a></th>
-                            <th ng-show="reservationProTi">维修项目</th>
-                            <th ng-show="reservationProTe" style="background-color:#F9F9F9;"></th>
-                            <th ng-show="cancelTimeTi">取消时间</th>
-                            <th ng-show="cancelTimeTe" style="background-color:#F9F9F9;"></th>
-                        </tr>
-                        <tr ng-show="diffDiv">
-                            <th style='height:30px;vertical-align: middle'>拒绝原因</th><th style='background-color:#F9F9F9;vertical-align: middle;text-align: left' colspan='5' rowspan='2'>工位已满</th>
-                        </tr>
-                        <tr ng-show="completeTr">
-                            <th>维修费用</th>
-                            <th style="background-color:#F9F9F9;"></th>
-                            <th>维修开始时间</th>
-                            <th style="background-color:#F9F9F9;"></th>
-                            <th>维修结束时间</th>
-                            <th style="background-color:#F9F9F9;"></th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="widget-content nopadding" ng-show="ReservationInfo">
-                    <form action="#" method="get" class="form-horizontal">
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:300px;">维修项目：
-                            </label>
-                            <div class="controls">
-                                <input type="text" class="span11" style="width:200px;" ng-model="acc_name"  />
-                            </div>
-                        </div>
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:300px;">维修费用：
-                            </label>
-                            <div class="controls">
-                                <input type="text" class="span11" style="width:200px;" ng-
-                                       model="acc_name"  />
-                            </div>
-                        </div>
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:300px;">维修开始时间：
-                            </label>
-                            <div class="controls">
-                                <input type="text" class="span11" style="width:200px;" ng-
-                                       model="acc_name"  />
-                            </div>
-                        </div>
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:300px;">维修结束时间：
-                            </label>
-                            <div class="controls">
-                                <input type="text" class="span11" style="width:200px;" ng-
-                                       model="acc_name"  />
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirm();">确定</button>
-                            <button type="button" class="btn btn-danger"   ng-click="cancel(1)">取消</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!--新申请操作 end-->
-            <!--预约服务列表 begin-->
-            <div class="widget-box" ng-show="reservationDiv">
-                <div class="widget-title">
-                    <span class="icon"><i class="icon-th"></i></span>
-                    <h5>维修预约列表</h5>
-                </div>
-                <div class="widget-content nopadding">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车主姓名： &nbsp;&nbsp;&nbsp;
-                                <input type="text" style="width:150px;">
-                            </th>
-                            <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车牌号：&nbsp;&nbsp;&nbsp;
-                                <input type="text" style="width:150px;">
-                            </th>
-                            <th style="vertical-align: middle;">预约时间：&nbsp;&nbsp;&nbsp;
-                                <input type="text" style="width:150px;">
-                            </th>
-                            <th  style="vertical-align: middle;"><a class="btn btn-success" style="" ng-click="">搜索</a></th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="widget-content nopadding">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>车主</th>
-                            <th>联系电话</th>
-                            <th>车型</th>
-                            <th>车牌号</th>
-                            <th>来源渠道</th>
-                            <th>申请时间</th>
-                            <th>预约时间</th>
-                            <th>操作人</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody ng-repeat="mt in reservationList">
-                        <tr class="gradeX">
-                            <td style="text-align: center">{{$index + 1}}</td>
-                            <td style="text-align: center">{{mt.test1}}</td>
-                            <td style="text-align: center">{{mt.test2}}</td>
-                            <td style="text-align: center">{{mt.test3}}</td>
-                            <td style="text-align: center">{{mt.test4}}</td>
-                            <td style="text-align: center">{{mt.test5}}</td>
-                            <td style="text-align: center">{{mt.test6}}</td>
-                            <td style="text-align: center">{{mt.test7}}</td>
-                            <td style="text-align: center">{{mt.test8}}</td>
-                            <td style="text-align: center">{{mt.test9}}</td>
-                            <td style="text-align: center"><input type="button" class="btn btn-info btn-mini" value="查看" ng-click="Operation($index,mt.test9);"></a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!--  <div class="pagination alternate" style="float:right;">
-                      共{{totalCount}}条&nbsp;页码{{currentPage+1}}/{{totalPage}} &nbsp;
-                      跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
-                      <option>1</option>
-                  </select>页
-                  </div>-->
-            </div>
-            <!--预约服务列表 end-->
-        </div>
-    </div>
+                <!--<div class="collapse accordion-body" id="collapseGTwo">
+                   <div class="widget-content" style="text-align: right;padding: 0">
+                       <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(1)">新申请</a>
+                       <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(2)">已拒绝</a>
+                       <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(3)">已确认</a>
+                       <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(4)">已完成</a>
+                       <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(5)">未到店</a>
+                       <a class="btn btn-info" style="width: 100%;" ng-click="RepairTab(6)">已取消</a>
+                   </div>
+               </div>-->
+           </div>
+       </div>
+   </div>
+       <h2 style="text-align: center;">正在开发中...</h2>
 </div>
 </div>
 </div>
-        </div>

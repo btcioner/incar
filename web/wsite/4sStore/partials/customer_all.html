@@ -19,14 +19,14 @@
                         <h5 >微信车主</h5>
                     </a> </div>
                 </div>
-                <div class="collapse accordion-body" id="collapseGTwo">
+                <!--<div class="collapse accordion-body" id="collapseGTwo">
                     <div class="widget-content" style="text-align: right;padding: 0">
                         <button class="btn btn-info" style="width: 100%;">A组</button>
                         <button class="btn btn-info" style="width: 100%;">B组</button>
                         <button class="btn btn-info" style="width: 100%;">C组</button>
                         <button class="btn btn-info" style="width: 100%;">D组</button>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="accordion-group widget-box" style="margin-top: 2px">
                 <div class="accordion-heading">
@@ -84,7 +84,6 @@
                         <table class="table table-bordered data-table">
                             <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>保养时间</th>
                                 <th>保养来源</th>
                                 <th>保养里程</th>
@@ -93,32 +92,22 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="gradeX">
-                                <td id="tdc">1</td>
-                                <td id="tdc">2013/03/08 13:00</td>
+                            <tr class="gradeX" ng-repeat="cl in careList">
+                                <td id="tdc">{{cl.working_time}}</td>
                                 <td id="tdc">微信</td>
-                                <td id="tdc">9765公里</td>
-                                <td id="tdc">常规保养</td>
-                                <td id="tdc">300</td>
-                            </tr>
-                            <tr class="gradeX">
-                                <td id="tdc">2</td>
-                                <td id="tdc">2013/10/08 12:00</td>
-                                <td id="tdc">微信</td>
-                                <td id="tdc">20134公里</td>
-                                <td id="tdc">中型保养</td>
-                                <td id="tdc">580</td>
-                            </tr>
-                            <tr class="gradeX">
-                                <td id="tdc">3</td>
-                                <td id="tdc">2014/03/08 19:00</td>
-                                <td id="tdc">微信</td>
-                                <td id="tdc">39231公里</td>
-                                <td id="tdc">大型保养</td>
-                                <td id="tdc">1000</td>
+                                <td id="tdc"></td>
+                                <td id="tdc">{{cl.json_args.care_items}}</td>
+                                <td id="tdc">{{cl.json_args.care_cost}}</td>
                             </tr>
                             </tbody>
                         </table>
+                        <div><font color="red">{{tips}}</font></div>
+                        <div class="pagination alternate" style="float:right;">
+                            共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
+                            跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
+                            <option>1</option>
+                        </select>页
+                        </div>
                     </div>
                     <div id="tab2" class="tab-pane">
                         <table class="table table-bordered data-table">
@@ -164,33 +153,28 @@
                         <table class="table table-bordered data-table">
                             <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>关怀时间</th>
                                 <th>关怀类类别</th>
-
+                                <th>关怀里程</th>
+                                <th>关怀周期</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="gradeX">
-                                <td id="tdc">1</td>
-                                <td id="tdc">2013/03/08 13:00</td>
-                                <td id="tdc">保养</td>
-
-                            </tr>
-                            <tr class="gradeX">
-                                <td id="tdc">2</td>
-                                <td id="tdc">2013/10/08 12:00</td>
-                                <td id="tdc">故障</td>
-
-                            </tr>
-                            <tr class="gradeX">
-                                <td id="tdc">3</td>
-                                <td id="tdc">2014/03/08 19:00</td>
-                                <td id="tdc">维修</td>
-
+                            <tr class="gradeX" ng-repeat="rl in recordList">
+                                <td id="tdc">{{rl.care_time}}</td>
+                                <td id="tdc">保养关怀</td>
+                                <td id="tdc">{{rl.care_mileage}}</td>
+                                <td id="tdc">{{rl.care_hour}}</td>
                             </tr>
                             </tbody>
                         </table>
+                        <div><font color="red">{{tips}}</font></div>
+                        <div class="pagination alternate" style="float:right;">
+                            共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
+                            跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
+                            <option>1</option>
+                        </select>页
+                        </div>
                     </div>
                     <div id="tab4" class="tab-pane">
                         正在开发中...

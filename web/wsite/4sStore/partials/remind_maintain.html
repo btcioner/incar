@@ -15,9 +15,9 @@
                 <div class="accordion-body collapse" id="collapseGOne" style="height: 0px;">
                     <div class="widget-content" style="text-align: right;padding:0">
                         <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(1)">新提醒</button>
-                        <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(2)">已处理</button>
-                        <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(3)">已预约</button>
-                        <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(4)">已保养</button>
+                        <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(2)">已关怀</button>
+                        <!--<button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(3)">已预约</button>
+                        <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(4)">已保养</button>-->
                     </div>
                 </div>
             </div>
@@ -27,14 +27,14 @@
                         <h5 >故障提醒</h5>
                     </a> </div>
                 </div>
-                <div class="collapse accordion-body" id="collapseGTwo">
+                <!--<div class="collapse accordion-body" id="collapseGTwo">
                     <div class="widget-content" style="text-align: right;padding: 0">
                         <button  class="btn btn-info" style="width: 100%;">新提醒</button>
                         <button  class="btn btn-info" style="width: 100%;">已处理</button>
                         <button  class="btn btn-info" style="width: 100%;">已预约</button>
                         <button  class="btn btn-info" style="width: 100%;">已保养</button>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="accordion-group widget-box" style="margin-top: 2px">
                 <div class="accordion-heading">
@@ -60,35 +60,35 @@
                             <thead>
                             <tr>
                                 <th>车主姓名</th>
-                                <th style="background-color:#F9F9F9;">王明青</th>
+                                <th style="background-color:#F9F9F9;">{{carDetails.owner_nick}}</th>
                                 <th>联系电话
-                                <th style="background-color:#F9F9F9;">13296630211</th>
+                                <th style="background-color:#F9F9F9;">{{carDetails.owner_phone}}</th>
                                 </th>
-                                <th >车牌号</th>
-                                <th style="background-color:#F9F9F9;">京A9H044</th>
+                                <th>OBD编号</th>
+                                <th style="background-color:#F9F9F9;">{{carDetails.obd_code}}</th>
                             </tr>
                             <tr>
                                 <th>品牌</th>
-                                <th style="background-color:#F9F9F9;">奔驰/Mercedes-Benz</th>
+                                <th style="background-color:#F9F9F9;">{{carDetails.brand}}</th>
                                 <th>系列</th>
-                                <th style="background-color:#F9F9F9;">奔驰C级(进口)</th>
-                                <th>OBD编号</th>
-                                <th style="background-color:#F9F9F9;">WFQ00013044</th>
+                                <th style="background-color:#F9F9F9;">{{carDetails.series}}</th>
+                                <th>上次提醒时间</th>
+                                <th style="background-color:#F9F9F9;">{{carDetails.last_care_time}}</th>
                             </tr>
                             <tr>
                                 <th>上次保养里程</th>
-                                <th style="background-color:#F9F9F9;">9807</th>
-                                <th>上次保养时间</th>
-                                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
+                                <th style="background-color:#F9F9F9;">{{carDetails.max_mileage - carDetails.new_mileage}}</th>
+                                <th>上次保养周期</th>
+                                <th style="background-color:#F9F9F9;">{{carDetails.max_hour - carDetails.new_hour}}</th>
                                 <th colspan="2" rowspan="2" ng-show="buttonTh"><a class='btn btn-success'  ng-click='operationChild(1)'>已预约</a>
                                         &nbsp;&nbsp;&nbsp;<a class='btn btn-success'  ng-click='operationChild(2)'>未预约</a></th>
 
                                 <th ng-show="remindMileTi">提醒时里程</th>
-                                <th style="background-color:#F9F9F9;" ng-show="remindMileTe">9800</th>
+                                <th style="background-color:#F9F9F9;" ng-show="remindMileTe">{{carDetails.care_mileage}}</th>
                             </tr>
                             <tr ng-show="show5">
                                 <th>提醒时间</th>
-                                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
+                                <th style="background-color:#F9F9F9;">{{carDetails.care_time}}</th>
                                 <th>未预约原因</th>
                                 <th colspan="3" style="text-align: left;background-color:#F9F9F9;">最近没有时间</th>
                             </tr>
@@ -134,7 +134,7 @@
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirm();">确定</button>
+                                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirmOper(1);">确定</button>
                                 <button type="button" class="btn btn-danger"   ng-click="cancel(1)">取消</button>
                             </div>
                         </form>
@@ -149,7 +149,7 @@
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirm();">确定</button>
+                                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirmOper(2);">确定</button>
                                 <button type="button" class="btn btn-danger"   ng-click="cancel(2)">取消</button>
                             </div>
                         </form>
@@ -188,30 +188,31 @@
                             <tr>
                                 <th>车主姓名</th>
                                 <th>联系电话</th>
+                                <th>品牌</th>
                                 <th>车型</th>
-                                <th>车牌号</th>
                                 <th>上次保养里程</th>
                                 <th>提醒时里程</th>
-                                <th>提醒时间</th>
+                                <th>提醒周期</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody ng-repeat="mt in maintainList">
-                            <tr class="gradeX">
-                                <td style="text-align: center">{{mt.test1}}</td>
-                                <td style="text-align: center">{{mt.test2}}</td>
-                                <td style="text-align: center">{{mt.test3}}</td>
-                                <td style="text-align: center">{{mt.test4}}</td>
-                                <td style="text-align: center">{{mt.test5}}</td>
-                                <td style="text-align: center">{{mt.test6}}</td>
-                                <td style="text-align: center">{{mt.test7}}</td>
-                                <td style="text-align: center">{{mt.test9}}</td>
-                                <td style="text-align: center"><a class="btn btn-info btn-mini" ng-click="Operation($index,mt.test9)">查看</a></td>
+                            <tbody>
+                            <tr class="gradeX" ng-repeat="cl in carList">
+                                <td style="text-align: center">{{cl.owner_nick}}</td>
+                                <td style="text-align: center">{{cl.owner_phone}}</td>
+                                <td style="text-align: center">{{cl.brand}}</td>
+                                <td style="text-align: center">{{cl.series}}</td>
+                                <td style="text-align: center">{{cl.max_mileage - cl.new_mileage}}</td>
+                                <td style="text-align: center">{{cl.care_mileage}}</td>
+                                <td style="text-align: center">{{cl.care_hour}}</td>
+                                <td style="text-align: center">新提醒</td>
+                                <td style="text-align: center"><a class="btn btn-info btn-mini" ng-click="Operation($index,'新提醒')">查看</a></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
+                    <div><font color="red">{{tips}}</font></div>
                     <div class="pagination alternate" style="float:right;">
                         共{{totalCount}}条&nbsp;页码{{currentPage}}/{{totalPage}} &nbsp;
                         跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">

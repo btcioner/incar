@@ -11,7 +11,7 @@ angular.module("SMaintainApp", [
 ]).config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.
         when('/main', {
-            controller: 's_maintainCtrl',
+            controller: 's_statisticsCtrl',
             templateUrl: '/4sStore/partials/remind_main.html'//主页显示统计信息
         })
         .when('/collapseGOne',{
@@ -19,7 +19,7 @@ angular.module("SMaintainApp", [
             templateUrl:'/4sStore/partials/remind_maintain.html'//显示全部保养信息
         })
         .when('/collapseGTwo',{
-            controller:'careCtrl',
+            controller:'',
             templateUrl:'/4sStore/partials/remind_fault.html'//显示全部维修信息
          })
         .when('/collapseGThree',{
@@ -30,4 +30,13 @@ angular.module("SMaintainApp", [
            redirectTo:'/main'//跳转到预约服务的主界面
         });
        // $locationProvider.html5Mode(true);
-});
+}).controller("mainCtrl",function($scope){
+        $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+    });
+
+function s_statisticsCtrl($scope,$http)
+{
+    $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care?page=1&pagesize=1').success(function(data){
+        $scope.careCount = data.totalCount;
+    })
+}

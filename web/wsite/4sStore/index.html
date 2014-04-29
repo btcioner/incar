@@ -27,7 +27,7 @@
 <!--top-Header-menu-->
 <div id="user-nav" class="navbar navbar-inverse">
     <ul class="nav">
-        <li style="color:white;vertical-align:middle; margin-top: 15px;"><span class="text">王明青</span></li>
+        <li style="color:white;vertical-align:middle; margin-top: 15px;"><span class="text">{{nickName}}</span></li>
         <li class=""><a title="" href="../login.html"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
     </ul>
 </div>
@@ -49,7 +49,6 @@
         <li> <a href="activityInfo.html" target="_parent"><i class="icon icon-pencil"></i> <span>活动发布</span></a> </li>
         <li><a href="driveData.html" target="_parent"><i class="icon icon-fullscreen"></i> <span>行车数据</span></a></li>
         <li> <a href="creating.html" target="_parent"><i class="icon icon-th-list"></i><span>分析报表</span></a></li>
-        <li> <a href="paramSetting.html" target="_parent"><i class="icon icon-th-list"></i><span>参数设置</span></a></li>
     </ul>
 </div>
 <div id="content">
@@ -65,7 +64,7 @@
                     <table class="table table-bordered ">
                         <thead>
                         <tr>
-                            <th style="text-align: left;">服务预约：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                            <th style="text-align: left;">服务预约：<font color="blue">{{applyCount}}</font>&nbsp;辆</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -73,7 +72,7 @@
                             <td style="height:70px;">车主通过微信、APP、电话等渠道生成的预约保养、维修单。</td>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-info btn-mini" href="reservationService.html">查看</a></td>
+                            <td><a class="btn btn-info btn-mini" href="reservationService.html#/collapseGOne/1">查看</a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -87,7 +86,7 @@
                     <table class="table table-bordered ">
                         <thead>
                         <tr>
-                            <th style="text-align: left;">提醒信息：<font color="blue"><a href="" style="text-decoration: underline;">3</a></font>&nbsp;辆</th>
+                            <th style="text-align: left;">提醒信息：<font color="blue">{{careCount}}</font>&nbsp;辆</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -95,7 +94,7 @@
                             <td style="height:70px;">依据车辆状态，如里程达到保养周期、发生故障等信息，生成客户关怀、提醒信息。</td>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-info btn-mini" href="maintainInfo.html">查看</a></td>
+                            <td><a class="btn btn-info btn-mini" href="maintainInfo.html#/collapseGOne">查看</a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -252,7 +251,7 @@
 <script src="../js/maruti.js"></script>
 <script src="../js/maruti.tables.js"></script>
 <script src="../js/angular.min.js"></script>
+<script src="../js/fun_js/common.js"></script>
 <script src="../js/fun_js/S_indexController.js"></script>
-
 </body>
 </html>

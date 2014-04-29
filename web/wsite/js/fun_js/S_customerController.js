@@ -5,6 +5,7 @@
 
 function s_customerCtrl($scope, $http){
 
+    $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
     $scope.cusDetailDiv = false;
     $scope.cusListDiv = true;
     $scope.cusTabDiv = false;
@@ -153,11 +154,56 @@ function s_customerCtrl($scope, $http){
                 break;
         }
     }
+  //获取该车主的保养记录
+    function getReservationRecord()
+    {
+        $scope.tips="";
+        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.car_id).success(function(data){
+            $scope.careList = data.works;
+            PagingInfo(data.totalCount);
+            if(data.works.length > 0)
+            {
+                for(var i=0;i< $scope.careList.length;i++)
+                {
+                    $scope.careList[i].working_time =  $.changeDate($scope.careList[i].working_time);
+                    $scope.careList[i].created_time =  $.changeDate($scope.careList[i].created_time);
+                    $scope.careList[i].updated_time =  $.changeDate($scope.careList[i].updated_time);
+                    $scope.careList[i].step = $.changeWorkStatus($scope.careList[i].step);
+                }
+            }
+            else{
+                $scope.tips="暂无数据";
+            }
 
-
+        }).error(function(data){
+                alert("请求无响应");
+            });
+    }
+   //获取该车主的关怀记录
+    function getCareRecord()
+    {
+        $scope.tips="";
+        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/carerecord?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.car_id).success(function(data){
+           $scope.recordList = data.records;
+            PagingInfo(data.totalCount);
+           if(data.records.length > 0)
+           {
+              for(var i=0;i<data.records.length;i++)
+              {
+                  $scope.recordList[i].care_time = $.changeDate($scope.recordList[i].care_time);
+              }
+           }
+            else{
+                $scope.tips = "暂无数据";
+            }
+        }).error(function(data){
+                alert("请求无响应");
+        });
+    }
     $scope.customerDetail = function(id)
     {
         $scope.cusDetail = $scope.carowners[id];
+        getReservationRecord();
         $scope.cusDetailDiv = true;
         $scope.cusListDiv = false;
         $scope.cusTabDiv = true;
@@ -179,13 +225,13 @@ function s_customerCtrl($scope, $http){
         switch(id)
         {
             case 1:
-
+                getReservationRecord();
                 break;
             case 2:
 
                 break;
             case 3:
-
+                getCareRecord();
                 break;
             case 4:
 
