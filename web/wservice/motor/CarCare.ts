@@ -75,9 +75,9 @@ module Service{
                             console.log(new TaskException(-1, "解析t_work.json_args失败", e));
                         }
                     }
-                    task.end();
                 });
             });
+            task.end();
         };
 
         task.end = ()=>{
