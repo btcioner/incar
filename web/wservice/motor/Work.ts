@@ -60,7 +60,6 @@ module Work{
             if(!data.car_id) { error += "缺少car_id\n"; }
             if(!data.cust_id) { error += "缺少cust_id\n"; }
             if(!data.working_time) { error += "缺少working_time\n"; }
-            if(!data.slot) { error += "缺少工位slot\n"; }
             if(error){
                 res.json(new Service.TaskException(-1, error, null));
                 return;
