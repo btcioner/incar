@@ -75,13 +75,14 @@ module Service{
                             console.log(new TaskException(-1, "解析t_work.json_args失败", e));
                         }
                     }
+                    task.end();
                 });
             });
             task.end();
         };
 
         task.end = ()=>{
-            if(task.finished < task.A.result + 1) return;
+            if(task.finished < task.A.result.length + 1) return;
             var total = task.B.length;
             if(page.IsValid()) {
                 var result = new Array();
