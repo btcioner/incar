@@ -11,10 +11,9 @@ CREATE TABLE IF NOT EXISTS t_work(
     json_args varchar(2048) COMMENT 'JSON形式的参数',
     created_time DATETIME COMMENT '创建时间',
     updated_time TIMESTAMP COMMENT '最后修改时间',
-    INDEX IDX_WORK_1(work, step),
-    INDEX IDX_WORK_2(org_id),
-    INDEX IDX_WORK_3(car_id),
-    INDEX IDX_WORK_4(cust_id)
+    INDEX IDX_WORK_1(org_id, work, step),
+    INDEX IDX_WORK_2(car_id),
+    INDEX IDX_WORK_3(cust_id)
 );
 
 -- 活动状态中的业务日志
@@ -42,11 +41,10 @@ CREATE TABLE IF NOT EXISTS t_work_history(
     json_args varchar(2048) COMMENT 'JSON形式的参数',
     created_time DATETIME COMMENT '创建时间',
     updated_time TIMESTAMP COMMENT '最后修改时间',
-    INDEX IDX_WORK_1(work, step),
-    INDEX IDX_WORK_2(org_id),
-    INDEX IDX_WORK_3(car_id),
-    INDEX IDX_WORK_4(cust_id),
-    INDEX IDX_WORK_5(created_time)
+    INDEX IDX_WORK_1(org_id, work, step),
+    INDEX IDX_WORK_2(car_id),
+    INDEX IDX_WORK_3(cust_id),
+    INDEX IDX_WORK_4(created_time)
 );
 
 -- 历史业务日志,已终结的业务的日志

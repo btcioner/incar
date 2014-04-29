@@ -44,12 +44,12 @@
                           </div>
                       </div>
                       <div class="control-group" >
-                          <div class="control-group" >
-                              <label class="control-label" style="margin-left:300px;">车牌号：</label>
-                              <div class="controls">
-                                  <input type="text" class="span11" style="width:200px;" ng-model="carOwnerDetail.car_license" disabled/>
-                              </div>
+                          <label class="control-label" style="margin-left:300px;">车牌号：</label>
+                          <div class="controls">
+                              <input type="text" class="span11" style="width:200px;" ng-model="carOwnerDetail.car_license" disabled/>
                           </div>
+                      </div>
+                      <div class="control-group" >
                           <label class="control-label" style="margin-left:300px;">车型：</label>
                           <div class="controls">
                               <input type="text" class="span11" style="width:200px;" ng-model="carOwnerDetail.car_brand" disabled />
@@ -116,12 +116,12 @@
                           </div>
                       </div>
                       <div class="control-group" >
-                          <div class="control-group" >
-                              <label class="control-label" style="margin-left:300px;">车牌号：</label>
-                              <div class="controls">
-                                  <input type="text" class="span11" style="width:200px;" ng-model="car_license"/>
-                              </div>
+                          <label class="control-label" style="margin-left:300px;">车牌号：</label>
+                          <div class="controls">
+                              <input type="text" class="span11" style="width:200px;" ng-model="car_license"/>
                           </div>
+                      </div>
+                      <div class="control-group" >
                           <label class="control-label" style="margin-left:300px;">车型：</label>
                           <div class="controls">
                               <select style="width:150px;" ng-model="brand_id" ng-options = "brand.id as brand.name for brand in carBrand" ng-change="changeSeries(brand_id)">

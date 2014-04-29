@@ -43,6 +43,7 @@
         <li> <a href="activityInfo.html" target="_parent"><i class="icon icon-pencil"></i> <span>活动发布</span></a> </li>
         <li><a href="driveData.html" target="_parent"><i class="icon icon-fullscreen"></i> <span>行车数据</span></a></li>
         <li> <a href="creating.html" target="_parent"><i class="icon icon-th-list"></i> <span>分析报表</span></a></li>
+        <li> <a href="paramSetting.html" target="_parent"><i class="icon icon-th-list"></i><span>参数设置</span></a></li>
     </ul>
 </div>
 <div id="content" >
@@ -190,7 +191,7 @@
                </div>
             <div class="widget-content nopadding " >
                 <!--<table class="table table-bordered data-table">-->
-                <table class="table table-bordered">
+                <table class="table table-bordered ">
                     <thead>
                     <tr>
                         <th>OBD编号</th>
@@ -246,7 +247,7 @@
                 </table>
             </div>
             <div><font color="red">{{tips}}</font></div>
-            <div class="pagination alternate" style="float:right;">
+           <div class="pagination alternate" style="float:right;">
                 共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
                 跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption" ng-change="changePage(changeId,1);">
                 <option>1</option>
