@@ -56,7 +56,7 @@
                $.ajax({
                   type: "post",
                   url: "/mservice/slotBooking",
-                  data: {'user':user,username:$('#username').val(),bookingDate:bookDate,bookingTime:bookTime,onwerName:"$('#onwerName').val()",plateNumber:$('#plateNum').val(),phone:$('#phone').val(),mileage:$('#mileage').val()},
+                  data: {'user':user,username:$('#username').val(),bookingDate:bookDate,bookingTime:bookTime,onwerName:$('#onwerName').val(),plateNumber:$('#plateNum').val(),phone:$('#phone').val(),mileage:$('#mileage').val()},
                   dataType: "json",
                   success: function (result,status) {
                       //alert(result.fuelData.length);
