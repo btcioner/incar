@@ -19,7 +19,7 @@ module Service{
                 "\tJOIN t_obd_drive D ON C.obd_code = D.obdCode\n" +
                 "\tLEFT OUTER JOIN t_car_user U ON U.car_id = C.id and U.user_type = 1\n" +
                 "\tLEFT OUTER JOIN t_staff_account A ON A.id = U.acc_id\n" +
-                "WHERE O.org_id = ?\n" +
+                "WHERE O.org_id = ? and C.id NOT IN(SELECT car_id FROM t_work WHERE work='care' and step in ('applied','approved','refused'))\n" +
                 "GROUP BY C.id HAVING (max_mileage >= C2.care_mileage or max_hour >= C2.care_hour)";
             var args = [req.params.org_id];
 
