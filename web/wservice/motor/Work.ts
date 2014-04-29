@@ -70,7 +70,6 @@ module Work{
             this.car_id = data.car_id;
             this.cust_id = data.cust_id;
             this.working_time = data.working_time;
-            this.json_args = JSON.stringify({via:"web"});
 
             Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
@@ -104,7 +103,7 @@ module Work{
 
                     task.RegistWork = (booking_id:number)=>{
                         // 向t_work中登记
-                        this.json_args = JSON.stringify({oper:userLogin.nick});
+                        this.json_args = JSON.stringify({oper:userLogin.nick,via:"web"});
                         this.work_ref_id = booking_id;
 
                         var sql2 = "INSERT t_work SET ?";
