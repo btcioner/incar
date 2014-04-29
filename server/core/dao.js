@@ -2,13 +2,8 @@
  * Created by LM on 14-2-28.
  */
 'use strict';
-var mysql      = require('mysql');
-var pool = mysql.createPool({
-    host     : 'linuxsrv.winphone.us',
-    user     : 'incarapp',
-    password : 'nodejs4WMQ',
-    database : 'incar'
-});
+var db = require('./db');
+
 exports.get1603Default=function(){
     return {
         diagnosisType:255,
@@ -30,7 +25,11 @@ exports.get1603Default=function(){
     };
 };
 exports.findBySql=function(sql,args,callback){
-    var connection=pool.getConnection(function(err,connection){
+    var connection=db().getConnection(function(err,connection){
+        if(err){
+            console.log("获得connection出现错误:"+err);
+            throw err;
+        }
         connection.query(sql,args,function(err, rows, fields){
             if (err){
                 console.log(err);
@@ -42,7 +41,11 @@ exports.findBySql=function(sql,args,callback){
     });
 };
 exports.insertBySql=function(sql,args,callback){
-    var connection=pool.getConnection(function(err,connection){
+    var connection=db().getConnection(function(err,connection){
+        if(err){
+            console.log("获得connection出现错误:"+err);
+            throw err;
+        }
         connection.query(sql,args,function(err,info){
             if (err){
                 console.log(err);
@@ -55,7 +58,11 @@ exports.insertBySql=function(sql,args,callback){
 };
 exports.executeBySql=function(sqlArray,argsArray,callback){
     if(sqlArray.length!==argsArray.length)return;
-    pool.getConnection(function(err,connection){
+    db().getConnection(function(err,connection){
+        if(err){
+            console.log("获得connection出现错误:"+err);
+            throw err;
+        }
         connection.removeAllListeners();
         connection.on("error",function(){
             connection.rollback(function(err){
@@ -119,7 +126,7 @@ exports.executeBySql=function(sqlArray,argsArray,callback){
     });
 };*/
 exports.initDB=function(){
-    pool.getConnection(function(err,connection){
+    db().getConnection(function(err,connection){
         /*-----------------------创建数据库---------------------------*/
         connection.query("use incar");
         var argsArray=[];

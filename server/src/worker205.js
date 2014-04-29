@@ -31,7 +31,8 @@ function sendToMessageServer(dataBuffer,commandWord){
  * Main application file
  */
 
-console.log('\n---- WORKER PROCESS:: child process id: ' + process.pid + '\n');
+console.log('协议版本2.05的解析进程初始化完成:' + process.pid);
+
 
 // Default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -40,29 +41,24 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 // Bind process IPC events
 process.on('message', function(msg, objectHandle) {
     var dataBuffer = new Buffer(msg.dataPacket);
-
-
-
+    var mark=msg.tag;
     if (msg['type'] === 'command') {
         if (msg.command == 'stop') {
-            console.log('---- WORKER PROCESS:: pid: ' + process.pid + ' exiting ...\n');
+            console.log('Work205(' + process.pid + ')OBD('+mark+'):进程结束...');
             process.exit();
         }
     }
     if (msg['type'] === 'dataPacket') {
-        console.log('---- WORKER PROCESS:: receive data:' + toString0X(dataBuffer) + '\n');
-
+        console.log('Work205(' + process.pid + ')OBD('+mark+'):开始解析数据包...');
         var dataPacketResponse = packetProcess(msg.dataPacket,msg.tag);
-
         if ( !! dataPacketResponse) {
             process.send({
                 'type': 'response',
                 'tag': msg.tag,
                 'response': dataPacketResponse
             });
-            console.log('---- WORKER PROCESS:: ' + 'response has been sent back.\n');
         } else {
-            console.log('---- WORKER PROCESS:: no responses.\n');
+            console.log('Work205(' + process.pid + ')OBD('+mark+'):解析数据包失败...');
         }
     }
 });
@@ -74,20 +70,16 @@ process.on('message', function(msg, objectHandle) {
 function getOBDSuccess(cmd){
     var responseBuffer = new Buffer(16);
     var offset = 0;
-
     responseBuffer.writeUInt16BE(cmd, offset);
     offset += 2;
-
     responseBuffer.writeUInt8(0x00, offset);
     offset += 1;
-
-    console.log("---- WORKER PROCESS:: "+cmd+" response length - " + offset);
-
     return responseBuffer.slice(0, offset);
 }
 function packetProcess(packetInput,tag) {
     var responseBuffer=null;
     var dataBuffer= dataManager.init(packetInput,0);
+    console.log(toString0X(dataBuffer));
     var commandWord = dataManager.nextWord();           //cmd
     var obdCode=dataManager.nextString();               //OBD编号
     switch (commandWord) {
@@ -125,7 +117,6 @@ function packetProcess(packetInput,tag) {
         dao.executeBySql([sql],[history],function(){
             console.log("成功创建历史信息!");
         });
-        console.log('---- WORKER PROCESS:: a 0x' + commandWord.toString(16) + ' packet was processed and answered.');
         return responseBuffer;
     }
 }
@@ -134,14 +125,13 @@ function toString0X(dataBuffer){
     for(var i=0;i<dataBuffer.length;i++){
         var intVal=dataBuffer.readUInt8(i);
         if(intVal<0x10){
-            dataString+="0"+intVal+" ";
+            dataString+="0"+intVal.toString(16).toUpperCase()+" ";
         }
         else{
             dataString+=intVal.toString(16).toUpperCase()+" ";
         }
     }
     return dataString;
-
 };
 function packetProcess_1601(dataBuffer) {
     dataManager.init(dataBuffer,2);
@@ -285,8 +275,6 @@ function packetProcess_1601(dataBuffer) {
     responseBuffer.writeUInt8(0x00, offset);
     offset += 1;
 
-    console.log('---- WORKER PROCESS:: 0x1601 response length - ' + offset);
-
     return responseBuffer.slice(0, offset);
 }
 function packetProcess_1602(dataBuffer) {
@@ -337,9 +325,6 @@ function packetProcess_1602(dataBuffer) {
 
     responseBuffer.writeUInt8(0x00, offset);
     offset += 1;
-
-    console.log('---- WORKER PROCESS:: 0x1602 response length - ' + offset);
-
     return responseBuffer.slice(0, offset);
 }
 
@@ -351,9 +336,6 @@ function packetProcess_1603(dataBuffer) {
     var brand=dataManager.nextByte();               //品牌
     var series=dataManager.nextByte();              //系列
     var modelYear=dataManager.nextByte();           //年款
-    /*测试用，肖龙用车*/
-    brand=0x0B;
-    series=0x33;
     var hardwareVersion=dataManager.nextString();   //硬件版本号
     var firmwareVersion=dataManager.nextString();   //固件版本号
     var softwareVersion=dataManager.nextString();   //软件版本号
@@ -487,9 +469,6 @@ function packetProcess_1603(dataBuffer) {
     offset += lenWritten;
     responseBuffer.writeUInt8(0x00, offset);
     offset += 1;
-
-    console.log('---- WORKER PROCESS:: 0x1603 response length - ' + offset);
-
     return responseBuffer.slice(0, offset);
 }
 
@@ -503,8 +482,6 @@ function packetProcess_1605(dataBuffer) {
 
     responseBuffer.writeUInt8(0x00, offset);
     offset += 1;
-
-    console.log('---- WORKER PROCESS:: 0x1605 response length - ' + offset);
 
     return responseBuffer.slice(0, offset);
 }

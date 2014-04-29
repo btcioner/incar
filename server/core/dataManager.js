@@ -79,8 +79,13 @@ exports.nextString=function(){
     }
     return null;
 };
-exports.getBuffer=function(){
-    return myDataBuffer.slice(0,myOffset);
+exports.getLength=function(){
+    return Buffer.byteLength(myDataBuffer);
+};
+exports.getBuffer=function(start,end){
+    var s=start?start:0;
+    var e=end?end:myOffset;
+    return myDataBuffer.slice(s,e);
 };
 exports.getOffset=function(){
     return myOffset
@@ -93,11 +98,20 @@ exports.toString0X=function(dataBuffer){
     for(var i=0;i<dataBuffer.length;i++){
         var intVal=dataBuffer.readUInt8(i);
         if(intVal<0x10){
-            dataString+="0"+intVal+" ";
+            dataString+="0"+intVal.toString(16).toUpperCase()+" ";
         }
         else{
             dataString+=intVal.toString(16).toUpperCase()+" ";
         }
     }
     return dataString;
+};
+exports.getCheckSum=function(ofs,length){
+    var checksum = 0;
+    var byteValue = 0;
+    for (var i = ofs; i < ofs+length; i++) {
+        byteValue = myDataBuffer.readUInt8(i);
+        checksum += byteValue;
+    }
+    return checksum;
 };

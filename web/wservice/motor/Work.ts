@@ -57,7 +57,6 @@ module Work{
         apply(req, res){
             var error = "";
             var data = req.body;
-            if(!data.org_id) { error += "缺少参数org_id\n"; }
             if(!data.car_id) { error += "缺少car_id\n"; }
             if(!data.cust_id) { error += "缺少cust_id\n"; }
             if(!data.working_time) { error += "缺少working_time\n"; }
@@ -68,10 +67,11 @@ module Work{
             }
 
             this.step = "applied";
-            this.org_id = data.org_id;
+            this.org_id = req.params.org_id;
             this.car_id = data.car_id;
             this.cust_id = data.cust_id;
             this.working_time = data.working_time;
+            this.json_args = JSON.stringify({via:"web"});
 
             Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
@@ -274,30 +274,43 @@ module Work{
             Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
-                    var data:any = req.body;
-                    this.json_args = JSON.stringify({
-                        oper: userLogin.nick,
-                        care_items: data.care_items,
-                        care_cost: data.care_cost,
-                        begin_time: data.begin_time,
-                        end_time: data.end_time
-                    });
-
-                    var sql = "UPDATE t_work SET step = 'done', json_args = ? WHERE id = ? and step = 'approved'";
                     var dac = Service.MySqlAccess.RetrievePool();
-                    dac.query(sql, [this.json_args, this.id], (ex, result)=>{
-                        if(ex) {res.json(new Service.TaskException(-1, "完成保养失败", ex)); return; }
-                        else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "完成保养失败,请刷新重试", null)); return; } }
-                        else{
-                            this.step = "done";
-                            sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
-                            dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
-                                if(ex) {res.json(new Service.TaskException(-1, "完成保养成功,但记录日志失败", ex)); return; }
-                                else{
-                                    res.json({status:"ok"});
-                                }
-                            });
+                    var sql = "SELECT max(D.mileage) AS max_mileage, sum(D.runtime)/60 AS sum_hour\n" +
+                        "FROM t_obd_drive D, t_car_info C WHERE C.obd_code = D.obdCode and C.id = ?\n" +
+                        "GROUP BY C.id";
+                    dac.query(sql, [this.car_id], (ex, result)=>{
+                        var mileage = 0, hour = 0;
+                        if(!ex && result.length > 0){
+                            mileage = result[0].max_mileage;
+                            hour = result[0].sum_hour;
                         }
+
+                        var data:any = req.body;
+                        this.json_args = JSON.stringify({
+                            oper: userLogin.nick,
+                            care_items: data.care_items,
+                            care_cost: data.care_cost,
+                            care_mileage: mileage,
+                            care_hour: hour,
+                            begin_time: data.begin_time,
+                            end_time: data.end_time
+                        });
+
+                        var sql = "UPDATE t_work SET step = 'done', json_args = ? WHERE id = ? and step = 'approved'";
+                        dac.query(sql, [this.json_args, this.id], (ex, result)=>{
+                            if(ex) {res.json(new Service.TaskException(-1, "完成保养失败", ex)); return; }
+                            else if(result.affectedRows === 0){ {res.json(new Service.TaskException(-1, "完成保养失败,请刷新重试", null)); return; } }
+                            else{
+                                this.step = "done";
+                                sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)";
+                                dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
+                                    if(ex) {res.json(new Service.TaskException(-1, "完成保养成功,但记录日志失败", ex)); return; }
+                                    else{
+                                        res.json({status:"ok"});
+                                    }
+                                });
+                            }
+                        });
                     });
                 }
             });
@@ -316,9 +329,10 @@ module Service{
             "\n\tLEFT OUTER JOIN t_staff_account A ON W.cust_id = A.id" +
             "\n\tLEFT OUTER JOIN t_car_info C ON W.car_id = C.id" +
             "\n\tLEFT OUTER JOIN t_car C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode" +
-            "\nWHERE W.work = ?";
+            "\nWHERE W.work = ? and org_id = ?";
         var args = new Array<any>();
         args.push(req.params.work);
+        args.push(req.params.org_id);
 
         if(req.query.step){
             sql += " and W.step = ?";
@@ -386,8 +400,8 @@ module Service{
             "\n\tLEFT OUTER JOIN t_staff_account A ON W.cust_id = A.id" +
             "\n\tLEFT OUTER JOIN t_car_info C ON W.car_id = C.id" +
             "\n\tLEFT OUTER JOIN t_car C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode" +
-            "\nWHERE W.id = ? and W.work = ?";
-        dac.query(sql, [req.params.work_id, req.params.work], (ex, result)=>{
+            "\nWHERE W.id = ? and W.work = ? and W.org_id = ?";
+        dac.query(sql, [req.params.work_id, req.params.work, req.params.org_id], (ex, result)=>{
             if(ex){ res.json(new TaskException(-1, "查询工作失败", ex)); return; }
             else if(result.length > 0){
                 var entry:Work.WorkBase = result[0];
@@ -414,7 +428,6 @@ module Service{
         if(Object.keys(req.body).length === 0){
             res.json({
                 op: "apply",
-                org_id: 4,
                 car_id: 13,
                 cust_id: 83,
                 working_time: "2014-04-21 09:00:00"
@@ -485,9 +498,9 @@ module Service{
             return;
         }
 
-        var sql = "SELECT * FROM t_work WHERE id = ? and work = ?";
+        var sql = "SELECT * FROM t_work WHERE id = ? and work = ? and org_id = ?";
         var dac = MySqlAccess.RetrievePool();
-        dac.query(sql, [req.params.work_id, req.params.work], (ex, result)=>{
+        dac.query(sql, [req.params.work_id, req.params.work, req.params.org_id], (ex, result)=>{
             if(ex){ res.json(new TaskException(-1, "查询工作失败", ex)); return; }
             else if(result.length === 0){ res.json(new TaskException(-1, "指定的工作无效", ex)); return; }
             else{
