@@ -16,7 +16,7 @@
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/5/promotionslot?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $http.get(baseurl+'organization/'+ $.cookie("org_id")+'/promotionslot?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
             if(data.status == "ok")
             {
                 $scope.slots = data.slots;
@@ -111,12 +111,11 @@
             "tc":"",
             "ts":$.changeDate(new Date())
             };
-        $http.post(baseurl + 'organization/'+$scope.slots[0].storeId+'/promotionslot',$scope.postData).success(function(data){
+        $http.post(baseurl + 'organization/'+ $.cookie("org_id")+'/promotionslot',$scope.postData).success(function(data){
             if(data.status == "ok")
             {
                 alert("添加成功！");
                 $scope.slots[$scope.slots.length]={
-                    "id": $scope.slots[$scope.slots.length-1].id + 1,
                     "slot_location":$scope.slot_location,
                     "slot_time":$scope.slot_time,
                     "benefit":$scope.benefit,

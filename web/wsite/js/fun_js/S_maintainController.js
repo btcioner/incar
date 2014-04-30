@@ -6,8 +6,11 @@
 function  s_maintainCtrl($scope, $http){
     $scope.maintainListDiv = true;
     $scope.applyOperDiv = false;
+    $scope.careListDiv = false;
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
+    $scope.working_time = "";
+    $scope.reason = "";
 
     GetFirstPageInfo();
     function GetFirstPageInfo()
@@ -60,6 +63,8 @@ function  s_maintainCtrl($scope, $http){
         {
             case "新提醒":
                 $scope.carDetails = $scope.carList[index];
+                $scope.car_id = $scope.carDetails.id;
+                $scope.cust_id = $scope.carDetails.owner_id;
                 $scope.buttonTh = true;
                 $scope.show1 = true;
                 break;
@@ -117,15 +122,36 @@ function  s_maintainCtrl($scope, $http){
         switch(id)
         {
             case 1:
-                $scope.postData = {"op":"apply","org_id":$.cookie("org_id"),"car_id":1,"cust_id":83,"working_time":$scope.working_time}
+                $scope.postData = {"op":"apply","org_id":$.cookie("org_id"),"car_id":$scope.car_id,"cust_id":$scope.cust_id,"working_time":$scope.working_time}
                 $http.post(baseurl+'organization/'+ $.cookie("org_id")+'/work/care',$scope.postData).success(function(data){
-
+                     if(data.status=="ok")
+                     {
+                         alert("预约成功");
+                         changeView(2);
+                         GetFirstPageInfo();
+                     }
+                    else{
+                         alert(data.status);
+                     }
                 }).error(function(data){
                         alert("请求无响应");
                     });
                 break;
             case 2:
-                $scope.refuseReasonDiv = false;
+                $scope.postData = {"op":"refuse","org_id":$.cookie("org_id"),"car_id":$scope.carDetails.id,"cust_id":$scope.carDetails.owner_id,"reason":$scope.reason}
+                $http.post(baseurl+'organization/'+ $.cookie("org_id")+'/work/care',$scope.postData).success(function(data){
+                    if(data.status=="ok")
+                    {
+                        alert("操作成功");
+                        changeView(2);
+                        GetFirstPageInfo();
+                    }
+                    else{
+                        alert(data.status);
+                    }
+                }).error(function(data){
+                        alert("请求无响应");
+                    });
                 break;
         }
     }
@@ -137,6 +163,7 @@ function  s_maintainCtrl($scope, $http){
             case 1:
                 $scope.maintainListDiv = false;
                 $scope.applyOperDiv = true;
+                $scope.careListDiv = false;
                 $scope.alreadyReserDiv = false;
                 $scope.refuseReasonDiv = false;
                 $scope.remindMileTi = false;
@@ -150,29 +177,55 @@ function  s_maintainCtrl($scope, $http){
                 break;
             case 2:
                 $scope.maintainListDiv = true;
+                $scope.careListDiv = false;
+                $scope.applyOperDiv = false;
+                break;
+            case 3:
+                $scope.maintainListDiv = false;
+                $scope.careListDiv = true;
                 $scope.applyOperDiv = false;
                 break;
         }
     }
     $scope.remindStatus = function(id)
     {
-        changeView(2);
+
         switch(id)
         {
             case 0:
-                $http.get('../js/fun_js/maintainInfo1.json').success(function(data){
-                    $scope.reservationList = data;
-                });
+                changeView(2);
+                GetFirstPageInfo();
                 break;
             case 1://新申请
-                $http.get('../js/fun_js/maintainInfo1.json').success(function(data){
-                    $scope.reservationList =  data;
-                });
+                changeView(2);
+                GetFirstPageInfo();
                 break;
             case 2://已拒绝
-                $http.get('../js/fun_js/maintainInfo1.json').success(function(data){
-                    $scope.reservationList =  data;
-                });
+                changeView(3);
+                $scope.tips="";
+                $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord)
+                    .success(function(data){
+                        if(data.status=="ok")
+                        {
+                            $scope.carList = data.records;
+                            PagingInfo(data.totalCount);
+                            if($scope.carList.length == 0)
+                            {
+                                $scope.tips="暂无数据";
+                            }
+                            else{
+                                for(var i=0;i<$scope.carList.length;i++)
+                                {
+                                    $scope.carList[i].log_time = $.changeDate($scope.carList[i].log_time);
+                                    $scope.carList[i].step = $.changeCareStatus($scope.carList[i].step);
+                                }
+                            }
+                        }else{
+                            alert(data.status);
+                        }
+                    }).error(function(data){
+                        alert("请求无响应");
+                    });
                 break;
             case 3://已确认
                 break;

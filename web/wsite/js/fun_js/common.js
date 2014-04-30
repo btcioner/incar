@@ -90,6 +90,13 @@ var baseurl="/wservice/";
         }
     }
 
+    $.changeCareStatus = function(step)
+    {
+        if(step == "refused") return "已拒绝";
+        else return "已预约";
+    }
+
+
 
 })(jQuery);
 

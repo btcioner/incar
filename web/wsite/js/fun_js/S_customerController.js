@@ -10,7 +10,6 @@ function s_customerCtrl($scope, $http){
     $scope.cusListDiv = true;
     $scope.cusTabDiv = false;
 
-
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
     $scope.city_name="";
@@ -27,14 +26,12 @@ function s_customerCtrl($scope, $http){
 
     //筛选框初始值 todo--要从数据库读出来
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
-    $scope.carBrand=[{id:"zero",name:"请选择"},{id:0,name:"丰田/TOYOTA"},{id:1,name:"本田/Honda"},{id:2,name:"日产/NISSAN"},{id:3,name:"三菱/MITSUBISHIMOTORS"}];
-    $scope.carSeries=[{id:0,name:"请选择"}];
-
 
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {
         $scope.tips="";
+
         $http.get(baseurl + 'carowner?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
             if(data.status == "ok")
             {
@@ -52,41 +49,26 @@ function s_customerCtrl($scope, $http){
         }).error(function(data){
                 alert("请求无响应");
             })
+        $http.get(baseurl+'brand').success(function(data){
+            $scope.carBrand = data.brands;
+        });
     }
 
-    //改变车型自动加载车款
-    $scope.changeSeries = function()
+
+    //查找品牌
+    $scope.changeBrand = function(brand_id)
     {
-
-        if($scope.brand_id !="zero")
-        {
-            switch($scope.brand_id)
-            {
-                case 0:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"FJ酷路泽"},{id:2,name:"HIACE"},{id:3,name:"Siemma"},{id:4,name:"Venza威飒"}];
-                    break;
-                case 1:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"INSIGHT"},{id:2,name:"本田CR-Z"},{id:3,name:"飞度(进口)"},{id:4,name:"里程"}];
-                    break;
-                case 2:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"碧莲"},{id:2,name:"风度"},{id:3,name:"风雅"},{id:4,name:"贵士"}];
-                    break;
-                case 3:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"ASX劲炫(进口)"},{id:2,name:"LANCER"},{id:3,name:"格鲁迪(进口)"},{id:4,name:"欧蓝德(进口)"}];
-                    break;
-            }
-        }
+        $http.get(baseurl+'brand/'+brand_id+'/series').success(function(data){
+            $scope.carSeries = data.series;
+        });
     }
-
 
     //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
         $scope.queryString = "&org_id="+ $.cookie("org_id");
         if($scope.city_name=="请选择")$scope.city_name = "";
-        if($scope.brand_id == "zero")$scope.brand_id = "";
-        if($scope.series_id == 0) $scope.series_id = "";
-        $scope.queryString = $scope.queryString + "&org_city="+$scope.city_name+"&brand_id="+$scope.brand_id+"&series_id="+$scope.series_id+"&acc_nick="+$scope.queryNick+"&acc_phone="+$scope.queryPhone;
+        $scope.queryString = $scope.queryString + "&org_city="+$scope.city_name+"&brand_id="+$scope.brandCode+"&series_id="+$scope.seriesCode+"&acc_nick="+$scope.queryNick+"&acc_phone="+$scope.queryPhone;
         GetFirstPageInfo();
     }
 
@@ -183,14 +165,14 @@ function s_customerCtrl($scope, $http){
     function getCareRecord()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/carerecord?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.car_id).success(function(data){
+        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.car_id).success(function(data){
            $scope.recordList = data.records;
             PagingInfo(data.totalCount);
            if(data.records.length > 0)
            {
               for(var i=0;i<data.records.length;i++)
               {
-                  $scope.recordList[i].care_time = $.changeDate($scope.recordList[i].care_time);
+                  $scope.recordList[i].log_time = $.changeDate($scope.recordList[i].log_time);
               }
            }
             else{
