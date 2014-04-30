@@ -243,13 +243,13 @@
                                 <th>理由</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody >
                             <tr class="gradeX" ng-repeat="cl in carList">
-                                <td style="text-align: center"></td>
-                                <td style="text-align: center"></td>
-                                <td style="text-align: center"></td>
-                                <td style="text-align: center"></td>
-                                <td style="text-align: center"></td>
+                                <td style="text-align: center">{{cl.cust_nick}}</td>
+                                <td style="text-align: center">{{cl.cust_phone}}</td>
+                                <td style="text-align: center">{{cl.brand}}</td>
+                                <td style="text-align: center">{{cl.series}}</td>
+                                <td style="text-align: center">{{cl.license}}</td>
                                 <td style="text-align: center">{{cl.json_args.care_mileage}}</td>
                                 <td style="text-align: center">{{cl.json_args.care_hour}}</td>
                                 <td style="text-align: center">{{cl.log_time}}</td>
