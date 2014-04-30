@@ -109,6 +109,9 @@ module Service{
         var sql = "SELECT %s\n" +
             "FROM t_work_log L\n" +
             "\tJOIN t_work W ON W.id = L.work_id\n" +
+            "\tLEFT OUTER JOIN t_staff_account A ON A.id = W.cust_id\n" +
+            "\tLEFT OUTER JOIN t_car_info C ON C.id = W.car_id\n" +
+            "\tLEFT OUTER JOIN t_car C2 ON C2.brandCode = C.brand and C2.seriesCode = C.series\n" +
             "WHERE W.work='care' and L.step in('applied', 'refused') and L.json_args LIKE '%\"via\":\"web\"%' and W.org_id = ?";
         var args = [req.params.org_id];
 
@@ -128,7 +131,8 @@ module Service{
                 task.end();
             });
 
-            var sqlB = util.format(sql, "L.*");
+            var sqlB = util.format(sql, "L.*," +
+                "W.cust_id, A.nick AS cust_nick, A.phone AS cust_phone,W.car_id, C.license, C2.brand, C2.series");
             if(page.IsValid()) sqlB += page.sql;
             dac.query(sqlB, args, (ex, result)=>{
                 task.B = {ex:ex, result:result};

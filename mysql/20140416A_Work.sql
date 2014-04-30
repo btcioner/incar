@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS t_work_log(
     step varchar(32) NOT NULL COMMENT '业务步骤',
     json_args varchar(2048) COMMENT 'JSON形式的参数',
     log_time TIMESTAMP COMMENT '日志时间',
-    INDEX IDX_WORK_LOG_1(work_id)
+    INDEX IDX_WORK_LOG_1(work_id),
+    INDEX IDX_WORK_LOG_2(work,step,work_id)
 );
 
 -- 历史业务,已终结的业务
@@ -56,5 +57,6 @@ CREATE TABLE IF NOT EXISTS t_work_log_history(
     step varchar(32) NOT NULL COMMENT '业务步骤',
     json_args varchar(2048) COMMENT 'JSON形式的参数',
     log_time TIMESTAMP COMMENT '日志时间',
-    INDEX IDX_WORK_LOG_1(work_id)
+    INDEX IDX_WORK_LOG_1(work_id),
+    INDEX IDX_WORK_LOG_2(work,step,work_id)
 );
