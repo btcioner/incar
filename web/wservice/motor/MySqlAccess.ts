@@ -1,34 +1,23 @@
 /// <reference path="../dts/node.d.ts" />
 
 var mysql:any = require('mysql');
+var findPool:any = require('../config/db.js');
 
 module Service{
     export module MySqlAccess{
         // 获取全局连接池对象,如果没有,就会创建一个
         export function RetrievePool() : any{
-            if(!global.poolInCar){
-                var host = process.env.MySQLHost || 'linuxsrv.winphone.us';
-                var user = process.env.MySQLUser || 'incarapp';
-                var pwd = process.env.MySQLPwd || 'nodejs4WMQ';
-                var dbname = process.env.MySQLDatabase || 'incar';
-                console.log("MySQL: %s/%s", host, dbname);
-                global.poolInCar = mysql.createPool({
-                    host: host,
-                    user: user,
-                    password: pwd,
-                    database: dbname
-                });
-            }
+            var poolInCar = findPool();
 
             if(process.env.TraceSQL){
-                if(!global.poolInCar.TraceCount){
-                    global.poolInCar.TraceCount = 1;
-                    global.poolInCar.queryRawFn = global.poolInCar.query;
+                if(!poolInCar.TraceCount){
+                    poolInCar.TraceCount = 1;
+                    poolInCar.queryRawFn = poolInCar.query;
 
-                    global.poolInCar.query = (sql, args, cb)=>{
-                        var snSQL = (global.poolInCar.TraceCount++);
+                    poolInCar.query = (sql, args, cb)=>{
+                        var snSQL = (poolInCar.TraceCount++);
                         var tmA = new Date();
-                        global.poolInCar.queryRawFn(sql, args, (ex, result)=>{
+                        poolInCar.queryRawFn(sql, args, (ex, result)=>{
                             var tmB = new Date();
                             TraceSQL(sql, args, snSQL, tmB.getTime() - tmA.getTime());
                             if(ex) console.info(">>>>> SQL#%d \033[31m%s\033[0m", snSQL, ex.message);
@@ -38,7 +27,7 @@ module Service{
                 }
             }
 
-            return global.poolInCar;
+            return poolInCar;
         }
 
         // 调试用
