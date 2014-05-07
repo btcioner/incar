@@ -10,7 +10,9 @@ CREATE TABLE IF NOT EXISTS t_4s(
 
     wx_login VARCHAR(256) COMMENT '服务账号的微信公众平台登录名称',
     wx_pwd VARCHAR(64) COMMENT '服务账号的微信公众平台登录密码',
-    wx_en_name VARCHAR(256) COMMENT '服务账号的所有者公司名称',
+    wx_app_name VARCHAR(64) COMMENT '微信公众平台接口用户标识',
+    wx_app_id VARCHAR(64) COMMENT '微信公众平台接口调用凭据AppId',
+    wx_app_secret VARCHAR(128) COMMENT '微信公众平台接口调用凭据AppSecret',
     wx_status TINYINT NOT NULL DEFAULT '1' COMMENT '服务状态 0-禁用 1-启用',
 
     INDEX IX_4S_NAME(name)
