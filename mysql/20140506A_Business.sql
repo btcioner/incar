@@ -8,9 +8,9 @@ CREATE TABLE IF NOT EXISTS t_4s(
     city VARCHAR(16) COMMENT '市',
     description VARCHAR(512) COMMENT '简要说明性文字',
 
-    wx_login VARCHAR(256) NOT NULL COMMENT '服务账号的微信公众平台登录名称',
-    wx_pwd CHAR(40) NOT NULL COMMENT '服务账号的微信公众平台登录密码（16进制SHA1-160BITS密码散列值）',
-    wx_en_name VARCHAR(256) NOT NULL COMMENT '服务账号的所有者公司名称',
+    wx_login VARCHAR(256) COMMENT '服务账号的微信公众平台登录名称',
+    wx_pwd VARCHAR(64) COMMENT '服务账号的微信公众平台登录密码',
+    wx_en_name VARCHAR(256) COMMENT '服务账号的所有者公司名称',
     wx_status TINYINT NOT NULL DEFAULT '1' COMMENT '服务状态 0-禁用 1-启用',
 
     INDEX IX_4S_NAME(name)

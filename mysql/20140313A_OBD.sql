@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS t_obd_alarm(
     createTime timestamp,
     primary key (id));
 -- 创建车况字典表
-CREATE TABLE IF NOT EXISTS t_drive_condition(
+CREATE TABLE IF NOT EXISTS t_drive_dictionary(
     id int auto_increment,
     code int,
     unit varchar(20),
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS t_drive_condition(
     description varchar(200),
     valueMin int,
     valueMax int,
-    fmt varchar(10)
+    fmt varchar(10),
     primary key (id));
 
 -- 处理主外键关系

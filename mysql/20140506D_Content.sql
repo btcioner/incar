@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS t_manual_content(
 );
 
 -- 创建车辆信息表
-CREATE TABLE IF NOT EXISTS t_car_info(
+CREATE TABLE IF NOT EXISTS t_car_dictionary(
     id int auto_increment,
     brandCode int,
     seriesCode int,
