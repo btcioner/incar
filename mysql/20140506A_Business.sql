@@ -44,7 +44,6 @@ CREATE TABLE IF NOT EXISTS t_account(
     last_login_src VARCHAR(40) COMMENT '上次登录源',
 
     UNIQUE UNQ_4S_NAME(s4_id,name),
-    UNIQUE UNQ_4S_WX(s4_id,wx_oid),
     UNIQUE UNQ_4S_TEL(s4_id,tel_sn),
     INDEX IX_PHONE(phone)
 );
