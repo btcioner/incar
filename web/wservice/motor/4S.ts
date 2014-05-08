@@ -95,7 +95,6 @@ module Service{
         }
 
         var data = req.body;
-        //////////////////////////
         var dto:any = { id: req.params.s4_id };
         if(isStringNotEmpty(data.name)) dto.name = data.name;
         if(!isNaN(data.status)) dto.status = data.status;
@@ -259,6 +258,20 @@ module Service{
             task.begin();
         }
 
+        public GetStaffById(id:number, cb:(ex:TaskException, staffs:Staff)=>void){
+            var sql = "SELECT * FROM t_staff WHERE s4_id = ? and id = ?";
+            var args = [this.dto.id, id];
+
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "查询店员失败", ex), null); return; }
+                else if(result.length === 0) { cb(new TaskException(-2, "指定的店员不存在", null), null); return; }
+                else if(result.length > 1){ cb(new TaskException(-32, "店员数据错误", null), null); return; }
+                var staff = new Staff(result[0]);
+                cb(null, staff);
+            });
+        }
+
         public AddStaff(staff:Staff, cb:(ex:TaskException, staff:Staff)=>void){
             // 强制被加入4S店的店员s4_id和4S店id相匹配
             staff.dto.s4_id = this.dto.id;
@@ -269,6 +282,19 @@ module Service{
                 if(ex) { cb(new TaskException(-1, "增加4S店员失败", ex), null); return; }
                 staff.dto.id = result.insertId;
                 cb(null, staff);
+            });
+        }
+
+        public ModifyStaff(staff:Staff, cb:(ex:TaskException)=>void){
+            // 强制被加入4S店的店员s4_id和4S店id相匹配
+            staff.dto.s4_id = this.dto.id;
+
+            var sql = "UPDATE t_staff SET ? WHERE id = ? and s4_id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, [staff.dto, staff.dto.id, this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "修改4S店员失败", ex)); return; }
+                if(result.affectedRows === 0){ cb(new TaskException(-2, util.format("指定的4S店员(4s=%s,id=%s)不存在", this.dto.id, staff.dto.id), null)); return; }
+                cb(null);
             });
         }
     }
