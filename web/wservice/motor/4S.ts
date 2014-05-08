@@ -258,5 +258,18 @@ module Service{
 
             task.begin();
         }
+
+        public AddStaff(staff:Staff, cb:(ex:TaskException, staff:Staff)=>void){
+            // 强制被加入4S店的店员s4_id和4S店id相匹配
+            staff.dto.s4_id = this.dto.id;
+
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "INSERT t_staff SET ?";
+            dac.query(sql, [staff.dto], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "增加4S店员失败", ex), null); return; }
+                staff.dto.id = result.insertId;
+                cb(null, staff);
+            });
+        }
     }
 }

@@ -34,8 +34,8 @@ module.exports = function(app) {
     app.get('/wservice/4s/:s4_id/staff', wservice.GetStaff);
 
     app.get('/wservice/cmpx/4s', wservice.Get4SwithAdmin); // app.get('/wservice/organization', wservice.GetOrganization);
+    app.post('/wservice/cmpx/4s', wservice.Add4SwithAdmin); // app.post('/wservice/organization', wservice.AddOrganization);
 
-    app.post('/wservice/organization', wservice.AddOrganization);
     app.put('/wservice/organization/:org_id', wservice.ModifyOrganization);
   
     app.get('/wservice/organization/:org_id/account', wservice.GetAccountByOrg);
