@@ -25,23 +25,31 @@ module.exports = function(app) {
     //短信
     app.post('/wservice/message/obdTestSend/:obdCode', obdMessage.obdTestSend);
     app.post('/wservice/message/obdTestReceive/:obdCode', obdMessage.obdTestReceive);
-    // Routes for wsite service
-    app.get('/wservice/4s', wservice.Get4S);
 
-    app.get('/wservice/organization', wservice.GetOrganization);
-    app.post('/wservice/organization', wservice.AddOrganization);
-    app.put('/wservice/organization/:org_id', wservice.ModifyOrganization);
-  
-    app.get('/wservice/organization/:org_id/account', wservice.GetAccountByOrg);
-    app.post('/wservice/organization/:org_id/account', wservice.AddAccountToOrg);
-    app.get('/wservice/organization/:org_id/account/:acc_id', wservice.GetAccountByIdInOrg);
-    app.put('/wservice/organization/:org_id/account/:acc_id', wservice.ModifyAccountByIdInOrg);
-    app.delete('/wservice/organization/:org_id/account/:acc_id', wservice.DeleteAccountByIdInOrg);
-    app.get('/wservice/organization/:org_id/account/:acc_id/role', wservice.GetRole);
-    app.post('/wservice/organization/:org_id/account/:acc_id/role', wservice.AddRole);
-    app.get('/wservice/organization/:org_id/account/:acc_id/role/:role', wservice.HasRole);
-    app.put('/wservice/organization/:org_id/account/:acc_id/role/:role', wservice.ModifyRole);
-    app.delete('/wservice/organization/:org_id/account/:acc_id/role/:role', wservice.DeleteRole);
+    // Routes for wsite service
+    app.get('/wservice/hello', wservice.HelloAPI);
+    app.post('/wservice/login', wservice.Login);
+    app.get('/wservice/logout', wservice.Logout);
+
+    app.get('/wservice/4s', wservice.Get4S);
+    app.post('/wservice/4s', wservice.Add4S);
+    app.get('/wservice/4s/:s4_id', wservice.Get4SById);
+    app.put('/wservice/4s/:s4_id', wservice.Modify4S);
+
+    app.get('/wservice/4s/:s4_id/staff', wservice.GetStaff);
+    app.post('/wservice/4s/:s4_id/staff', wservice.AddStaff);
+    app.get('/wservice/4s/:s4_id/staff/:staff_id', wservice.GetStaffById);
+    app.put('/wservice/4s/:s4_id/staff/:staff_id', wservice.ModifyStaff);
+
+    app.get('/wservice/4s/:s4_id/cust', wservice.GetCustomer);
+    // app.post('/wservice/organization/:org_id/account', wservice.AddAccountToOrg);
+    app.get('/wservice/4s/:s4_id/cust/:cust_id', wservice.GetCustomerById);
+    // app.put('/wservice/organization/:org_id/account/:acc_id', wservice.ModifyAccountByIdInOrg);
+    // app.delete('/wservice/organization/:org_id/account/:acc_id', wservice.DeleteAccountByIdInOrg);
+
+    app.get('/wservice/cmpx/4s', wservice.Get4SwithAdmin); // app.get('/wservice/organization', wservice.GetOrganization);
+    app.post('/wservice/cmpx/4s', wservice.Add4SwithAdmin); // app.post('/wservice/organization', wservice.AddOrganization);
+    // app.put('/wservice/organization/:org_id', wservice.ModifyOrganization);
 
     app.get('/wservice/organization/:org_id/promotionslot', wservice.GetPromotionSlotAllInOrg);
     app.post('/wservice/organization/:org_id/promotionslot', wservice.AddPromotionSlotToOrg);
