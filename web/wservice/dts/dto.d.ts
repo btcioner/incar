@@ -15,6 +15,7 @@ declare module Service{
             pwd:string;
             nick:string;
             status:number;
+            status_name:string;
             email:string;
             phone:string;
         }

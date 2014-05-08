@@ -1,23 +1,9 @@
 
 module Service{
+    // 测试用途
+    export function HelloAPI(req, res){ res.send({status:"ok", text:"Hello API!"}); }
 
     export module APGet{
-        // 测试用途
-        export function HelloAPI(req, res){ res.send({status:"ok", text:"Hello API!"}); }
-
-        // 注销
-        export function Logout(req, res){
-            Service.Logout(req, res);
-        }
-
-        // 枚举全部支持的接口
-        export function EnumAllAPIs(req, res){
-            var apis = { get:[], post:[] };
-            for(var fn in APGet){ apis.get.push(fn); }
-            for(var fn in APPost){ apis.post.push(fn); }
-            res.send(apis);
-        }
-
         // 返回全部OBD设备
         export function GetAllOBDDevices(req, res){
             Service.GetAllOBDDevices(req, res);
