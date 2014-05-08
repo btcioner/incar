@@ -3,6 +3,7 @@
 
 var subscription = require('./logic/subscription');
 var wxMenu = require('./logic/wxMenu');
+var wxToken = require('./logic/wxToken');
 
 var api = {};
 
@@ -12,6 +13,10 @@ function defaultTextMsgReplier(message, session, callback) {
 
 api.defineWXMenu = function(appid, appsecret) {
     return wxMenu.define(appid, appsecret);
+};
+
+api.getServiceToken = function(appName, callback) {
+    return wxToken.getServiceToken(appName, callback);
 };
 
 api.onTextMsg = function(message, req, res, next) {

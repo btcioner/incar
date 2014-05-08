@@ -79,7 +79,7 @@ module.exports = function(app) {
     app.use(cookieParser());
     app.use(connect.session({secret: 'IncarTechnologies', cookie: {maxAge: 180000}}));
 
-    app.use('/api', weixin('wx__data_in_car')
+    app.use('/api/*', weixin(api.getServiceToken)
         .text(api.onTextMsg)
         .image(api.onImageMsg)
         .voice(api.onVoiceMsg)
@@ -91,7 +91,7 @@ module.exports = function(app) {
     );
     app.set('delayedInitializer', api.defineWXMenu('wx5de0018d8c7b0b0d', 'ea3cbd792917a19f7d043b02b7a7a0c6'));
 
-    app.use('/wservice/manual', multiPart({keepExtensions: true, uploadDir: './data/manual',limit:10*1024*1024}));
+    app.use('/wservice/manual', multiPart({keepExtensions: true, uploadDir: './data/manual', limit:10*1024*1024}));
 
 };
 
