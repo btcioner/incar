@@ -15,7 +15,7 @@
 <link rel="shortcut icon" href="../img/favicon.ico" />
 </head>
 
-<body>
+<body ng-controller="adminCtrl">
 <!--Header-part-->
 <div id="header">
   <h1>Admin后台</h1>
@@ -26,7 +26,7 @@
 <!--close-top-Header-messaages--> 
 
 <!--top-Header-menu-->
-<div id="user-nav" class="navbar navbar-inverse" ng-controller="adminCtrl">
+<div id="user-nav" class="navbar navbar-inverse" >
   <ul class="nav">
   	<li style="color:white;vertical-align:middle; margin-top: 15px;"><span class="text">你好，{{nickName}}</span></li>
     <li class=""><a title="" href="../login.html"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
@@ -35,13 +35,13 @@
 <!--close-top-Header-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i>运营后台</a>
     <ul>
-        <li class="active"><a href="#"><i class="icon icon-home"></i> <span>设备管理</span></a> </li>
-        <li> <a href="#driveData"><i class="icon icon-signal"></i> <span>行车数据</span></a> </li>
-        <li> <a href="#customer4s"><i class="icon icon-inbox"></i> <span>4S客户</span></a> </li>
-        <li><a href="#carOwners"><i class="icon icon-th"></i> <span>车主</span></a></li>
-        <li><a href="#userManage"><i class="icon icon-fullscreen"></i> <span>系统用户</span></a></li>
-        <li> <a href="#knowledgeBase"><i class="icon icon-th-list"></i> <span>行车手册</span></a></li>
-        <li> <a href="#paramSetting" target="_parent"><i class="icon icon-th-list"></i><span>参数设置</span></a></li>
+        <li class="active"><a href="#main/{{randomTime}}" ng-click="changeTime()"><i class="icon icon-home"></i> <span>设备管理</span></a> </li>
+        <li> <a href="#driveData/{{randomTime}}" ng-click="changeTime()"><i class="icon icon-signal"></i> <span>行车数据</span></a> </li>
+        <li> <a href="#customer4s/{{randomTime}}" ng-click="changeTime()"><i class="icon icon-inbox"></i> <span>4S客户</span></a> </li>
+        <li><a href="#carOwners/{{randomTime}}" ng-click="changeTime()"><i class="icon icon-th"></i> <span>车主</span></a></li>
+        <li><a href="#userManage/{{randomTime}}" ng-click="changeTime()"><i class="icon icon-fullscreen"></i> <span>系统用户</span></a></li>
+        <li> <a href="#knowledgeBase/{{randomTime}}" ng-click="changeTime()"><i class="icon icon-th-list"></i> <span>行车手册</span></a></li>
+        <li> <a href="#paramSetting/{{randomTime}}" ng-click="changeTime()"><i class="icon icon-th-list"></i><span>参数设置</span></a></li>
     </ul>
 </div>
 <div ng-view=""></div>
@@ -61,7 +61,6 @@
 <script src="../js/maruti.tables.js"></script>
 <script src="../js/angular.min.js"></script>
 <script src="../js/angular-resource.min.js"></script>
-<script src="../js/angular-cookies.min.js"></script>
 <script src="../js/angular-sanitize.min.js"></script>
 <script src="../js/angular-route.min.js"></script>
 <script src="../js/fun_js/common.js"></script>

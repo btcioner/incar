@@ -30,6 +30,7 @@
     {
         if($routeParams.id==1) GetFirstPageInfo("applied");
         if($routeParams.id==2) GetFirstPageInfo("approved");
+        if($routeParams.id==0) GetFirstPageInfo("");
     }
     else{
         GetFirstPageInfo("");
@@ -125,7 +126,7 @@
                   if(data.status=="ok")
                   {
                     GetFirstPageInfo("");
-                    alert("已确认");
+                    alert("操作成功");
                     changeView(2);
                   }else{
                       alert("请求无相应");
@@ -140,7 +141,7 @@
                   if(data.status=="ok")
                   {
                       GetFirstPageInfo("");
-                      alert("已取消");
+                      alert("操作成功");
                       changeView(2);
                   }else
                   {
@@ -162,7 +163,7 @@
                   if(data.status=="ok")
                   {
                       GetFirstPageInfo("");
-                      alert("未到店");
+                      alert("操作成功");
                       changeView(2);
                   }else{
                       alert("请求无相应");
@@ -268,7 +269,7 @@
                     if(data.status == "ok")
                     {
                         GetFirstPageInfo("");
-                        alert("已完成");
+                        alert("操作成功");
                         changeView(2);
                     }
                     else
@@ -285,7 +286,7 @@
                     if(data.status == "ok")
                     {
                         GetFirstPageInfo("");
-                        alert("已拒绝");
+                        alert("操作成功");
                         changeView(2);
                     }
                     else{

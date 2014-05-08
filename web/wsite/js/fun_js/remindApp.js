@@ -18,6 +18,10 @@ angular.module("SMaintainApp", [
             controller:'s_maintainCtrl',
             templateUrl:'/4sStore/partials/remind_maintain.html'//显示全部保养信息
         })
+        .when('/collapseGOne/:id',{
+            controller:'s_maintainCtrl',
+            templateUrl:'/4sStore/partials/remind_maintain.html'//显示全部保养信息
+        })
         .when('/collapseGTwo',{
             controller:'',
             templateUrl:'/4sStore/partials/remind_fault.html'//显示全部维修信息

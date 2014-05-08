@@ -33,8 +33,12 @@ function driveDataCtrl($scope, $http){
                 {
                     $scope.tips="暂无数据！";
                 }
-               // $.changeContentHeight("850px");
+                // $.changeContentHeight("850px");
                 $scope.drvInfos = data.drvInfos;
+                for(var i=0;i<data.drvInfos.length;i++)
+                {
+                    $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
+                }
                 PagingInfo(data.totalCount);
             }
             else
@@ -79,6 +83,7 @@ function driveDataCtrl($scope, $http){
                 $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id);
                 break;
         }
+        $scope.currentPage = 1;
     }
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
@@ -101,7 +106,7 @@ function driveDataCtrl($scope, $http){
     {
         $scope.chooseOC = obd_code;
         $scope.drive_id = drive_id;
-        $scope.postData = {token:$scope.token,code:obd_code,drive_id:drive_id};
+        $scope.postData = {code:obd_code,drive_id:drive_id};
         GetOwnerInfo(obd_code);
         $http.post(baseurl + 'GetDriveDetail?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord,$scope.postData).success(function(data){
             if(data.status == "ok")
@@ -131,14 +136,14 @@ function driveDataCtrl($scope, $http){
     //一分钟内的行车数据流记录
     $scope.GetOneMinuteDetail = function(index)
     {
-        if($scope.details[index].CarCondition.detail == null || $scope.details[index].CarCondition.detail.length == 0)
+        if($scope.details[index].CarCondition == null || $scope.details[index].CarCondition.length == 0)
         {
              alert("暂无详细数据");
         }
         else
         {
            // $.changeContentHeight("1000px");
-            $scope.omdds = $scope.details[index].CarCondition.detail;
+            $scope.omdds = $scope.details[index].CarCondition;
             $scope.oneDetailDiv = false;
             $scope.oneMinuteDetailDiv = true;
         }
@@ -160,7 +165,6 @@ function driveDataCtrl($scope, $http){
                 $scope.oneMinuteDetailDiv = false;
                 $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id);
                 break;
-
         }
     }
 

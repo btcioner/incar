@@ -81,6 +81,7 @@ angular.module("DriveDataApp", [])
                 $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id);
                 break;
         }
+        $scope.currentPage = 1;
     }
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
@@ -133,14 +134,13 @@ angular.module("DriveDataApp", [])
     //一分钟内的行车数据流记录
     $scope.GetOneMinuteDetail = function(index)
     {
-        if($scope.details[index].CarCondition.detail == null || $scope.details[index].CarCondition.detail.length == 0)
+        if($scope.details[index].CarCondition == null || $scope.details[index].CarCondition.length == 0)
         {
              alert("暂无详细数据");
         }
         else
         {
-           // $.changeContentHeight("1000px");
-            $scope.omdds = $scope.details[index].CarCondition.detail;
+            $scope.omdds = $scope.details[index].CarCondition;
             $scope.oneDetailDiv = false;
             $scope.oneMinuteDetailDiv = true;
         }

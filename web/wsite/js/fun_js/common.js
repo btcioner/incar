@@ -4,8 +4,6 @@
  *  for public js function
  */
 var baseurl="/wservice/";
-
-
 (function($){
 
     $.getUrlParam = function(name)
@@ -15,16 +13,25 @@ var baseurl="/wservice/";
         if (r!=null) return unescape(r[2]); return null;
     }
     //把日期转换成可读日期
+    $.changeDate2 = function(date)
+    {
+        if(date == "0000-00-00 00:00:00" || date == null) return null;
+        var year = date.substring(0,4);
+        var month = date.substring(5,7);
+        var day = date.substring(8,10);
+        return (year+"-"+month+"-"+day);
+    }
     $.changeDate = function(date)
     {
         if(date == "0000-00-00 00:00:00" || date == null) return null;
         var year = new Date(Date.parse(date)).getFullYear();
-        if(isNaN(year)) return null;
+
         var month = (new Date(Date.parse(date)).getMonth()) + 1;
         var day = new Date(Date.parse(date)).getDate();
         var hour = new Date(Date.parse(date)).getHours();
         var minute = new Date(Date.parse(date)).getMinutes();
         if(month < 10) month= "0" + month;
+        if(day < 10) day= "0" + day;
         if(hour < 10) hour = "0" + hour;
         if(minute < 10) minute= "0" + minute;
 
@@ -94,6 +101,28 @@ var baseurl="/wservice/";
     {
         if(step == "refused") return "已拒绝";
         else return "已预约";
+    }
+
+    $.changeCarStatus = function(status)
+    {
+        switch(status)
+        {
+            case 1:
+                return "发动机点火时";
+                break;
+            case 2:
+                return "发动机运行中";
+                break;
+            case 3:
+                return "发动机熄火时";
+                break;
+            case 4:
+                return "发动机熄火后";
+                break;
+            case 5:
+                return "车辆不能检测";
+                break;
+        }
     }
 
 

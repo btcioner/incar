@@ -12,7 +12,7 @@
                         <h5>保养提醒</h5>
                     </a> </div>
                 </div>
-                <div class="accordion-body collapse" id="collapseGOne" style="height: 0px;">
+                <div class="collapse in accordion-body" id="collapseGOne">
                     <div class="widget-content" style="text-align: right;padding:0">
                         <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(1)">新提醒</button>
                         <button  class="btn btn-info" style="width: 100%;" ng-click="remindStatus(2)">已关怀</button>
@@ -243,7 +243,7 @@
                                 <th>理由</th>
                             </tr>
                             </thead>
-                            <tbody >
+                            <tbody>
                             <tr class="gradeX" ng-repeat="cl in carList">
                                 <td style="text-align: center">{{cl.cust_nick}}</td>
                                 <td style="text-align: center">{{cl.cust_phone}}</td>
