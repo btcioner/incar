@@ -38,7 +38,7 @@ module.exports = function(app) {
 
     app.get('/wservice/4s/:s4_id/cust', wservice.GetCustomer);
     // app.post('/wservice/organization/:org_id/account', wservice.AddAccountToOrg);
-    //+++ app.get('/wservice/organization/:org_id/account/:acc_id', wservice.GetAccountByIdInOrg);
+    app.get('/wservice/4s/:s4_id/cust/:cust_id', wservice.GetCustomerById);
     //+++ app.put('/wservice/organization/:org_id/account/:acc_id', wservice.ModifyAccountByIdInOrg);
     // app.delete('/wservice/organization/:org_id/account/:acc_id', wservice.DeleteAccountByIdInOrg);
 

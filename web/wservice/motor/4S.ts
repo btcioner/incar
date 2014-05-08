@@ -258,7 +258,7 @@ module Service{
             task.begin();
         }
 
-        public GetStaffById(id:number, cb:(ex:TaskException, staffs:Staff)=>void){
+        public GetStaffById(id:number, cb:(ex:TaskException, staff:Staff)=>void){
             var sql = "SELECT * FROM t_staff WHERE s4_id = ? and id = ?";
             var args = [this.dto.id, id];
 
@@ -341,6 +341,20 @@ module Service{
             };
 
             task.begin();
+        }
+
+        public GetCustomerById(id:number, cb:(ex:TaskException, cust:Customer)=>void){
+            var sql = "SELECT * FROM t_account WHERE s4_id = ? and id = ?";
+            var args = [this.dto.id, id];
+
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "查询4S店顾客失败", ex), null); return; }
+                else if(result.length === 0) { cb(new TaskException(-2, "指定的4S店顾客不存在", null), null); return; }
+                else if(result.length > 1){ cb(new TaskException(-32, "4S店顾客数据错误", null), null); return; }
+                var cust = new Customer(result[0]);
+                cb(null, cust);
+            });
         }
     }
 }

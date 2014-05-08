@@ -21,6 +21,20 @@ module Service{
         });
     }
 
+    export function GetCustomerById(req, res){
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetCustomerById(req.params.cust_id, (ex, cust)=>{
+                if(ex) { res.json(ex); return; }
+                // 密码不应返回给客户,仅供内部使用
+                cust.dto.pwd = undefined;
+                cust.dto.tel_pwd = undefined;
+                res.json({status:"ok", cust:cust.DTO() });
+            });
+        });
+    }
+
     export class Customer extends DTOBase<DTO.account>{
         constructor(dto){
             super(dto);
