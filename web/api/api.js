@@ -22,8 +22,8 @@ api.ticks = function(ticker) {
     };
 };
 
-api.getServiceToken = function(appName, callback) {
-    return wxToken.getServiceToken(appName, callback);
+api.getServiceToken = function(appName, openid, callback) {
+    return wxToken.getTokenOrSetOpenId(appName, openid, callback);
 };
 
 api.onTextMsg = function(message, req, res, next) {
