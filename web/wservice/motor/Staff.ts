@@ -22,7 +22,7 @@ module Service{
         });
     }
 
-    // 登录到全局
+    // 登录
     export function Login(req, res){
         if(Object.keys(req.body).length === 0){
             res.json({
@@ -47,8 +47,17 @@ module Service{
 
         // 检索匹配的用户帐号
         var dac = MySqlAccess.RetrievePool();
-        dac.query("SELECT id, name, nick, status, email, phone, last_login_time, last_login_ip\n" +
-                "FROM t_staff WHERE s4_id IS NULL and name = ? and pwd = ? LIMIT 1", [data.name, data.pwd],
+        var sql = "SELECT *\n" +
+            "FROM t_staff WHERE name = ? and pwd = ? and %s LIMIT 1";
+        var args = [data.name, data.pwd];
+        if(req.params.s4_id){
+            sql = util.format(sql, "s4_id = ?");
+            args.push(req.params.s4_id);
+        }
+        else{
+            sql = util.format(sql, "s4_id is null");
+        }
+        dac.query(sql, args,
             (err, result)=>{
                 if(!err){
                     if(result.length === 0){
