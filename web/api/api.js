@@ -1,6 +1,7 @@
 
 'use strict';
 
+var TickTasks = require('./weixin').TickTasks;
 var subscription = require('./logic/subscription');
 var wxMenu = require('./logic/wxMenu');
 var wxToken = require('./logic/wxToken');
@@ -11,8 +12,14 @@ function defaultTextMsgReplier(message, session, callback) {
     return callback({type: 'text', content: '您没有激活任何命令，或您的回复已经过期！'});
 }
 
-api.defineWXMenu = function(appid, appsecret) {
-    return wxMenu.define(appid, appsecret);
+api.ticks = function(ticker) {
+    return function(callback) {
+        var tickTasks = new TickTasks(ticker);
+        wxMenu.defineTasks(tickTasks, function(err, result){
+            if (err) return callback(err, null);
+            return callback(null, result.taskTicker.bind(result))
+        });
+    };
 };
 
 api.getServiceToken = function(appName, callback) {

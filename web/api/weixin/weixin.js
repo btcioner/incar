@@ -256,11 +256,10 @@ Handler.prototype.middlewarify = function () {
             }
         }
         else {
-            token(req.param[0], function(err, result){
+            token(req.params[0], function(err, result){
                 if (err) {
                     res.writeHead(401);
                     res.end('Invalid incar wx service account');
-                    return;
                 }
                 else {
                     var wxServiceToken = result.wxServiceToken;
@@ -292,7 +291,6 @@ Handler.prototype.middlewarify = function () {
                         res.writeHead(501);
                         res.end('Not Implemented');
                     }
-                    return;
                 }
             });
         }
