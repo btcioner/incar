@@ -6,6 +6,7 @@
 /// <reference path="DTOBase.ts" />
 /// <reference path="MySqlAccess.ts" />
 /// <reference path="Account.ts" />
+/// <reference path="Customer.ts" />
 /// <reference path="4S.ts" />
 /// <reference path="Staff.ts" />
 /// <reference path="Organization.ts" />

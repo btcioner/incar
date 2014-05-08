@@ -297,5 +297,50 @@ module Service{
                 cb(null);
             });
         }
+
+        public GetCustomer(page:Pagination, filter:any, cb:(ex:TaskException, total:number, customers:Customer[])=>void){
+            var sql = "SELECT %s FROM t_account WHERE s4_id = ?";
+            var args = [this.dto.id];
+
+            if(filter.name) { sql += " and name = ?"; args.push(filter.name); }
+            if(filter.nick) { sql += " and nick = ?"; args.push(filter.nick); }
+            if(filter.email) { sql += " and email = ?"; args.push(filter.email); }
+            if(filter.phone) { sql += " and phone = ?"; args.push(filter.phone); }
+            if(!isNaN(filter.status)) { sql += " and status = ?"; args.push(filter.status); }
+
+            var dac = MySqlAccess.RetrievePool();
+            var task:any = { finished:0 };
+            task.begin = ()=>{
+                var sqlA = util.format(sql, "*");
+                if(page.IsValid()) sqlA += page.sql;
+                dac.query(sqlA, args, (ex, result)=>{
+                    task.A = { ex: ex, result: result };
+                    task.finished++;
+                    task.end();
+                });
+
+                var sqlB = util.format(sql, "COUNT(*) count");
+                dac.query(sqlB, args, (ex, result)=>{
+                    task.B = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+            };
+
+            task.end = ()=>{
+                if(task.finished < 2) return;
+                if(task.A.ex){ cb(new TaskException(-1, "查询4S店顾客失败", task.A.ex), 0, null); return; }
+                var objs = [];
+                task.A.result.forEach((dto)=>{
+                    objs.push(new Customer(dto));
+                });
+                var total = 0;
+                if(!task.B.ex) total = task.B.result[0].count;
+
+                cb(null, total, objs);
+            };
+
+            task.begin();
+        }
     }
 }

@@ -18,5 +18,16 @@ declare module Service{
             email:string;
             phone:string;
         }
+
+        export class account{
+            id:number;
+            s4_id:number;
+            pwd:string;
+            tel_pwd:string;
+            status:number;
+            status_name:string;
+            sex:number;
+            sex_name:string;
+        }
     }
 }
