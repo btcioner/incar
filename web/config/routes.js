@@ -27,6 +27,9 @@ module.exports = function(app) {
     app.post('/wservice/message/obdTestReceive/:obdCode', obdMessage.obdTestReceive);
     // Routes for wsite service
     app.get('/wservice/4s', wservice.Get4S);
+    app.post('/wservice/4s', wservice.Add4S);
+    app.get('/wservice/4s/:s4_id', wservice.Get4SById);
+    app.put('/wservice/4s/:s4_id', wservice.Modify4S);
 
     app.get('/wservice/organization', wservice.GetOrganization);
     app.post('/wservice/organization', wservice.AddOrganization);

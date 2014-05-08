@@ -113,4 +113,9 @@ module Service{
             return util.format(" LIMIT %d,%d ", this._offset, this._pagesize);
         }
     }
+
+    // 是一个非空字符串返回true
+    export function isStringNotEmpty(target:any):Boolean{
+        return (typeof target  === "string" && target.length > 0);
+    }
 }
