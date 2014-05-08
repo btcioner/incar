@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS t_account(
 
 CREATE TABLE IF NOT EXISTS t_car(
     id int auto_increment PRIMARY KEY COMMENT '车辆编号',
-    s4_id int unsigned not null COMMENT '车辆所在4S店ID',
+    s4_id int unsigned          COMMENT '车辆所在4S店ID,NULL表示InCar',
 
     license varchar(30)         COMMENT '车牌号',
 
@@ -66,7 +66,9 @@ CREATE TABLE IF NOT EXISTS t_car(
     age int                     COMMENT '车龄',
 
     comment VARCHAR(32)         COMMENT '简要说明性文字',
-    created_date DATE           COMMENT '创建日期'
+    created_date DATE           COMMENT '创建日期',
+
+    UNIQUE UNQ_4S_LICENSE(s4_id, license)
 );
 
 -- 20140329 XGH 车的使用者

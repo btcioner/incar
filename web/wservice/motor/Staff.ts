@@ -1,6 +1,27 @@
 /// <reference path="references.ts" />
 
 module Service{
+    export function CheckAuthority(req, res, next){
+        Staff.CreateFromToken(req.cookies.token, (ex, staff)=>{
+            if(ex) { res.json(new TaskException(-1, "没有登录", ex)); return; }
+            if(req.params.s4_id){
+                // 访问特定4S店资源
+                if(isNaN(staff.dto.s4_id) && staff.dto.s4_id != req.params.s4_id){
+                    res.json(new TaskException(-1, "没有访问权限", null));
+                    return;
+                }
+            }
+            else{
+                // 访问全局资源
+                if(staff.dto.s4_id) {
+                    res.json(new TaskException(-1, "没有访问权限", null));
+                    return;
+                }
+            }
+            next();
+        });
+    }
+
     // 登录到全局
     export function Login(req, res){
         if(Object.keys(req.body).length === 0){
@@ -200,15 +221,53 @@ module Service{
 
         // 生成用户令牌token
         MakeToken(ip:string, agent:string):string{
-            var evdData = util.format("%j", {name:this.dto.name, tm:new Date(), ip:ip, agent:agent});
-            var cipherAES = crypto.createCipher("aes128", new Buffer(this.GetTokenKey()));
+            var evdData = util.format("%j", {id:this.dto.id, tm:new Date(), ip:ip, agent:agent});
+            var cipherAES = crypto.createCipher("aes128", new Buffer(Staff.GetTokenKey()));
             cipherAES.setAutoPadding(true);
             var token:string = cipherAES.update(evdData, "utf8", "base64");
             token += cipherAES.final("base64");
             return token;
         }
 
-        GetTokenKey():string{
+        static CreateFromToken(token:string, cb:(err:TaskException, staff:Staff)=>void):void{
+            if(!token){
+                cb(new TaskException(-1, "无效token", null), null);
+                return;
+            }
+
+            // 解密token
+            var decipherAES = crypto.createDecipher("aes128", new Buffer(Staff.GetTokenKey()));
+            decipherAES.setAutoPadding(true);
+            var userAccept : any;
+            try{
+                var jsonData = decipherAES.update(token, "base64", "utf8");
+                jsonData += decipherAES.final("utf8");
+                userAccept = JSON.parse(jsonData);
+            }
+            catch(e){
+                cb(new TaskException(-1, "无效token", null), null);
+                return;
+            }
+
+            // 校验userAccept
+            var staff: Staff;
+            var dac = MySqlAccess.RetrievePool();
+            dac.query("SELECT * FROM t_staff WHERE id = ? LIMIT 1;", [userAccept.id],
+                (err, result)=>{
+                    if(!err && result.length === 1){
+                        staff = new Staff(result[0]);
+                        if(staff.IsDisabled())
+                            cb(new TaskException(-1, "用户已被禁用", null), null);
+                        else
+                            cb(null, staff);
+                    }
+                    else{
+                        cb(new TaskException(-1, "安全校验失败", err), null);
+                    }
+                });
+        }
+
+        static GetTokenKey():string{
             return "2014Mar15";
         }
     }
