@@ -184,7 +184,7 @@ module Service{
             if(isStringNotEmpty(data.name)) dto.name = data.name;
             if(isStringNotEmpty(data.nick)) dto.nick = data.nick;
             if(isStringNotEmpty(data.pwd)) dto.name = data.pwd;
-            if(isStringNotEmpty(data.email)) dto.nick = data.email;
+            if(isStringNotEmpty(data.email)) dto.email = data.email;
             if(isStringNotEmpty(data.phone)) dto.nick = data.phone;
             if(!isNaN(data.status)) dto.status = data.status;
 
