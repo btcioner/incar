@@ -103,10 +103,23 @@ function carOwnersCtrl($scope, $http){
 
 
     //分页跳转页面
-    $scope.changePage=function(changeId)
+    $scope.changePage=function(changeId,id)
     {
-        $scope.currentPage = changeId
-        GetFirstPageInfo();
+        $scope.currentPage = changeId ;
+        switch(id)
+        {
+            case 1://设备列表
+                GetFirstPageInfo();
+                break;
+            case 2: //行车数据
+                $scope.GetDriveInfo($scope.choosedOC);
+                break;
+            case 3://行程数据
+                $scope.GetDriveDetail($scope.choosedOC,$scope.drive_id);
+                break;
+        }
+        $scope.currentPage = 1;
+
     }
 
 
@@ -263,9 +276,16 @@ function carOwnersCtrl($scope, $http){
     //一分钟内的行车数据流记录
     $scope.GetOneMinuteDetail = function(index)
     {
-        $scope.omdds = $scope.details[index].CarCondition.detail;
-        $scope.oneDetailDiv = false;
-        $scope.oneMinuteDetailDiv = true;
+        if($scope.details[index].CarCondition == null || $scope.details[index].CarCondition.length == 0)
+        {
+            alert("暂无详细数据");
+        }
+        else
+        {
+            $scope.omdds = $scope.details[index].CarCondition;
+            $scope.oneDetailDiv = false;
+            $scope.oneMinuteDetailDiv = true;
+        }
     }
 
     //返回按钮

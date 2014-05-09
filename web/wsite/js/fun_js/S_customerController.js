@@ -223,6 +223,7 @@ function s_customerCtrl($scope, $http){
                 $scope.paging1 = true;
                 $scope.paging2 = false;
                 $scope.oneDetailDiv = false;
+                $scope.detailInfoDiv = false;
                 $scope.oneMinuteDetailDiv = false;
                 getDriveList();
                 break;
@@ -286,6 +287,7 @@ function s_customerCtrl($scope, $http){
                 }
                 else{
                     $scope.driveDiv = false;
+                    $scope.detailInfoDiv = true;
                     $scope.oneDetailDiv = true;
                     $scope.paging2 = true;
                     $scope.paging1 = false;
@@ -306,14 +308,15 @@ function s_customerCtrl($scope, $http){
     //一分钟内的行车数据流记录
     $scope.GetOneMinuteDetail = function(index)
     {
-        if($scope.details[index].CarCondition.detail == null || $scope.details[index].CarCondition.detail.length == 0)
+        if($scope.details[index].CarCondition == null || $scope.details[index].CarCondition.detail == 0)
         {
             alert("暂无详细数据");
         }
         else
         {
-            $scope.omdds = $scope.details[index].CarCondition.detail;
+            $scope.omdds = $scope.details[index].CarCondition;
             $scope.oneDetailDiv = false;
+            $scope.detailInfoDiv = false;
             $scope.paging1 = false;
             $scope.paging2 = false;
             $scope.oneMinuteDetailDiv = true;
@@ -330,6 +333,7 @@ function s_customerCtrl($scope, $http){
                 $scope.paging1 = true;
                 $scope.paging2 = false;
                 $scope.oneDetailDiv = false;
+                $scope.detailInfoDiv = false;
                 $scope.oneMinuteDetailDiv = false;
                 getDriveList();
                 break;
@@ -338,6 +342,7 @@ function s_customerCtrl($scope, $http){
                 $scope.paging1 = false;
                 $scope.paging2 = true;
                 $scope.oneDetailDiv = true;
+                $scope.detailInfoDiv = true;
                 $scope.oneMinuteDetailDiv = false;
                 $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id);
                 break;

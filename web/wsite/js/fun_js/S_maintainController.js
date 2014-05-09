@@ -3,7 +3,7 @@
  */
 
 
-function  s_maintainCtrl($scope, $http){
+function  s_maintainCtrl($scope, $http,$routeParams){
     $scope.maintainListDiv = true;
     $scope.applyOperDiv = false;
     $scope.careListDiv = false;
@@ -12,7 +12,7 @@ function  s_maintainCtrl($scope, $http){
     $scope.working_time = "";
     $scope.reason = "";
 
-    GetFirstPageInfo();
+     GetFirstPageInfo();
     function GetFirstPageInfo()
     {
         $scope.tips="";
