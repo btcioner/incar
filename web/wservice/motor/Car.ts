@@ -2,7 +2,7 @@
 
 module Service{
     export function GetCar(req, res){
-        res.setHeader("Accept-Query", "page,pagesize,license,obd_code,act_type,sim_number,brand,series");
+        res.setHeader("Accept-Query", "page,pagesize,has_obd,license,obd_code,act_type,sim_number,brand,series");
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var repo4S = S4Repository.GetRepo();

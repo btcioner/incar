@@ -361,6 +361,11 @@ module Service{
             var sql = "SELECT %s FROM t_car WHERE s4_id = ?";
             var args = [this.dto.id];
 
+            if(isStringNotEmpty(filter.has_obd)) {
+                if (filter.has_obd == "true") sql += " and obd_code is not null";
+                else sql += " and obd_code is null";
+            }
+
             if(filter.license) { sql += " and license = ?"; args.push(filter.license); }
             if(filter.obd_code) { sql += " and obd_code = ?"; args.push(filter.obd_code); }
             if(!isNaN(filter.act_type)) { sql += " and act_type = ?"; args.push(filter.act_type); }
