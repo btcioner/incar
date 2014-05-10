@@ -298,6 +298,15 @@ module Service{
             });
         }
 
+        public DeleteSatff(staff_id:number, cb:(ex:TaskException)=>void){
+            var sql = "DELETE from t_staff WHERE id = ? and s4_id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, [staff_id, this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "删除4S店员失败", ex)); return; }
+                cb(null);
+            });
+        }
+
         public GetCustomer(page:Pagination, filter:any, cb:(ex:TaskException, total:number, customers:Customer[])=>void){
             var sql = "SELECT %s FROM t_account WHERE s4_id = ?";
             var args = [this.dto.id];
@@ -354,6 +363,41 @@ module Service{
                 else if(result.length > 1){ cb(new TaskException(-32, "4S店顾客数据错误", null), null); return; }
                 var cust = new Customer(result[0]);
                 cb(null, cust);
+            });
+        }
+
+        public AddCustomer(cust:Customer, cb:(ex:TaskException, cust:Customer)=>void){
+            // 强制被加入4S店的店员s4_id和4S店id相匹配
+            cust.dto.s4_id = this.dto.id;
+
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "INSERT t_account SET ?";
+            dac.query(sql, [cust.dto], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "增加4S店顾客失败", ex), null); return; }
+                cust.dto.id = result.insertId;
+                cb(null, cust);
+            });
+        }
+
+        public ModifyCustomer(cust:Customer, cb:(ex:TaskException)=>void){
+            // 强制被加入4S店的店员s4_id和4S店id相匹配
+            cust.dto.s4_id = this.dto.id;
+
+            var sql = "UPDATE t_account SET ? WHERE id = ? and s4_id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, [cust.dto, cust.dto.id, this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "修改4S店顾客失败", ex)); return; }
+                if(result.affectedRows === 0){ cb(new TaskException(-2, util.format("指定的4S店顾客(4s=%s,id=%s)不存在", this.dto.id, cust.dto.id), null)); return; }
+                cb(null);
+            });
+        }
+
+        public DeleteCustomer(cust_id:number, cb:(ex:TaskException)=>void){
+            var sql = "DELETE from t_account WHERE id = ? and s4_id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, [cust_id, this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "删除4S店顾客失败", ex)); return; }
+                cb(null);
             });
         }
 

@@ -149,13 +149,14 @@ module Service{
         repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
             if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
             var dto:any = { name: data.name, pwd: data.pwd, last_login_time:"0000-00-00" };
-            if(isStringNotEmpty(data.email)) dto.nick = data.email;
-            if(isStringNotEmpty(data.phone)) dto.nick = data.phone;
+            if(isStringNotEmpty(data.email)) dto.email = data.email;
+            if(isStringNotEmpty(data.phone)) dto.phone = data.phone;
             if(isStringNotEmpty(data.nick)) dto.nick = data.nick;
             else dto.nick = data.name;
             var staff = new Staff(dto);
             s4.AddStaff(staff, (ex:TaskException, staff:Staff)=>{
                 if(ex) { res.json(ex); return; }
+                staff.dto.pwd = undefined;
                 res.json({status:"ok", staff:staff.DTO()});
             });
         });
@@ -183,9 +184,9 @@ module Service{
             var data = req.body;
             if(isStringNotEmpty(data.name)) dto.name = data.name;
             if(isStringNotEmpty(data.nick)) dto.nick = data.nick;
-            if(isStringNotEmpty(data.pwd)) dto.name = data.pwd;
+            if(isStringNotEmpty(data.pwd)) dto.pwd = data.pwd;
             if(isStringNotEmpty(data.email)) dto.email = data.email;
-            if(isStringNotEmpty(data.phone)) dto.nick = data.phone;
+            if(isStringNotEmpty(data.phone)) dto.phone = data.phone;
             if(!isNaN(data.status)) dto.status = data.status;
 
             var staff = new Staff(dto);

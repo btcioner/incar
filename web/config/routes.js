@@ -46,10 +46,10 @@ module.exports = function(app) {
     app.put('/wservice/4s/:s4_id/staff/:staff_id', authCheck, wservice.ModifyStaff);
 
     app.get('/wservice/4s/:s4_id/cust', authCheck, wservice.GetCustomer);
-    // app.post('/wservice/organization/:org_id/account', wservice.AddAccountToOrg);
+    app.post('/wservice/4s/:s4_id/cust', authCheck, wservice.AddCustomer);
     app.get('/wservice/4s/:s4_id/cust/:cust_id', authCheck, wservice.GetCustomerById);
-    // app.put('/wservice/organization/:org_id/account/:acc_id', wservice.ModifyAccountByIdInOrg);
-    // app.delete('/wservice/organization/:org_id/account/:acc_id', wservice.DeleteAccountByIdInOrg);
+    app.put('/wservice/4s/:s4_id/cust/:cust_id', authCheck, wservice.ModifyCustomer);
+    app.delete('/wservice/4s/:s4_id/cust/:cust_id', authCheck, wservice.DeleteCustomer);
 
     app.get('/wservice/4s/:s4_id/car', authCheck, wservice.GetCar);
     app.post('/wservice/4s/:s4_id/car', authCheck, wservice.AddCar);
