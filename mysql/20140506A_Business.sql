@@ -74,10 +74,10 @@ CREATE TABLE IF NOT EXISTS t_car(
 -- 20140329 XGH 车的使用者
 CREATE TABLE IF NOT EXISTS t_car_user(
     s4_id INT UNSIGNED COMMENT '归属4S店',
-    car_id INT COMMENT '车辆唯一ID',
     acc_id INT UNSIGNED COMMENT '使用车辆的人',
+    car_id INT COMMENT '车辆唯一ID',
     user_type TINYINT COMMENT '0-无效 1-车主 2-其它使用人',
     join_time TIMESTAMP COMMENT '时间戳',
-    INDEX IX_CAR_USER_1(s4_id, car_id, acc_id),
-    INDEX IX_CAR_USER__2(s4_id, acc_id, car_id)
+    UNIQUE UNQ_CAR_USER_1(s4_id, acc_id, car_id),
+    INDEX IX_CAR_USER_2(s4_id, car_id, acc_id)
 );

@@ -164,6 +164,33 @@ module Service{
         });
     }
 
+    export function AddCarToCustomer(req, res){
+        if(Object.keys(req.body).length === 0){
+            res.json({
+                postSample:{ car_id:1, user_type:1 },
+                remark:"必填:car_id,user_type(0无效 1车主 2非车主的其它使用人)"
+            });
+            return;
+        }
+
+        var err = "";
+        var data = req.body;
+        if(isNaN(data.car_id)) err += "缺少参数car_id,";
+        if(isNaN(data.user_type)) err+= "缺少参数user_type";
+        if(err) { res.json(new TaskException(-1, err, null)); return; }
+
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetCustomerById(req.params.cust_id, (ex, cust)=>{
+                cust.AddCar(data.car_id, data.user_type, (ex:TaskException)=>{
+                    if(ex) {res.json(ex); return; }
+                    res.json({status:"ok"});
+                });
+            });
+        });
+    }
+
     export class Customer extends DTOBase<DTO.account>{
         constructor(dto){
             super(dto);
@@ -180,6 +207,19 @@ module Service{
             else dto.sex_name = "未知";
 
             return dto;
+        }
+
+        public AddCar(car_id:number, user_type:number, cb:(ex:TaskException)=>void){
+            var sql = "INSERT t_car_user(s4_id,car_id,acc_id,user_type)\n" +
+                "SELECT s4_id,id,?,? FROM t_car WHERE s4_id = ? and id = ?";
+            var args = [this.dto.id, user_type, this.dto.s4_id, car_id];
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "向顾客添加车辆失败", ex)); return; }
+                if(result.affectedRows === 0) { cb(new TaskException(-1, util.format("向4S店(id=%s)顾客添加车辆失败,被添加的车辆(id=%s)不存在", this.dto.s4_id,car_id), null)); return; }
+                if(result.affectedRows > 1) { cb(new TaskException(-1, util.format("4S店(id=%s)车辆(id=%s)数据错误",this.dto.s4_id,car_id), null)); return; }
+                cb(null);
+            });
         }
     }
 }
