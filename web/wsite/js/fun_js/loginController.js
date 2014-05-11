@@ -29,18 +29,10 @@ app.controller("loginCtrl", function($scope, $http){
         $scope.postData = {name:$scope.username1,pwd:sha1_password,agent:"web"};
         $http.post(baseurl+'Login', $scope.postData)
             .success(function(data){
-            if(data.status == "ok" && data.organizations[0]["class"] =="TOP")
+            if(data.status == "ok" && data.staff != null)
             {
-                $.cookie("nick",data.account.nick);
-               window.location.href='/admin/index.html';
-            }
-            else if(data.status == "ok" && data.organizations[0]["class"] =="4S")
-            {
-
-                $.cookie("nick",data.account.nick);
-                $.cookie("org_name",data.organizations[0]["name"]);
-                $.cookie("org_id",data.organizations[0]["id"]);
-                window.location.href='/4sStore/index.html';
+                $.cookie("nick",data.staff.nick);
+                window.location.href='/admin/index.html';
             }
             else
             {
