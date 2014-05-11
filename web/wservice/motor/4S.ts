@@ -298,6 +298,15 @@ module Service{
             });
         }
 
+        public DeleteSatff(staff_id:number, cb:(ex:TaskException)=>void){
+            var sql = "DELETE from t_staff WHERE id = ? and s4_id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, [staff_id, this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "删除4S店员失败", ex)); return; }
+                cb(null);
+            });
+        }
+
         public GetCustomer(page:Pagination, filter:any, cb:(ex:TaskException, total:number, customers:Customer[])=>void){
             var sql = "SELECT %s FROM t_account WHERE s4_id = ?";
             var args = [this.dto.id];
@@ -354,6 +363,142 @@ module Service{
                 else if(result.length > 1){ cb(new TaskException(-32, "4S店顾客数据错误", null), null); return; }
                 var cust = new Customer(result[0]);
                 cb(null, cust);
+            });
+        }
+
+        public AddCustomer(cust:Customer, cb:(ex:TaskException, cust:Customer)=>void){
+            // 强制被加入4S店的店员s4_id和4S店id相匹配
+            cust.dto.s4_id = this.dto.id;
+
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "INSERT t_account SET ?";
+            dac.query(sql, [cust.dto], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "增加4S店顾客失败", ex), null); return; }
+                cust.dto.id = result.insertId;
+                cb(null, cust);
+            });
+        }
+
+        public ModifyCustomer(cust:Customer, cb:(ex:TaskException)=>void){
+            // 强制被加入4S店的店员s4_id和4S店id相匹配
+            cust.dto.s4_id = this.dto.id;
+
+            var sql = "UPDATE t_account SET ? WHERE id = ? and s4_id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, [cust.dto, cust.dto.id, this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "修改4S店顾客失败", ex)); return; }
+                if(result.affectedRows === 0){ cb(new TaskException(-2, util.format("指定的4S店顾客(4s=%s,id=%s)不存在", this.dto.id, cust.dto.id), null)); return; }
+                cb(null);
+            });
+        }
+
+        public DeleteCustomer(cust_id:number, cb:(ex:TaskException)=>void){
+            var sql = "DELETE from t_account WHERE id = ? and s4_id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, [cust_id, this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "删除4S店顾客失败", ex)); return; }
+                cb(null);
+            });
+        }
+
+        public GetCar(page:Pagination, filter:any, cb:(ex:TaskException, total:number, cars:Car[])=>void){
+            var sql = "SELECT %s FROM t_car WHERE s4_id = ?";
+            var args = [this.dto.id];
+
+            if(isStringNotEmpty(filter.has_obd)) {
+                if (filter.has_obd == "true") sql += " and obd_code is not null";
+                else sql += " and obd_code is null";
+            }
+
+            if(filter.license) { sql += " and license = ?"; args.push(filter.license); }
+            if(filter.obd_code) { sql += " and obd_code = ?"; args.push(filter.obd_code); }
+            if(!isNaN(filter.act_type)) { sql += " and act_type = ?"; args.push(filter.act_type); }
+            if(filter.sim_number) { sql += " and sim_number = ?"; args.push(filter.sim_number); }
+            if(!isNaN(filter.brand)) { sql += " and brand = ?"; args.push(filter.brand); }
+            if(!isNaN(filter.series)) { sql += " and series = ?"; args.push(filter.series); }
+
+            var dac = MySqlAccess.RetrievePool();
+            var task:any = { finished:0 };
+            task.begin = ()=>{
+                var sqlA = util.format(sql, "*");
+                if(page.IsValid()) sqlA += page.sql;
+                dac.query(sqlA, args, (ex, result)=>{
+                    task.A = { ex: ex, result: result };
+                    task.finished++;
+                    task.end();
+                });
+
+                var sqlB = util.format(sql, "COUNT(*) count");
+                dac.query(sqlB, args, (ex, result)=>{
+                    task.B = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+            };
+
+            task.end = ()=>{
+                if(task.finished < 2) return;
+                if(task.A.ex){ cb(new TaskException(-1, "查询4S店车辆失败", task.A.ex), 0, null); return; }
+                var objs = [];
+                task.A.result.forEach((dto)=>{
+                    objs.push(new Car(dto));
+                });
+                var total = 0;
+                if(!task.B.ex) total = task.B.result[0].count;
+
+                cb(null, total, objs);
+            };
+
+            task.begin();
+        }
+
+        public GetCarById(id:number, cb:(ex:TaskException, car:Car)=>void){
+            var sql = "SELECT * FROM t_car WHERE s4_id = ? and id = ?";
+            var args = [this.dto.id, id];
+
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "查询4S店车辆失败", ex), null); return; }
+                else if(result.length === 0) { cb(new TaskException(-2, "指定的4S店车辆不存在", null), null); return; }
+                else if(result.length > 1){ cb(new TaskException(-32, "4S店车辆数据错误", null), null); return; }
+                var car = new Car(result[0]);
+                cb(null, car);
+            });
+        }
+
+        public AddCar(car:Car, cb:(ex:TaskException, car:Car)=>void){
+            // 强制被加入4S店的店员s4_id和4S店id相匹配
+            car.dto.s4_id = this.dto.id;
+            car.dto.created_date = new Date();
+
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "INSERT t_car SET ?";
+            dac.query(sql, [car.dto], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "向4S店增加车辆失败", ex), null); return; }
+                car.dto.id = result.insertId;
+                cb(null, car);
+            });
+        }
+
+        public ModifyCar(car:Car, cb:(ex:TaskException)=>void){
+            // 强制被加入4S店的店员s4_id和4S店id相匹配
+            car.dto.s4_id = this.dto.id;
+
+            var sql = "UPDATE t_car SET ? WHERE id = ? and s4_id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, [car.dto, car.dto.id, this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "修改4S店车辆失败", ex)); return; }
+                if(result.affectedRows === 0){ cb(new TaskException(-2, util.format("指定的4S店车辆(4s=%s,id=%s)不存在", this.dto.id, car.dto.id), null)); return; }
+                cb(null);
+            });
+        }
+
+        public DeleteCar(car_id:number, cb:(ex:TaskException)=>void){
+            var sql = "DELETE from t_car WHERE id = ? and s4_id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, [car_id, this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "删除4S店车辆失败", ex)); return; }
+                cb(null);
             });
         }
     }

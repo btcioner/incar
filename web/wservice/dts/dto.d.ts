@@ -30,5 +30,23 @@ declare module Service{
             sex:number;
             sex_name:string;
         }
+
+        export class car{
+            id:number;
+            s4_id:number;
+            license:string;
+            obd_code:string;
+            act_type:number;
+            act_type_name:string;
+            sim_number:string;
+            brand:number;
+            series:number;
+            modelYear:number;
+            disp:number;
+            mileage:number;
+            age:number;
+            comment:string;
+            created_date:Date;
+        }
     }
 }

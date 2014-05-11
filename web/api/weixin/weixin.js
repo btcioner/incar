@@ -256,7 +256,7 @@ Handler.prototype.middlewarify = function () {
             }
         }
         else {
-            token(req.params[0], function(err, result){
+            token(req.params[0], null, function(err, result){
                 if (err) {
                     res.writeHead(401);
                     res.end('Invalid incar wx service account');
@@ -286,7 +286,20 @@ Handler.prototype.middlewarify = function () {
                         res.writeHead(200);
                         res.end(req.query.echostr);
                     } else if (method === 'POST') {
-                        _respond(req, res, next);
+                        if (result.wxServiceOpenId === null) {
+                            getMessage(req, function(err, result) {
+                                if (err) {
+                                    err.name = 'BadMessage' + err.name;
+                                    return next(err);
+                                }
+                                var message = formatMessage(result);
+                                return token(req.params[0], message.ToUserName, function(e, r){
+                                    _respond(req, res, next);
+                                });
+                            });
+                        } else {
+                            _respond(req, res, next);
+                        }
                     } else {
                         res.writeHead(501);
                         res.end('Not Implemented');

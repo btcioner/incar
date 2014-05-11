@@ -9,6 +9,7 @@
 /// <reference path="Customer.ts" />
 /// <reference path="4S.ts" />
 /// <reference path="Staff.ts" />
+/// <reference path="Car.ts" />
 /// <reference path="Organization.ts" />
 /// <reference path="OBD.ts" />
 /// <reference path="CarOwner.ts" />
