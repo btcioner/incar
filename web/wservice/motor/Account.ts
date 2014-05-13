@@ -51,72 +51,7 @@ module Service{
         });
     }
 
-    // 用户登录
-    export function Login(req, res){
-        // 输入检查
-        var data = req.body;
-        if(data.name && data.pwd){
-            data.name = data.name.trim();
-            data.pwd = data.pwd.trim();
-        }
-        else{
-            res.json({status:"name或pwd参数缺失"});
-            return;
-        }
-        if(!data.agent){
-            res.json({status:"agent参数缺失"});
-            return;
-        }
-        data.remoteAddress = req._remoteAddress;
 
-        // 检索匹配的用户帐号
-        var dac = MySqlAccess.RetrievePool();
-        dac.query("SELECT id, name, nick, status, email, phone, last_login_time, last_login_ip" + "" +
-            " FROM t_staff_account WHERE name = ? and pwd = ? LIMIT 1;", [data.name, data.pwd],
-            (err, result)=>{
-                if(!err){
-                    if(result.length === 0){
-                        res.json({status:"用户名或密码错误"});
-                        return;
-                    }
-                    else{
-                        // 从DTO对象构造用户帐户对象
-                        var accEx = Account.CreateFromDTO(result[0]);
-                        if(accEx.IsDisabled()) {
-                            res.json({status:"帐号已被禁用"});
-                            return;
-                        }
-                        // 生成可被解密的token令牌
-                        accEx.MakeToken(accEx.name, new Date(), data._remoteAddress, data.agent);
-                        // 更新登录时间和IP
-                        dac.query("UPDATE t_staff_account SET last_login_ip = ? WHERE id = ?", [data.remoteAddress, accEx.id],
-                            (err, result)=>{ return; });
-                        res.cookie("token", accEx.token);
-
-                        // 查询用户关联的组织
-                        var sql = "SELECT O.id, O.name, O.class, O.status, M.role " +
-                            "FROM t_staff_org AS O, t_staff_org_member as M " +
-                            "WHERE O.id = M.org_id and M.account_id = ?";
-                        dac.query(sql, [accEx.id], (ex, result)=>{
-                            if(ex){ res.json(new TaskException(-1, "查询关联组织失败", ex)); return; }
-                            else{
-                                res.json({status:"ok", account:accEx, organizations: result});
-                                return;
-                            }
-                        });
-                    }
-                }
-                else{
-                    res.json(new TaskException(-1, "查询用户失败", err));
-                }
-            });
-    }
-
-    // 用户注销
-    export function Logout(req, res){
-        res.clearCookie("token");
-        res.json({status:"ok"});
-    }
 
     // 返回ORG内所有用户信息
     export function GetAccountByOrg(req, res){

@@ -6,7 +6,7 @@ module Service{
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var dac = MySqlAccess.RetrievePool();
-        var sql = "SELECT %s FROM t_car";
+        var sql = "SELECT %s FROM t_car_dictionary";
 
         var task:any = { finished: 0 };
         task.begin = ()=>{
@@ -44,7 +44,7 @@ module Service{
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var dac = MySqlAccess.RetrievePool();
-        var sql = "SELECT %s FROM t_car WHERE brandCode = ?";
+        var sql = "SELECT %s FROM t_car_dictionary WHERE brandCode = ?";
         var args = [req.params.brand_id];
 
         var task:any = { finished: 0 };
@@ -80,7 +80,7 @@ module Service{
 
     export function GetSeries(req, res){
         var dac = MySqlAccess.RetrievePool();
-        var sql = "SELECT * FROM t_car WHERE brandCode = ? and seriesCode = ?";
+        var sql = "SELECT * FROM t_car_dictionary WHERE brandCode = ? and seriesCode = ?";
         var args = [req.params.brand_id, req.params.series_id];
         dac.query(sql, args, (ex, result)=>{
             if(ex) { res.json(new TaskException(-1, "查询车款失败", ex)); return; }

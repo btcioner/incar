@@ -1,27 +1,9 @@
 
 module Service{
+    // 测试用途
+    export function HelloAPI(req, res){ res.send({status:"ok", text:"Hello API!"}); }
 
     export module APGet{
-        // 测试用途
-        export function HelloAPI(req, res){ res.send({status:"ok", text:"Hello API!"}); }
-
-        // 注销
-        export function Logout(req, res){
-            Service.Logout(req, res);
-        }
-
-        // 枚举全部支持的接口
-        export function EnumAllAPIs(req, res){
-            var apis = { get:[], post:[] };
-            for(var fn in APGet){ apis.get.push(fn); }
-            for(var fn in APPost){ apis.post.push(fn); }
-            res.send(apis);
-        }
-
-        // 返回全部OBD设备
-        export function GetAllOBDDevices(req, res){
-            Service.GetAllOBDDevices(req, res);
-        }
 
         // 返回所有OBD设备的行车数据
         export function GetDriveInfoAll(req, res){
@@ -32,42 +14,6 @@ module Service{
     }
 
     export module APPost{
-        // 用户注册
-        export function RegisterAccount(req, res){
-            if(Object.keys(req.body).length > 0) Service.RegisterAccount(req, res);
-            else res.json({
-                postData: {
-                    name: "usr001",
-                    pwd: "7d1d8b1504f2bf1da3db3cb8751ec62f197aa124",
-                    nick: "用户001",
-                    email: "usr001@google.com",
-                    phone: "(+86) 13912345678"
-                }
-            });
-        }
-        // 用户登录
-        export function Login(req, res){
-            if(Object.keys(req.body).length > 0) Service.Login(req, res);
-            else res.json({
-                postData:{
-                    name: "usr001",
-                    pwd: "7d1d8b1504f2bf1da3db3cb8751ec62f197aa124",
-                    agent: "wechat"
-                }
-            });
-        }
-
-        // 登记OBD设备
-        export function AddOBDDevice(req, res){
-            if(Object.keys(req.body).length > 0) Service.AddOBDDevice(req, res);
-            else res.json({
-                postData: {
-                    code: "WFQ00012345",
-                    sim_number: "13912345678",
-                    comment: "4S测试设备"
-                }
-            });
-        }
 
         // 返回指定OBD设备的相关行车数据
         export function GetDriveInfo(req, res){
@@ -112,5 +58,10 @@ module Service{
         get sql(){
             return util.format(" LIMIT %d,%d ", this._offset, this._pagesize);
         }
+    }
+
+    // 是一个非空字符串返回true
+    export function isStringNotEmpty(target:any):Boolean{
+        return (typeof target  === "string" && target.length > 0);
     }
 }

@@ -238,21 +238,74 @@ Handler.prototype.middlewarify = function () {
     var token = this.token;
     var _respond = respond(this);
     return function (req, res, next) {
-        // 动态token，在前置中间件中设置该值req.weixin_token，优先选用
-        if (!checkSignature(req.query, req.weixin_token || token)) {
-            res.writeHead(401);
-            res.end('Invalid signature');
-            return;
+        if (req.weixin_token) {
+            if (!checkSignature(req.query, req.weixin_token)) {
+                res.writeHead(401);
+                res.end('Invalid signature');
+                return;
+            }
+            var method = req.method;
+            if (method === 'GET') {
+                res.writeHead(200);
+                res.end(req.query.echostr);
+            } else if (method === 'POST') {
+                _respond(req, res, next);
+            } else {
+                res.writeHead(501);
+                res.end('Not Implemented');
+            }
         }
-        var method = req.method;
-        if (method === 'GET') {
-            res.writeHead(200);
-            res.end(req.query.echostr);
-        } else if (method === 'POST') {
-            _respond(req, res, next);
-        } else {
-            res.writeHead(501);
-            res.end('Not Implemented');
+        else {
+            token(req.params[0], null, function(err, result){
+                if (err) {
+                    res.writeHead(401);
+                    res.end('Invalid incar wx service account');
+                }
+                else {
+                    var wxServiceToken = result.wxServiceToken;
+
+                    if (wxServiceToken === null) {
+                        res.writeHead(401);
+                        res.end('Invalid incar wx service account');
+                        return;
+                    }
+                    else if (wxServiceToken === 0) {
+                        res.writeHead(401);
+                        res.end('Valid incar wx service account, but not in service');
+                        return;
+                    }
+
+                    if (!checkSignature(req.query, wxServiceToken)) {
+                        res.writeHead(401);
+                        res.end('Invalid signature from tencent');
+                        return;
+                    }
+
+                    var method = req.method;
+                    if (method === 'GET') {
+                        res.writeHead(200);
+                        res.end(req.query.echostr);
+                    } else if (method === 'POST') {
+                        if (result.wxServiceOpenId === null) {
+                            getMessage(req, function(err, result) {
+                                if (err) {
+                                    err.name = 'BadMessage' + err.name;
+                                    return next(err);
+                                }
+                                var message = formatMessage(result);
+                                return token(req.params[0], message.ToUserName, function(e, r){
+                                    _respond(req, res, next);
+                                });
+                            });
+                        } else {
+                            _respond(req, res, next);
+                        }
+                    } else {
+                        res.writeHead(501);
+                        res.end('Not Implemented');
+                    }
+                }
+            });
         }
     };
 };

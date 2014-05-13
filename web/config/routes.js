@@ -25,21 +25,53 @@ module.exports = function(app) {
     //短信
     app.post('/wservice/message/obdTestSend/:obdCode', obdMessage.obdTestSend);
     app.post('/wservice/message/obdTestReceive/:obdCode', obdMessage.obdTestReceive);
+
     // Routes for wsite service
-    app.get('/wservice/organization', wservice.GetOrganization);
-    app.post('/wservice/organization', wservice.AddOrganization);
-    app.put('/wservice/organization/:org_id', wservice.ModifyOrganization);
-  
-    app.get('/wservice/organization/:org_id/account', wservice.GetAccountByOrg);
-    app.post('/wservice/organization/:org_id/account', wservice.AddAccountToOrg);
-    app.get('/wservice/organization/:org_id/account/:acc_id', wservice.GetAccountByIdInOrg);
-    app.put('/wservice/organization/:org_id/account/:acc_id', wservice.ModifyAccountByIdInOrg);
-    app.delete('/wservice/organization/:org_id/account/:acc_id', wservice.DeleteAccountByIdInOrg);
-    app.get('/wservice/organization/:org_id/account/:acc_id/role', wservice.GetRole);
-    app.post('/wservice/organization/:org_id/account/:acc_id/role', wservice.AddRole);
-    app.get('/wservice/organization/:org_id/account/:acc_id/role/:role', wservice.HasRole);
-    app.put('/wservice/organization/:org_id/account/:acc_id/role/:role', wservice.ModifyRole);
-    app.delete('/wservice/organization/:org_id/account/:acc_id/role/:role', wservice.DeleteRole);
+    var authCheck = [wservice.CheckAuthority];
+    app.get('/wservice/hello', wservice.HelloAPI);
+    app.post('/wservice/login', wservice.Login);
+    app.get('/wservice/logout', wservice.Logout);
+
+    app.get('/wservice/obd', authCheck, wservice.GetCarHasOBD);
+    app.post('/wservice/obd', authCheck, wservice.AddCarAsOBDOnly);
+    app.get('/wservice/obd/:obd_code', authCheck, wservice.GetCarByOBD);
+    app.put('/wservice/obd/:obd_code', authCheck, wservice.ModifyCarByOBD);
+    app.delete('/wservice/obd/:obd_code', authCheck, wservice.DeleteCarByOBD);
+
+    app.get('/wservice/4s', authCheck, wservice.Get4S);
+    app.post('/wservice/4s', authCheck, wservice.Add4S);
+    app.get('/wservice/4s/:s4_id', authCheck, wservice.Get4SById);
+    app.put('/wservice/4s/:s4_id', authCheck, wservice.Modify4S);
+
+    app.post('/wservice/4s/:s4_id/login', wservice.Login);
+    app.get('/wservice/4s/:s4_id/logout', wservice.Logout);
+
+    app.get('/wservice/4s/:s4_id/staff', authCheck, wservice.GetStaff);
+    app.post('/wservice/4s/:s4_id/staff', authCheck, wservice.AddStaff);
+    app.get('/wservice/4s/:s4_id/staff/:staff_id', authCheck, wservice.GetStaffById);
+    app.put('/wservice/4s/:s4_id/staff/:staff_id', authCheck, wservice.ModifyStaff);
+
+    app.get('/wservice/4s/:s4_id/cust', authCheck, wservice.GetCustomer);
+    app.post('/wservice/4s/:s4_id/cust', authCheck, wservice.AddCustomer);
+    app.get('/wservice/4s/:s4_id/cust/:cust_id', authCheck, wservice.GetCustomerById);
+    app.put('/wservice/4s/:s4_id/cust/:cust_id', authCheck, wservice.ModifyCustomer);
+    app.delete('/wservice/4s/:s4_id/cust/:cust_id', authCheck, wservice.DeleteCustomer);
+
+    app.get('/wservice/4s/:s4_id/car', authCheck, wservice.GetCar);
+    app.post('/wservice/4s/:s4_id/car', authCheck, wservice.AddCar);
+    app.get('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.GetCarById);
+    app.put('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.ModifyCar);
+    app.delete('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.DeleteCar);
+
+    app.get('/wservice/4s/:s4_id/cust/:cust_id/car', authCheck, wservice.GetCarByCustomerId);
+    app.post('/wservice/4s/:s4_id/cust/:cust_id/car', authCheck, wservice.AddCarToCustomer);
+    app.get('/wservice/4s/:s4_id/cust/:cust_id/car/:car_id', authCheck, wservice.GetCarByIdForCustomer);
+    app.put('/wservice/4s/:s4_id/cust/:cust_id/car/:car_id', authCheck, wservice.ModifyCarForCustomer);
+    app.delete('/wservice/4s/:s4_id/cust/:cust_id/car/:car_id', authCheck, wservice.DeleteCarForCustomer);
+
+    app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin); // app.get('/wservice/organization', wservice.GetOrganization);
+    app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin); // app.post('/wservice/organization', wservice.AddOrganization);
+    // app.put('/wservice/organization/:org_id', wservice.ModifyOrganization);
 
     app.get('/wservice/organization/:org_id/promotionslot', wservice.GetPromotionSlotAllInOrg);
     app.post('/wservice/organization/:org_id/promotionslot', wservice.AddPromotionSlotToOrg);
@@ -60,11 +92,6 @@ module.exports = function(app) {
     app.get('/wservice/carowner/:acc_id', wservice.GetCarOwner);
     app.put('/wservice/carowner/:acc_id', wservice.ModifyCarOwner);
     app.delete('/wservice/carowner/:acc_id', wservice.DeleteCarOwner);
-
-    app.get('/wservice/organization/:org_id/obd', wservice.GetOBDByOrg);
-    app.get('/wservice/obd', wservice.GetAllOBDDevices);
-    app.get('/wservice/obd/:obd_code', wservice.GetOBDByCode);
-    app.put('/wservice/obd/:obd_code', wservice.ModifyOBD);
 
     app.get('/wservice/manual', wservice.GetManualAll);
     app.post('/wservice/manual', wservice.AddManual);

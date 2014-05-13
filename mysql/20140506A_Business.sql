@@ -10,7 +10,9 @@ CREATE TABLE IF NOT EXISTS t_4s(
 
     wx_login VARCHAR(256) COMMENT '服务账号的微信公众平台登录名称',
     wx_pwd VARCHAR(64) COMMENT '服务账号的微信公众平台登录密码',
-    wx_en_name VARCHAR(256) COMMENT '服务账号的所有者公司名称',
+    wx_app_name VARCHAR(64) COMMENT '微信公众平台接口用户标识',
+    wx_app_id VARCHAR(64) COMMENT '微信公众平台接口调用凭据AppId',
+    wx_app_secret VARCHAR(128) COMMENT '微信公众平台接口调用凭据AppSecret',
     wx_status TINYINT NOT NULL DEFAULT '1' COMMENT '服务状态 0-禁用 1-启用',
 
     INDEX IX_4S_NAME(name)
@@ -42,14 +44,13 @@ CREATE TABLE IF NOT EXISTS t_account(
     last_login_src VARCHAR(40) COMMENT '上次登录源',
 
     UNIQUE UNQ_4S_NAME(s4_id,name),
-    UNIQUE UNQ_4S_WX(s4_id,wx_oid),
     UNIQUE UNQ_4S_TEL(s4_id,tel_sn),
     INDEX IX_PHONE(phone)
 );
 
 CREATE TABLE IF NOT EXISTS t_car(
     id int auto_increment PRIMARY KEY COMMENT '车辆编号',
-    s4_id int unsigned not null COMMENT '车辆所在4S店ID',
+    s4_id int unsigned          COMMENT '车辆所在4S店ID,NULL表示InCar',
 
     license varchar(30)         COMMENT '车牌号',
 
@@ -65,16 +66,18 @@ CREATE TABLE IF NOT EXISTS t_car(
     age int                     COMMENT '车龄',
 
     comment VARCHAR(32)         COMMENT '简要说明性文字',
-    created_date DATE           COMMENT '创建日期'
+    created_date DATE           COMMENT '创建日期',
+
+    UNIQUE UNQ_4S_LICENSE(s4_id, license)
 );
 
 -- 20140329 XGH 车的使用者
 CREATE TABLE IF NOT EXISTS t_car_user(
     s4_id INT UNSIGNED COMMENT '归属4S店',
-    car_id INT COMMENT '车辆唯一ID',
     acc_id INT UNSIGNED COMMENT '使用车辆的人',
+    car_id INT COMMENT '车辆唯一ID',
     user_type TINYINT COMMENT '0-无效 1-车主 2-其它使用人',
     join_time TIMESTAMP COMMENT '时间戳',
-    INDEX IX_CAR_USER_1(s4_id, car_id, acc_id),
-    INDEX IX_CAR_USER__2(s4_id, acc_id, car_id)
+    UNIQUE UNQ_CAR_USER_1(s4_id, acc_id, car_id),
+    INDEX IX_CAR_USER_2(s4_id, car_id, acc_id)
 );

@@ -6,6 +6,8 @@
 var weixin = require('./weixin');
 weixin.API = require('./common');
 weixin.OAuth = require('./oauth');
+weixin.TickTasks = require('./util').TickTasks;
+
 exports = module.exports = weixin;
 
 

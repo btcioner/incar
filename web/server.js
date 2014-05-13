@@ -28,7 +28,11 @@ app.listen(config.port, function() {
 });
 
 // Delayed initializer
-process.nextTick((app.get('delayedInitializer')) || function(){});
+process.nextTick(function(){
+    app.get('delayedInitializer')(function(err, result){
+        if (!err && result) process.nextTick(result);
+    });
+});
 
 // Expose app
 exports = module.exports = app;
