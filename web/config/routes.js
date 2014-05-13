@@ -32,6 +32,12 @@ module.exports = function(app) {
     app.post('/wservice/login', wservice.Login);
     app.get('/wservice/logout', wservice.Logout);
 
+    app.get('/wservice/obd', authCheck, wservice.GetCarHasOBD);
+    app.post('/wservice/obd', authCheck, wservice.AddCarAsOBDOnly);
+    app.get('/wservice/obd/:obd_code', authCheck, wservice.GetCarByOBD);
+    app.put('/wservice/obd/:obd_code', authCheck, wservice.ModifyCarByOBD);
+    app.delete('/wservice/obd/:obd_code', authCheck, wservice.DeleteCarByOBD);
+
     app.get('/wservice/4s', authCheck, wservice.Get4S);
     app.post('/wservice/4s', authCheck, wservice.Add4S);
     app.get('/wservice/4s/:s4_id', authCheck, wservice.Get4SById);
@@ -57,11 +63,11 @@ module.exports = function(app) {
     app.put('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.ModifyCar);
     app.delete('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.DeleteCar);
 
-    // app.get('/wservice/4s/:s4_id/cust/:cust_id/car', authCheck, wservice.GetCarByCustomer);
-    // app.get('/wservice/4s/:s4_id/car/:car_id/cust', authCheck, wservice.GetCustomerByCar);
+    app.get('/wservice/4s/:s4_id/cust/:cust_id/car', authCheck, wservice.GetCarByCustomerId);
     app.post('/wservice/4s/:s4_id/cust/:cust_id/car', authCheck, wservice.AddCarToCustomer);
-    // app.put
-    // app.delete
+    app.get('/wservice/4s/:s4_id/cust/:cust_id/car/:car_id', authCheck, wservice.GetCarByIdForCustomer);
+    app.put('/wservice/4s/:s4_id/cust/:cust_id/car/:car_id', authCheck, wservice.ModifyCarForCustomer);
+    app.delete('/wservice/4s/:s4_id/cust/:cust_id/car/:car_id', authCheck, wservice.DeleteCarForCustomer);
 
     app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin); // app.get('/wservice/organization', wservice.GetOrganization);
     app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin); // app.post('/wservice/organization', wservice.AddOrganization);
@@ -86,11 +92,6 @@ module.exports = function(app) {
     app.get('/wservice/carowner/:acc_id', wservice.GetCarOwner);
     app.put('/wservice/carowner/:acc_id', wservice.ModifyCarOwner);
     app.delete('/wservice/carowner/:acc_id', wservice.DeleteCarOwner);
-
-    app.get('/wservice/organization/:org_id/obd', wservice.GetOBDByOrg);
-    app.get('/wservice/obd', wservice.GetAllOBDDevices);
-    app.get('/wservice/obd/:obd_code', wservice.GetOBDByCode);
-    app.put('/wservice/obd/:obd_code', wservice.ModifyOBD);
 
     app.get('/wservice/manual', wservice.GetManualAll);
     app.post('/wservice/manual', wservice.AddManual);

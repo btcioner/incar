@@ -16,6 +16,142 @@ module Service{
         });
     }
 
+    export function GetCarHasOBD(req, res){
+        res.setHeader("Accept-Query", "page,pagesize,license,obd_code,act_type,sim_number,brand,series");
+        var page = new Pagination(req.query.page, req.query.pagesize);
+
+        var sql = "SELECT %s FROM t_car WHERE obd_code is not null";
+        var args = [];
+
+        var filter = req.query;
+
+        if(filter.license) { sql += " and license = ?"; args.push(filter.license); }
+        if(filter.obd_code) { sql += " and obd_code = ?"; args.push(filter.obd_code); }
+        if(!isNaN(filter.act_type)) { sql += " and act_type = ?"; args.push(filter.act_type); }
+        if(filter.sim_number) { sql += " and sim_number = ?"; args.push(filter.sim_number); }
+        if(!isNaN(filter.brand)) { sql += " and brand = ?"; args.push(filter.brand); }
+        if(!isNaN(filter.series)) { sql += " and series = ?"; args.push(filter.series); }
+
+        var dac = MySqlAccess.RetrievePool();
+        var task:any = { finished:0 };
+        task.begin = ()=>{
+            var sqlA = util.format(sql, "*");
+            if(page.IsValid()) sqlA += page.sql;
+            dac.query(sqlA, args, (ex, result)=>{
+                task.A = { ex: ex, result: result };
+                task.finished++;
+                task.end();
+            });
+
+            var sqlB = util.format(sql, "COUNT(*) count");
+            dac.query(sqlB, args, (ex, result)=>{
+                task.B = { ex:ex, result:result };
+                task.finished++;
+                task.end();
+            });
+        };
+
+        task.end = ()=>{
+            if(task.finished < 2) return;
+            if(task.A.ex){ res.json(new TaskException(-1, "查询4S店车辆失败", task.A.ex), 0, null); return; }
+            var objs = [];
+            task.A.result.forEach((dto)=>{
+                objs.push(new Car(dto));
+            });
+            var total = 0;
+            if(!task.B.ex) total = task.B.result[0].count;
+            var cars = DTOBase.ExtractDTOs(objs);
+
+            res.json({status:"ok", totalCount:total, cars:cars});
+        };
+
+        task.begin();
+    }
+
+    export function GetCarByOBD(req, res){
+        var sql = "SELECT * FROM t_car WHERE obd_code = ?";
+        var args = [req.params.obd_code];
+
+        var dac = MySqlAccess.RetrievePool();
+        dac.query(sql, args, (ex, result)=>{
+            if(ex) {res.json(new TaskException(-1, "查询OBD失败", ex)); return;}
+            if(result.length === 0) {res.json(new TaskException(-1, "查询的OBD不存在", ex)); return;}
+            if(result.length > 1) {res.json(new TaskException(-1, "OBD数据错误", ex)); return;}
+            var car:Car = new Car(result[0]);
+            res.json({status:"ok", car:car.DTO()});
+        });
+    }
+
+    export function AddCarAsOBDOnly(req, res){
+        if(Object.keys(req.body).length === 0){
+            res.json({
+                postSample:{
+                    obd_code:'WF7743331',
+                    sim_number:'1396543210',
+                    comment:'示例'
+                },
+                remark:"必填:obd_code"
+            });
+            return;
+        }
+
+        var data = req.body;
+        if(!data.obd_code) { res.json(new TaskException(-1, "缺少参数obd_code", null)); return; }
+
+        var dto:DTO.car;
+        dto.obd_code = data.obd_code;
+        if(isStringNotEmpty(data.sim_number)) dto.sim_number = data.sim_number;
+        if(isStringNotEmpty(data.comment)) dto.comment = data.comment;
+        dto.created_date = new Date();
+
+        var dac = MySqlAccess.RetrievePool();
+        var sql = "INSERT t_car SET ?";
+        dac.query(sql, [dto], (ex, result)=>{
+            if(ex) { res.json(new TaskException(-1, "增加OBD失败", ex), null); return; }
+            dto.id = result.insertId;
+            var car = new Car(dto);
+            res.json(null, car.DTO());
+        });
+    }
+
+    export function ModifyCarByOBD(req, res){
+        if(Object.keys(req.body).length === 0){
+            res.json({
+                postSample:{
+                    sim_number:'1396543210',
+                    comment:'示例'
+                },
+                remark:"必填:无"
+            });
+            return;
+        }
+
+        var data = req.body;
+
+        var dto:any = {};
+        var args = [];
+        if(isStringNotEmpty(data.sim_number)) dto.sim_number = data.sim_number;
+        if(isStringNotEmpty(data.comment)) dto.sim_number = data.comment;
+
+        var dac = MySqlAccess.RetrievePool();
+        var sql = "UPDATE t_car SET ? WHERE obd_code = ?";
+        dac.query(sql, [dto, req.params.obd_code], (ex, result)=>{
+            if(ex) { res.json(new TaskException(-1, "修改OBD失败", ex), null); return; }
+            if(result.affectedRows === 0) { res.json(new TaskException(-1, "OBD不存在", null)); return; }
+            res.json({status:"ok"});
+        });
+    }
+
+    export function DeleteCarByOBD(req, res){
+        var sql = "DELETE FROM t_car WHERE obd_code = ?";
+        var dac = MySqlAccess.RetrievePool();
+        dac.query(sql, [req.params.obd_code], (ex, result)=>{
+            if(ex) {res.json(new TaskException(-1, "删除OBD失败", ex)); return;}
+            if(result.affectedRows === 0) {res.json(new TaskException(-1, "OBD不存在", null)); return;}
+            res.json({status:"ok"});
+        });
+    }
+
     export function GetCarById(req, res){
         var repo4S = S4Repository.GetRepo();
         repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
@@ -144,6 +280,10 @@ module Service{
             if(dto.act_type === 0) dto.act_type_name = "未激活";
             else if(dto.act_type === 1) dto.act_type_name = "已激活";
             else if(dto.act_type === 2) dto.act_type_name = "故障";
+
+            if(dto.user_type === 0) dto.user_type_name = "无效";
+            else if(dto.user_type === 1) dto.user_type_name = "车主";
+            else if(dto.user_type === 2) dto.user_type_name = "使用者(非车主)";
 
             return dto;
         }

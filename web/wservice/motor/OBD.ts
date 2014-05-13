@@ -81,23 +81,16 @@ module Service {
             obd_code:req.query.obd_code
         };
 
-        if(!token){ res.json({status: "用户没有登录"}); return;}
 
-        Account.CreateFromToken(token, (ex, account)=>{
-            if(ex){
-                res.json(ex);
-                return;
-            }
 
-            var repo = new DeviceRepository();
-            repo.AllDriveInfos(filter, new Pagination(page, pagesize),
-                (ex:TaskException, drvInfos:DTO.obd_drive[], count:number)=>{
-                    if(ex)
-                        res.json(ex);
-                    else
-                        res.json({status:"ok", totalCount:count , drvInfos: drvInfos});
-                });
-        });
+        var repo = new DeviceRepository();
+        repo.AllDriveInfos(filter, new Pagination(page, pagesize),
+            (ex:TaskException, drvInfos:DTO.obd_drive[], count:number)=>{
+                if(ex)
+                    res.json(ex);
+                else
+                    res.json({status:"ok", totalCount:count , drvInfos: drvInfos});
+            });
     }
 
     // 返回指定OBD关联的行车信息
@@ -110,29 +103,22 @@ module Service {
         if(!token){ res.json({status: "用户没有登录"}); return;}
         if(!code){ res.json({status: "缺少code参数"}); return; }
 
-        Account.CreateFromToken(token, (ex, account)=>{
-            if(ex){
-                res.json(ex);
+        var repo = new DeviceRepository();
+        repo.GetByCode(null, code,  (error, dev)=>{
+            if(error){
+                res.json({status:error.status});
                 return;
             }
-
-            var repo = new DeviceRepository();
-            repo.GetByCode(account, code,  (error, dev)=>{
-                if(error){
-                    res.json({status:error.status});
-                    return;
-                }
-                else{
-                    dev.RetrieveDriveInfo(page, (ex, tc, drvInfos)=>{
-                        if(ex){
-                            res.json({status: ex.status});
-                        }
-                        else{
-                            res.json({status:"ok",totalCount:tc, drvInfos: drvInfos});
-                        }
-                    });
-                }
-            });
+            else{
+                dev.RetrieveDriveInfo(page, (ex, tc, drvInfos)=>{
+                    if(ex){
+                        res.json({status: ex.status});
+                    }
+                    else{
+                        res.json({status:"ok",totalCount:tc, drvInfos: drvInfos});
+                    }
+                });
+            }
         });
     }
 
@@ -149,25 +135,17 @@ module Service {
 
         var page = new Pagination(req.query.page, req.query.pagesize);
 
-        Account.CreateFromToken(token, (ex, account)=>{
-            if(ex){
-                res.json(ex);
-                return;
-            }
+        var repo = new DeviceRepository();
+        repo.GetByCode(null, code, (ex, dev)=>{
+            if(ex){ res.json(ex); return; }
             else{
-                var repo = new DeviceRepository();
-                repo.GetByCode(account, code, (ex, dev)=>{
-                    if(ex){ res.json(ex); return; }
+                dev.RetrieveDriveDetail(drive_id, page, (ex, count, drvDetails)=>{
+                    if(ex) { res.json(ex); return; }
                     else{
-                        dev.RetrieveDriveDetail(drive_id, page, (ex, count, drvDetails)=>{
-                            if(ex) { res.json(ex); return; }
-                            else{
-                                res.json({
-                                    status:"ok",
-                                    totalCount:count,
-                                    details:drvDetails
-                                });
-                            }
+                        res.json({
+                            status:"ok",
+                            totalCount:count,
+                            details:drvDetails
                         });
                     }
                 });
@@ -346,7 +324,7 @@ module Service {
 
         // 获取指定的OBD设备
         GetByCode(oper:Account, code:string, cb:(error:TaskException, dev:OBDDevice)=>void):void{
-            this.dac.query("SELECT * FROM t_car_info WHERE obd_code = ?",
+            this.dac.query("SELECT * FROM t_car WHERE obd_code = ?",
                 [code], (error, result)=>{
                     if(error) cb(new TaskException(-1, error.toString(), null), null);
                     else if(result.length === 0) cb(new TaskException(-1, util.format("OBD设备(%s)不存在", code), null), null);
@@ -363,13 +341,12 @@ module Service {
             var dac =  MySqlAccess.RetrievePool();
             task.begin = ()=>{
                 // 1.查询OBD数据
-                var sql = "SELECT R.*" +
-                         " FROM t_obd_drive AS R" +
-                              " JOIN t_car_info as C on C.obd_code = R.obdcode" +
-                              " LEFT OUTER JOIN t_car_org as R2 on R2.car_id = C.id" +
-                              " LEFT OUTER JOIN t_staff_org as O on R2.org_id = O.id" +
-                         " WHERE 1=1";
-                var args = new Array();
+                var sql = "SELECT R.*\n" +
+                          "FROM t_obd_drive AS R\n" +
+                              "\tJOIN t_car as C on C.obd_code = R.obdcode\n" +
+                              "\tLEFT OUTER JOIN t_4s AS O on C.s4_id = O.id\n" +
+                          "WHERE 1=1";
+                var args = [];
                 if(filter.city){ sql += " and O.city = ?"; args.push(filter.city); }
                 if(filter.org){sql += " and O.name like ?"; args.push("%"+filter.org+"%"); }
                 if(filter.obd_code){ sql += " and R.obdcode = ?"; args.push(filter.obd_code); }
@@ -389,9 +366,8 @@ module Service {
 
                 sql = "SELECT COUNT(*) TotalCount" +
                     " FROM t_obd_drive AS R" +
-                    " JOIN t_car_info as C on C.obd_code = R.obdcode" +
-                    " LEFT OUTER JOIN t_car_org as R2 on R2.car_id = C.id" +
-                    " LEFT OUTER JOIN t_staff_org as O on R2.org_id = O.id" +
+                    " JOIN t_car as C on C.obd_code = R.obdcode" +
+                    " LEFT OUTER JOIN t_4s as O on O.id = C.s4_id" +
                     " WHERE 1=1";
                 args = new Array();
                 if(filter.city){ sql += " and O.city = ?"; args.push(filter.city); }
@@ -462,7 +438,7 @@ module Service {
 
             var dac = MySqlAccess.RetrievePool();
             dac.query("SELECT brandCode, seriesCode, brand, series, manufacturer " +
-                "FROM t_car", null, (ex, result)=>{
+                "FROM t_car_dictionary", null, (ex, result)=>{
                 if(ex){
                     cb(new TaskException(-1, "数据库错误", ex), null);
                     return;
