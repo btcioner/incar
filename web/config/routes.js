@@ -104,7 +104,6 @@ module.exports = function(app) {
     app.get('/wservice/brand/:brand_id/series/:series_id', wservice.GetSeries);
 
     app.get('/wservice', wservice.html);
-    app.all('/wservice/*', wservice.main);
 
     // Routes for msite service
     app.get('/mservice/html', siteCommon.staticFile('mservice/html/mservice.html'));
