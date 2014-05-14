@@ -269,6 +269,27 @@ module Service{
         });
     }
 
+    export function GetCustomerByCarId(req, res){
+        // 通常一个车不会有很用户,因此该函数不必支持分页
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetCarById(req.params.car_id, (ex, car)=>{
+                if(ex) { res.json(new TaskException(-1, "查询4S店车辆失败", ex)); return; }
+                car.GetUser((ex, users)=>{
+                    if(ex) { res.json(new TaskException(-1, "查询车辆使用者失败", ex)); return; }
+                    var dtos = DTOBase.ExtractDTOs(users);
+                    // pwd不返回给客户
+                    dtos.forEach((dto)=>{
+                        dto.pwd = undefined;
+                        dto.tel_pwd = undefined;
+                    })
+                    res.json({status:"ok", custs:dtos});
+                });
+            });
+        });
+    }
+
     export class Car extends DTOBase<DTO.car> {
         constructor(dto) {
             super(dto);
@@ -286,6 +307,23 @@ module Service{
             else if(dto.user_type === 2) dto.user_type_name = "使用者(非车主)";
 
             return dto;
+        }
+
+        public GetUser(cb:(ex:TaskException, custs:Customer[])=>void){
+            var sql = "SELECT A.*, U.user_type\n" +
+                "FROM t_account A JOIN t_car_user U ON A.id = U.acc_id and A.s4_id = U.s4_id\n" +
+                "WHERE A.s4_id = ? and U.car_id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            var args = [this.dto.s4_id, this.dto.id];
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "查询车辆失败", ex), null); return; }
+                var custs:Customer[] = [];
+                result.forEach((dto)=>{
+                    var cust = new Customer(dto);
+                    custs.push(cust);
+                });
+                cb(null, custs);
+            });
         }
     }
 }

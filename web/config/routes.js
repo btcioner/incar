@@ -57,17 +57,18 @@ module.exports = function(app) {
     app.put('/wservice/4s/:s4_id/cust/:cust_id', authCheck, wservice.ModifyCustomer);
     app.delete('/wservice/4s/:s4_id/cust/:cust_id', authCheck, wservice.DeleteCustomer);
 
-    app.get('/wservice/4s/:s4_id/car', authCheck, wservice.GetCar);
-    app.post('/wservice/4s/:s4_id/car', authCheck, wservice.AddCar);
-    app.get('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.GetCarById);
-    app.put('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.ModifyCar);
-    app.delete('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.DeleteCar);
-
     app.get('/wservice/4s/:s4_id/cust/:cust_id/car', authCheck, wservice.GetCarByCustomerId);
     app.post('/wservice/4s/:s4_id/cust/:cust_id/car', authCheck, wservice.AddCarToCustomer);
     app.get('/wservice/4s/:s4_id/cust/:cust_id/car/:car_id', authCheck, wservice.GetCarByIdForCustomer);
     app.put('/wservice/4s/:s4_id/cust/:cust_id/car/:car_id', authCheck, wservice.ModifyCarForCustomer);
     app.delete('/wservice/4s/:s4_id/cust/:cust_id/car/:car_id', authCheck, wservice.DeleteCarForCustomer);
+
+    app.get('/wservice/4s/:s4_id/car', authCheck, wservice.GetCar);
+    app.post('/wservice/4s/:s4_id/car', authCheck, wservice.AddCar);
+    app.get('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.GetCarById);
+    app.put('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.ModifyCar);
+    app.delete('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.DeleteCar);
+    app.get('/wservice/4s/:s4_id/car/:car_id/cust', authCheck, wservice.GetCustomerByCarId);
 
     app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin); // app.get('/wservice/organization', wservice.GetOrganization);
     app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin); // app.post('/wservice/organization', wservice.AddOrganization);
