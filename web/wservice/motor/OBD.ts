@@ -102,7 +102,7 @@ module Service {
             var task:any={ finished : 0};
 
             task.begin = ()=> {
-                var sql = "SELECT * FROM t_car_info WHERE obd_code IS NOT NULL";
+                var sql = "SELECT * FROM t_car WHERE obd_code IS NOT NULL";
                 if (page.IsValid()) sql += page.sql;
                 this.dac.query(sql, null, (ex, result)=> {
                     task.A = {ex:ex, result:result};
@@ -110,7 +110,7 @@ module Service {
                     task.end();
                 });
 
-                var sql = "SELECT COUNT(*) COUNT FROM t_car_info WHERE obd_code IS NOT NULL";
+                var sql = "SELECT COUNT(*) COUNT FROM t_car WHERE obd_code IS NOT NULL";
                 this.dac.query(sql, null, (ex, result)=>{
                     task.B = {ex:ex, result:result};
                     task.finished++;
@@ -135,7 +135,7 @@ module Service {
 
         // 获取指定的OBD设备
         GetByCode(code:string, cb:(error:TaskException, dev:OBDDevice)=>void):void{
-            this.dac.query("SELECT * FROM t_car_info WHERE obd_code = ?",
+            this.dac.query("SELECT * FROM t_car WHERE obd_code = ?",
                 [code], (error, result)=>{
                     if(error) cb(new TaskException(-1, error.toString(), null), null);
                     else if(result.length === 0) cb(new TaskException(-1, util.format("OBD设备(%s)不存在", code), null), null);

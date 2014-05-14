@@ -10,7 +10,6 @@
 /// <reference path="Staff.ts" />
 /// <reference path="Car.ts" />
 /// <reference path="OBD.ts" />
-/// <reference path="CarOwner.ts" />
 /// <reference path="Manual.ts" />
 /// <reference path="PromotionSlot.ts" />
 /// <reference path="Work.ts" />
