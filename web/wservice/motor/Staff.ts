@@ -1,5 +1,5 @@
 /// <reference path="references.ts" />
-var crypto = require("crypto");
+
 module Service{
     export function CheckAuthority(req, res, next){
         Staff.CreateFromToken(req.cookies.token, (ex, staff)=>{
@@ -236,13 +236,14 @@ module Service{
         // 生成用户令牌token
         MakeToken(ip:string, agent:string):string{
             var evdData = util.format("%j", {id:this.dto.id, tm:new Date(), ip:ip, agent:agent});
-            var cipherAES = crypto.createCipher("aes128", new Buffer(Staff.GetTokenKey()));
+            var cipherAES = Staff.crypto.createCipher("aes128", new Buffer(Staff.GetTokenKey()));
             cipherAES.setAutoPadding(true);
             var token:string = cipherAES.update(evdData, "utf8", "base64");
             token += cipherAES.final("base64");
             return token;
         }
 
+        static crypto:any = require("crypto");
         static CreateFromToken(token:string, cb:(err:TaskException, staff:Staff)=>void):void{
             if(!token){
                 cb(new TaskException(-1, "无效token", null), null);
@@ -250,7 +251,7 @@ module Service{
             }
 
             // 解密token
-            var decipherAES = crypto.createDecipher("aes128", new Buffer(Staff.GetTokenKey()));
+            var decipherAES = Staff.crypto.createDecipher("aes128", new Buffer(Staff.GetTokenKey()));
             decipherAES.setAutoPadding(true);
             var userAccept : any;
             try{
