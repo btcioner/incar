@@ -1,3 +1,4 @@
+var util = require("util");
 
 module Service{
     // 测试用途

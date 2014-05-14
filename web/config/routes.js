@@ -38,7 +38,7 @@ module.exports = function(app) {
     app.put('/wservice/obd/:obd_code', authCheck, wservice.ModifyCarByOBD);
     app.delete('/wservice/obd/:obd_code', authCheck, wservice.DeleteCarByOBD);
 
-    app.get('/wservice/4s', authCheck, wservice.Get4S);
+   app.get('/wservice/4s', authCheck, wservice.Get4S);
     app.post('/wservice/4s', authCheck, wservice.Add4S);
     app.get('/wservice/4s/:s4_id', authCheck, wservice.Get4SById);
     app.put('/wservice/4s/:s4_id', authCheck, wservice.Modify4S);

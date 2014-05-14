@@ -1,5 +1,5 @@
 /// <reference path="references.ts" />
-
+var crypto = require("crypto");
 module Service{
     export function CheckAuthority(req, res, next){
         Staff.CreateFromToken(req.cookies.token, (ex, staff)=>{
@@ -142,7 +142,11 @@ module Service{
         var data = req.body;
         var err = "";
         if(!data.name) err += "缺少参数name;";
-        if(!data.pwd) err += "缺少参数pwd";
+        if(!data.pwd) err += "缺少参数pwd;";
+
+        var regexName = new RegExp("^[a-z0-9_]{3,32}$", "i");
+        if(!regexName.test(data.name)) err += 'name只能由数字或字母组成,最少3字符,最多32字符;';
+
         if(err) { res.json(new TaskException(-1, err, null)); return; }
 
         var repo4S = S4Repository.GetRepo();

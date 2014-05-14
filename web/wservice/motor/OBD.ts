@@ -1,72 +1,6 @@
 /// <reference path="references.ts" />
 
 module Service {
-    // 登记OBD设备
-    export function AddOBDDevice(req, res):void{
-        // 检测用户是否有权限执行
-        var data = req.body;
-        var token = req.cookies.token;
-
-        if(!token){res.json({status: "用户没有登录"});return;}
-        if(!data.code){res.json({status: "缺少code参数"});return;}
-        if(data.code.trim().length === 0) { res.json({status: "code不能为空白"}); return;}
-
-        Account.CreateFromToken(token, (err, account)=>{
-            if(err){
-                res.json(err);
-            }
-            else{
-                // 向OBD设备仓库中添加新设备
-                var repo = new DeviceRepository();
-                var dev :any = new OBDDevice();
-                dev.obd_code = data.code.trim();
-                dev.sim_number = data.phone_number;
-                dev.comment = data.comment;
-                dev.status = 0;
-
-                repo.Add(account, [dev], (err3, devs)=>{
-                    if(err3) res.json(err3);
-                    else if(devs && devs.length === 1){
-                        res.json({
-                            status:"ok",
-                            dev: devs[0]
-                        });
-                    }
-                    else{
-                        res.json({status: "未知错误"});
-                    }
-                });
-           }
-        });
-    }
-
-    // 返回全部OBD设备
-    export function GetAllOBDDevices(req, res):void{
-        // 检测用户是否有权限执行
-        var data = req.body;
-        var token = req.cookies.token;
-        var page = new Pagination(req.query.page, req.query.pagesize);
-
-        Account.CreateFromToken(token, (ex, account)=>{
-            if(ex){
-                res.json(ex);
-                return;
-            }
-            else{
-                // 返回全OBD设备
-                var repo = new DeviceRepository();
-                repo.All(account, page, (ex, totalCount, devs)=>{
-                    if(ex) res.json(ex);
-                    else res.json({
-                        status:"ok",
-                        totalCount:totalCount,
-                        devs: devs
-                    });
-                });
-            }
-        });
-    }
-
     // 返回所有行车信息
     export function GetDriveInfoAll(req, res):void{
         var data = req.body;
@@ -104,7 +38,7 @@ module Service {
         if(!code){ res.json({status: "缺少code参数"}); return; }
 
         var repo = new DeviceRepository();
-        repo.GetByCode(null, code,  (error, dev)=>{
+        repo.GetByCode(code,  (error, dev)=>{
             if(error){
                 res.json({status:error.status});
                 return;
@@ -136,7 +70,7 @@ module Service {
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var repo = new DeviceRepository();
-        repo.GetByCode(null, code, (ex, dev)=>{
+        repo.GetByCode(code, (ex, dev)=>{
             if(ex){ res.json(ex); return; }
             else{
                 dev.RetrieveDriveDetail(drive_id, page, (ex, count, drvDetails)=>{
@@ -153,82 +87,6 @@ module Service {
         });
     }
 
-    // 返回某个ORG的所有OBD
-    export function GetOBDByOrg(req, res):void{
-        var dac = MySqlAccess.RetrievePool();
-        var sql = "SELECT C.*" +
-            " FROM t_car_info as C" +
-            " join t_car_org as R on R.car_id = C.id" +
-            " WHERE R.org_id = ?;";
-        dac.query(sql, [req.params.org_id], (ex, result)=>{
-            if(ex) { res.json(ex); return; }
-            else{
-                res.json({status:"ok", devs:result});
-            }
-        });
-    }
-
-    // 按obd_code返回OBD相关信息
-    export function GetOBDByCode(req, res):void{
-        var obdCode = req.params.obd_code;
-
-        var dac = MySqlAccess.RetrievePool();
-        var sql = "SELECT A.name, A.nick, A.phone,\n" +
-                         "\tC.obd_code, C.sim_number,C.act_type,\n" +
-                         "\tS.brand, S.series,\n" +
-                         "\tO.city AS org_city, O.name AS org_name\n" +
-            "FROM t_car_info AS C\n" +
-                "\tLEFT OUTER JOIN t_car as S on C.brand = S.brandcode and C.series = S.seriescode\n" +
-                "\tLEFT OUTER JOIN t_car_user as U on C.id = U.car_id\n" +
-                "\tLEFT OUTER JOIN t_staff_account as A on U.acc_id = A.id\n" +
-                "\tLEFT OUTER JOIN t_car_org as R2 on R2.car_id = C.id\n" +
-                "\tLEFT OUTER JOIN t_staff_org as O on R2.org_id = O.id\n" +
-            "WHERE C.obd_code = ?";
-
-        var task :any = {};
-        task.begin = ()=>{
-            dac.query(sql, [obdCode], (ex, result)=>{
-                if(ex) {res.json(new TaskException(-1, "获取OBD信息失败", ex)); return; }
-                else if(result.length === 0){ res.json(new TaskException(-1, util.format("OBD设备(%s)不存在!", obdCode), null)); return;}
-                else if(result.length > 1){ res.json(new TaskException(-1, "数据无效", null)); return; }
-                else{
-                    res.json({status:"ok", obd:result[0]});
-                }
-            });
-        };
-
-        task.begin();
-    }
-
-    // 修改OBD的
-    export function ModifyOBD(req, res):void{
-        var data = req.body;
-        if(Object.keys(data).length === 0){
-            res.json({
-                postData:{
-                    sim_number:"13912345678"
-                }
-            });
-            return;
-        }
-
-        if(data.sim_number !== undefined && data.sim_number !== null && data.sim_number.trim()  > 0){
-
-        }
-        else{
-            res.json(new TaskException(-1, "缺少sim参数", null));
-            return;
-        }
-
-        var dac = MySqlAccess.RetrievePool();
-        var sql = "UPDATE t_car_info set sim_number = ? WHERE obd_code = ?";
-        dac.query(sql, [data.sim_number.trim(), req.params.obd_code], (ex, result)=>{
-            if(ex){ res.json(new TaskException(-1, "写入SIM卡号失败", ex)); return;}
-            else if(result.affectedRows === 0){ res.json(new TaskException(-1, "OBD设备不存在", null)); return;}
-            else{ res.json({status:"ok"}); return;}
-        });
-    }
-
     // OBD设备仓库
     export class DeviceRepository{
         // 数据库连接对象
@@ -239,92 +97,45 @@ module Service {
         }
 
         // 返回全部OBD设备
-        All(oper:Account, page:Pagination, cb:(ex:TaskException,totalCount:number, devs:Array<DTO.device_obd>)=>void):void{
+        All(oper:Staff, page:Pagination, cb:(ex:TaskException,totalCount:number, devs:Array<DTO.device_obd>)=>void):void{
 
-            var topOrg = OrgRepository.CreateTopOrg();
-            oper.IsGranted(topOrg, "READ", (err2, granted)=>{
-                if(err2) { cb (new TaskException(-1, "访问权限许可失败", err2), 0, null); return; }
-                else if(!granted){ cb(new TaskException(-1, util.format("用户%s没有查看全部OBD设备的权限", oper.name), null),0, null); return;}
-                else{
-                    var task:any={ finished : 0};
+            var task:any={ finished : 0};
 
-                    task.begin = ()=> {
-                        var sql = "SELECT * FROM t_car_info WHERE obd_code IS NOT NULL"
-                        if (page.IsValid()) sql += page.sql;
-                        this.dac.query(sql, null, (ex, result)=> {
-                            task.A = {ex:ex, result:result};
-                            task.finished++;
-                            task.end();
-                        });
+            task.begin = ()=> {
+                var sql = "SELECT * FROM t_car_info WHERE obd_code IS NOT NULL";
+                if (page.IsValid()) sql += page.sql;
+                this.dac.query(sql, null, (ex, result)=> {
+                    task.A = {ex:ex, result:result};
+                    task.finished++;
+                    task.end();
+                });
 
-                        var sql = "SELECT COUNT(*) COUNT FROM t_car_info WHERE obd_code IS NOT NULL";
-                        this.dac.query(sql, null, (ex, result)=>{
-                            task.B = {ex:ex, result:result};
-                            task.finished++;
-                            task.end();
-                        });
-                    }
+                var sql = "SELECT COUNT(*) COUNT FROM t_car_info WHERE obd_code IS NOT NULL";
+                this.dac.query(sql, null, (ex, result)=>{
+                    task.B = {ex:ex, result:result};
+                    task.finished++;
+                    task.end();
+                });
+            }
 
-                    task.end = () =>{
-                        if(task.finished === 2){
-                            if (task.A.ex) { cb(new TaskException(-1, "查询OBD设备失败", task.A.ex),0, null); return; }
+            task.end = () =>{
+                if(task.finished === 2){
+                    if (task.A.ex) { cb(new TaskException(-1, "查询OBD设备失败", task.A.ex),0, null); return; }
 
-                            var devs : Array<DTO.device_obd> = task.A.result;
+                    var devs : Array<DTO.device_obd> = task.A.result;
 
-                            var totalCount = 0;
-                            if(!task.B.ex) totalCount = task.B.result[0].COUNT;
-                            cb(null, totalCount, devs);
-                        }
-                    }
-
-                    task.begin();
+                    var totalCount = 0;
+                    if(!task.B.ex) totalCount = task.B.result[0].COUNT;
+                    cb(null, totalCount, devs);
                 }
-            });
-        }
+            }
 
-        // 批量增加OBD设备
-        Add(oper:Account, devs:Array<OBDDevice>, cb:(ex:TaskException, devs:Array<OBDDevice>)=>void):void{
-            var topOrg = OrgRepository.CreateTopOrg();
-            oper.IsGranted(topOrg, "WRITE", (ex, granted)=>{
-                if(ex){
-                    cb(ex, null);
-                    return;
-                }
-                else if(granted){
-                    var tmCreate = new Date();
-                    var dtos = new Array<DTO.device_obd>();
-                    devs.forEach((dev)=>{
-                        var dto = OBDDevice.CreateDTO(dev);
-                        dto.created_date = tmCreate;
-                        dtos.push(dto);
-                    });
-                    var strV:string = "";
-                    var i = 0;
-                    dtos.forEach((obj)=>{
-                        if(i > 0) strV += ",";
-                        strV += util.format("(%s,%s,%s, CURRENT_TIMESTAMP)",
-                            this.dac.escape(obj.obd_code),
-                            this.dac.escape(obj.sim_number),
-                            this.dac.escape(obj.comment));
-                        i++;
-                    });
-                    this.dac.query("INSERT t_car_info (obd_code, sim_number, comment, created_date) VALUES " + strV, null, (err, result)=>{
-                        if(err) cb(new TaskException(-1, "插入数据失败", err), null);
-                        else cb(null, devs);
-                    });
-                }
-                else{
-                    var buf = util.format("用户%s没有登记OBD设备的权限", oper.name);
-                    cb(new TaskException(-1, buf, null), null);
-                }
-            });
-
-
+            task.begin();
         }
 
         // 获取指定的OBD设备
-        GetByCode(oper:Account, code:string, cb:(error:TaskException, dev:OBDDevice)=>void):void{
-            this.dac.query("SELECT * FROM t_car WHERE obd_code = ?",
+        GetByCode(code:string, cb:(error:TaskException, dev:OBDDevice)=>void):void{
+            this.dac.query("SELECT * FROM t_car_info WHERE obd_code = ?",
                 [code], (error, result)=>{
                     if(error) cb(new TaskException(-1, error.toString(), null), null);
                     else if(result.length === 0) cb(new TaskException(-1, util.format("OBD设备(%s)不存在", code), null), null);
