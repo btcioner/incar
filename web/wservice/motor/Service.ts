@@ -1,39 +1,34 @@
+var util = require("util");
 
 module Service{
+
     // 测试用途
     export function HelloAPI(req, res){ res.send({status:"ok", text:"Hello API!"}); }
 
-    export module APGet{
-
-        // 返回所有OBD设备的行车数据
-        export function GetDriveInfoAll(req, res){
-            // page=1&pagesize=8&city=北京&org=4S店A&obd_code=WF1234567
-            res.setHeader("Accept-Query", "city,org,obd_code,page,pagesize");
-            Service.GetDriveInfoAll(req, res);
-        }
+    // 临时用于测试目的
+    export function html(req:any, res:any):void{
+        res.sendfile("./wservice/test.html");
     }
 
-    export module APPost{
+    // 是一个非空字符串返回true
+    export function isStringNotEmpty(target:any):Boolean{
+        return (typeof target  === "string" && target.length > 0);
+    }
 
-        // 返回指定OBD设备的相关行车数据
-        export function GetDriveInfo(req, res){
-            if(Object.keys(req.body).length > 0) Service.GetDriveInfo(req, res);
-            else res.json({
-                postData:{
-                    code: "WFQ00012345"
-                }
-            });
-        }
+    // 任务异常
+    export class TaskException{
+        // 错误消息
+        status = "ok";
+        // 错误代码,0代表正常
+        code = 0;
+        // 内部错误
+        innerTaskException : TaskException;
 
-        // OBD详细行车数据
-        export function GetDriveDetail(req, res){
-            if(Object.keys(req.body).length > 0) Service.GetDriveDetail(req, res);
-            else res.json({
-                postData:{
-                    code: "WFQ00012345",
-                    drive_id: 54
-                }
-            });
+        constructor(errCode:number, msg:string, ex:TaskException){
+            this.code = errCode;
+            this.status = msg;
+            if(ex) this.innerTaskException = ex;
+            else this.innerTaskException = null;
         }
     }
 
@@ -58,10 +53,5 @@ module Service{
         get sql(){
             return util.format(" LIMIT %d,%d ", this._offset, this._pagesize);
         }
-    }
-
-    // 是一个非空字符串返回true
-    export function isStringNotEmpty(target:any):Boolean{
-        return (typeof target  === "string" && target.length > 0);
     }
 }

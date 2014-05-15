@@ -71,7 +71,7 @@ module Work{
             this.cust_id = data.cust_id;
             this.working_time = data.working_time;
 
-            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
+            Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
                 else{
                     var task:any = { finished: 0 };
@@ -87,10 +87,10 @@ module Work{
                                     this.working_time,
                                     data.promotion_id,
                                     "website",
-                                    util.format("id:%s,name:%s,nick:%s", userLogin.id, userLogin.name, userLogin.nick),
+                                    util.format("id:%s,name:%s,nick:%s", userLogin.dto.id, userLogin.dto.name, userLogin.dto.nick),
                                     tmNow,
                                     "3",
-                                    userLogin.name,
+                                    userLogin.dto.name,
                                     tmNow
                                 ];
                         dac.query(sql, args, (ex, result)=>{
@@ -103,7 +103,7 @@ module Work{
 
                     task.RegistWork = (booking_id:number)=>{
                         // 向t_work中登记
-                        this.json_args = JSON.stringify({oper:userLogin.nick,via:"web"});
+                        this.json_args = JSON.stringify({oper:userLogin.dto.nick,via:"web"});
                         this.work_ref_id = booking_id;
 
                         var sql2 = "INSERT t_work SET ?";
@@ -131,10 +131,10 @@ module Work{
         approve(req, res){
             if(this.step !== "applied") { res.json(new Service.TaskException(-1, "只有处于'已申请'状态才可以被批准", null)); return; }
 
-            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
+            Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
-                    this.json_args = JSON.stringify({oper:userLogin.nick});
+                    this.json_args = JSON.stringify({oper:userLogin.dto.nick});
                     var sql = "UPDATE t_work SET step = 'approved', json_args = ? WHERE id = ? and step = 'applied'";
                     var dac = Service.MySqlAccess.RetrievePool();
                     dac.query(sql, [this.json_args, this.id], (ex, result)=>{
@@ -147,7 +147,7 @@ module Work{
                                 if(ex) {res.json(new Service.TaskException(-1, "保养申请成功,但记录日志失败", ex)); return; }
                                 else{
                                     sql = "UPDATE t_slot_booking SET booking_status = 3, tc = ?, ts = ? WHERE id = ?";
-                                    dac.query(sql, [userLogin.nick, new Date(), this.work_ref_id], (ex, result)=>{
+                                    dac.query(sql, [userLogin.dto.nick, new Date(), this.work_ref_id], (ex, result)=>{
                                         if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
                                         else{
                                             res.json({status:"ok"});
@@ -166,10 +166,10 @@ module Work{
             if(this.step !== "applied") { res.json(new Service.TaskException(-1, "只有处于'已申请'状态才可以被拒绝", null)); return; }
             if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
 
-            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
+            Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) { res.json(ex); return; }
                 else{
-                    this.json_args = JSON.stringify({reason:req.body.reason, oper:userLogin.nick});
+                    this.json_args = JSON.stringify({reason:req.body.reason, oper:userLogin.dto.nick});
 
                     var sql = "UPDATE t_work SET step = 'rejected', json_args = ? WHERE id = ? and step = 'applied'";
                     var dac = Service.MySqlAccess.RetrievePool();
@@ -183,7 +183,7 @@ module Work{
                                 if(ex) {res.json(new Service.TaskException(-1, "拒绝申请成功,但记录日志失败", ex)); return; }
                                 else{
                                     sql = "UPDATE t_slot_booking SET booking_status = 2, tc = ?, ts = ? WHERE id = ?";
-                                    dac.query(sql, [userLogin.nick, new Date(), this.work_ref_id], (ex, result)=>{
+                                    dac.query(sql, [userLogin.dto.nick, new Date(), this.work_ref_id], (ex, result)=>{
                                         if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
                                         else{
                                             res.json({status:"ok"});
@@ -201,10 +201,10 @@ module Work{
         cancel(req, res){
             if(this.step !== "applied" && this.step !== "approved") { res.json(new Service.TaskException(-1, "保养工作已不可被取消", null)); return; }
 
-            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
+            Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
-                    var args:any = { oper:userLogin.nick };
+                    var args:any = { oper:userLogin.dto.nick };
                     if(req.body.reason) args.reason = req.body.reason;
 
                     this.json_args = JSON.stringify(args);
@@ -221,7 +221,7 @@ module Work{
                                 if(ex) {res.json(new Service.TaskException(-1, "取消申请成功,但记录日志失败", ex)); return; }
                                 else{
                                     sql = "UPDATE t_slot_booking SET booking_status = 4, tc = ?, ts = ? WHERE id = ?";
-                                    dac.query(sql, [userLogin.nick, new Date(), this.work_ref_id], (ex, result)=>{
+                                    dac.query(sql, [userLogin.dto.nick, new Date(), this.work_ref_id], (ex, result)=>{
                                         if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
                                         else{
                                             res.json({status:"ok"});
@@ -240,10 +240,10 @@ module Work{
             if(this.step !== "approved") { res.json(new Service.TaskException(-1, "只有处于'已批准'状态才可以被中止", null)); return; }
             if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
 
-            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
+            Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
                 else{
-                    this.json_args = JSON.stringify({oper:userLogin.nick, reason:req.body.reason});
+                    this.json_args = JSON.stringify({oper:userLogin.dto.nick, reason:req.body.reason});
 
                     var sql = "UPDATE t_work SET step = 'aborted', json_args = ? WHERE id = ? and step = 'approved'";
                     var dac = Service.MySqlAccess.RetrievePool();
@@ -269,7 +269,7 @@ module Work{
         done(req, res){
             if(this.step !== "approved") { res.json(new Service.TaskException(-1, "只有处于'已批准'状态才可以完成", null)); return; }
 
-            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
+            Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
                     var dac = Service.MySqlAccess.RetrievePool();
@@ -285,7 +285,7 @@ module Work{
 
                         var data:any = req.body;
                         this.json_args = JSON.stringify({
-                            oper: userLogin.nick,
+                            oper: userLogin.dto.nick,
                             care_items: data.care_items,
                             care_cost: data.care_cost,
                             care_mileage: mileage,
@@ -326,14 +326,14 @@ module Work{
             this.org_id = req.params.org_id;
 
             var dac = Service.MySqlAccess.RetrievePool();
-            Service.Account.CreateFromToken(req.cookies.token, (ex, userLogin)=> {
+            Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=> {
                 if (ex) { res.json(new Service.TaskException(-1, "获取操作员失败", ex)); return; }
                 else {
                     var sql = "SELECT max(D.mileage) AS max_mileage, sum(D.runtime)/60 AS sum_hour\n" +
                         "FROM t_obd_drive D, t_car_info C WHERE C.obd_code = D.obdCode and C.id = ?\n" +
                         "GROUP BY C.id";
                     dac.query(sql, [this.car_id], (ex, result)=>{
-                        var json_args = {via:"web", reason: req.body.reason, oper: userLogin.nick, care_mileage:0, care_hour:0 };
+                        var json_args = {via:"web", reason: req.body.reason, oper: userLogin.dto.nick, care_mileage:0, care_hour:0 };
                         if(!ex && result.length > 0){
                             json_args.care_mileage = result[0].max_mileage;
                             json_args.care_hour = result[0].sum_hour;

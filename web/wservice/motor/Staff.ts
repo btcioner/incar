@@ -142,7 +142,11 @@ module Service{
         var data = req.body;
         var err = "";
         if(!data.name) err += "缺少参数name;";
-        if(!data.pwd) err += "缺少参数pwd";
+        if(!data.pwd) err += "缺少参数pwd;";
+
+        var regexName = new RegExp("^[a-z0-9_]{3,32}$", "i");
+        if(!regexName.test(data.name)) err += 'name只能由数字或字母组成,最少3字符,最多32字符;';
+
         if(err) { res.json(new TaskException(-1, err, null)); return; }
 
         var repo4S = S4Repository.GetRepo();
@@ -232,13 +236,14 @@ module Service{
         // 生成用户令牌token
         MakeToken(ip:string, agent:string):string{
             var evdData = util.format("%j", {id:this.dto.id, tm:new Date(), ip:ip, agent:agent});
-            var cipherAES = crypto.createCipher("aes128", new Buffer(Staff.GetTokenKey()));
+            var cipherAES = Staff.crypto.createCipher("aes128", new Buffer(Staff.GetTokenKey()));
             cipherAES.setAutoPadding(true);
             var token:string = cipherAES.update(evdData, "utf8", "base64");
             token += cipherAES.final("base64");
             return token;
         }
 
+        static crypto:any = require("crypto");
         static CreateFromToken(token:string, cb:(err:TaskException, staff:Staff)=>void):void{
             if(!token){
                 cb(new TaskException(-1, "无效token", null), null);
@@ -246,7 +251,7 @@ module Service{
             }
 
             // 解密token
-            var decipherAES = crypto.createDecipher("aes128", new Buffer(Staff.GetTokenKey()));
+            var decipherAES = Staff.crypto.createDecipher("aes128", new Buffer(Staff.GetTokenKey()));
             decipherAES.setAutoPadding(true);
             var userAccept : any;
             try{
