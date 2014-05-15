@@ -4,16 +4,31 @@
 
 'use strict';
 
-var mysql = require('mysql');
+var dao=require("../core/dataAccess/dao");
 
 exports = module.exports = function(service) {
     service.post.enroll = userEnroll;
+}
+function getUserInfo(wxFlag){
+    var sql="select * from t_account where wx_oid like ?";
+    dao.findBySql(sql,['%'+wx+'%'],function(rows){
+        if(rows.length>0){
+            return rows[0];
+        }
+        else{
+            return null;
+        }
+    });
 }
 //验证微信用户是否存在账户
 function userCheck(req,res){
     var params=req.params;
     var openId=params.openId;
     var openId4S=params.sopenId;
+    var wx=openId+"-"+openId4S
+    var user=getUserInfo(wx);
+    var accountId=user?user.accountId:null;
+    res.write({status:'success',accountId:accountId});
 }
 //通过已有账户信息登录，并和当前微信用户绑定
 function userLogin(req,res){
@@ -22,19 +37,68 @@ function userLogin(req,res){
     var openId4S=params.sopenId;
     var username=params.username;
     var password=params.password;
+    var wx=openId+"-"+openId4S
+    var sql="select id,wx_oid from t_account where name=? and pwd=?";
+    dao.findBySql(sql,[username,password],function(rows){
+        if(rows.length>0){
+            var id=rows[0].id;
+            var oldWX=rows[0].wx_oid;
+            var newWX=oldWX?oldWX+';'+wx:wx;
+            sql="update t_account set ? where id=?";
+            dao.executeBySql(sql,[{wx_oid:newWX},id],function(err){
+                if(err){
+                    res.wirte({status:'failed',message:'无法完成当前账户与微信账户的绑定'});
+                }
+                res.wirte({status:'success',accountId:id});
+            });
+        }
+        else{
+            res.wirte({status:'failed',message:'登录失败'});
+        }
+    });
 }
 //登记并注册没有账户的微信用户
 function userEnroll(req, res) {
     var params=req.params;
+    var username=params.username;
+    var password=params.password;
     var openId=params.openId;
     var openId4S=params.sopenId;
     var phone=params.phone;
     var nickName=params.nickName;
+    var sql="select id from t_4s where openid=?";
+    dao.findBySql(sql,[openId4S],function(rows){
+        if(rows.length>0){
+            var s4id=rowsp[0].id;
+            var user={
+                name:username,
+                pwd:password,
+                wx_oid:openId+'-'+openId4S,
+                phone:phone,
+                nick:nickName,
+                s4_id:s4id
+            };
+            sql="insert into t_account set ?";
+            dao.insertBySql(sql,user,function(err,info){
+                if(err){
+                    res.write({status:'failed',message:'添加账户失败'});
+                }
+                var accountId=info.insertId;
+                res.wirte({status:'success',accountId:accountId});
+            });
+        }
+        else{
+            res.wirte({status:'failed',message:'无法识别的4SOpenId'});
+        }
+    });
+
 }
 //车辆登记
 function carEnroll(req,res){
     var params=req.params;
-    var accountId=params.accountId;
+    var openId=params.openId;
+    var openId4S=params.sopenId;
+    var wx=openId+"-"+openId4S
     var obdCode=params.obdCode;
     var brand=params.brand;
     var series=params.series;
@@ -43,7 +107,33 @@ function carEnroll(req,res){
     var mileage=params.mileage;
     var carAge=params.carAge;
     var displacement=params.displacement;
-
+    var user=getUserInfo(wx);
+    var s4Id=user.s4_id;
+    var sql="select id from t_car where obd_code=?";
+    dao.findBySql(sql,[obdCode],function(rows){
+        if(rows.length>0){
+            var id=rows[0].id;
+            var car={
+                s4_id:s4Id,
+                brand:brand,
+                series:series,
+                modelYear:modelYear,
+                license:license,
+                act_type:1,
+                disp:displacement,
+                mileage:mileage,
+                age:carAge,
+                created_date:new Date()
+            };
+            sql="update t_car set ? where id=?";
+            dao.executeBySql(sql,[car,id],function(){
+                console.log("更新成功");
+            });
+        }
+        else{
+            res.write({status:'failed',message:'OBD不存在'});
+        }
+    });
 }
 //车辆注销
 function carRescind(req,res){

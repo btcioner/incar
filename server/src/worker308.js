@@ -95,6 +95,9 @@ function packetProcess(packetInput,tag) {
             responseBuffer = packetProcess_1605(dataBuffer);
             break;
     }
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    console.log(responseBuffer);
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     //涉及到OBD短信的反馈一律发送到短信中心进行处理
     if(commandWord>=0x1621){
         sendToMessageServer(dataBuffer,commandWord);
@@ -456,7 +459,9 @@ function get1603Response(obd){
     }
     //其他数据
     dataManager.writeString(obd.updateId);
-    return dataManager.getBuffer();
+    var aaa=dataManager.getBuffer();
+    console.log(aaa);
+    return aaa;
 }
 function packetProcess_1603(dataBuffer) {
     dataManager.init(dataBuffer,2);
@@ -471,7 +476,6 @@ function packetProcess_1603(dataBuffer) {
     var diagnosisType=dataManager.nextByte();       //诊断类型
     var initCode=dataManager.nextByte();            //恢复出厂序列号
     //构建OBD对应的JSON对象，回复给OBD设备的数据来源
-
     //2、根据OBD编号查询OBD信息，一个JSON对象
     var sql="select * from t_obd_info t where t.obdCode=?";
     dao.findBySql(sql,obdCode,function(rows) {
@@ -492,6 +496,8 @@ function packetProcess_1603(dataBuffer) {
             obd.softwareVersion=softwareVersion;
             obd.diagnosisType=diagnosisType;
             obd.initCode=initCode;
+
+            console.log("*********************\n"+JSON.stringify(obd)+"\n************************");
             var sql="insert into t_obd_info set ?";
             dao.executeBySql([sql],[obd],function(err,rows,fields){
                 if(err)throw err;
