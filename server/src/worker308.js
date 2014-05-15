@@ -49,16 +49,17 @@ process.on('message', function(msg, objectHandle) {
     }
     if (msg['type'] === 'dataPacket') {
         console.log('Work308(' + process.pid + ')OBD('+mark+'):开始解析数据包...');
-        var dataPacketResponse = packetProcess(msg.dataPacket,msg.tag);
-        if ( !! dataPacketResponse) {
-            process.send({
-                'type': 'response',
-                'tag': msg.tag,
-                'response': dataPacketResponse
-            });
-        } else {
-            console.log('Work308(' + process.pid + ')OBD('+mark+'):解析数据包失败...');
-        }
+        packetProcess(msg.dataPacket,msg.tag,function(dataPacketResponse){
+            if (!! dataPacketResponse) {
+                process.send({
+                    'type': 'response',
+                    'tag': msg.tag,
+                    'response': dataPacketResponse
+                });
+            } else {
+                console.log('Work308(' + process.pid + ')OBD('+mark+'):解析数据包失败...');
+            }
+        });
     }
 });
 
@@ -75,52 +76,76 @@ function getOBDSuccess(cmd){
     offset += 1;
     return responseBuffer.slice(0, offset);
 }
-function packetProcess(packetInput,tag) {
+function packetProcess(packetInput,tag,cb) {
     var responseBuffer=null;
     var dataBuffer= dataManager.init(packetInput,0);
-    console.log(toString0X(dataBuffer));
     var commandWord = dataManager.nextWord();           //cmd
     var obdCode=dataManager.nextString();               //OBD编号
     switch (commandWord) {
         case 0x1601:
             responseBuffer = packetProcess_1601(dataBuffer);
+            if(!!responseBuffer){
+                saveToHistory(dataBuffer,tag);
+            }
+            cb(responseBuffer);
             break;
         case 0x1602:
             responseBuffer = packetProcess_1602(dataBuffer);
+            if(!!responseBuffer){
+                saveToHistory(dataBuffer,tag);
+            }
+            cb(responseBuffer);
             break;
         case 0x1603:
-            responseBuffer = packetProcess_1603(dataBuffer);
+            packetProcess_1603(dataBuffer,function(responseBuffer){
+                if(!!responseBuffer){
+                    saveToHistory(dataBuffer,tag);
+                }
+                cb(responseBuffer);
+            });
             break;
         case 0x1605:
             responseBuffer = packetProcess_1605(dataBuffer);
+            if(!!responseBuffer){
+                saveToHistory(dataBuffer,tag);
+            }
+            cb(responseBuffer);
             break;
     }
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    console.log(responseBuffer);
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     //涉及到OBD短信的反馈一律发送到短信中心进行处理
-    if(commandWord>=0x1621){
+    if(commandWord>=0x1621&&commandWord<=0x16E0){
         sendToMessageServer(dataBuffer,commandWord);
         responseBuffer=getOBDSuccess(commandWord);
+        if(!!responseBuffer){
+            saveToHistory(dataBuffer,tag);
+        }
+        return;
     }
-    //所有OBD发送过来的数据都会保存进历史表
-    if ( !! responseBuffer) {
-        dataManager.init(dataBuffer,2);
-        //1、获得报文内容
-        var vin=dataManager.nextString();                   //VIN码
-        var history={};
-        history.obdCode=obdCode;
-        history.vin=vin;
-        history.ipAddress=tag.split(":")[0];
-        history.port=tag.split(":")[1];
-        history.content=toString0X(dataBuffer);
-        history.receiveDate=new Date();
-        var sql="insert into t_obd_history set ?";
-        dao.executeBySql([sql],[history],function(){
-            console.log("成功创建历史信息!");
-        });
-        return responseBuffer;
+    if(commandWord===0x9502){
+        return getOBDSuccess(0x1602);
     }
+}
+//所有OBD发送过来的数据都会保存进历史表
+function saveToHistory(dataBuffer,tag){
+    dataManager.init(dataBuffer,2);
+    //1、获得报文内容
+    var obdCode=dataManager.nextString();           //OBD编号
+    var tripId=dataManager.nextDoubleWord();        //Trip编号
+    var vid=dataManager.nextString();               //vid
+    var vin=dataManager.nextString();               //VIN码
+    var history={};
+    history.obdCode=obdCode;
+    history.tripId=tripId;
+    history.vid=vid;
+    history.vin=vin;
+    history.ipAddress=tag.split(":")[0];
+    history.port=tag.split(":")[1];
+    history.content=toString0X(dataBuffer);
+    history.receiveDate=new Date();
+    var sql="insert into t_obd_history set ?";
+    dao.executeBySql([sql],[history],function(){
+        console.log("成功创建历史信息!");
+    });
 }
 function toString0X(dataBuffer){
     var dataString="";
@@ -463,7 +488,7 @@ function get1603Response(obd){
     console.log(aaa);
     return aaa;
 }
-function packetProcess_1603(dataBuffer) {
+function packetProcess_1603(dataBuffer,cb) {
     dataManager.init(dataBuffer,2);
     //1、根据内容获得OBD编号等信息
     var obdCode=dataManager.nextString();           //OBD编号
@@ -480,31 +505,30 @@ function packetProcess_1603(dataBuffer) {
     var sql="select * from t_obd_info t where t.obdCode=?";
     dao.findBySql(sql,obdCode,function(rows) {
         //3、如果找到了则校验传入的OBD信息和数据库中的OBD信息，若不同则更新
+        var obdInfo={};
         if(rows.length>0){
-            var obdInfo=rows[0];
-            return get1603Response(obdInfo);
+            obdInfo=rows[0];
         }
         //4、如果不存在则创建一个新的OBD，并写入默认数据
         else{
-            var obd=get1603Default();
-            obd.obdCode=obdCode;
-            obd.tripId=tripId;
-            obd.vid=vid;
-            obd.vin=vin;
-            obd.hardwareVersion=hardwareVersion;
-            obd.firmwareVersion=firmwareVersion;
-            obd.softwareVersion=softwareVersion;
-            obd.diagnosisType=diagnosisType;
-            obd.initCode=initCode;
-
-            console.log("*********************\n"+JSON.stringify(obd)+"\n************************");
+            obdInfo=get1603Default();
+            obdInfo.obdCode=obdCode;
+            obdInfo.tripId=tripId;
+            obdInfo.vid=vid;
+            obdInfo.vin=vin;
+            obdInfo.hardwareVersion=hardwareVersion;
+            obdInfo.firmwareVersion=firmwareVersion;
+            obdInfo.softwareVersion=softwareVersion;
+            obdInfo.diagnosisType=diagnosisType;
+            obdInfo.initCode=initCode;
+            console.log("*********************\n"+JSON.stringify(obdInfo)+"\n************************");
             var sql="insert into t_obd_info set ?";
-            dao.executeBySql([sql],[obd],function(err,rows,fields){
+            dao.executeBySql([sql],[obdInfo],function(err,rows,fields){
                 if(err)throw err;
-                console.log("添加成功:"+JSON.stringify(obd));
+                console.log("添加成功:"+JSON.stringify(obdInfo));
             });
-            return get1603Response(obd);
         }
+        cb(get1603Response(obdInfo));
     });
 }
 

@@ -116,12 +116,19 @@ var carCondition;       //车况信息
 var createTime;         //创建日期
 //OBD报警信息
 //var obdCode;          //OBD设备号
+//var tripId;           //tripId
+//var vid;              //vid
 //var vin;              //vin码
-//var brand;            //品牌
-//var series;           //系列
-//var modelYear;        //年款
 var alarmType;          //报警类型
-var faultCode;          //故障码
+//--定位信息
+var speed;              //车速
+var travelDistance;     //行驶距离
+var longitude;          //经度
+var latitude;           //纬度
+var direction;          //方向
+var locationTime;       //定位时间
+var locationType;       //定位方式(1-基站定位,2-GPS定位)
+var faultInfo;          //故障信息
 var createTime;         //创建日期
 
 

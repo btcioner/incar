@@ -2,6 +2,8 @@
 CREATE TABLE IF NOT EXISTS t_obd_history(
     id int auto_increment,
     obdCode varchar(20),
+    tripId  int COMMENT 'tripId',
+    vid varchar(20) COMMENT 'vid',
     vin varchar(20),
     ipAddress varchar(20),
     port varchar(5),
@@ -26,7 +28,7 @@ CREATE TABLE IF NOT EXISTS t_obd_info(
     isCodeClear int COMMENT '是否清码',
 
     carUpdateCount int COMMENT '车辆信息更新数量(0x00或0x05)',
-    vid int COMMENT 'vid',
+    vid varchar(20) COMMENT 'vid',
     brand int COMMENT '品牌',
     series int COMMENT '系列',
     modelYear int COMMENT '年款',
@@ -69,29 +71,62 @@ CREATE TABLE IF NOT EXISTS t_obd_info(
     lastUpdateTime timestamp COMMENT '最后更新日期',
     primary key (id));
 
+
+
+
+
+
+//--熄火后
+var flameOutVoltage;        //熄火时蓄电池电压
+//--其他
+var carStatus;          //车辆当前状态(启动、行驶、熄火、完成、异常)12345
+var flameOutTime;       //熄火时间
 -- 创建车辆驾驶信息表
 CREATE TABLE IF NOT EXISTS t_obd_drive(
-    id int auto_increment,
-    obdCode varchar(20),
-    vin varchar(20),
-    brand int,
-    series int,
-    modelYear int,
-    firingVoltage varchar(30),
-    runTime long,
-    currentMileage long,
-    currentAvgOilUsed double,
-    speedingTime long,
-    speedUp int,
-    speedDown int,
-    sharpTurn int,
-    flameVoltage varchar(30),
-    avgOilUsed double,
-    mileage long,
-    voltageAfter varchar(30),
-    carStatus int,
-    fireTime timestamp,
-    flameOutTime timestamp,
+    id int auto_increment COMMENT '主键',
+    obdCode varchar(20) COMMENT 'OBD设备号',
+    tripId int COMMENT '行程标识',
+    vid varchar(20) COMMENT '车辆标识',
+    vin varchar(20) COMMENT '发动机标识',
+    receiveTime timestamp COMMENT '接收数据时间',
+
+    fireTime timestamp COMMENT '点火时间',
+    firingVoltage varchar(30) COMMENT '点火电压',
+
+    fireSpeed int COMMENT '定位时车速',
+    fireDistance int COMMENT '定位时行驶距离',
+    fireLongitude varchar(20) COMMENT '定位时经度',
+    fireLatitude varchar(20) COMMENT '定位时纬度',
+    fireDirection float COMMENT '定位时方向',
+    fireLocationTime timestamp COMMENT '定位时间',
+    fireLocationType int COMMENT '定位类型',
+
+    runTime int COMMENT '发动机运行时间',
+    currentMileage int COMMENT '本次驾驶行驶里程',
+    currentAvgOilUsed float COMMENT '本次驾驶平均油耗',
+    mileage int COMMENT '累计行驶里程',
+    avgOilUsed float COMMENT '累计平均油耗',
+
+    speedGroup varchar(1000) COMMENT '本行程车速分组统计(JSON)',
+
+    speedingTime int COMMENT '超速行驶时间',
+    speedUp int COMMENT '急加速次数',
+    speedDown int COMMENT '急减速次数',
+    sharpTurn int COMMENT '急转弯次数',
+    speedMax int COMMENT '最高车速',
+
+    flameOutSpeed int COMMENT '熄火定位时车速',
+    flameOutDistance int COMMENT '熄火定位时行驶距离',
+    flameOutLongitude varchar(20) COMMENT '熄火定位时经度',
+    flameOutLatitude varchar(20) COMMENT '熄火定位时纬度',
+    flameOutDirection float COMMENT '熄火定位时方向',
+    flameOutLocationTime timestamp COMMENT '熄火定位时间',
+    flameOutLocationType int COMMENT '熄火定位类型(1-基站定位,2-GPS定位)',
+
+    flameOutVoltage varchar(30) COMMENT '熄火时蓄电池电压',
+
+    carStatus tinyint COMMENT '车辆当前状态(启动、行驶、熄火、完成、异常)12345',
+    flameOutTime timestamp COMMENT '熄火时间',
     primary key (id));
 
  -- 创建车辆驾驶详情表
@@ -99,24 +134,27 @@ CREATE TABLE IF NOT EXISTS t_drive_detail(
     id int auto_increment,
     obdCode varchar(20),
     obdDriveId int,
-    faultCode varchar(1000),
-    avgOilUsed double,
-    mileage long,
-    carCondition varchar(3000),
+    detail varchar(3000),
     createTime timestamp,
     primary key (id));
 
 -- 创建车辆报警表
 CREATE TABLE IF NOT EXISTS t_obd_alarm(
-    id int auto_increment,
-    obdCode varchar(20),
-    vin varchar(20),
-    brand int,
-    series int,
-    modelYear int,
-    alarmType int,
-    faultCode varchar(300),
-    createTime timestamp,
+    id int auto_increment COMMENT '主键',
+    obdCode varchar(20) COMMENT 'OBD编号',
+    tripId int COMMENT '行程标识',
+    vid varchar(20) COMMENT '车辆标识',
+    vin varchar(20) COMMENT '发动机标识',
+    speed int COMMENT '定位时车速',
+    travelDistance int COMMENT '定位时行驶距离',
+    longitude varchar(20) COMMENT '定位时经度',
+    latitude varchar(20) COMMENT '定位时纬度',
+    direction float COMMENT '定位时方向',
+    locationTime timestamp COMMENT '定位时间',
+    locationType int COMMENT '定位类型',
+    alarmType int COMMENT '报警类型',
+    faultInfo varchar(1000) COMMENT '故障信息',
+    createTime timestamp COMMENT '报警数据接收时间',
     primary key (id));
 -- 创建车况字典表
 CREATE TABLE IF NOT EXISTS t_drive_dictionary(

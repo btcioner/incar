@@ -37,7 +37,6 @@ workerProcess205.on('message', function(msg) {
         }
     }
 });
-
 workerProcess308.on('message', function(msg) {
     if (msg['type'] === 'response') {
         if (msg.tag && (msg.tag in connections)) {
