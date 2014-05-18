@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var multiPart = require('connect-multiparty');
-var favicon = require('static-favicon');
+var favicon = require('serve-favicon');
 var morganLogger = require('morgan');
 var path = require('path');
 var config = require('./config');
@@ -59,7 +59,7 @@ module.exports = function(app) {
         app.use(errorHandler());
     }
 
-    app.use(favicon(path.join(config.root, 'site', 'favicon.ico')));
+    app.use(favicon(path.join(config.root, 'data', 'favicon.ico')));
 
     app.use(express.static(path.join(config.root, 'site')));
     app.use(express.static(path.join(config.root, 'msite')));
