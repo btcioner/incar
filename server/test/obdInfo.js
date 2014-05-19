@@ -34,6 +34,8 @@ var addressMessage;     //短信回复数据地址
 var portMessage;        //短信回复数据端口
 var addressLocation;    //定位数据地址
 var portLocation;       //定位数据端口
+//-----车速分段统计
+var speedGroup=[];
 //-----定位信息
 var locationCount;      //定位信息更新数量(0x00或0x03)
 var metrePerLocation;   //每行驶多少米定位一次
@@ -65,7 +67,7 @@ var lastUpdateTime;     //最后更新日期
 //var tripId;           //tripId
 //var vid;              //vid
 //var vin;              //vin码
-var receiveTime;        //接收数据时间
+var lastUpdateTime;        //接收数据时间
 //--点火
 var fireTime;           //点火时间
 var firingVoltage;      //点火电压

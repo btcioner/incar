@@ -6,6 +6,7 @@
 
 var dao = require('../core/dao');
 var dataManager = require('../core/dataManager');
+var info401=require('carInfo401')(dataManager);
 var http = require("http");
 
 function sendToMessageServer(dataBuffer,commandWord){
@@ -98,6 +99,7 @@ function packetProcess(packetInput,tag,cb) {
             break;
         case 0x1603:
             packetProcess_1603(dataBuffer,function(responseBuffer){
+                console.log('1603回复：'+toString0X(responseBuffer));
                 if(!!responseBuffer){
                     saveToHistory(dataBuffer,tag);
                 }
@@ -124,6 +126,7 @@ function packetProcess(packetInput,tag,cb) {
     if(commandWord===0x9502){
         return getOBDSuccess(0x1602);
     }
+    return getOBDSuccess(commandWord);
 }
 //所有OBD发送过来的数据都会保存进历史表
 function saveToHistory(dataBuffer,tag){
@@ -167,8 +170,8 @@ function packetProcess_1601(dataBuffer) {
     var tripId=dataManager.nextDoubleWord();            //Trip编号
     var vid=dataManager.nextString();                   //vid
     var vin=dataManager.nextString();                   //VIN码
-    var currentTime=dataManager.nextString();           //当前时间
-    currentTime=getDateTimeStamp();                     //由于设备问题先取系统时间(后期去掉)
+    var receiveTime=dataManager.nextString();           //当前时间
+    var lastUpdateTime=getDateTimeStamp(null);
     var dataType=dataManager.nextByte();                //数据包类型
     //2、如果是发动机启动则创建一条新的行驶信息
     if(dataType===0x01){
@@ -178,13 +181,17 @@ function packetProcess_1601(dataBuffer) {
         obd.vid=vid;
         obd.vin=vin;
         obd.carStatus=1;
-        obd.fireTime=currentTime;
+        obd.fireTime=receiveTime;
         obd.firingVoltage=dataManager.nextString(); //点火电压
         obd.fireSpeed=dataManager.nextString();     //点火车速
-        obd.travelDistance=dataManager.nextString();//当前行驶距离
-        var others=dataManager.nextString().split(',');//其他定位信息
-        obd.fireLongitude
-
+        obd.fireDistance=dataManager.nextString();//当前行驶距离
+        var other=dataManager.nextString().split(',');
+        obd.fireLongitude=other[0];                 //经度
+        obd.fireLatitude=other[1];                  //纬度
+        obd.fireDirection=other[2];                 //方向
+        obd.fireLocationTime=other[3];              //定位时间
+        obd.fireLocationType=other[4];              //定位方式(1-基站定位,2-GPS定位)
+        obd.lastUpdateTime=lastUpdateTime;
         var sql="insert into t_obd_drive set ?";
         dao.executeBySql([sql],[obd],function(){
             console.log("成功创建行驶信息:"+JSON.stringify(obd));
@@ -193,22 +200,12 @@ function packetProcess_1601(dataBuffer) {
     //3、其他情况则更新行驶信息，需要先获取行驶信息的id
     else if(dataType===2){
         //2、获取当前行驶详细信息
-        var faultCode=new Array();
-        var fcCount=dataManager.nextByte();               //故障码个数
-        for(var i=0;i<fcCount;i++){
-            var code=dataManager.nextString();             //故障码
-            var status=dataManager.nextString();           //故障码属性
-            var desc=dataManager.nextString();             //故障码描述
-            faultCode.push({code:code,status:status,desc:desc});
-        }
-        var mileage=dataManager.nextLong();            //累计行驶里程
-        var avgOilUsed=parseFloat(dataManager.nextString());           //累计平均耗油
-        avgOilUsed=avgOilUsed?avgOilUsed:null;
-        var carCondition=new Array();
-        var ccCount=dataManager.nextWord();            //车况信息个数
-        for(var i=0;i<ccCount;i++){
+
+        var driveDetail=[];
+        var detailCount=dataManager.nextWord();            //车况信息个数
+        for(var i=0;i<detailCount;i++){
             var id=dataManager.nextWord();;             //ID
-            var value=dataManager.nextString();            //值
+            var value=info401.getValueByID(id);
             carCondition.push({id:id,value:value});
         }
         var sql="select t.id from t_obd_drive t where t.obdCode=? and t.carStatus<=?";
@@ -310,70 +307,71 @@ function packetProcess_1601(dataBuffer) {
 function packetProcess_1602(dataBuffer) {
     dataManager.init(dataBuffer,2);
     //1、获得报文内容
-    var obdCode=dataManager.nextString();               //OBD编号
-    var vin=dataManager.nextString();                   //VIN码
-    var brand=dataManager.nextByte();                   //品牌
-    var series=dataManager.nextByte();                  //系列
-    var modelYear=dataManager.nextByte();               //年款
-    var currentTime=dataManager.nextString();           //当前时间
-    currentTime=getDateTimeStamp();                     //由于设备问题先取系统时间(后期去掉)
+    var obdCode=dataManager.nextString();           //OBD编号
+    var tripId=dataManager.nextDoubleWord();        //Trip编号
+    var vid=dataManager.nextString();               //vid
+    var vin=dataManager.nextString();               //VIN码
+    var createTime=dataManager.nextString();        //当前时间
     var alarmType=dataManager.nextByte();               //报警类型
+    var speed=dataManager.nextString();              //车速
+    var travelDistance=dataManager.nextString();     //行驶距离
+    var other=dataManager.nextString().split(',');
+    var longitude=other[0];          //经度
+    var latitude=other[1];           //纬度
+    var direction=other[2];          //方向
+    var locationTime=other[3];       //定位时间
+    var locationType=other[4];       //定位方式(1-基站定位,2-GPS定位)
     var obdAlarm={};
     obdAlarm.obdCode=obdCode;
+    obdAlarm.tripId=tripId;
+    obdAlarm.vid=vid;
     obdAlarm.vin=vin;
-    obdAlarm.brand=brand;
-    obdAlarm.series=series;
-    obdAlarm.modelYear=modelYear;
-    obdAlarm.createTime=new Date();
+    obdAlarm.createTime=createTime;
     obdAlarm.alarmType=alarmType;
-    if(alarmType===1){
-        var faultCode={};
+    obdAlarm.speed=speed;
+    obdAlarm.travelDistance=travelDistance;
+    obdAlarm.longitude=longitude;
+    obdAlarm.latitude=latitude;
+    obdAlarm.direction=direction;
+    obdAlarm.locationTime=locationTime;
+    obdAlarm.locationType=locationType;
+    if(alarmType===0x01){
+        var faultCode=[];
         var fcCount=dataManager.nextByte();               //故障码个数
-        faultCode.count=fcCount;
-        var fcDetail=new Array();
         for(var i=0;i<fcCount;i++){
             var code=dataManager.nextString();             //故障码
             var status=dataManager.nextString();           //故障码属性
             var desc=dataManager.nextString();             //故障码描述
-            fcDetail.push({code:code,status:status,desc:desc});
+            faultCode.push({code:code,status:status,desc:desc});
         }
-        faultCode.detail=fcDetail;
-        obdAlarm.faultCode=JSON.stringify(faultCode);
+        obdAlarm.faultInfo=JSON.stringify(faultCode);
     }
-
+    else if(alarmType===0x04||alarmType===0x05){
+        obdAlarm.faultInfo=dataManager.nextString();
+    }
     var sql="insert into t_obd_alarm set ?";
     dao.executeBySql([sql],[obdAlarm],function(){
         console.log("成功创建报警信息:"+JSON.stringify(obdAlarm));
     });
-
-
-    var responseBuffer = new Buffer(16);
-    var offset = 0;
-
-    responseBuffer.writeUInt16BE(0x1602, offset);
-    offset += 2;
-
-    responseBuffer.writeUInt8(0x00, offset);
-    offset += 1;
-    return responseBuffer.slice(0, offset);
+    return getOBDSuccess(0x1602);
 }
 function get1603Default(){
     return {
         createTime:new Date(),          //时间戳
         lastUpdateTime:new Date(),
 
-        actionCount:0x00,               //执行动作数量(0x00或0x02)
+        actionCount:0x02,               //执行动作数量(0x00或0x02)
         initCode:0x00,                  //恢复出厂设置序列号
         isCodeClear:0xF0,               //是否清码
 
-        carUpdateCount:0x00,            //车辆信息更新数量(0x00或0x05)
+        carUpdateCount:0x05,            //车辆信息更新数量(0x00或0x05)
         vid:"VID20140501",              //vid
         brand:0xFF,                     //品牌
         series:0xFF,                    //系列
         modelYear:0xFF,                 //年款
         engineDisplacement:"2.5T",      //发动机排量
 
-        serverConfigCount:0x00,         //网络参数更新数量(0x00-0x05)
+        serverConfigCount:0x05,         //网络参数更新数量(0x00-0x05)
         addressParam:"220.249.72.235",  //获取参数数据地址
         portParam:9005,               //获取参数数据端口
         addressUpload:"220.249.72.235", //主动上传数据地址
@@ -385,18 +383,20 @@ function get1603Default(){
         addressLocation:"220.249.72.235",//定位数据地址
         portLocation:9005,            //定位数据端口
 
-        locationCount:0x00,             //定位信息更新数量(0x00或0x03)
+        speedGroup:"0,60,120,250",      //车速分段统计
+
+        locationCount:0x03,             //定位信息更新数量(0x00或0x03)
         metrePerLocation:75,            //每行驶多少米定位一次
         secondsPerLocation:9,           //每过多少秒定位一次
         locationModel:0x00,             //定位模式/距离与时间的关系
 
-        alarmCount:0x00,                //报警信息更新数量(0x00或0x04)
+        alarmCount:0x04,                //报警信息更新数量(0x00或0x04)
         overSpeed:120,                  //超速临界值(单位km/h，超过此值被判定为超速，默认120km/h)
         overSpeedTime:6,                //超速持续时间(单位秒，超速持续多少秒时报警，默认6秒)
         waterTemperatureAlarm:110,      //水温报警值(单位℃，默认110℃)
         voltageAlarm:132,               //报警电压(单位0.1V，默认132，即13.2V)
 
-        fireOffCount:0x00,              //熄火后信息更新数量(0x00或0x03)
+        fireOffCount:0x03,              //熄火后信息更新数量(0x00或0x03)
         criticalVoltage:115,            //关机临界电压
         closeAfterFlameOut:0xFF,        //熄火后关闭时间点
         voltageThreshold:"120,153",     //熄火后电池电压阀值
@@ -411,7 +411,7 @@ function get1603Default(){
 //生成要回复的报文内容并返回，回复和数据库操作异步处理
 function get1603Response(obd){
 
-    var responseBuffer = new Buffer(2048);
+    var responseBuffer = new Buffer(4096);
     dataManager.init(responseBuffer,0);
     dataManager.writeWord(0x1603);
     dataManager.writeString(getDateTimeStamp(obd.lastUpdateTime));
@@ -444,6 +444,13 @@ function get1603Response(obd){
         dataManager.writeString(obd.addressLocation);
         dataManager.writeWord(obd.portLocation);
     }
+    //车速分组
+    var speedGroup=obd.speedGroup.split(',');
+    console.log(speedGroup);
+    dataManager.writeByte(speedGroup.length);
+    for(var i=0;i<speedGroup.length;i++){
+        dataManager.writeByte(parseInt(speedGroup[i]));
+    }
     //定位
     dataManager.writeByte(obd.locationCount);
     if(obd.locationCount>0x00){
@@ -451,6 +458,7 @@ function get1603Response(obd){
         dataManager.writeWord(obd.secondsPerLocation);
         dataManager.writeByte(obd.locationModel);
     }
+
     //报警
     dataManager.writeByte(obd.alarmCount);
     if(obd.alarmCount>0x00){
@@ -475,13 +483,15 @@ function get1603Response(obd){
     var uploadInterval;     //行驶中上传数据间隔时间
     var uploadParamId=[];   //行驶中上传数据参数Id，参考4.01和4.02
     dataManager.writeByte(obd.runtimeCount);
+    console.log(obd.runtimeCount>0x00)
     if(obd.runtimeCount>0x00){
         dataManager.writeWord(obd.uploadInterval);
         var upArray =obd.uploadParamId.split(',');
         for(var i=0;i<upArray.length;i++){
-            dataManager.writeByte(parseInt(upArray[i]));
+            dataManager.writeWord(parseInt(upArray[i]));
         }
     }
+
     //其他数据
     dataManager.writeString(obd.updateId);
     var aaa=dataManager.getBuffer();
@@ -521,7 +531,6 @@ function packetProcess_1603(dataBuffer,cb) {
             obdInfo.softwareVersion=softwareVersion;
             obdInfo.diagnosisType=diagnosisType;
             obdInfo.initCode=initCode;
-            console.log("*********************\n"+JSON.stringify(obdInfo)+"\n************************");
             var sql="insert into t_obd_info set ?";
             dao.executeBySql([sql],[obdInfo],function(err,rows,fields){
                 if(err)throw err;

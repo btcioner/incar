@@ -46,6 +46,8 @@ CREATE TABLE IF NOT EXISTS t_obd_info(
     addressLocation varchar(30) COMMENT '定位数据地址',
     portLocation int COMMENT '定位数据端口',
 
+    speedGroup varchar(100) COMMENT '车速分段统计',
+
     locationCount int COMMENT '定位信息更新数量(0x00或0x03)',
     metrePerLocation int COMMENT '每行驶多少米定位一次',
     secondsPerLocation int COMMENT '每过多少秒定位一次',
@@ -71,17 +73,7 @@ CREATE TABLE IF NOT EXISTS t_obd_info(
     lastUpdateTime timestamp COMMENT '最后更新日期',
     primary key (id));
 
-
-
-
-
-
-//--熄火后
-var flameOutVoltage;        //熄火时蓄电池电压
-//--其他
-var carStatus;          //车辆当前状态(启动、行驶、熄火、完成、异常)12345
-var flameOutTime;       //熄火时间
--- 创建车辆驾驶信息表
+-- 创建车辆行程信息表
 CREATE TABLE IF NOT EXISTS t_obd_drive(
     id int auto_increment COMMENT '主键',
     obdCode varchar(20) COMMENT 'OBD设备号',
@@ -93,13 +85,13 @@ CREATE TABLE IF NOT EXISTS t_obd_drive(
     fireTime timestamp COMMENT '点火时间',
     firingVoltage varchar(30) COMMENT '点火电压',
 
-    fireSpeed int COMMENT '定位时车速',
-    fireDistance int COMMENT '定位时行驶距离',
-    fireLongitude varchar(20) COMMENT '定位时经度',
-    fireLatitude varchar(20) COMMENT '定位时纬度',
-    fireDirection float COMMENT '定位时方向',
-    fireLocationTime timestamp COMMENT '定位时间',
-    fireLocationType int COMMENT '定位类型',
+    fireSpeed int COMMENT '点火定位时车速',
+    fireDistance int COMMENT '点火定位时行驶距离',
+    fireLongitude varchar(20) COMMENT '点火定位时经度',
+    fireLatitude varchar(20) COMMENT '点火定位时纬度',
+    fireDirection float COMMENT '点火定位时方向',
+    fireLocationTime timestamp COMMENT '点火定位时间',
+    fireLocationType int COMMENT '点火定位类型',
 
     runTime int COMMENT '发动机运行时间',
     currentMileage int COMMENT '本次驾驶行驶里程',
