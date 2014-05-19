@@ -14,7 +14,7 @@
     "cookie-parser": "latest",
     "connect-multiparty": "latest",
     "errorhandler": "latest",
-    "static-favicon": "latest",
+    "serve-favicon": "latest",
     "morgan": "latest",
     "crypto": "latest",
     "ejs": "latest",
