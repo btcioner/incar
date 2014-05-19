@@ -113,7 +113,7 @@ module Service{
 
     // 获取车和它的车主
     export function GetCarwithOwner(req, res){
-        res.setHeader("Accept-Query", "page,pagesize,org_id,org_city,brand_id,series_id,acc_nick,acc_phone");
+        res.setHeader("Accept-Query", "page,pagesize,org_id,org_city,brand_id,series_id,acc_nick,acc_phone,license");
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var dac = MySqlAccess.RetrievePool();
@@ -131,6 +131,7 @@ module Service{
         if(req.query.series_id) { sql += " and C.series = ?"; args.push(req.query.series_id); }
         if(req.query.acc_nick) { sql += " and A.nick = ?"; args.push(req.query.acc_nick); }
         if(req.query.acc_phone) { sql += " and A.phone = ?"; args.push(req.query.acc_phone); }
+        if(req.query.license) { sql += " and C.license = ?"; args.push(req.query.license); }
 
         var sql2 = util.format(sql, "A.id AS acc_id, A.name AS acc_name, A.nick AS acc_nick, A.status AS acc_status, A.phone AS acc_phone, " +
             "O.name AS org_name, O.id AS org_id, " +

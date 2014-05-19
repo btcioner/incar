@@ -3,7 +3,7 @@
 module Service{
     // 返回所有行车信息
     export function GetDriveInfoAll(req, res):void{
-        res.setHeader("Accept-Query", "city,s4_name,obd_code,page,pagesize");
+        res.setHeader("Accept-Query", "page,pagesize,city,s4_name,obd_code,brand,series");
         var page = new Pagination(req.query.page, req.query.pagesize);
         var filter = req.query;
 
@@ -21,6 +21,8 @@ module Service{
             if(filter.city){ sql += " and O.city = ?"; args.push(filter.city); }
             if(filter.s4_name){sql += " and O.name like ?"; args.push("%"+filter.s4_name+"%"); }
             if(filter.obd_code){ sql += " and R.obdcode = ?"; args.push(filter.obd_code); }
+            if(filter.brand){ sql += " and C.brand = ?"; args.push(filter.brand);}
+            if(filter.series){ sql += " and C.series = ?"; args.push(filter.series);}
 
             sql += " ORDER BY R.id DESC";
             if(page.IsValid()){

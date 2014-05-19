@@ -17,7 +17,7 @@ module Service{
     }
 
     export function GetCarHasOBD(req, res){
-        res.setHeader("Accept-Query", "page,pagesize,license,obd_code,act_type,sim_number,brand,series");
+        res.setHeader("Accept-Query", "page,pagesize,license,obd_code,act_type,sim_number,brand_id,series_id");
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var sql = "SELECT %s FROM t_car WHERE obd_code is not null";
@@ -29,8 +29,8 @@ module Service{
         if(filter.obd_code) { sql += " and obd_code = ?"; args.push(filter.obd_code); }
         if(!isNaN(filter.act_type)) { sql += " and act_type = ?"; args.push(filter.act_type); }
         if(filter.sim_number) { sql += " and sim_number = ?"; args.push(filter.sim_number); }
-        if(!isNaN(filter.brand)) { sql += " and brand = ?"; args.push(filter.brand); }
-        if(!isNaN(filter.series)) { sql += " and series = ?"; args.push(filter.series); }
+        if(!isNaN(filter.brand_id)) { sql += " and brand = ?"; args.push(filter.brand_id); }
+        if(!isNaN(filter.series_id)) { sql += " and series = ?"; args.push(filter.series_id); }
 
         var dac = MySqlAccess.RetrievePool();
         var task:any = { finished:0 };
