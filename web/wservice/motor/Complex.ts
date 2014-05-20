@@ -172,7 +172,7 @@ module Service{
         res.setHeader("Accept-Query", "page,pagesize,license,obd_code,act_type,act_time_begin,act_time_end,sim_number,brand_id,series_id");
         var page = new Pagination(req.query.page, req.query.pagesize);
 
-        var sql = "SELECT %s FROM t_car C LEFT OUTER JOIN t_4s S on C.4s_id = S.id WHERE obd_code is not null";
+        var sql = "SELECT %s FROM t_car C LEFT OUTER JOIN t_4s S on C.s4_id = S.id WHERE obd_code is not null";
         var args = [];
 
         var filter = req.query;
