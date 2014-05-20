@@ -46,7 +46,7 @@ module Service{
         var data = req.body;
         if(!data.obd_code) { res.json(new TaskException(-1, "缺少参数obd_code", null)); return; }
 
-        var dto:DTO.car = {};
+        var dto:any = {};
         dto.obd_code = data.obd_code;
         if(isStringNotEmpty(data.sim_number)) dto.sim_number = data.sim_number;
         if(isStringNotEmpty(data.comment)) dto.comment = data.comment;
