@@ -86,9 +86,9 @@ module Service{
                 });
 
             // 主要数据
-            var sql = "SELECT id, obdCode, obdDriveId, faultCode, avgOilUsed, mileage, carCondition, createTime \n" +
-                "FROM t_drive_detail \n" +
-                "WHERE obdCode = ? and obdDriveId = ? \n";
+            var sql = "SELECT *\n" +
+                "FROM t_drive_detail\n" +
+                "WHERE obdCode = ? and obdDriveId = ?\n";
             if(page.IsValid()) sql += page.sql;
             dac.query(sql, [req.params.obd_code, req.params.drive_id],(ex, result)=>{
                 task.B = {ex:ex, result:result};
