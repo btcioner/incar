@@ -223,4 +223,24 @@ module Service{
 
         task.begin();
     }
+
+    export function GetCarExtraByOBD(req, res){
+        var sql = "SELECT C.*, D.brand AS brand_name, D.series AS series_name, S.name AS s4_name, U.nick AS cust_name, U.phone AS cust_phone\n" +
+            "\tFROM t_car C\n" +
+            "\tLEFT OUTER JOIN t_4s S ON C.s4_id = S.id\n" +
+            "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand = D.brandCode and C.series = D.seriesCode\n" +
+            "\tLEFT OUTER JOIN t_car_user U ON C.id = U.acc_id and C.s4_id = U.s4_id and U.user_type = 1\n"+
+            "\tLEFT OUTER JOIN t_account A ON A.id = U.acc_id an A.s4_id = U.s4_id\n"+
+            "\tWHERE obd_code = ?";
+        var args = [req.params.obd_code];
+
+        var dac = MySqlAccess.RetrievePool();
+        dac.query(sql, args, (ex, result)=>{
+            if(ex) {res.json(new TaskException(-1, "查询OBD失败", ex)); return;}
+            if(result.length === 0) {res.json(new TaskException(-1, "查询的OBD不存在", ex)); return;}
+            if(result.length > 1) {res.json(new TaskException(-1, "OBD数据错误", ex)); return;}
+            var car:Car = new Car(result[0]);
+            res.json({status:"ok", car:car.DTO()});
+        });
+    }
 }

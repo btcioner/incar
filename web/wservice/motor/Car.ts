@@ -16,20 +16,6 @@ module Service{
         });
     }
 
-    export function GetCarByOBD(req, res){
-        var sql = "SELECT * FROM t_car WHERE obd_code = ?";
-        var args = [req.params.obd_code];
-
-        var dac = MySqlAccess.RetrievePool();
-        dac.query(sql, args, (ex, result)=>{
-            if(ex) {res.json(new TaskException(-1, "查询OBD失败", ex)); return;}
-            if(result.length === 0) {res.json(new TaskException(-1, "查询的OBD不存在", ex)); return;}
-            if(result.length > 1) {res.json(new TaskException(-1, "OBD数据错误", ex)); return;}
-            var car:Car = new Car(result[0]);
-            res.json({status:"ok", car:car.DTO()});
-        });
-    }
-
     export function AddCarAsOBDOnly(req, res){
         if(Object.keys(req.body).length === 0){
             res.json({
