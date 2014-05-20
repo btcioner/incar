@@ -11,7 +11,7 @@ module Service{
         var dac =  MySqlAccess.RetrievePool();
         task.begin = ()=>{
             // 1.查询OBD数据
-            var sql = "SELECT R.*, D.brand AS brand_name, D.series AS series_name\n" +
+            var sql = "SELECT R.*, D.brand AS brand_name, D.series AS series_name, O.name AS s4_name, O.prov AS s4_prov, O.city AS s4_city\n" +
                 "FROM t_obd_drive AS R\n" +
                 "\tJOIN t_car as C on C.obd_code = R.obdcode\n" +
                 "\tLEFT OUTER JOIN t_4s AS O on C.s4_id = O.id\n" +
