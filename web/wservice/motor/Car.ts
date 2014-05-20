@@ -58,7 +58,7 @@ module Service{
             if(ex) { res.json(new TaskException(-1, "增加OBD失败", ex), null); return; }
             dto.id = result.insertId;
             var car = new Car(dto);
-            res.json(null, car.DTO());
+            res.json({status:"ok", car:car.DTO()});
         });
     }
 
