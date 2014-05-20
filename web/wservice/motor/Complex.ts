@@ -166,4 +166,59 @@ module Service{
 
         task.begin();
     }
+
+    // 获取含有OBD的车和它的4S店
+    export function GetCarwith4S(req, res){
+        res.setHeader("Accept-Query", "page,pagesize,license,obd_code,act_type,act_time_begin,act_time_end,sim_number,brand_id,series_id");
+        var page = new Pagination(req.query.page, req.query.pagesize);
+
+        var sql = "SELECT %s FROM t_car C LEFT OUTER JOIN t_4s S on C.4s_id = S.id WHERE obd_code is not null";
+        var args = [];
+
+        var filter = req.query;
+
+        if(filter.license) { sql += " and license = ?"; args.push(filter.license); }
+        if(filter.obd_code) { sql += " and obd_code = ?"; args.push(filter.obd_code); }
+        if(!isNaN(filter.act_type)) { sql += " and act_type = ?"; args.push(filter.act_type); }
+        if(filter.sim_number) { sql += " and sim_number = ?"; args.push(filter.sim_number); }
+        if(!isNaN(filter.brand_id)) { sql += " and brand = ?"; args.push(filter.brand_id); }
+        if(!isNaN(filter.series_id)) { sql += " and series = ?"; args.push(filter.series_id); }
+        if(filter.act_time_begin) { sql += " and act_time >= ?"; args.push(filter.act_time_begin); }
+        if(filter.act_time_end) { sql += " and act_time <= ?"; args.push(filter.act_time_end); }
+
+        var dac = MySqlAccess.RetrievePool();
+        var task:any = { finished:0 };
+        task.begin = ()=>{
+            var sqlA = util.format(sql, "C.*, S.name AS 4s_name");
+            if(page.IsValid()) sqlA += page.sql;
+            dac.query(sqlA, args, (ex, result)=>{
+                task.A = { ex: ex, result: result };
+                task.finished++;
+                task.end();
+            });
+
+            var sqlB = util.format(sql, "COUNT(*) count");
+            dac.query(sqlB, args, (ex, result)=>{
+                task.B = { ex:ex, result:result };
+                task.finished++;
+                task.end();
+            });
+        };
+
+        task.end = ()=>{
+            if(task.finished < 2) return;
+            if(task.A.ex){ res.json(new TaskException(-1, "查询4S店车辆失败", task.A.ex), 0, null); return; }
+            var objs = [];
+            task.A.result.forEach((dto)=>{
+                objs.push(new Car(dto));
+            });
+            var total = 0;
+            if(!task.B.ex) total = task.B.result[0].count;
+            var cars = DTOBase.ExtractDTOs(objs);
+
+            res.json({status:"ok", totalCount:total, cars:cars});
+        };
+
+        task.begin();
+    }
 }
