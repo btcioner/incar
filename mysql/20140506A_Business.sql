@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS t_car(
 
     obd_code VARCHAR(32) UNIQUE COMMENT 'OBD设备唯一编码',
     act_type TINYINT DEFAULT 0  COMMENT 'OBD激活状态 0-未激活 1-已激活 2-故障',
+    act_time DATETIME           COMMENT '激活时间',
     sim_number VARCHAR(16)      COMMENT '插在OBD设备上的SIM卡的电话号码',
 
     brand int                   COMMENT '品牌',
