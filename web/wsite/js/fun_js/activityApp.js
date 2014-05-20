@@ -17,11 +17,11 @@ angular.module("SActivityApp", [
         })
         .when('/promoteInfo',{
             controller:'s_activityCtrl',
-            templateUrl:'/4sStore/partials/activity_promoteInfo.html'//促销信息
+            templateUrl:'/4sStore/partials/activity_promoteInfo.html'//活动资讯
         })
-        .when('/redPackage',{
-            controller:'s_activityCtrl',
-            templateUrl:'/4sStore/partials/activity_redPackage.html'//红包
+        .when('/saveFuelMatch/:id',{
+            controller:'s_fuelMatchCtrl',
+            templateUrl:'/4sStore/partials/activity_saveFuelMatch.html'//红包
          })
         .when('/lotteryTicket',{
             controller:'s_activityCtrl',
@@ -33,4 +33,9 @@ angular.module("SActivityApp", [
   //  $locationProvider.html5Mode(true);
 }).controller("mainCtrl",function($scope){
         $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
-   });
+        $scope.randomTime = new Date();
+        $scope.changeTime = function()
+        {
+            $scope.randomTime = new Date();
+        }
+  });

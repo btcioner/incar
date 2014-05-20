@@ -38,6 +38,12 @@
                           </div>
                       </div>
                       <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">微信服务号：</label>
+                          <div class="controls">
+                              <input type="text" class="span11" ng-model="openid"  style="width:200px;" />
+                          </div>
+                      </div>
+                      <div class="control-group" >
                           <label class="control-label" style="margin-left:300px;">联系人：</label>
                           <div class="controls">
                               <input type="text" class="span11"  style="width:200px;" ng-model="admin_nick" />
@@ -143,7 +149,7 @@
                 </tr>
               </thead>
               <tbody id="productListBody">
-                <tr class="gradeX" ng-repeat="customer in orgs">
+                <tr class="gradeX" ng-repeat="customer in s4s">
                     <td style="text-align: center">{{customer.name}}</td>
                     <td style="text-align: center">{{customer.admin_name}}</td>
                     <td style="text-align: center">{{customer.city}}</td>

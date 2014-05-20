@@ -14,6 +14,8 @@ function customerCtrl($scope, $http){
     $scope.city_name="";
     $scope.org_name="";
     $scope.queryString="";
+    $scope.openid="";
+
 
     //筛选框初始值 todo--要从数据库读出来
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
@@ -24,14 +26,14 @@ function customerCtrl($scope, $http){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl + '4s?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+        $http.get(baseurl + 'cmpx/4s?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
             if(data.status == "ok")
             {
-                if(data.orgs.length == 0)
+                if(data.s4s.length == 0)
                 {
                     $scope.tips="暂无数据！";
                 }
-                $scope.orgs = data.orgs;
+                $scope.s4s = data.s4s;
                 PagingInfo(data.totalCount);
             }
             else
@@ -82,12 +84,12 @@ function customerCtrl($scope, $http){
     $scope.addConfirm = function(){
         var sha1_password =hex_sha1($scope.password);//SHA1进行加密
         $scope.postData={"name":$scope.comName,"class":"4S","status":1,"openid":"","city":$scope.city,"admin_pwd":sha1_password,
-                           "admin_name":$scope.account,"admin_nick":$scope.admin_nick,"admin_phone":$scope.admin_phone};
-        $http.post(baseurl + 'organization',$scope.postData).success(function(data){
+                           "admin_name":$scope.account,"admin_nick":$scope.admin_nick,"admin_phone":$scope.admin_phone,"openid":$scope.openid};
+        $http.post(baseurl + 'cmpx/4s',$scope.postData).success(function(data){
             if(data.status == "ok")
             {
-                $scope.orgs[$scope.orgs.length]= {
-                    id:$scope.orgs[$scope.orgs.length-1].id + 1,
+                $scope.s4s[$scope.s4s.length]= {
+                    id:$scope.s4s[$scope.s4s.length-1].id + 1,
                     name:$scope.comName,
                     status:"1",
                     openid:"",
@@ -96,8 +98,8 @@ function customerCtrl($scope, $http){
                     admin_nick:$scope.admin_nick,
                     admin_phone:$scope.admin_phone
                 }
-                // GetFirstPageInfo();
-                 alert("添加成功");
+                GetFirstPageInfo();
+                alert("添加成功");
                 $scope.customerListDiv = true;
                 $scope.customerAddDiv = false;
             }

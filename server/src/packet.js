@@ -94,7 +94,7 @@ exports.packetBuild=function(datagram,version){
     offset += 2;
     dataBuffer.writeUInt8(0x00, offset);
     offset += 1;
-    dataBuffer.writeUInt8(0x02, offset);
+    dataBuffer.writeUInt8(version, offset);
     offset += 1;
 
     datagramBuffer.copy(dataBuffer, offset);

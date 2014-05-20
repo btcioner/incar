@@ -42,16 +42,16 @@ function deviceCtrl($scope, $http)
     function GetFirstPageInfo(flag)
     {
          if(!flag) $scope.changeId = 1;
-          $http.post(baseurl+'GetAllOBDDevices?page='+$scope.currentPage+'&pagesize='+ $scope.pageRecord,$scope.postData).success(function(data){
+          $http.get(baseurl+'obd?page='+$scope.currentPage+'&pagesize='+ $scope.pageRecord,$scope.postData).success(function(data){
             if(data.status == "ok")
             {
-                for(var i=0;i<data.devs.length;i++)
+                for(var i=0;i<data.cars.length;i++)
                 {
-                    data.devs[i].act_type = $.changeStatus(data.devs[i].act_type);
-                    data.devs[i].created_date = $.changeDate2(data.devs[i].created_date);
-                    data.devs[i].join_time = $.changeDate2(data.devs[i].join_time);
+                    data.cars[i].act_type = $.changeStatus(data.cars[i].act_type);
+                    data.cars[i].created_date = $.changeDate2(data.cars[i].created_date);
+                    data.cars[i].act_time = $.changeDate2(data.cars[i].act_time);
                 }
-                  $scope.devices= data.devs;
+                  $scope.devices= data.cars;
                   PagingInfo(data.totalCount);
             }
             else

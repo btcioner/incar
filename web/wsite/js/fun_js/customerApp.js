@@ -16,15 +16,35 @@ angular.module("SCustomerApp", [
         })
         .when('/collapseGOne',{
             controller:'s_customerCtrl',
-            templateUrl:'/4sStore/partials/customer_all.html'//显示全部保养信息
+            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部保养信息
         })
         .when('/collapseGTwo',{
-            controller:'',
-            templateUrl:'/4sStore/partials/customer_weixin.html'//显示全部维修信息
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
          })
         .when('/collapseGThree',{
-            controller:'',
-            templateUrl:'/4sStore/partials/customer_app.html'//显示全部维修信息
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
+        })
+        .when('/collapseGFour',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
+        })
+        .when('/collapseGFive',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
+        })
+        .when('/collapseGSix',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
+        })
+        .when('/collapseGServen',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
+        })
+        .when('/collapseGEight',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
         })
         .otherwise({
            redirectTo:'/main'//跳转到预约服务的主界面
@@ -32,11 +52,18 @@ angular.module("SCustomerApp", [
        // $locationProvider.html5Mode(true);
 }).controller("customerCtrl",function($scope){
         $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+//        $scope.randomTime  = new Date();
+//        $scope.changeTime = function()
+//        {
+//            $scope.randomTime  = new Date();
+//        }
     });
 
 function s_statisticsCtrl($scope,$http)
 {
+    $scope.countDiv = true;
     $http.get(baseurl+'carowner?page=1&pagesize=1&org_id='+ $.cookie("org_id")).success(function(data){
         $scope.carOwnerCount = data.totalCount;
     })
+
 }

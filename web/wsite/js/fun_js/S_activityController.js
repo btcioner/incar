@@ -5,51 +5,71 @@
 
 angular.module("SActivityApp").
     controller("s_activityCtrl", function($scope, $http){
-    $scope.cusDetailDiv = false;
-    $scope.cusListDiv = true;
-    $scope.cusTabDiv = false;
+    $scope.newsListDiv = true;
+    $scope.newsAddDiv = false;
 
-//    $http.get('../../js/fun_js/users.json').success(function(data){
-//        $scope.users = data;
-//    });
-
-    //客户端分页
-    function getCurrentRecord(devices)
+    //添加按钮
+    $scope.add = function()
     {
-        $scope.pageRecord = 10;
-        $scope.totalCount =  devices.length;
-        $scope.totalPage = Math.ceil( devices.length /  $scope.pageRecord);
-        $scope.currentPage = 0;
-        $scope.record = 10;
-        if($scope.currentPage ==  $scope.totalPage || $scope.totalPage < 2)
-        {
-            $scope.record = $scope.totalCount % $scope.pageRecord;
-        }
-        $scope.currentRecord =[{}];
-        for(var i=0;i< $scope.record;i++)
-        {
-            $scope.currentRecord[i]=devices[$scope.currentPage * $scope.pageRecord + i];
-        }
-        $scope.totalOption=[{}];
-        for(var i = 0 ;i< $scope.totalPage;i++)
-        {
-            $scope.totalOption[i]={size:i+1};
-        }
+        $scope.newsListDiv = false;
+        $scope.newsAddDiv = true;
     }
 
-    //分页跳转页面
-    $scope.changePage=function(changeId)
+    //添加确认
+    $scope.addConfrim = function()
     {
-        $scope.currentPage = changeId - 1;
-        $scope.record = 10;
-        if($scope.currentPage ==  $scope.totalPage-1)
+        $scope.newsListDiv = true;
+        $scope.newsAddDiv = false;
+    }
+
+   //修改按钮
+    $scope.modify = function(id)
+    {
+        $scope.newsListDiv = false;
+        $scope.newsModifyDiv = true;
+    }
+
+    //修改确认
+    $scope.modifyConfirm = function(id)
+    {
+        $scope.newsListDiv = true;
+        $scope.newsModifyDiv = false;
+    }
+    //预览
+    $scope.preview = function(id)
+    {
+        $scope.newsListDiv = false;
+        $scope.newsPreviewDiv = true;
+    }
+
+    //发布确认
+    $scope.modifyConfirm = function(id)
+    {
+        $scope.newsListDiv = true;
+        $scope.newsPreviewDiv = false;
+    }
+
+    $scope.cancelNews = function(id)
+    {
+        alert("确定要取消此活动资讯吗？");
+    }
+
+    $scope.gotoBack = function(id)
+    {
+        switch(id)
         {
-            $scope.record = $scope.totalCount % $scope.pageRecord;
-        }
-        $scope.currentRecord =[{}];
-        for(var i=0;i< $scope.record;i++)
-        {
-            $scope.currentRecord[i]=$scope.devices[$scope.currentPage * $scope.pageRecord + i];
+            case 1:
+                $scope.newsListDiv = true;
+                $scope.newsAddDiv = false;
+                break;
+            case 2:
+                $scope.newsListDiv = true;
+                $scope.newsModifyDiv = false;
+                break;
+            case 3:
+                $scope.newsListDiv = true;
+                $scope.newsPreviewDiv = false;
+                break;
         }
     }
 })

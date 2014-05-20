@@ -3,7 +3,7 @@
  */
 
 
-function s_customerCtrl($scope, $http){
+function s_customerCtrl($scope, $http,$routeParams){
 
     $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
     $scope.cusDetailDiv = false;
@@ -24,22 +24,56 @@ function s_customerCtrl($scope, $http){
     $scope.queryOBDCode = "";
     $scope.obd_code="";
 
+
+//    $scope.countDiv = true;
+//    if($routeParams.id!=null)
+//    {
+//        changeView(2);
+//        GetFirstPageInfo();//get fist driveData for first page；
+//    }
+//    else{
+//        $http.get(baseurl+'carowner?page=1&pagesize=1&org_id='+ $.cookie("org_id")).success(function(data){
+//            $scope.carOwnerCount = data.totalCount;
+//        })
+//    }
+//    $scope.changeTag = function(id)
+//    {
+//
+//        switch(id)
+//        {
+//            case 0:
+//                changeView(2);
+//                GetFirstPageInfo();//get fist driveData for first page；
+//                break;
+//            case 1:
+//                changeView(2);
+//                GetFirstPageInfo();//get fist driveData for first page；
+//                break;
+//        }
+//    }
+//
+//    $scope.changeAccordion = function()
+//    {
+//        $("#collapseGOne").removeClass;
+//        $("#collapseGOne").addClass("collapse accordion-body");
+//        $("#collapseGThree").removeClass;
+//        $("#collapseGThree").addClass("collapse in accordion-body");
+//    }
     //筛选框初始值 todo--要从数据库读出来
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
-
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {
         $scope.tips="";
 
-        $http.get(baseurl + 'carowner?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+        $http.get(baseurl + '4s/1/cust?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
             if(data.status == "ok")
             {
-                if(data.carowners.length == 0)
+                if(data.custs.length == 0)
                 {
                     $scope.tips="暂无数据！";
                 }
-                $scope.carowners = data.carowners;
+                $scope.carowners = data.custs;
                 PagingInfo(data.totalCount);
             }
             else
@@ -110,11 +144,13 @@ function s_customerCtrl($scope, $http){
             case 1:
                 $scope.cusDetailDiv = true;
                 $scope.cusListDiv = false;
+               // $scope.countDiv = false;
                 $scope.cusTabDiv = true;
                 break;
             case 2:
                 $scope.cusDetailDiv = false;
                 $scope.cusListDiv = true;
+             //   $scope.countDiv = false;
                 $scope.cusTabDiv = false;
                 break;
         }

@@ -47,6 +47,8 @@ declare module Service{
             age:number;
             comment:string;
             created_date:Date;
+            user_type:number;
+            user_type_name:string;
         }
     }
 }

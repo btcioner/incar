@@ -42,6 +42,75 @@
                             <input type="text" class="span11"  style="width:200px;" />
                         </div>
                     </div>
+                    <div class="control-group" >
+                        <div  style="margin-left:435px;">标签： <input type="button" onclick="addTag(0);" value="+添加标签" class="btn btn-success btn-mini"></div>
+                        <div class="widget-content notify-ui" style="text-align: center">
+                            <ul id="gritter-notify0" >
+                                <li style="text-align: left;padding-left: 400px;">
+                                    <input type="checkbox" name="radios" />
+                                    <font style="font-weight: bold">全选</font>
+                                    <br/>
+                                    <font style="font-weight: bold">渠道：</font>
+                                    <input type="checkbox" name="radios" />
+                                    微信用户
+                                    <input type="checkbox" name="radios" />
+                                    客户端
+                                    <br/>
+                                    <font style="font-weight: bold">车系：</font>
+                                    <input type="checkbox" name="radios" />
+                                    S系
+                                    <br/>
+                                    <font style="font-weight: bold">用途：</font>
+                                    <input type="checkbox" name="radios" />
+                                    商用
+                                    <input type="checkbox" name="radios" />
+                                    家用
+                                    <br/>
+                                    <font style="font-weight: bold">用车时段：</font>
+                                    <input type="checkbox" name="radios" />
+                                    上下班
+                                    <input type="checkbox" name="radios" />
+                                    工作时
+                                    <input type="checkbox" name="radios" />
+                                    非工作时
+                                    <br/>
+                                    <font style="font-weight: bold">车龄：</font>
+                                    <input type="checkbox" name="radios" />
+                                    小于1年车龄
+                                    <input type="checkbox" name="radios" />
+                                    1-2年车龄
+                                    <input type="checkbox" name="radios" />
+                                    2-3年车龄
+                                    <input type="checkbox" name="radios" />
+                                    3-4年车龄
+                                    <input type="checkbox" name="radios" />
+                                    4-5年车龄
+                                    <input type="checkbox" name="radios" />
+                                    大于5年车龄
+                                    <br/>
+                                    <font style="font-weight: bold">用车频率：</font>
+                                    <input type="checkbox" name="radios" />
+                                    极低
+                                    <input type="checkbox" name="radios" />
+                                    低
+                                    <input type="checkbox" name="radios" />
+                                    中
+                                    <input type="checkbox" name="radios" />
+                                    高
+                                    <br/>
+                                    <font style="font-weight: bold">驾驶行为：</font>
+                                    <input type="checkbox" name="radios" />
+                                    稳健
+                                    <input type="checkbox" name="radios" />
+                                    中庸
+                                    <input type="checkbox" name="radios" />
+                                    狂野
+                                    <!--<br/>
+                                    <input type="button" value="删除" class="btn btn-danger btn-mini">-->
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                  <div class="form-actions">
                     <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="AddConfirm();">确定</button>
                     <button type="button" class="btn btn-danger"   ng-click="gotoBack(2);">取消</button>
@@ -94,6 +163,75 @@
                             <input type="text" class="span11"  style="width:200px;"  />
                         </div>
                     </div>
+                    <div class="control-group" >
+                        <div  style="margin-left:435px;">标签： <input type="button" onclick="addTag(1);" value="+添加标签" class="btn btn-success btn-mini"></div>
+                        <div class="widget-content notify-ui" style="text-align: center">
+                            <ul id="gritter-notify1" >
+                                <li style="text-align: left;padding-left: 400px;">
+                                    <input type="checkbox" name="radios" />
+                                    <font style="font-weight: bold">全选</font>
+                                    <br/>
+                                    <font style="font-weight: bold">渠道：</font>
+                                    <input type="checkbox" name="radios" />
+                                    微信用户
+                                    <input type="checkbox" name="radios" />
+                                    客户端
+                                    <br/>
+                                    <font style="font-weight: bold">车系：</font>
+                                    <input type="checkbox" name="radios" />
+                                    S系
+                                    <br/>
+                                    <font style="font-weight: bold">用途：</font>
+                                    <input type="checkbox" name="radios" />
+                                    商用
+                                    <input type="checkbox" name="radios" checked/>
+                                    家用
+                                    <br/>
+                                    <font style="font-weight: bold">用车时段：</font>
+                                    <input type="checkbox" name="radios" />
+                                    上下班
+                                    <input type="checkbox" name="radios" />
+                                    工作时
+                                    <input type="checkbox" name="radios" checked/>
+                                    非工作时
+                                    <br/>
+                                    <font style="font-weight: bold">车龄：</font>
+                                    <input type="checkbox" name="radios" />
+                                    小于1年车龄
+                                    <input type="checkbox" name="radios" />
+                                    1-2年车龄
+                                    <input type="checkbox" name="radios" />
+                                    2-3年车龄
+                                    <input type="checkbox" name="radios" checked/>
+                                    3-4年车龄
+                                    <input type="checkbox" name="radios" />
+                                    4-5年车龄
+                                    <input type="checkbox" name="radios" />
+                                    大于5年车龄
+                                    <br/>
+                                    <font style="font-weight: bold">用车频率：</font>
+                                    <input type="checkbox" name="radios" />
+                                    极低
+                                    <input type="checkbox" name="radios" />
+                                    低
+                                    <input type="checkbox" name="radios" checked/>
+                                    中
+                                    <input type="checkbox" name="radios" />
+                                    高
+                                    <br/>
+                                    <font style="font-weight: bold">驾驶行为：</font>
+                                    <input type="checkbox" name="radios" />
+                                    稳健
+                                    <input type="checkbox" name="radios" />
+                                    中庸
+                                    <input type="checkbox" name="radios"  checked/>
+                                    狂野
+                                    <!--<br/>
+                                    <input type="button" value="删除" class="btn btn-danger btn-mini">-->
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="form-actions">
                         <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="ModifyConfirm();">确定</button>
                         <button type="button" class="btn btn-danger"   ng-click="gotoBack(1);">取消</button>
@@ -135,7 +273,7 @@
                     <td id="tdc">{{slot.promotion_status}}</td>
                     <td id="tdc">
                         <a class="btn btn-info btn-mini" ng-click="modify($index);">修改</a>
-                        <a class="btn btn-warning btn-mini" ng-click="delete($index);">删除</a>
+                        <a class="btn btn-warning btn-mini" ng-click="delete($index);">取消</a>
                     </td>
                 </tr>
             </tbody>
@@ -150,3 +288,4 @@
     </div>
 </div>
 <!--特价工位列表 end-->
+
