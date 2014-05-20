@@ -169,7 +169,7 @@ module Service{
 
     // 获取含有OBD的车和它的4S店
     export function GetCarwith4S(req, res){
-        res.setHeader("Accept-Query", "page,pagesize,license,obd_code,act_type,act_time_begin,act_time_end,sim_number,brand_id,series_id");
+        res.setHeader("Accept-Query", "page,pagesize,license,obd_code,act_type,act_time_begin,act_time_end,sim_number,brand_id,series_id,created_date_begin,created_date_end");
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var sql = "SELECT %s FROM t_car C LEFT OUTER JOIN t_4s S on C.s4_id = S.id WHERE obd_code is not null";
@@ -185,6 +185,8 @@ module Service{
         if(!isNaN(filter.series_id)) { sql += " and series = ?"; args.push(filter.series_id); }
         if(filter.act_time_begin) { sql += " and act_time >= ?"; args.push(filter.act_time_begin); }
         if(filter.act_time_end) { sql += " and act_time <= ?"; args.push(filter.act_time_end); }
+        if(filter.created_date_begin) { sql += " and created_date >= ?"; args.push(filter.created_date_begin); }
+        if(filter.created_date_end) { sql += " and created_date <= ?"; args.push(filter.created_date_end); }
 
         var dac = MySqlAccess.RetrievePool();
         var task:any = { finished:0 };
