@@ -111,9 +111,6 @@ var flameOutTime;       //熄火时间
 //OBD行车详细信息(存放行驶过程中车辆实时信息)
 //var obdCode;          //OBD设备号
 var obdDriveId;         //行驶编号(外键)
-var faultCode;          //故障码
-var avgOilUsed;         //累计平均油耗
-var mileage;            //累计行驶里程
 var carCondition;       //车况信息
 var createTime;         //创建日期
 //OBD报警信息

@@ -6,9 +6,10 @@
 
 var dao = require('../core/dao');
 var dataManager = require('../core/dataManager');
-var info401=require('carInfo401')(dataManager);
 var http = require("http");
-
+var byteCmd=[0xFE01,0xFE04,0xFE16,0xFE17,0xFE19];
+var wordCmd=[0xFE06,0xFE08,0xFE0A,0xFE0C,0xFE0D,0xFE0E,0xFE0F,0xFE11,0xFE12,0xFE1A];
+var longCmd=[0xFE03,0xFE14];
 function sendToMessageServer(dataBuffer,commandWord){
     console.log("接收到短信回复："+commandWord+"\n");
     var dataJson={dataString:dataBuffer};
@@ -78,55 +79,32 @@ function getOBDSuccess(cmd){
     return responseBuffer.slice(0, offset);
 }
 function packetProcess(packetInput,tag,cb) {
-    var responseBuffer=null;
     var dataBuffer= dataManager.init(packetInput,0);
     var commandWord = dataManager.nextWord();           //cmd
     var obdCode=dataManager.nextString();               //OBD编号
-    switch (commandWord) {
-        case 0x1601:
-            responseBuffer = packetProcess_1601(dataBuffer);
-            if(!!responseBuffer){
-                saveToHistory(dataBuffer,tag);
-            }
-            cb(responseBuffer);
-            break;
-        case 0x1602:
-            responseBuffer = packetProcess_1602(dataBuffer);
-            if(!!responseBuffer){
-                saveToHistory(dataBuffer,tag);
-            }
-            cb(responseBuffer);
-            break;
-        case 0x1603:
-            packetProcess_1603(dataBuffer,function(responseBuffer){
-                console.log('1603回复：'+toString0X(responseBuffer));
-                if(!!responseBuffer){
-                    saveToHistory(dataBuffer,tag);
-                }
-                cb(responseBuffer);
-            });
-            break;
-        case 0x1605:
-            responseBuffer = packetProcess_1605(dataBuffer);
-            if(!!responseBuffer){
-                saveToHistory(dataBuffer,tag);
-            }
-            cb(responseBuffer);
-            break;
+    var saveAndReturn=function(responseBuffer){
+        saveToHistory(dataBuffer,tag);
+        if(!responseBuffer){
+            responseBuffer=getOBDSuccess(commandWord);
+        }
+        cb(responseBuffer);
+    };
+    if(commandWord===0x1601){
+        packetProcess_1601(dataBuffer,saveAndReturn);
     }
-    //涉及到OBD短信的反馈一律发送到短信中心进行处理
+    if(commandWord===0x1602){
+        packetProcess_1602(dataBuffer,saveAndReturn);
+    }
+    if(commandWord===0x1603){
+        packetProcess_1603(dataBuffer,saveAndReturn);
+    }
+    if(commandWord===0x1605){
+        packetProcess_1605(dataBuffer,saveAndReturn);
+    }
     if(commandWord>=0x1621&&commandWord<=0x16E0){
         sendToMessageServer(dataBuffer,commandWord);
-        responseBuffer=getOBDSuccess(commandWord);
-        if(!!responseBuffer){
-            saveToHistory(dataBuffer,tag);
-        }
-        return;
+        saveAndReturn();
     }
-    if(commandWord===0x9502){
-        return getOBDSuccess(0x1602);
-    }
-    return getOBDSuccess(commandWord);
 }
 //所有OBD发送过来的数据都会保存进历史表
 function saveToHistory(dataBuffer,tag){
@@ -163,7 +141,77 @@ function toString0X(dataBuffer){
     }
     return dataString;
 };
-function packetProcess_1601(dataBuffer) {
+
+function get401ValueByID(id){
+    if(wordCmd.indexOf(id)>=0){
+        return dataManager.nextWord();
+    }
+    if(byteCmd.indexOf(id)>=0){
+        return dataManager.nextByte();
+    }
+    if(longCmd.indexOf(id)>=0){
+        return dataManager.nextLong();
+    }
+    if(id===0xFE00){
+        var faultCode=[];
+        var fcCount=dataManager.nextByte();               //故障码个数
+        for(var i=0;i<fcCount;i++){
+            var code=dataManager.nextString();             //故障码
+            var status=dataManager.nextString();           //故障码属性
+            var desc=dataManager.nextString();             //故障码描述
+            faultCode.push({code:code,status:status,desc:desc});
+        }
+        return faultCode;
+    }
+    if(id===0xFE10){
+        var interval=[];
+        for(i=0;i<dataManager.nextByte();i++){
+            interval.push(dataManager.nextWord());
+        }
+        return interval;
+    }
+    if(id===0xFE15){
+        var voltage=[];
+        for(i=0;i<dataManager.nextWord();i++){
+            voltage.push(dataManager.nextByte());
+        }
+        return voltage;
+    }
+    return dataManager.nextString();
+};
+function set401ValueByID(id,value){
+    if(id<0xFE03||id===0xFE13||id===0xFE14||id>0xFE1A)return;
+
+    if(wordCmd.indexOf(id)>=0){
+        dataManager.writeWord(value);
+        return;
+    }
+    if(byteCmd.indexOf(id)>=0){
+
+        dataManager.writeByte(value);
+        return;
+    }
+    if(longCmd.indexOf(id)>=0){
+        dataManager.writeLong(value);
+        return;
+    }
+    if(id===0xFE10){
+        dataManager.writeByte(value.length);
+        for(var i=0;i<value.length;i++){
+            dataManager.writeWord(value[i]);
+        }
+        return;
+    }
+    if(id===0xFE15){
+        dataManager.writeWord(value.length);
+        for(i=0;i<value.length;i++){
+            dataManager.writeByte(value[i]);
+        }
+        return;
+    }
+    dataManager.writeString(value);
+};
+function packetProcess_1601(dataBuffer,cb) {
     dataManager.init(dataBuffer,2);
     //1、获得报文内容
     var obdCode=dataManager.nextString();               //OBD编号
@@ -194,115 +242,141 @@ function packetProcess_1601(dataBuffer) {
         obd.lastUpdateTime=lastUpdateTime;
         var sql="insert into t_obd_drive set ?";
         dao.executeBySql([sql],[obd],function(){
-            console.log("成功创建行驶信息:"+JSON.stringify(obd));
+            console.log("成功创建行驶信息(点火):"+JSON.stringify(obd));
+            cb();
         });
     }
     //3、其他情况则更新行驶信息，需要先获取行驶信息的id
-    else if(dataType===2){
-        //2、获取当前行驶详细信息
-
-        var driveDetail=[];
-        var detailCount=dataManager.nextWord();            //车况信息个数
-        for(var i=0;i<detailCount;i++){
-            var id=dataManager.nextWord();;             //ID
-            var value=info401.getValueByID(id);
-            carCondition.push({id:id,value:value});
-        }
-        var sql="select t.id from t_obd_drive t where t.obdCode=? and t.carStatus<=?";
-        dao.findBySql(sql,[obdCode,2],function(rows){
+    else{
+        var sql="select t.id,t.carStatus from t_obd_drive t where t.tripId=? and t.obdCode=?";
+        dao.findBySql(sql,[tripId,obdCode],function(rows){
             if(rows.length>0){
                 var id=rows[0].id;
-                var sql1="update t_obd_drive set ? where id=?";
-                var sql2="insert into t_drive_detail set ?";
-                var args1=[{carStatus:2},id];
-                var args2={
-                    obdCode:obdCode,
-                    obdDriveId:id,
-                    faultCode:JSON.stringify(faultCode),
-                    avgOilUsed:avgOilUsed,
-                    mileage:mileage,
-                    carCondition:JSON.stringify(carCondition),
-                    createTime:new Date()
-                };
-                dao.executeBySql([sql1,sql2],[args1,args2],function(){
-                    console.log("车辆行驶详情保存成功:"+JSON.stringify(args2));
-                });
+                var carStatus=rows[0].carStatus;
+                if(dataType===0x02){
+                    //2、获取当前行驶详细信息
+                    var driveDetail=[];
+                    var detailCount=dataManager.nextWord();            //车况信息个数
+                    for(var i=0;i<detailCount;i++){
+                        var id=dataManager.nextWord();;             //ID
+                        var value=get401ValueByID(id);
+                        driveDetail.push({id:id,value:value});
+                    }
+                    var sql="insert into t_drive_detail set ?";
+                    var args={
+                        obdCode:obdCode,
+                        obdDriveId:id,
+                        detail:JSON.stringify(driveDetail),
+                        createTime:new Date()
+                    };
+                    if(carStatus>1){
+                        dao.insertBySql(sql,args,function(info){
+                            console.log("车辆行驶详情保存成功:"+JSON.stringify(args));
+                            cb();
+                        });
+                    }
+                    else{
+                        var sqlDrive="update t_obd_drive set ? where id=?";
+                        var argsDrive=[{carStatus:2,lastUpdateTime:lastUpdateTime},id];
+                        dao.executeBySql([sql,sqlDrive],[args,argsDrive],function(){
+                            console.log("成功更新行驶信息(行驶中):"+JSON.stringify(obd));
+                            console.log("车辆行驶详情保存成功:"+JSON.stringify(args));
+                            cb();
+                        });
+                    }
+                }
+                else if(dataType===3){
+                    //--熄火
+                    //-----本次行程数据小计
+                    var runTime=dataManager.nextWord();            //发动机运行时间
+                    var currentMileage=dataManager.nextLong();     //本次驾驶行驶里程
+                    var currentAvgOilUsed=dataManager.nextWord();  //本次驾驶平均油耗
+                    var mileage=dataManager.nextLong();            //累计行驶里程
+                    var avgOilUsed=dataManager.nextWord();         //累计平均油耗
+                    //-----本行程车速分组统计
+                    var speedGroup=[];              //本行程车速分组统计(JSON)
+                    var groupCount=dataManager.nextByte();
+                    for(var i=0;i<groupCount;i++){
+                        var speed=dataManager.nextByte();
+                        var time=dataManager.nextWord();
+                        var distance=dataManager.nextLong();
+                        speedGroup.push({speed:speed,time:time,distance:distance});
+                    }
+                    //-----驾驶习惯统计
+                    var speedingTime=dataManager.nextWord();       //超速行驶时间
+                    var speedUp=dataManager.nextWord();            //急加速次数
+                    var speedDown=dataManager.nextWord();          //急减速次数
+                    var sharpTurn=dataManager.nextLong();          //急转弯次数
+                    var speedMax=dataManager.nextByte();           //最高车速
+                    //-----熄火定位信息
+                    var flameOutSpeed=dataManager.nextString();          //熄火车速
+                    var flameOutDistance=dataManager.nextString(); //熄火时行驶距离
+                    var other=dataManager.nextString().split(',');
+                    var flameOutLongitude=other[0];      //熄火时经度
+                    var flameOutLatitude=other[1];       //熄火时纬度
+                    var flameOutDirection=other[2];      //熄火时方向
+                    var flameOutLocationTime=other[3];   //熄火时定位时间
+                    var flameOutLocationType=other[4];   //熄火时定位方式(1-基站定位,2-GPS定位)
+                    var sql="update t_obd_drive set ? where id=?";
+                    var args=[{
+                        runTime:runTime,
+                        currentMileage:currentMileage,
+                        currentAvgOilUsed:currentAvgOilUsed,
+                        mileage:mileage,
+                        avgOilUsed:avgOilUsed,
+                        speedGroup:JSON.stringify(speedGroup),
+                        speedingTime:speedingTime,
+                        speedUp:speedUp,
+                        speedDown:speedDown,
+                        sharpTurn:sharpTurn,
+                        speedMax:speedMax,
+                        flameOutSpeed:flameOutSpeed,
+                        flameOutDistance:flameOutDistance,
+                        flameOutLongitude:flameOutLongitude,
+                        flameOutLatitude:flameOutLatitude,
+                        flameOutDirection:flameOutDirection,
+                        flameOutLocationTime:flameOutLocationTime,
+                        flameOutLocationType:flameOutLocationType,
+                        carStatus:3,
+                        flameOutTime:receiveTime,
+                        lastUpdateTime:lastUpdateTime
+                    },id];
+                    dao.executeBySql([sql],[args],function(){
+                        console.log("成功更新行驶信息(熄火):"+JSON.stringify(args));
+                        cb();
+                    });
+                }
+                else if(dataType===4){
+                    var flameOutVoltage=dataManager.nextString();        //熄火时蓄电池电压
+                    var sql="update t_obd_drive set ? where id=?";
+                    var args=[{
+                        flameOutVoltage:flameOutVoltage,
+                        carStatus:4,
+                        lastUpdateTime:lastUpdateTime
+                    },id];
+                    dao.executeBySql([sql],[args],function(){
+                        console.log("成功更新行驶信息(行程结束):"+JSON.stringify(args));
+                        cb();
+                    });
+                }
+                else{
+                    var sql="update t_obd_drive set ? where id=?";
+                    var args=[{
+                        carStatus:5,
+                        lastUpdateTime:lastUpdateTime
+                    },id];
+                    dao.executeBySql(sql,[args],function(){
+                        console.log("成功更新行驶信息(异常):"+JSON.stringify(args));
+                        cb();
+                    });
+                }
             }
             else{
-                console.log("车辆行驶信息丢失");
+                console.log("车辆行驶信息丢失,无法找到[OBDCode:"+obdCode+"][TripId:"+tripId+"]对应的行程信息");
+                cb();
             }
         });
     }
-    else if(dataType===3){
-        var firingVoltage=dataManager.nextString();          //点火电压
-        var runTime=dataManager.nextLong();            //发动机运行时间
-        var currentMileage=dataManager.nextLong();      //行驶里程
-        var currentAvgOilUsed=parseFloat(dataManager.nextString());  //本次驾驶平均油耗
-        currentAvgOilUsed=currentAvgOilUsed?currentAvgOilUsed:null;
-        var speedingTime=dataManager.nextLong();        //超速行驶时间(>120km/h)
-        var speedUp=dataManager.nextWord();            //急加速次数
-        var speedDown=dataManager.nextWord();          //急减速次数
-        var sharpTurn=dataManager.nextWord();          //急转弯次数
-        var flameVoltage=dataManager.nextString();       //熄火电压
-        var avgOilUsed=parseFloat(dataManager.nextString());         //累计平均油耗
-        avgOilUsed=avgOilUsed?avgOilUsed:null;
-        var mileage=dataManager.nextLong();            //累计行驶里程
-        var sql="select t.id from t_obd_drive t where t.obdCode=? and t.carStatus<=?";
-        dao.findBySql(sql,[obdCode,3],function(rows){
-            if(rows.length>0){
-                var id=rows[0].id;
-                var sql="update t_obd_drive set ? where id=?";
-                var args=[{
-                    firingVoltage:firingVoltage,
-                    runTime:runTime,
-                    currentMileage:currentMileage,
-                    currentAvgOilUsed:currentAvgOilUsed,
-                    speedingTime:speedingTime,
-                    speedUp:speedUp,
-                    speedDown:speedDown,
-                    sharpTurn:sharpTurn,
-                    flameVoltage:flameVoltage,
-                    avgOilUsed:avgOilUsed,
-                    mileage:mileage,
-                    carStatus:3,
-                    flameOutTime:currentTime
-                },id];
-                dao.executeBySql([sql],[args],function(){
-                    console.log("车辆熄火信息保存成功:"+JSON.stringify(args));
-                });
-            }
-        });
-    }
-    else if(dataType===4){
-        var voltageAfter=dataManager.nextString();          //熄火后电压
-        var sql="select t.id from t_obd_drive t where t.obdCode=? and t.carStatus<=?";
-        dao.findBySql(sql,[obdCode,4],function(rows){
-            if(rows.length>0){
-                var id=rows[0].id;
-                var sql="update t_obd_drive set ? where id=?";
-                var args=[{
-                    voltageAfter:voltageAfter,
-                    carStatus:4
-                },id];
-                dao.executeBySql([sql],[args],function(){
-                    console.log("车辆熄火后信息保存成功:"+JSON.stringify(args));
-                });
-            }
-        });
-    }
-    else{
-        console.log("车辆行驶信息丢失");
-    }
-    var responseBuffer = new Buffer(16);
-    var offset = 0;
-
-    responseBuffer.writeUInt16BE(0x1601, offset);
-    offset += 2;
-
-    responseBuffer.writeUInt8(0x00, offset);
-    offset += 1;
-
-    return responseBuffer.slice(0, offset);
 }
 function packetProcess_1602(dataBuffer) {
     dataManager.init(dataBuffer,2);
@@ -353,7 +427,6 @@ function packetProcess_1602(dataBuffer) {
     dao.executeBySql([sql],[obdAlarm],function(){
         console.log("成功创建报警信息:"+JSON.stringify(obdAlarm));
     });
-    return getOBDSuccess(0x1602);
 }
 function get1603Default(){
     return {
@@ -446,7 +519,6 @@ function get1603Response(obd){
     }
     //车速分组
     var speedGroup=obd.speedGroup.split(',');
-    console.log(speedGroup);
     dataManager.writeByte(speedGroup.length);
     for(var i=0;i<speedGroup.length;i++){
         dataManager.writeByte(parseInt(speedGroup[i]));
@@ -483,7 +555,6 @@ function get1603Response(obd){
     var uploadInterval;     //行驶中上传数据间隔时间
     var uploadParamId=[];   //行驶中上传数据参数Id，参考4.01和4.02
     dataManager.writeByte(obd.runtimeCount);
-    console.log(obd.runtimeCount>0x00)
     if(obd.runtimeCount>0x00){
         dataManager.writeWord(obd.uploadInterval);
         var upArray =obd.uploadParamId.split(',');
@@ -495,7 +566,6 @@ function get1603Response(obd){
     //其他数据
     dataManager.writeString(obd.updateId);
     var aaa=dataManager.getBuffer();
-    console.log(aaa);
     return aaa;
 }
 function packetProcess_1603(dataBuffer,cb) {
@@ -543,16 +613,12 @@ function packetProcess_1603(dataBuffer,cb) {
 
 function packetProcess_1605(dataBuffer) {
 
-    var responseBuffer = new Buffer(16);
-    var offset = 0;
+}
+function packetProcess_1606(dataBuffer) {
 
-    responseBuffer.writeUInt16BE(0x1605, offset);
-    offset += 2;
+}
+function packetProcess_1607(dataBuffer) {
 
-    responseBuffer.writeUInt8(0x00, offset);
-    offset += 1;
-
-    return responseBuffer.slice(0, offset);
 }
 
 function getDateTimeStamp(time) {
