@@ -189,7 +189,7 @@ module Service{
         var dac = MySqlAccess.RetrievePool();
         var task:any = { finished:0 };
         task.begin = ()=>{
-            var sqlA = util.format(sql, "C.*, S.name AS 4s_name");
+            var sqlA = util.format(sql, "C.*, S.name AS s4_name");
             if(page.IsValid()) sqlA += page.sql;
             dac.query(sqlA, args, (ex, result)=>{
                 task.A = { ex: ex, result: result };
