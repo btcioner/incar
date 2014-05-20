@@ -32,9 +32,9 @@ module.exports = function(app) {
     app.post('/wservice/login', wservice.Login);
     app.get('/wservice/logout', wservice.Logout);
 
-    app.get('/wservice/obd', authCheck, wservice.GetCarHasOBD);
+    app.get('/wservice/obd', authCheck, wservice.GetCarwith4S);
     app.post('/wservice/obd', authCheck, wservice.AddCarAsOBDOnly);
-    app.get('/wservice/obd/:obd_code', authCheck, wservice.GetCarByOBD);
+    app.get('/wservice/obd/:obd_code', authCheck, wservice.GetCarExtraByOBD);
     app.put('/wservice/obd/:obd_code', authCheck, wservice.ModifyCarByOBD);
     app.delete('/wservice/obd/:obd_code', authCheck, wservice.DeleteCarByOBD);
 
