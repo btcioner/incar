@@ -164,6 +164,36 @@ module Service{
         });
     }
 
+    export function GetCarByCustomerId(req, res){
+        // 通常一个人不会有很多车,因此该函数不必支持分页
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetCustomerById(req.params.cust_id, (ex, cust)=>{
+                if(ex) { res.json(new TaskException(-1, "查询4S店顾客失败", ex)); return; }
+                cust.GetCar((ex, cars)=>{
+                    if(ex) { res.json(new TaskException(-1, "查询车辆失败", ex)); return; }
+                    var dtos = DTOBase.ExtractDTOs(cars);
+                    res.json({status:"ok", cars:dtos});
+                });
+            });
+        });
+    }
+
+    export function GetCarByIdForCustomer(req, res){
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetCustomerById(req.params.cust_id, (ex, cust)=>{
+                if(ex) { res.json(new TaskException(-1, "查询4S店顾客失败", ex)); return; }
+                cust.GetCarById(req.params.car_id, (ex, car)=>{
+                    if(ex) { res.json(new TaskException(-1, "查询车辆失败", ex)); return; }
+                    res.json({status:"ok", car:car.DTO()});
+                });
+            });
+        });
+    }
+
     export function AddCarToCustomer(req, res){
         if(Object.keys(req.body).length === 0){
             res.json({
@@ -191,6 +221,42 @@ module Service{
         });
     }
 
+    export function ModifyCarForCustomer(req, res){
+        if(Object.keys(req.body).length === 0){
+            res.json({
+                postSample:{ user_type:1 },
+                remark:"必填:cuser_type(0无效 1车主 2非车主的其它使用人)"
+            });
+            return;
+        }
+
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetCustomerById(req.params.cust_id, (ex, cust)=>{
+                var data = req.body;
+                cust.ModifyCar(req.params.car_id, data.user_type, (ex:TaskException)=>{
+                    if(ex) {res.json(ex); return; }
+                    res.json({status:"ok"});
+                });
+            });
+        });
+    }
+
+    export function DeleteCarForCustomer(req, res){
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetCustomerById(req.params.cust_id, (ex, cust)=>{
+                var data = req.body;
+                cust.DeleteCar(req.params.car_id, (ex:TaskException)=>{
+                    if(ex) {res.json(ex); return; }
+                    res.json({status:"ok"});
+                });
+            });
+        });
+    }
+
     export class Customer extends DTOBase<DTO.account>{
         constructor(dto){
             super(dto);
@@ -209,6 +275,40 @@ module Service{
             return dto;
         }
 
+        public GetCar(cb:(ex:TaskException, cars:Car[])=>void){
+            var sql = "SELECT C.*, D.brand AS brand_name, D.series AS series_name, D.manufacturer, U.user_type\n" +
+                "FROM t_car C JOIN t_car_user U ON C.id = U.car_id and C.s4_id = U.s4_id\n" +
+                "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand = D.brandCode and C.series = D.seriesCode\n" +
+                "WHERE C.s4_id = ? and U.acc_id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            var args = [this.dto.s4_id, this.dto.id];
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "查询车辆失败", ex), null); return; }
+                var cars:Car[] = [];
+                result.forEach((dto)=>{
+                    var car = new Car(dto);
+                    cars.push(car);
+                });
+                cb(null, cars);
+            });
+        }
+
+        public GetCarById(car_id:number, cb:(ex:TaskException, car:Car)=>void){
+            var sql = "SELECT C.*, D.brand AS brand_name, D.series AS series_name, D.manufacturer, U.user_type\n" +
+                "FROM t_car C JOIN t_car_user U ON C.id = U.car_id and C.s4_id = U.s4_id\n" +
+                "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand = D.brandCode and C.series = D.seriesCode\n" +
+                "WHERE C.s4_id = ? and U.acc_id = ? and C.id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            var args = [this.dto.s4_id, this.dto.id, car_id];
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "查询车辆失败", ex), null); return; }
+                if(result.length === 0) { cb(new TaskException(-1, "指定的车辆不存在", null), null); return;}
+                if(result.length > 1)  { cb(new TaskException(-1, "车辆数据无效", null), null); return;}
+                var car = new Car(result[0]);
+                cb(null, car);
+            });
+        }
+
         public AddCar(car_id:number, user_type:number, cb:(ex:TaskException)=>void){
             var sql = "INSERT t_car_user(s4_id,car_id,acc_id,user_type)\n" +
                 "SELECT s4_id,id,?,? FROM t_car WHERE s4_id = ? and id = ?";
@@ -218,6 +318,29 @@ module Service{
                 if(ex) { cb(new TaskException(-1, "向顾客添加车辆失败", ex)); return; }
                 if(result.affectedRows === 0) { cb(new TaskException(-1, util.format("向4S店(id=%s)顾客添加车辆失败,被添加的车辆(id=%s)不存在", this.dto.s4_id,car_id), null)); return; }
                 if(result.affectedRows > 1) { cb(new TaskException(-1, util.format("4S店(id=%s)车辆(id=%s)数据错误",this.dto.s4_id,car_id), null)); return; }
+                cb(null);
+            });
+        }
+
+        public ModifyCar(car_id:number, user_type:number, cb:(ex:TaskException)=>void) {
+            var sql = "UPDATE t_car_user SET user_type = ?\n" +
+                "WHERE s4_id = ? and acc_id = ? and car_id = ?";
+            var args = [user_type, this.dto.s4_id, this.dto.id, car_id];
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "修改4S店顾客和车之间的关系失败", ex)); return; }
+                if(result.length === 0) { cb(new TaskException(-1, "指定的4S店顾客和车之间没有关系", null)); return; }
+                else if(result.length > 1) { cb(new TaskException(-1, "4S店顾客和车之间的关系数据错误", null)); return; }
+                cb(null);
+            });
+        }
+
+        public DeleteCar(car_id:number, cb:(ex:TaskException)=>void) {
+            var sql = "DELETE FROM t_car_user WHERE s4_id = ? and acc_id = ? and car_id = ?";
+            var args = [this.dto.s4_id, this.dto.id, car_id];
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "删除4S店顾客和车之间的关系失败", ex)); return; }
                 cb(null);
             });
         }

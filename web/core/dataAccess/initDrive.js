@@ -65,10 +65,10 @@ var carCondition=[
     {"id":27,"value":"0.8"},
     {"id":28,"value":"0.170"},
     {"id":74,"value":"EOBD"}];
-var obdCode="WFQ00013044";
+var obdCode="WFQ00012925";
 for(var i=0;i<driveCount;i++){
     var runtime=getRandom(25,200,0);
-    var fTime=getRandomTime(2014,3,18);
+    var fTime=getRandomTime(2014,4,13);
     var drive={
         obdCode:obdCode,
         vin:"W0L0ZCF693108391A",

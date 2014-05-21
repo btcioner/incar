@@ -64,9 +64,9 @@ exports.executeBySql=function(sqlArray,argsArray,callback){
             throw err;
         }
         connection.removeAllListeners();
-        connection.on("error",function(){
+        connection.on("error",function(err){
+            console.log("出现错误，已回滚"+err);
             connection.rollback(function(err){
-                console.log("出现错误，已回滚");
                 if (err) {
                     console.log("回滚失败，怎么会这样呢");
                     throw err;

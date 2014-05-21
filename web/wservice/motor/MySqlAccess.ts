@@ -1,10 +1,10 @@
 /// <reference path="../dts/node.d.ts" />
 
-var mysql:any = require('mysql');
-var findPool:any = require('../config/db.js');
-
 module Service{
     export module MySqlAccess{
+        var mysql:any = require('mysql');
+        var findPool:any = require('../config/db.js');
+
         // 获取全局连接池对象,如果没有,就会创建一个
         export function RetrievePool() : any{
             var poolInCar = findPool();

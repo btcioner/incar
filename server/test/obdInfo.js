@@ -34,6 +34,8 @@ var addressMessage;     //短信回复数据地址
 var portMessage;        //短信回复数据端口
 var addressLocation;    //定位数据地址
 var portLocation;       //定位数据端口
+//-----车速分段统计
+var speedGroup=[];
 //-----定位信息
 var locationCount;      //定位信息更新数量(0x00或0x03)
 var metrePerLocation;   //每行驶多少米定位一次
@@ -65,7 +67,7 @@ var lastUpdateTime;     //最后更新日期
 //var tripId;           //tripId
 //var vid;              //vid
 //var vin;              //vin码
-var receiveTime;        //接收数据时间
+var lastUpdateTime;        //接收数据时间
 //--点火
 var fireTime;           //点火时间
 var firingVoltage;      //点火电压
@@ -109,19 +111,23 @@ var flameOutTime;       //熄火时间
 //OBD行车详细信息(存放行驶过程中车辆实时信息)
 //var obdCode;          //OBD设备号
 var obdDriveId;         //行驶编号(外键)
-var faultCode;          //故障码
-var avgOilUsed;         //累计平均油耗
-var mileage;            //累计行驶里程
 var carCondition;       //车况信息
 var createTime;         //创建日期
 //OBD报警信息
 //var obdCode;          //OBD设备号
+//var tripId;           //tripId
+//var vid;              //vid
 //var vin;              //vin码
-//var brand;            //品牌
-//var series;           //系列
-//var modelYear;        //年款
 var alarmType;          //报警类型
-var faultCode;          //故障码
+//--定位信息
+var speed;              //车速
+var travelDistance;     //行驶距离
+var longitude;          //经度
+var latitude;           //纬度
+var direction;          //方向
+var locationTime;       //定位时间
+var locationType;       //定位方式(1-基站定位,2-GPS定位)
+var faultInfo;          //故障信息
 var createTime;         //创建日期
 
 
