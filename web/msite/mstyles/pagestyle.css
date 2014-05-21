@@ -37,7 +37,7 @@ a img {
 	display: block;
 }
 .boxstyle01_1 ,.boxstyle01_2{
-	background-image: url(../images/icon_01.jpg);
+	background-image: url(../mimages/icon_01.jpg);
 	background-repeat: no-repeat;
 	background-position: right center;
 	padding-right: 8px;
@@ -84,7 +84,7 @@ a img {
 #wrap #pagename {
 	font-weight: bold;
 	color: #333;
-	background-image: url(../images/pagemane_bg.jpg);
+	background-image: url(../mimages/pagemane_bg.jpg);
 	background-repeat: repeat-x;
 	background-position: top;
 	font-size: 16px;
@@ -107,7 +107,7 @@ a img {
 	line-height: 19px;
 }
 #wrap #datebox_01 ul li .w90 {
-	background-image: url(../images/date_icon.jpg);
+	background-image: url(../mimages/date_icon.jpg);
 	background-position: right center;
 	background-repeat: no-repeat;
 	border: 1px solid #CCC;

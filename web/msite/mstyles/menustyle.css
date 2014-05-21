@@ -1,6 +1,6 @@
 #wrap #menu_box {
 	background-color: #c2973c;
-	background-image: url(../images/menu_shadow.jpg);
+	background-image: url(../mimages/menu_shadow.jpg);
 	background-repeat: repeat-x;
 	background-position: bottom;
 	height: 52px;
@@ -28,7 +28,7 @@
 	color: #875c00;
 }
 .menu_line {
-	background-image: url(../images/menu_line.jpg);
+	background-image: url(../mimages/menu_line.jpg);
 	background-repeat: repeat-y;
 	height: 50px;
 	width: 2px;
@@ -36,36 +36,36 @@
 }
 
 .menu_icon1a {
-	background-image: url(../images/menu_icon1a.png);
+	background-image: url(../mimages/menu_icon1a.png);
 }
 .menu_icon2a {
-	background-image: url(../images/menu_icon2a.png);
+	background-image: url(../mimages/menu_icon2a.png);
 }
 
 .menu_icon3a {
-	background-image: url(../images/menu_icon3a.png);
+	background-image: url(../mimages/menu_icon3a.png);
 }
 .menu_icon4a {
-	background-image: url(../images/menu_icon4a.png);
+	background-image: url(../mimages/menu_icon4a.png);
 }
 
 .menu_icon1b {
-	background-image: url(../images/menu_icon1b.png);
+	background-image: url(../mimages/menu_icon1b.png);
 	background-color: #be8b1d;
 	color: #FFF;
 }
 .menu_icon2b {
-	background-image: url(../images/menu_icon2b.png);
+	background-image: url(../mimages/menu_icon2b.png);
 	background-color: #be8b1d;
 	color: #FFF;
 }
 .menu_icon3b {
-	background-image: url(../images/menu_icon3b.png);
+	background-image: url(../mimages/menu_icon3b.png);
 	background-color: #be8b1d;
 	color: #FFF;
 }
 .menu_icon4b {
-	background-image: url(../images/menu_icon4b.png);
+	background-image: url(../mimages/menu_icon4b.png);
 	background-color: #be8b1d;
 	color: #FFF;
 }
