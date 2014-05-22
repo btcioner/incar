@@ -9,15 +9,19 @@ var mysql = require('mysql');
 function getObdCode(db, userName, serverName, callback) {
     var pool = db();
 
-    pool.query('select id from t_account where oid = ?;',[userName+":"+serverName], function(err, rows){
+    pool.query('select id from t_wx_user where openid = ? and sopenid = ?;',[userName, serverName], function(err, rows){
         if (err) { callback(err); }
         else {
-             if (rows && rows.length === 1) {
-                            pool.query('select car_id from t_car_user where acc_id = ?', [rows[0].id], function(err, rows) {
+            if (rows && rows.length === 1) {
+                pool.query('select accountId from t_account_channel where channelCode = "wx" and channelKey = ?', [userName + ':' + serverName], function(err, rows) {
+                    if (err) { callback(err); }
+                    else {
+                        if (rows && rows.length === 1) {
+                            pool.query('select car_id from t_car_user where acc_id = ?', [rows[0].accountId], function(err, rows) {
                                 if (err) { callback(err); }
                                 else {
                                     if (rows && rows.length === 1) {
-                                        pool.query('select obd_code from t_car where id = ?', [rows[0].car_id], function(err, rows) {
+                                        pool.query('select obd_code from t_car_info where id = ?', [rows[0].car_id], function(err, rows) {
                                             if (err) { callback(err); }
                                             else {
                                                 if (rows && rows.length === 1) {
@@ -31,6 +35,11 @@ function getObdCode(db, userName, serverName, callback) {
                         } else { callback(new Error('zero of multiple rows returned for one wx user from account-channel map.')); }
                     }
                 });
+            } else {
+                callback(new Error('zero or multiple rows returned for matched wx user from specified openid and sopenid.'));
+            }
+        }
+    });
 }
 
 function getFuelDataForLatestTime(db, obdCode, callback) {
@@ -285,12 +294,12 @@ myDrive.getReport=function(userName, serverName, callback){
                     getFuelDataForLatestWeek(db, obdCode, function(err, resultWeek) {
                         if (err) { callback(err); }
                         else {
-                            report.fuelDataLastWeek = resultWeek;
+                            //report.fuelDataLastWeek = resultWeek;
 
                             getFuelDataForLatestMonth(db, obdCode, function(err, resultMonth) {
                                 if (err) { callback(err); }
                                 else {
-                                    report.fuelDataLastMonth = resultMonth;
+                                   // report.fuelDataLastMonth = resultMonth;
                                    // callback(null, report);
                                     getCarbonDataForLatestTime(db, obdCode, function(err, resultTime) {
                                         if (err) { callback(err); }
@@ -300,12 +309,12 @@ myDrive.getReport=function(userName, serverName, callback){
                                             getCarbonDataForLatestWeek(db, obdCode, function(err, resultWeek) {
                                                 if (err) { callback(err); }
                                                 else {
-                                                    report.carbonDataLastWeek = resultWeek;
+                                                    //report.carbonDataLastWeek = resultWeek;
 
                                                     getCarbonDataForLatestMonth(db, obdCode, function(err, resultMonth) {
                                                         if (err) { callback(err); }
                                                         else {
-                                                            report.carbonDataLastMonth = resultMonth;
+                                                           // report.carbonDataLastMonth = resultMonth;
                                                             //callback(null, report);
                                                             getBehaviorForLatestTime(self.db, userName, serverName, function(err, result){
                                                                 if (err) { callback(err); }
@@ -317,16 +326,16 @@ myDrive.getReport=function(userName, serverName, callback){
                                                                     getBehaviorForLatestWeek(self.db, userName, serverName, function(err, result){
                                                                         if (err) { callback(err); }
                                                                         else {
-                                                                            report.speedupLatestWeek = result.speedupLatestWeek;
-                                                                            report.speeddownLatestWeek = result.speeddownLatestWeek;
-                                                                            report.turnLatestWeek = result.turnLatestWeek;
+                                                                           // report.speedupLatestWeek = result.speedupLatestWeek;
+                                                                           // report.speeddownLatestWeek = result.speeddownLatestWeek;
+                                                                            //report.turnLatestWeek = result.turnLatestWeek;
 
                                                                             getBehaviorForLatestMonth(self.db, userName, serverName, function(err, result){
                                                                                 if (err) { callback(err); }
                                                                                 else {
-                                                                                    report.speedupLatestMonth = result.speedupLatestMonth;
-                                                                                    report.speeddownLatestMonth = result.speeddownLatestMonth;
-                                                                                    report.turnLatestMonth = result.turnLatestMonth;
+                                                                                   // report.speedupLatestMonth = result.speedupLatestMonth;
+                                                                                   // report.speeddownLatestMonth = result.speeddownLatestMonth;
+                                                                                   // report.turnLatestMonth = result.turnLatestMonth;
 
                                                                                     callback(null, report);
                                                                                 }
