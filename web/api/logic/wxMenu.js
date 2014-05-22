@@ -22,17 +22,22 @@ wxMenu.define = function(appid, appsecret){
                             [
                                 {
                                     "type":"click",
-                                    "name":"我的驾驶",
+                                    "name":"行车分析",
                                     "key":"MYCAR.MYDRIVE"
                                 },
                                 {
                                     "type":"click",
-                                    "name":"保养记录",
+                                    "name":"行车手册",
+                                    "key":"MYCAR.MANUAL"
+                                },
+                                {
+                                    "type":"click",
+                                    "name":"远程检测",
                                     "key":"MYCAR.MAINTAIN"
                                 },
                                 {
                                     "type":"click",
-                                    "name":"费用开支",
+                                    "name":"行车报告",
                                     "key":"MYCAR.COST"
                                 }
                             ]
@@ -48,12 +53,12 @@ wxMenu.define = function(appid, appsecret){
     },
                                 {
                                     "type":"click",
-                                    "name":"远程检测",
+                                    "name":"试乘试驾",
                                     "key":"MY4S.PROBE"
                                 },
                                 {
                                     "type":"click",
-                                    "name":"行车手册",
+                                    "name":"资讯活动",
                                     "key":"MY4S.MANUAL"
                                 },
                                 {
@@ -69,23 +74,13 @@ wxMenu.define = function(appid, appsecret){
                             [
                                 {
                                     "type":"view",
-                                    "name":"精品商城",
+                                    "name":"我的活动",
                                     "url":"http://linuxsrv.winphone.us/shopping"
                                 },
                                 {
                                     "type":"view",
-                                    "name":"活动优惠",
+                                    "name":"我的预约",
                                     "url":"http://linuxsrv.winphone.us/promotions"
-                                },
-                                {
-                                    "type":"view",
-                                    "name":"资讯信息",
-                                    "url":"http://linuxsrv.winphone.us/information"
-                                },
-                                {
-                                    "type":"view",
-                                    "name":"三方服务",
-                                    "url":"http://linuxsrv.winphone.us/thirdparty"
                                 },
                                 {
                                     "type":"view",
@@ -123,7 +118,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, session, next) {
         }
         else {
             next(null, [{
-                title: '我的驾驶',
+                title: '行车分析',
                 description: reportContent,
                 picurl: '',
                 url: 'http://linuxsrv.winphone.us/msite/myDrive.html?user=' + message.FromUserName + '@' + message.ToUserName
@@ -132,22 +127,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, session, next) {
     });
 };
 
-wxMenu.onClick['MYCAR.CARBON'] = function(message, session, next) {
-    myCar.carbonReport(message.FromUserName, message.ToUserName, function(err, reportContent){
-        if (err) {
-            // error handling ...
-            next(err);
-        }
-        else {
-            next(null, [{
-                title: '我的碳排放',
-                description: reportContent,
-                picurl: '',
-                url: 'http://linuxsrv.winphone.us/msite/carbon.html?user=' + message.FromUserName + '@' + message.ToUserName
-            }]);
-        }
-    });
-};
+
 
 wxMenu.onClick['MYCAR.BEHAVIOR'] = function(message, session, next) {
     myCar.driveBehaviorReport(message.FromUserName, message.ToUserName, function(err, reportContent){
