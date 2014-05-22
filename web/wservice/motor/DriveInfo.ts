@@ -57,6 +57,14 @@ module Service{
 
             // 都完成了
             if(task.A.ex){ res.json(new TaskException(-1, "查询OBD信息出错", task.A.ex)); return;}
+            task.A.result.forEach((entry:any)=>{
+                try {
+                    entry.speedGroup = JSON.parse(entry.speedGroup);
+                }
+                catch(ex){
+                    // ignore any exception....
+                }
+            });
 
             var totalCount = 0;
             if(!task.B.ex){
@@ -109,20 +117,14 @@ module Service{
             if(task.B.ex) { res.json(new TaskException(-1, "获取行驶详情失败", task.B.ex)); return;};
 
             task.B.result.forEach((obj:any)=>{
-                if(obj.faultCode){
-                    try{ obj.faultCode = JSON.parse(obj.faultCode); }
-                    catch(ex){ obj.faultCode = ex.toString(); }
-                }
-
-                if(obj.carCondition){
+                if(obj.detail){
                     try{
-                        obj.CarCondition = JSON.parse(obj.carCondition);
-                        obj.carCondition = undefined;
+                        obj.detail = JSON.parse(obj.detail);
                     }
-                    catch(ex){ obj.CarCondition = ex.toString(); }
+                    catch(ex){
+                     // ignore any exception
+                    }
                 }
-                else
-                    obj.CarCondition = {};
             });
 
             var totalCount = 0;
@@ -137,8 +139,8 @@ module Service{
                 });
 
                 task.B.result.forEach((detail)=>{
-                    if(detail.CarCondition.detail){
-                        detail.CarCondition.detail.forEach((obj:any)=>{
+                    if(detail.detail){
+                        detail.detail.forEach((obj:any)=>{
                             if(obj && obj.id !== undefined && obj.id !== null){
                                 obj.tip = map[obj.id];
                             }

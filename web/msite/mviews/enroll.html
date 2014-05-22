@@ -51,6 +51,18 @@
 
   //提交注册数据
   function reg(){
+      if($('#obd_code').val()==null||$('#obd_code').val().length<1){alert("请填写OBD编号");return;}
+      if($('#username').val()==null||$('#username').val().length<1){alert("请填写用户名");return;}
+      if($('#password').val()==null||$('#password').val().length<1){alert("请填写密码");return;}
+      if($('#brand').val()==null||$('#brand').val()=='-1'){alert("请选择汽车品牌");return;}
+      if($('#selectSeries').val()==null||$('#selectSeries').val()=='-1'){alert("请选择品牌系列");return;}
+      if($('#manuyear').val()==null||$('#manuyear').val()=='-1'){alert("请选择年款");return;}
+      if($('#ownername').val()==null||$('#ownername').val().length<1){alert("请填写车主姓名");return;}
+      if($('#phonenumber').val()==null||$('#phonenumber').val().length<1){alert("请填写联系电话");return;}
+      if($('#currentMileage').val()==null||$('#currentMileage').val().length<1){alert("请填写当前里程");return;}
+      if($('#enginetype').val()==null||$('#enginetype').val().length=='-1'){alert("请选择发动机类型");return;}
+      if($('#displacement').val()==null||$('#displacement').val().length<1){alert("请填写排气量");return;}
+      if($('#carage').val()==null||$('#carage').val().length=='-1'){alert("请选择车龄");return;}
       if($('#password').val()!=$('#pwdagain').val()){
           alert("密码不一致");
           return;
@@ -67,6 +79,9 @@
       postData.modelYear=$("#manuyear").val();
       postData.license=$("#platenumber").val();
       postData.mileage=$("#currentMileage").val();
+      postData.enginetype=$("#enginetype").val();
+      postData.displacement=$("#displacement").val();
+      postData.carage=$("#carage").val();
       $.ajax({
           type: "POST",
           url: "/mservice/enroll",
@@ -85,8 +100,10 @@
   }
 </script>
 </head>
-<body onLoad="init()" style="padding: 2">
+<body onLoad="init()" style="padding: 2;text-align: center">
+<h4>欢迎注册</h4>
 <img src="../mimages/logo.jpg" width="100%" height="50px">
+
  <div id="enroll"  style="margin-bottom:30px; margin-top:10px;font-size:16px">
 (带<span style="color:red;">*</span>为必填项)
 
@@ -105,7 +122,10 @@
        <tr><td style="text-align:right;">车主姓名<span style="color:red">*</span></td><td><input type="text" id="ownername" name="ownername" class="textfield" /></td></tr>
        <tr><td style="text-align:right;">联系电话<span style="color:red">*</span></td><td><input type="text" id="phonenumber" name="phonenumber" class="textfield"/></td></tr>
        <tr><td style="text-align:right;">车牌号</td><td><input type="text" id="platenumber" name="platenumber" class="textfield" /></td></tr>
-       <tr><td style="text-align:right;">当前里程</td><td><input type="text" id="currentMileage" name="currentMileage" class="textfield" /></td></tr>
+       <tr><td style="text-align:right;">当前里程<span style="color:red">*</span></td><td><input type="text" id="currentMileage" name="currentMileage" class="textfield" /></td></tr>
+       <tr><td style="text-align:right;">发动机类型<span style="color:red">*</span></td><td><select id="enginetype" name="displace" class="textfield" ><option value="-1" >请选择</option><option>自然吸气</option><option>涡轮增压</option></select></td></tr>
+       <tr><td style="text-align:right;">排气量<span style="color:red">*</span></td><td><input type="text" id="displacement" name="displacement" class="textfield" /></td></tr>
+       <tr><td style="text-align:right;">车龄<span style="color:red">*</span></td><td><select  id="carage" name="carage" class="textfield" ><option value="-1" >请选择</option><option value="0">1年以下</option><option value="1">1-2年</option><option value="2">2-5年</option><option value="5">5-10年</option><option value="10">10年以上</option></select></td></tr>
      </table>
   </form>
      <div id="Tip"></div>

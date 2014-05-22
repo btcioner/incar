@@ -15,7 +15,7 @@ var fuelService = require('./fuelService');
 var carbonService = require('./carbonService');
 var slotBookingService = require('./slotBookingService');
 var behaviorService = require('./behaviorService');
-
+var myDriveService = require('./myDriveService');
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
 
 userService(mservice);
@@ -24,7 +24,7 @@ fuelService(mservice);
 carbonService(mservice);
 slotBookingService(mservice);
 behaviorService(mservice);
-
+myDriveService(mservice);
 (function(service) {
 
     function entrance(req, res) {

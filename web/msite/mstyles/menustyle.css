@@ -1,0 +1,71 @@
+#wrap #menu_box {
+	background-color: #c2973c;
+	background-image: url(../mimages/menu_shadow.jpg);
+	background-repeat: repeat-x;
+	background-position: bottom;
+	height: 52px;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #a97300;
+}
+#wrap #menu_box ul {
+	list-style-type: none;
+}
+
+#wrap #menu_box ul li{
+	float: left;
+}
+#wrap #menu_box ul.menu li a {
+	padding-top: 34px;
+	display: block;
+	height: 16px;
+}
+.menu_icon1a,.menu_icon2a,.menu_icon3a,.menu_icon4a,.menu_icon1b,.menu_icon2b,.menu_icon3b,.menu_icon4b {
+	background-repeat: no-repeat;
+	background-position: center 7px;
+	padding-right: 15px;
+	padding-left: 15px;
+	color: #875c00;
+}
+.menu_line {
+	background-image: url(../mimages/menu_line.jpg);
+	background-repeat: repeat-y;
+	height: 50px;
+	width: 2px;
+	background-position: center;
+}
+
+.menu_icon1a {
+	background-image: url(../mimages/menu_icon1a.png);
+}
+.menu_icon2a {
+	background-image: url(../mimages/menu_icon2a.png);
+}
+
+.menu_icon3a {
+	background-image: url(../mimages/menu_icon3a.png);
+}
+.menu_icon4a {
+	background-image: url(../mimages/menu_icon4a.png);
+}
+
+.menu_icon1b {
+	background-image: url(../mimages/menu_icon1b.png);
+	background-color: #be8b1d;
+	color: #FFF;
+}
+.menu_icon2b {
+	background-image: url(../mimages/menu_icon2b.png);
+	background-color: #be8b1d;
+	color: #FFF;
+}
+.menu_icon3b {
+	background-image: url(../mimages/menu_icon3b.png);
+	background-color: #be8b1d;
+	color: #FFF;
+}
+.menu_icon4b {
+	background-image: url(../mimages/menu_icon4b.png);
+	background-color: #be8b1d;
+	color: #FFF;
+}
