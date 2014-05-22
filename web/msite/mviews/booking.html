@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="../mstyles/jqm-datebox.min.css">
     <link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">
-
+    <link rel="stylesheet" href="../mstyles/jqm-datebox.min.css">
     <!--日期控件资源结束  -->
 
     <style scoped>
@@ -73,22 +73,16 @@
     </script>
 </head>
 <body onLoad="init()" >
-    <div id="fuel" >
+    <div id="fuel" style="text-align: center" >
+        <h4 >预约保养</h4>
       <hr color="#009900" style="height:5px" >
-             <div id="dateP" style="text-align:center;font-size:12px;padding: 0;height: 50px">
-                 <div style="float: left;margin-top: 15px">预约日期&nbsp;</div>
-                 <div style="width: 35%;float: left;text-align: left;">
-                     <input name="start" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align:middle;font-size: 14px" />
-                 </div>
-                 <div style="float: left;margin-top: 15px">&nbsp;&nbsp;预约时间&nbsp;</div>
-                 <div style="width: 35%;float: left;text-align: left;font-size: 10px">
-                     <input name="end" type="date" data-options='{"mode":"timeflipbox"}' data-role="datebox" id="end" style="vertical-align:middle;font-size: 14px" />
-                 </div>
-             </div>
+
     </div>
        <div id="bookStatus" style="width: 100%">
           <table style="font-size:16px; margin-top:5px" cellspacing="3px">
-             <tr><td class="tdStyle"> 车主姓名</td><td><input name="ownerName" type="text" class="textfield" id="ownerName"/></td></tr>
+             <tr><td class="tdStyle"> 预约日期</td><td> <input name="start" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align:middle;" /></td></tr>
+              <tr><td class="tdStyle"> 预约时间</td><td><input name="end" type="date" data-options='{"mode":"timeflipbox"}' data-role="datebox" id="end" style="vertical-align:middle;" /></td></tr>
+              <tr><td class="tdStyle"> 车主姓名</td><td><input name="ownerName" type="text" class="textfield" id="ownerName"/></td></tr>
              <tr><td class="tdStyle"> 联系电话</td><td><input name="phone" type="text" class="textfield" id="phone"/></td></tr>
              <tr><td class="tdStyle"> 车牌号</td><td><input name="plateNum" type="text" class="textfield" id="plateNum"/></td></tr>
              <tr><td class="tdStyle"> 车型</td><td><input name="carType" type="text" class="textfield" id="carType"/></td></tr>

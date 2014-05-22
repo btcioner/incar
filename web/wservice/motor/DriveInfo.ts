@@ -97,7 +97,7 @@ module Service{
             });
 
             // 字典表
-            dac.query("SELECT code, tip FROM t_drive_condition;", null, (ex, result)=>{
+            dac.query("SELECT code, tip FROM t_drive_dictionary;", null, (ex, result)=>{
                 task.C = { ex:ex, result:result };
                 task.finished++;
                 task.end();

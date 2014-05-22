@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script  src="../mscripts/car.js"></script>
+    <script  src="../mscripts/jquery-1.7.1.min.js"></script>
+
+    <script>
+     var code=getQueryString("code");
+     var reqUrl="https://api.weixin.qq.com/sns/oauth2/access_token?"+
+             "appid=wx5de0018d8c7b0b0d&secret=ea3cbd792917a19f7d043b02b7a7a0c6"+
+             "&code="+code+"&grant_type=authorization_code";
+
+     $.ajax({
+         type: "POST",
+         url: '/mservice/getOpenid',
+         data: {url:reqUrl,'code':code},
+         dataType: "json",
+         success: function (result) {
+            //alert("成功"+result.openid);
+             window.location="/msite/infoConfig.html?user="+result.openid;
+         },
+         error:function(result){
+           alert("失败");
+         }
+     });
+    </script>
+</head>
+<body >
+1111111111111111111111111111111111111111
+</body>
+</html>

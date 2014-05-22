@@ -1,0 +1,124 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	color: #3b3b3b;
+	font-size: 12px;
+}
+a {
+	text-decoration: none;
+}
+a img {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+}
+.clear {
+	clear: both;
+	height: 0px;
+	overflow: hidden;
+}
+.float {
+	float: left;
+}
+.text_01 {
+	line-height: 20px;
+	text-align: center;
+}
+.text_01 span {
+	font-weight: bold;
+}
+.imgbox01 {
+	padding-top: 16px;
+}
+.imgbox01 img {
+	margin-right: auto;
+	margin-left: auto;
+	display: block;
+}
+.boxstyle01_1 ,.boxstyle01_2{
+	background-image: url(../mimages/icon_01.jpg);
+	background-repeat: no-repeat;
+	background-position: right center;
+	padding-right: 8px;
+	width: 86px;
+	text-align: right;
+	float: left;
+}
+.boxstyle01_1 {
+	line-height: 54px;
+}
+.boxstyle01_2 {
+	line-height: 72px;
+}
+
+
+.boxstyle02 {
+	float: left;
+	padding-left: 15px;
+}
+.boxstyle02 li {
+	list-style-type: none;
+	line-height: 18px;
+}
+
+
+
+
+.w90 {
+	width: 90px;
+}
+.w30 {
+	width: 30px;
+}
+.h18 {
+	height: 18px;
+}
+
+
+
+#wrap {
+	width: 320px;
+	background-color: #efefef;
+}
+#wrap #pagename {
+	font-weight: bold;
+	color: #333;
+	background-image: url(../mimages/pagemane_bg.jpg);
+	background-repeat: repeat-x;
+	background-position: top;
+	font-size: 16px;
+	line-height: 36px;
+	font-family: "黑体";
+	/* [disabled]background-color: #CC3; */
+	text-align: center;
+	padding-top: 10px;
+}
+#wrap #datebox_01 {
+	background-color: #FFF;
+	padding-top: 8px;
+	padding-right: 14px;
+	padding-bottom: 8px;
+	padding-left: 14px;
+}
+#wrap #datebox_01 ul li {
+	float: left;
+	list-style-type: none;
+	line-height: 19px;
+}
+#wrap #datebox_01 ul li .w90 {
+	background-image: url(../mimages/date_icon.jpg);
+	background-position: right center;
+	background-repeat: no-repeat;
+	border: 1px solid #CCC;
+	height: 19px;
+}
+
+
+#wrap #main_wrap {
+	/* [disabled]background-color: #3CF; */
+	padding: 14px;
+	min-height:252px;
+	_height:252px;
+	
+}

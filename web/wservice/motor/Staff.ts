@@ -201,6 +201,25 @@ module Service{
         });
     }
 
+    export function GetStaffInCar(req, res){
+        var sql = "SELECT * FROM t_staff WHERE s4_id is null";
+        var dac = MySqlAccess.RetrievePool();
+        dac.query(sql, null, (ex, result)=>{
+            if(ex) { res.json(new TaskException(-1, "查询内部员工失败", ex)); return; }
+            var staffs : Array<Staff> = [];
+            result.forEach((dto:any)=>{
+                var staff = new Staff(dto);
+                staffs.push(staff);
+            });
+            var dtos = DTOBase.ExtractDTOs(staffs);
+            dtos.forEach((dto:any)=>{
+                // 密码不应返回给客户,仅供内部使用
+                dto.pwd = undefined;
+            });
+            res.json({status:"ok", staffs:dtos});
+        });
+    }
+
     export class Staff extends DTOBase<DTO.staff>{
         constructor(dto){
             super(dto);

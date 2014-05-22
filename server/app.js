@@ -52,6 +52,7 @@ var server = net.createServer();
 
 server.on('connection', function(socket) {
     var mark=socket.remoteAddress + ':' + socket.remotePort;
+    console.log("\n**********************************************************************\n");
     console.log('Main:OBD('+mark+')：已和服务器建立连接');
     connections[mark] = socket;
     //绑定数据接收的事件
