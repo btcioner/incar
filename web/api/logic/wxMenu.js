@@ -105,7 +105,9 @@ wxMenu.define = function(appid, appsecret){
         });
     };
 };
-
+wxMenu.defineTasks = function(tickTasks, callback) {
+    menuBuilder(tickTasks, this.menuObject, callback);
+};
 wxMenu.textMsgRepliers = [];
 
 wxMenu.textMsgRepliers['my4S.onBooking'] = my4S.onBookingMessages;
