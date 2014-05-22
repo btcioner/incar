@@ -32,6 +32,8 @@ module.exports = function(app) {
     app.post('/wservice/login', wservice.Login);
     app.get('/wservice/logout', wservice.Logout);
 
+    app.get('/wservice/staff', authCheck, wservice.GetStaffInCar);
+
     app.get('/wservice/obd', authCheck, wservice.GetCarwith4S);
     app.post('/wservice/obd', authCheck, wservice.AddCarAsOBDOnly);
     app.get('/wservice/obd/:obd_code', authCheck, wservice.GetCarExtraByOBD);

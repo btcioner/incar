@@ -57,6 +57,14 @@ module Service{
 
             // 都完成了
             if(task.A.ex){ res.json(new TaskException(-1, "查询OBD信息出错", task.A.ex)); return;}
+            task.A.result.forEach((entry:any)=>{
+                try {
+                    entry.speedGroup = JSON.parse(entry.speedGroup);
+                }
+                catch(ex){
+                    // ignore any exception....
+                }
+            });
 
             var totalCount = 0;
             if(!task.B.ex){
