@@ -127,22 +127,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, session, next) {
     });
 };
 
-wxMenu.onClick['MYCAR.CARBON'] = function(message, session, next) {
-    myCar.carbonReport(message.FromUserName, message.ToUserName, function(err, reportContent){
-        if (err) {
-            // error handling ...
-            next(err);
-        }
-        else {
-            next(null, [{
-                title: '我的碳排放',
-                description: reportContent,
-                picurl: '',
-                url: 'http://linuxsrv.winphone.us/msite/carbon.html?user=' + message.FromUserName + '@' + message.ToUserName
-            }]);
-        }
-    });
-};
+
 
 wxMenu.onClick['MYCAR.BEHAVIOR'] = function(message, session, next) {
     myCar.driveBehaviorReport(message.FromUserName, message.ToUserName, function(err, reportContent){
