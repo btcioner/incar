@@ -7,7 +7,7 @@
 var WXAPI = require('../weixin').API;
 var myCar = require('./myCar');
 var my4S = require('./my4S');
-
+var menuBuilder = require('./menu');
 var wxMenu = {};
 
 wxMenu.define = function(appid, appsecret){
