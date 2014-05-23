@@ -402,25 +402,27 @@ module Service{
         }
 
         public GetCar(page:Pagination, filter:any, cb:(ex:TaskException, total:number, cars:Car[])=>void){
-            var sql = "SELECT %s FROM t_car WHERE s4_id = ?";
+            var sql = "SELECT %s FROM t_car C\n" +
+                "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand=D.brandCode and C.series=D.seriesCode\n" +
+                "WHERE C.s4_id = ?";
             var args = [this.dto.id];
 
             if(isStringNotEmpty(filter.has_obd)) {
-                if (filter.has_obd == "true") sql += " and obd_code is not null";
-                else sql += " and obd_code is null";
+                if (filter.has_obd == "true") sql += " and C.obd_code is not null";
+                else sql += " and C.obd_code is null";
             }
 
-            if(filter.license) { sql += " and license = ?"; args.push(filter.license); }
-            if(filter.obd_code) { sql += " and obd_code = ?"; args.push(filter.obd_code); }
-            if(!isNaN(filter.act_type)) { sql += " and act_type = ?"; args.push(filter.act_type); }
-            if(filter.sim_number) { sql += " and sim_number = ?"; args.push(filter.sim_number); }
-            if(!isNaN(filter.brand)) { sql += " and brand = ?"; args.push(filter.brand); }
-            if(!isNaN(filter.series)) { sql += " and series = ?"; args.push(filter.series); }
+            if(filter.license) { sql += " and C.license = ?"; args.push(filter.license); }
+            if(filter.obd_code) { sql += " and C.obd_code = ?"; args.push(filter.obd_code); }
+            if(!isNaN(filter.act_type)) { sql += " and C.act_type = ?"; args.push(filter.act_type); }
+            if(filter.sim_number) { sql += " and C.sim_number = ?"; args.push(filter.sim_number); }
+            if(!isNaN(filter.brand)) { sql += " and C.brand = ?"; args.push(filter.brand); }
+            if(!isNaN(filter.series)) { sql += " and C.series = ?"; args.push(filter.series); }
 
             var dac = MySqlAccess.RetrievePool();
             var task:any = { finished:0 };
             task.begin = ()=>{
-                var sqlA = util.format(sql, "*");
+                var sqlA = util.format(sql, "C.*,D.brand AS brand_name, D.series AS series_name");
                 if(page.IsValid()) sqlA += page.sql;
                 dac.query(sqlA, args, (ex, result)=>{
                     task.A = { ex: ex, result: result };
@@ -428,7 +430,7 @@ module Service{
                     task.end();
                 });
 
-                var sqlB = util.format(sql, "COUNT(*) count");
+                var sqlB = util.format(sql, "COUNT(C.*) count");
                 dac.query(sqlB, args, (ex, result)=>{
                     task.B = { ex:ex, result:result };
                     task.finished++;
