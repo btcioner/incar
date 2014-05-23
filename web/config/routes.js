@@ -75,7 +75,7 @@ module.exports = function(app) {
     app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin); // app.get('/wservice/organization', wservice.GetOrganization);
     app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin); // app.post('/wservice/organization', wservice.AddOrganization);
     // app.put('/wservice/organization/:org_id', wservice.ModifyOrganization);
-    app.get('/wservice/cmpx/carowner', authCheck, wservice.GetCarwithOwner); // app.get('/wservice/carowner', wservice.GetCarOwnerAll);
+    app.get('/wservice/cmpx/carowner', wservice.GetCarwithOwner); // app.get('/wservice/carowner', wservice.GetCarOwnerAll);
     // app.get('/wservice/carowner/:acc_id', wservice.GetCarOwner);
     // app.put('/wservice/carowner/:acc_id', wservice.ModifyCarOwner);
     // app.delete('/wservice/carowner/:acc_id', wservice.DeleteCarOwner);
