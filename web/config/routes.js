@@ -79,8 +79,8 @@ module.exports = function(app) {
     // app.get('/wservice/carowner/:acc_id', wservice.GetCarOwner);
     // app.put('/wservice/carowner/:acc_id', wservice.ModifyCarOwner);
     // app.delete('/wservice/carowner/:acc_id', wservice.DeleteCarOwner);
-    app.get('/wservice/cmpx/drive_info', authCheck, wservice.GetDriveInfoAll);
-    app.get('/wservice/cmpx/drive_detail/:obd_code/:drive_id', authCheck, wservice.GetDriveDetail);
+    app.get('/wservice/cmpx/drive_info', wservice.GetDriveInfoAll);
+    app.get('/wservice/cmpx/drive_detail/:obd_code/:drive_id', wservice.GetDriveDetail);
 
     app.get('/wservice/organization/:org_id/promotionslot', wservice.GetPromotionSlotAllInOrg);
     app.post('/wservice/organization/:org_id/promotionslot', wservice.AddPromotionSlotToOrg);
