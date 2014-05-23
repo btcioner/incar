@@ -139,26 +139,23 @@
 
 <body onload="init()">
 <div id="wrap">
-  <!--pagename start--><div id="pagename">行车分析</div><!--pagename end-->
+
   <!--menu_box start--><div id="menu_box">
     <!--ULmenu start--><ul class="menu">
-      <li><a id="menu_icon1" href="###" class="menu_icon1b">油&nbsp;&nbsp;&nbsp;&nbsp;耗</a></li>
-      <li class="menu_line"></li>
-      <li><a id="menu_icon2" href="###" class="menu_icon2a">碳排放量</a></li>
-      <li class="menu_line"></li>
-      <li><a id="menu_icon3" href="###" class="menu_icon3a">驾驶偏好</a></li>
-      <li class="menu_line"></li>
-      <li><a id="menu_icon4" href="###" class="menu_icon4a">速段统计</a></li>
-      </ul><!--ULmenu end-->
+    <li><a id="menu_icon1" href="###" class="menu_icon1b">油&nbsp;&nbsp;&nbsp;&nbsp;耗</a></li>
+    <li><a id="menu_icon2" href="###" class="menu_icon2a">碳排放量</a></li>
+    <li><a id="menu_icon3" href="###" class="menu_icon3a">驾驶偏好</a></li>
+    <li><a id="menu_icon4" href="###" class="menu_icon4a">速段统计</a></li>
+</ul><!--ULmenu end-->
       <div class="clear"></div>
   </div><!--meun_box end-->
   <!--datebox_01 start--><div id="datebox_01">
   <ul>
-  <li>开始：</li>
-  <li> <input name="start" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align:middle;font-size: 14px;width: 90%" oninput="search()" /></li>
-  <li><div class="w30">&nbsp;</div></li>
-  <li>结束：</li>
-  <li><input name="end" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="end" style="vertical-align:middle;font-size: 14px;width: 90%" oninput="search()"/></li>
+  <li style="margin-top: 10px">开始：</li>
+  <li style="width: 35%"> <input name="start" class="w108" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align:middle;font-size: 12px" oninput="search()" /></li>
+  <li><div>&nbsp;</div></li>
+  <li style="margin-top: 10px">结束：</li>
+  <li style="width: 35%"><input name="end" class="w108" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="end" style="vertical-align:middle;font-size: 12px" oninput="search()"/></li>
   </ul>  
   <div class="clear"></div>
   </div><!--datebox_01 end-->
