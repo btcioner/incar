@@ -9,7 +9,7 @@ var mysql = require('mysql');
 exports = module.exports = function() {
     if (! global.poolInCar) {
 
-        var host = process.env.MySQLHost || 'linuxsrv.winphone.us';
+        var host = process.env.MySQLHost || '42.159.156.49';
         var user = process.env.MySQLUser || 'incarapp';
         var pwd = process.env.MySQLPwd || 'nodejs4WMQ';
 
