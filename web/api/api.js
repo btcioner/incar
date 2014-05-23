@@ -25,7 +25,9 @@ api.ticks = function(ticker) {
 api.getServiceToken = function(appName, openid, callback) {
     return wxToken.getTokenOrSetOpenId(appName, openid, callback);
 };
-
+api.defineWXMenu = function(appid, appsecret) {
+    return wxMenu.define(appid, appsecret);
+};
 api.onTextMsg = function(message, req, res, next) {
     console.log('\nreq.wxsession:');
     console.log(req.wxsession);
