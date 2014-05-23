@@ -369,10 +369,10 @@ module Service{
         var dac = MySqlAccess.RetrievePool();
         var sql = "SELECT %s" +
             "\nFROM t_work W" +
-            "\n\tLEFT OUTER JOIN t_staff_account A ON W.cust_id = A.id" +
-            "\n\tLEFT OUTER JOIN t_car_info C ON W.car_id = C.id" +
-            "\n\tLEFT OUTER JOIN t_car C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode" +
-            "\nWHERE W.work = ? and org_id = ?";
+            "\n\tLEFT OUTER JOIN t_account A ON W.cust_id = A.id and W.org_id = A.s4_id" +
+            "\n\tLEFT OUTER JOIN t_car C ON W.car_id = C.id" +
+            "\n\tLEFT OUTER JOIN t_car_dictionary C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode" +
+            "\nWHERE W.work = ? and W.org_id = ?";
         var args = new Array<any>();
         args.push(req.params.work);
         args.push(req.params.org_id);
@@ -440,9 +440,9 @@ module Service{
         var dac = MySqlAccess.RetrievePool();
         var sql = "SELECT W.*, A.nick AS cust_nick, A.phone AS cust_phone, C.license, C2.brand, C2.series" +
             "\nFROM t_work W" +
-            "\n\tLEFT OUTER JOIN t_staff_account A ON W.cust_id = A.id" +
-            "\n\tLEFT OUTER JOIN t_car_info C ON W.car_id = C.id" +
-            "\n\tLEFT OUTER JOIN t_car C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode" +
+            "\n\tLEFT OUTER JOIN t_account A ON W.cust_id = A.id and W.org_id = A.s4_id" +
+            "\n\tLEFT OUTER JOIN t_car C ON W.car_id = C.id" +
+            "\n\tLEFT OUTER JOIN t_car_dictionary C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode" +
             "\nWHERE W.id = ? and W.work = ? and W.org_id = ?";
         dac.query(sql, [req.params.work_id, req.params.work, req.params.org_id], (ex, result)=>{
             if(ex){ res.json(new TaskException(-1, "查询工作失败", ex)); return; }
