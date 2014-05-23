@@ -135,7 +135,7 @@ module Service{
 
         var sql2 = util.format(sql, "A.id AS acc_id, A.name AS acc_name, A.nick AS acc_nick, A.status AS acc_status, A.phone AS acc_phone, " +
             "O.name AS org_name, O.id AS org_id, " +
-            "C.id AS car_id, C.license AS car_license, C.brand AS brand_id, S.brand AS car_brand, C.series AS series_id, S.series AS car_series, C.obd_code");
+            "C.id AS car_id, C.license AS car_license, C.brand AS brand_id, S.brand AS car_brand, C.series AS series_id, S.series AS car_series, C.obd_code, C.sim_number");
         if(page.IsValid()) sql2 += page.sql;
         var sql3 = util.format(sql, "COUNT(*) AS count");
 
