@@ -91,9 +91,15 @@ function myDriveData(req, res) {
                                                                                                         if (err) { res.send(400, err); }
                                                                                                         else {
                                                                                                             report.behaviorDataInterval = resultInterval;
-                                                                                                            console.log(report);
-                                                                                                            res.send(200, report);
-                                                                                                        }
+                                                                                                            getSpeedForLastTime(db,obdCode,function(err,result){
+                                                                                                               if(err){ res.send(400, err);}
+                                                                                                                else{
+                                                                                                                   report.lastSpeed=result;
+                                                                                                                   console.log(report);
+                                                                                                                   res.send(200, report);
+                                                                                                               }
+                                                                                                            });
+                                                                                                         }
                                                                                                     });
                                                                                                 }
                                                                                             });
@@ -486,6 +492,21 @@ function getBehaviorDataForInterval(db, obdCode, startDatetime, endDatetime, cal
             if (rows && rows.length === 1) {
                 callback(null, rows[0]);
             } else { callback(new Error('multiple rows returned for behavior data of lasted interval.')); }
+        }
+    });
+}
+function getSpeedForLastTime(db, obdCode, callback){
+    var pool = db();
+    pool.query('select speedGroup from t_obd_drive where fireTime < flameOutTime and obdCode= ? order by flameoutTime desc limit 1;',[obdCode], function(err, rows){
+        if (err) { callback(err); }
+        else {
+            if (rows && rows.length === 1) {
+                var speedJsonArray=new Array();
+                speedJsonArray=rows[0];
+                var speedJson={};
+                speedJson={'slow':speedJsonArray[0].distance,'middle':speedJsonArray[1].distance,'high':speedJsonArray[2].distance}
+                return callback(null, speedJson);
+            } else { return callback(new Error('multiple rows returned for speed data of lasted time.')); }
         }
     });
 }

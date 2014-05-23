@@ -22,16 +22,8 @@
         var user;//用户openId
         var webserviceurl;//webservice地址
         var today;//当天日期
-        //获取传入的参数
-        function getQueryString(name) {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]); return null;
-        }
-        //alert(getQueryString("user"));
 
-
-        //页面加载初始化
+      //页面加载初始化
         function init(){
             //获取当前日期，初始化日期控件
             today = new Date();
