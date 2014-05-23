@@ -12,7 +12,7 @@ function defaultTextMsgReplier(message, session, callback) {
     return callback({type: 'text', content: '您没有激活任何命令，或您的回复已经过期！'});
 }
 
-/*api.ticks = function(ticker) {
+api.ticks = function(ticker) {
     return function(callback) {
         var tickTasks = new TickTasks(ticker);
         wxMenu.defineTasks(tickTasks, function(err, result){
@@ -24,9 +24,6 @@ function defaultTextMsgReplier(message, session, callback) {
 
 api.getServiceToken = function(appName, openid, callback) {
     return wxToken.getTokenOrSetOpenId(appName, openid, callback);
-};*/
-api.defineWXMenu = function(appid, appsecret) {
-    return wxMenu.define(appid, appsecret);
 };
 api.onTextMsg = function(message, req, res, next) {
     console.log('\nreq.wxsession:');
