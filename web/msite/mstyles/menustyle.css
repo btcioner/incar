@@ -3,38 +3,53 @@
 	background-image: url(../mimages/menu_shadow.jpg);
 	background-repeat: repeat-x;
 	background-position: bottom;
-	height: 52px;
+	height: 60px;
 	border-top-width: 2px;
 	border-top-style: solid;
 	border-top-color: #a97300;
 }
 #wrap #menu_box ul {
-	list-style-type: none;
+	/* [disabled]background-color: #CC0; */
+	display: block;
+	width: 100%;
+	height: 58px;
+
 }
 
 #wrap #menu_box ul li{
 	float: left;
+	list-style-type: none;
+	/* [disabled]background-color: #6CC; */
+	display: block;
+	width: 25%;
+	text-align: center;
+	background-repeat: repeat-y;
+	background-position: right;
 }
 #wrap #menu_box ul.menu li a {
-	padding-top: 34px;
+	padding-top: 38px;
 	display: block;
-	height: 16px;
-}
-.menu_icon1a,.menu_icon2a,.menu_icon3a,.menu_icon4a,.menu_icon1b,.menu_icon2b,.menu_icon3b,.menu_icon4b {
+	height: 20px;
+	width: 100%;
+	color: #875c00;
 	background-repeat: no-repeat;
 	background-position: center 7px;
-	padding-right: 15px;
-	padding-left: 15px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-left-style: solid;
+	border-right-color: #aa7300;
+	border-left-color: #e9a006;
+}
+.menu_icon1a,.menu_icon2a,.menu_icon3a,.menu_icon4a {
 	color: #875c00;
 }
-.menu_line {
-	background-image: url(../mimages/menu_line.jpg);
-	background-repeat: repeat-y;
-	height: 50px;
-	width: 2px;
-	background-position: center;
+.menu_icon1b,.menu_icon2b,.menu_icon3b,.menu_icon4b {
+	background-repeat: no-repeat;
+	background-position: center 7px;
+	color: #FFF;
+	background-color: #be8b1d;
 }
-
 .menu_icon1a {
 	background-image: url(../mimages/menu_icon1a.png);
 }
@@ -51,21 +66,13 @@
 
 .menu_icon1b {
 	background-image: url(../mimages/menu_icon1b.png);
-	background-color: #be8b1d;
-	color: #FFF;
 }
 .menu_icon2b {
 	background-image: url(../mimages/menu_icon2b.png);
-	background-color: #be8b1d;
-	color: #FFF;
 }
 .menu_icon3b {
 	background-image: url(../mimages/menu_icon3b.png);
-	background-color: #be8b1d;
-	color: #FFF;
 }
 .menu_icon4b {
 	background-image: url(../mimages/menu_icon4b.png);
-	background-color: #be8b1d;
-	color: #FFF;
 }

@@ -48,31 +48,34 @@
         #fuel_chart {
             position: relative;
             float: left;
+            width: 85%;
         }
         #fuel_y_axis {
             position: relative;
             float: left;
-            width: 30px;
+            width: 20px;
             height:200px;
         }
         #carbon_chart {
             position: relative;
             float: left;
+            width: 85%;
         }
         #carbon_y_axis {
             position: relative;
             float: left;
-            width: 30px;
+            width: 20px;
             height:200px;
         }
         #drive_chart {
             position: relative;
             float: left;
+            width: 85%;
         }
         #drive_y_axis {
             position: relative;
             float: left;
-            width: 30px;
+            width: 20px;
             height:200px;
         }
     </style>
@@ -139,26 +142,23 @@
 
 <body onload="init()">
 <div id="wrap">
-  <!--pagename start--><div id="pagename">行车分析</div><!--pagename end-->
+
   <!--menu_box start--><div id="menu_box">
     <!--ULmenu start--><ul class="menu">
-      <li><a id="menu_icon1" href="###" class="menu_icon1b">油&nbsp;&nbsp;&nbsp;&nbsp;耗</a></li>
-      <li class="menu_line"></li>
-      <li><a id="menu_icon2" href="###" class="menu_icon2a">碳排放量</a></li>
-      <li class="menu_line"></li>
-      <li><a id="menu_icon3" href="###" class="menu_icon3a">驾驶偏好</a></li>
-      <li class="menu_line"></li>
-      <li><a id="menu_icon4" href="###" class="menu_icon4a">速段统计</a></li>
-      </ul><!--ULmenu end-->
+    <li><a id="menu_icon1" href="###" class="menu_icon1b">油&nbsp;&nbsp;&nbsp;&nbsp;耗</a></li>
+    <li><a id="menu_icon2" href="###" class="menu_icon2a">碳排放量</a></li>
+    <li><a id="menu_icon3" href="###" class="menu_icon3a">驾驶偏好</a></li>
+    <li><a id="menu_icon4" href="###" class="menu_icon4a">速段统计</a></li>
+</ul><!--ULmenu end-->
       <div class="clear"></div>
   </div><!--meun_box end-->
   <!--datebox_01 start--><div id="datebox_01">
   <ul>
-  <li>开始：</li>
-  <li> <input name="start" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align:middle;font-size: 14px;width: 90%" oninput="search()" /></li>
-  <li><div class="w30">&nbsp;</div></li>
-  <li>结束：</li>
-  <li><input name="end" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="end" style="vertical-align:middle;font-size: 14px;width: 90%" oninput="search()"/></li>
+  <li style="margin-top: 10px">开始：</li>
+  <li style="width: 35%"> <input name="start" class="w108" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align:middle;font-size: 12px" oninput="search()" /></li>
+  <li><div>&nbsp;</div></li>
+  <li style="margin-top: 10px">结束：</li>
+  <li style="width: 35%"><input name="end" class="w108" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="end" style="vertical-align:middle;font-size: 12px" oninput="search()"/></li>
   </ul>  
   <div class="clear"></div>
   </div><!--datebox_01 end-->
@@ -268,12 +268,12 @@
        <!--imgbox01图片区1 start--><div class="imgbox01">
          <div class="chart-wrapper" style="margin-bottom: 10px;">
              <div id="drive_y_axis"></div>
-             <div id="drive_chart"></div>
+             <div id="drive_chart" style="width: 200ex"></div>
         </div>
         <div id="note" style="text-align:center;vertical-align: middle;margin-top: 190px;margin-left: 30px">
              <div style="text-align: left;width: 49%;float: left" id="drive_chartStart"></div>
              <div style="text-align: right;width: 49%;float: left" id="drive_chartEnd"></div><br>
-             <div style="width: 10px;background:#c05020;height: 5px;float: left;margin-top: 5px;margin-left: 30px" ></div>
+             <div style="width: 10px;background:#c05020;height: 5px;float: left;margin-top: 5px;margin-left: 20px" ></div>
              <div style="float: left;margin-left: 10px;margin-right: 20px">急加速</div>
              <div style="width: 10px;background:#30c020;height: 5px;float: left;margin-top: 5px" ></div>
              <div style="float: left;margin-left: 10px;margin-right: 20px">急减速</div>
