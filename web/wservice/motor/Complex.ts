@@ -172,7 +172,10 @@ module Service{
         res.setHeader("Accept-Query", "page,pagesize,license,obd_code,act_type,act_time_begin,act_time_end,sim_number,brand_id,series_id,created_date_begin,created_date_end");
         var page = new Pagination(req.query.page, req.query.pagesize);
 
-        var sql = "SELECT %s FROM t_car C LEFT OUTER JOIN t_4s S on C.s4_id = S.id WHERE obd_code is not null";
+        var sql = "SELECT %s FROM t_car C\n" +
+            "\tLEFT OUTER JOIN t_4s S on C.s4_id = S.id\n" +
+            "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand=D.brandCode and C.series=D.seriesCode\n" +
+            "WHERE C.obd_code is not null";
         var args = [];
 
         var filter = req.query;
@@ -191,7 +194,7 @@ module Service{
         var dac = MySqlAccess.RetrievePool();
         var task:any = { finished:0 };
         task.begin = ()=>{
-            var sqlA = util.format(sql, "C.*, S.name AS s4_name");
+            var sqlA = util.format(sql, "C.*,D.brand AS brand_name,D.series AS series_name, S.name AS s4_name");
             if(page.IsValid()) sqlA += page.sql;
             dac.query(sqlA, args, (ex, result)=>{
                 task.A = { ex: ex, result: result };
