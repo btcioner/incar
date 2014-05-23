@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS t_promotion_slot(
 
 	INDEX IX_PROMOTION_SLOT_1(id),
 
-    CONSTRAINT FK_staff_org FOREIGN KEY (storeId) REFERENCES t_staff_org(id)
+    CONSTRAINT FK_staff_org FOREIGN KEY (storeId) REFERENCES t_4s(id)
 );
 
 CREATE TABLE IF NOT EXISTS t_slot_booking(
