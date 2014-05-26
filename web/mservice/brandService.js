@@ -26,6 +26,7 @@ function brandData(req, res) {
 function getBrand(db, callback) {
     var pool = db();
     var report = new Array();
+    console.log('brand search begin');
     pool.query('select brandCode from t_car_dictianary ;',[], function(err, rows){
         if (err) { callback(err); }
         else {
