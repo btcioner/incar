@@ -34,6 +34,7 @@ function getBrand(db, callback) {
                for(var i=0;i<rows.length;i++){
                    var brandData={};
                    brandData.id=rows[i].brandCode;
+                   pool.query("SET character_set_client=utf8,character_set_connection=utf8");
                    pool.query('select * from t_car_dictionary where brandCode=?;',[brandData.id],function(err, srows){
                        if(err){ callback(err);}
                        else {
