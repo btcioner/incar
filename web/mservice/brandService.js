@@ -29,6 +29,7 @@ function getBrand(db, callback) {
     pool.query('select brandCode from t_car_dictianary ;',[], function(err, rows){
         if (err) { callback(err); }
         else {
+            console.log('brand length'+rows.length);
            if(rows){
                for(var i=0;i<rows.length;i++){
                    var brandData={};
