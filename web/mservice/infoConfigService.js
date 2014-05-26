@@ -19,12 +19,12 @@ function infoConfig(req, res) {
 
 
 
-    getAccountInfo(db, postData.user, function(err, obdCode) {
+    getAccountInfo(db, postData.user, function(err, data) {
         if (err) {
             res.send(err);
         }
         else {
-            getCarInfo(db, function(err, obdCode){
+            getCarInfo(db, function(err, data){
                 if (err) {
                     res.send(err);
                 }
