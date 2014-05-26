@@ -4,7 +4,7 @@
 
 'use strict';
 
-var mysql = require('mysql-native');
+var mysql = require('mysql');
 
 exports = module.exports = function(service) {
     service.post.brandData = brandData;
@@ -34,8 +34,8 @@ function getBrand(db, callback) {
                for(var i=0;i<rows.length;i++){
                    var brandData={};
                    brandData.id=rows[i].brandCode;
-                   pool.query("SET character_set_client=utf8,character_set_connection=utf8");
-                   pool.query('select * from t_car_dictionary where brandCode=?;',[brandData.id],function(err, srows){
+                   //pool.query("SET character_set_client=utf8,character_set_connection=utf8");
+                   pool.query('select serieseCode,seriese from t_car_dictionary where brandCode=?;',[brandData.id],function(err, srows){
                        if(err){ callback(err);}
                        else {
                            if(srows){
