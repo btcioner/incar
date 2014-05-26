@@ -74,17 +74,22 @@ function getQueryString(name) {
   //初始化汽车品牌及车系选项
  function initPro() {
  var option1 = '';
+     $.ajax({
+         type: "POST",
+         url:'/mservice/brandData',
+         dataType:'json',
+         success:function(jsonData) {
+                $.each(jsonData, function(index, indexItems) {
+                 option1 += "<option id=" + indexItems.id + ">"
+                       + indexItems.brand + "</option>";
+                    });
+        $("#brand").append(option1);
+        $("#brand").bind("change", function() {
+           selectSeries(jsonData);
+          })
+        }
+      });
 
- $.getJSON("/mservice/brandData",function(jsonData) {
-  $.each(jsonData, function(index, indexItems) {
-   option1 += "<option id=" + indexItems.id + ">"
-     + indexItems.brand + "</option>";
-  });
-  $("#brand").append(option1);
-  $("#brand").bind("change", function() {
-   selectSeries(jsonData);
-  })
- });
  function selectSeries(data) {
   var option2 = '';
   var selectedIndex = $("#brand :selected").text();
