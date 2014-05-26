@@ -74,7 +74,8 @@ function getQueryString(name) {
   //初始化汽车品牌及车系选项
  function initPro() {
  var option1 = '';
- $.getJSON("../../data/car.json",function(jsonData) {
+
+ $.getJSON("/msite/brandData",function(jsonData) {
   $.each(jsonData, function(index, indexItems) {
    option1 += "<option id=" + indexItems.id + ">"
      + indexItems.brand + "</option>";
