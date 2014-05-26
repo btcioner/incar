@@ -30,15 +30,15 @@ function getBrand(db, callback) {
     pool.query('select brandCode from t_car_dictionary group by brandCode;',[], function(err, rows){
         if (err) { callback(err); }
         else {
-            console.log('brand length'+rows.length);
-           if(rows){
+            if(rows){
                for(var i=0;i<rows.length;i++){
                    var brandData={};
                    brandData.id=rows[i].brandCode;
-                   pool.query('select * from t_car_dictionary where brandCode=?;',[rows[i].brandCode],function(err, srows){
+                   pool.query('select * from t_car_dictionary where brandCode=?;',[brandData.id],function(err, srows){
                        if(err){ callback(err);}
                        else {
                            if(srows){
+                               console.log('brand length:'+srows.length+'  brand:'+srows[0].brand);
                                brandData.brand =srows[0].brand;
                                var items=new Array();
                                for(var j=0;j<srows.length;j++){
