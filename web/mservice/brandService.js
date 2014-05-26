@@ -47,7 +47,7 @@ function getBrand(db, callback) {
                                    series.parentNode=brandData.brand;
                                    series.series=srows[j].series;
                                    series.id=srows[j].seriesCode;
-                                   items[j]=seriese;
+                                   items[j]=series;
                                }
                               brandData.items=items;
                            }
