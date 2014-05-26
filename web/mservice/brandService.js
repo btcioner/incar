@@ -54,7 +54,7 @@ function getBrand(db, callback) {
                   report[i]= brandData;
                }
                callback(null,report);
-           }
+           }else  {callback(new Error('error!!'))}
         }
     });
 }
