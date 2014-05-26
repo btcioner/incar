@@ -35,7 +35,7 @@ function getBrand(db, callback) {
                for(var i=0;i<rows.length;i++){
                    var brandData={};
                    brandData.id=rows[i].brandCode;
-                   pool.query('select * from t_car_dictianary where brandCode=?;',[rows[i].brandCode],function(err, srows){
+                   pool.query('select * from t_car_dictionary where brandCode=?;',[rows[i].brandCode],function(err, srows){
                        if(err){ callback(err);}
                        else {
                            if(srows){
