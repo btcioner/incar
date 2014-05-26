@@ -9,7 +9,7 @@ var mysql = require('mysql');
 exports = module.exports = function(service) {
     service.post.brandData = brandData;
 }
-var report = new Array();
+
 function brandData(req, res) {
 
     var db = this.db;
@@ -24,6 +24,7 @@ function brandData(req, res) {
 
 function getBrand(db, callback) {
     var pool = db();
+    var report = new Array();
     pool.query('select brandCode from t_car_dictianary ;',[], function(err, rows){
         if (err) { callback(err); }
         else {
