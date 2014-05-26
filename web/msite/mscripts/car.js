@@ -75,7 +75,7 @@ function getQueryString(name) {
  function initPro() {
  var option1 = '';
 
- $.getJSON("/msite/brandData",function(jsonData) {
+ $.getJSON("/mservice/brandData",function(jsonData) {
   $.each(jsonData, function(index, indexItems) {
    option1 += "<option id=" + indexItems.id + ">"
      + indexItems.brand + "</option>";
