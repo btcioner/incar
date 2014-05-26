@@ -13,13 +13,12 @@ module Service{
             var sql = "SELECT C.id, C.obd_code, C2.brand, C2.series,U.acc_id AS owner_id, A.nick AS owner_nick, A.phone As owner_phone,\n" +
                 "\tmax(D.mileage) AS max_mileage, sum(D.runtime)/60 AS max_hour,\n"+
                 "\tC2.care_mileage, C2.care_hour\n" +
-                "FROM t_car_info C\n" +
-                "\tJOIN t_car_org O ON C.id = O.car_id\n" +
-                "\tJOIN t_car C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode\n" +
+                "FROM t_car C\n" +
+                "\tJOIN t_car_dictionary C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode\n" +
                 "\tJOIN t_obd_drive D ON C.obd_code = D.obdCode\n" +
                 "\tLEFT OUTER JOIN t_car_user U ON U.car_id = C.id and U.user_type = 1\n" +
-                "\tLEFT OUTER JOIN t_staff_account A ON A.id = U.acc_id\n" +
-                "WHERE O.org_id = ? and C.id NOT IN(SELECT car_id FROM t_work WHERE work='care' and step in ('applied','approved','refused'))\n" +
+                "\tLEFT OUTER JOIN t_account A ON A.id = U.acc_id and A.s4_id = U.s4_id\n" +
+                "WHERE C.s4_id = ? and C.id NOT IN(SELECT car_id FROM t_work WHERE work='care' and step in ('applied','approved','refused'))\n" +
                 "GROUP BY C.id HAVING (max_mileage >= C2.care_mileage or max_hour >= C2.care_hour)";
             var args = [req.params.org_id];
 
@@ -109,9 +108,9 @@ module Service{
         var sql = "SELECT %s\n" +
             "FROM t_work_log L\n" +
             "\tJOIN t_work W ON W.id = L.work_id\n" +
-            "\tLEFT OUTER JOIN t_staff_account A ON A.id = W.cust_id\n" +
-            "\tLEFT OUTER JOIN t_car_info C ON C.id = W.car_id\n" +
-            "\tLEFT OUTER JOIN t_car C2 ON C2.brandCode = C.brand and C2.seriesCode = C.series\n" +
+            "\tLEFT OUTER JOIN t_account A ON A.id = W.cust_id and A.s4_id = W.org_id\n" +
+            "\tLEFT OUTER JOIN t_car C ON C.id = W.car_id\n" +
+            "\tLEFT OUTER JOIN t_car_dictionary C2 ON C2.brandCode = C.brand and C2.seriesCode = C.series\n" +
             "WHERE W.work='care' and L.step in('applied', 'refused') and L.json_args LIKE '%\"via\":\"web\"%' and W.org_id = ?";
         var args = [req.params.org_id];
 

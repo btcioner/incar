@@ -3,7 +3,7 @@
 module Service{
     // 返回所有行车信息
     export function GetDriveInfoAll(req, res):void{
-        res.setHeader("Accept-Query", "page,pagesize,city,s4_name,obd_code,brand,series");
+        res.setHeader("Accept-Query", "page,pagesize,city,s4_id,s4_name,obd_code,brand,series");
         var page = new Pagination(req.query.page, req.query.pagesize);
         var filter = req.query;
 
@@ -11,7 +11,7 @@ module Service{
         var dac =  MySqlAccess.RetrievePool();
         task.begin = ()=>{
             // 1.查询OBD数据
-            var sql = "SELECT R.*, D.brand AS brand_name, D.series AS series_name, O.name AS s4_name, O.prov AS s4_prov, O.city AS s4_city\n" +
+            var sql = "SELECT R.*, D.brand AS brand_name, D.series AS series_name,C.s4_id, O.name AS s4_name, O.prov AS s4_prov, O.city AS s4_city\n" +
                 "FROM t_obd_drive AS R\n" +
                 "\tJOIN t_car as C on C.obd_code = R.obdcode\n" +
                 "\tLEFT OUTER JOIN t_4s AS O on C.s4_id = O.id\n" +
@@ -20,6 +20,7 @@ module Service{
             var args = [];
             if(filter.city){ sql += " and O.city = ?"; args.push(filter.city); }
             if(filter.s4_name){sql += " and O.name like ?"; args.push("%"+filter.s4_name+"%"); }
+            if(filter.s4_id){ sql += " and C.s4_id = ?"; args.push(filter.s4_id); }
             if(filter.obd_code){ sql += " and R.obdcode = ?"; args.push(filter.obd_code); }
             if(filter.brand){ sql += " and C.brand = ?"; args.push(filter.brand);}
             if(filter.series){ sql += " and C.series = ?"; args.push(filter.series);}
@@ -75,6 +76,11 @@ module Service{
         };
 
         task.begin();
+    }
+
+    // 返回某个4S店的所有行车信息
+    export function GetDriveInfoBy4S(req, res):void{
+
     }
 
     // 返回行车详情
