@@ -87,7 +87,10 @@ function getQueryString(name) {
         $("#brand").bind("change", function() {
            selectSeries(jsonData);
           })
-        }
+        },
+         error:function(err){
+             alert(err);
+         }
       });
 
  function selectSeries(data) {
