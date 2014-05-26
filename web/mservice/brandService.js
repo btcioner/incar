@@ -4,7 +4,7 @@
 
 'use strict';
 
-var mysql = require('mysql');
+var mysql = require('mysql-native');
 
 exports = module.exports = function(service) {
     service.post.brandData = brandData;
