@@ -16,7 +16,7 @@ function brandData(req, res) {
     getBrand(db,  function(err, data) {
          if (err) { res.send(err); }
           else {
-           console.log('Car brands print:\n');
+           //console.log('Car brands print:\n');
            //console.log(data);
            res.send(data);
          }
@@ -35,7 +35,7 @@ function getBrand(db, callback) {
                    var brandData={};
                    brandData.id=rows[i].brandCode;
                    //pool.query("SET character_set_client=utf8,character_set_connection=utf8");
-                   pool.query('select serieseCode,seriese from t_car_dictionary where brandCode=?;',[brandData.id],function(err, srows){
+                   pool.query('select seriesCode,series from t_car_dictionary where brandCode=?;',[brandData.id],function(err, srows){
                        if(err){ callback(err);}
                        else {
                            if(srows){
@@ -43,10 +43,10 @@ function getBrand(db, callback) {
                                brandData.brand =srows[0].brand;
                                var items=new Array();
                                for(var j=0;j<srows.length;j++){
-                                   var seriese={};
-                                   seriese.parentNode=brandData.brand;
-                                   seriese.seriese=srows[j].seriese;
-                                   seriese.id=srows[j].serieseCode;
+                                   var series={};
+                                   series.parentNode=brandData.brand;
+                                   series.series=srows[j].series;
+                                   series.id=srows[j].seriesCode;
                                    items[j]=seriese;
                                }
                               brandData.items=items;
