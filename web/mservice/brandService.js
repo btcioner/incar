@@ -35,11 +35,11 @@ function getBrand(db, callback) {
                    var brandData={};
                    brandData.id=rows[i].brandCode;
                    //pool.query("SET character_set_client=utf8,character_set_connection=utf8");
-                   pool.query('select seriesCode,series from t_car_dictionary where brandCode=?;',[brandData.id],function(err, srows){
+                   pool.query('select seriesCode,series from t_car_dictionary where brandCode=?;',[rows[i].brandCode],function(err, srows){
                        if(err){ callback(err);}
                        else {
                            if(srows){
-                               console.log('brandCode:'+brandData.id+'   brand length:'+srows.length+'  brand:'+srows[0].brand);
+                               console.log('brandCode:'+rows[i].brandCode+'   brand length:'+srows.length+'  brand:'+srows[0].brand);
                                brandData.brand =srows[0].brand;
                                var items=new Array();
                                for(var j=0;j<srows.length;j++){
