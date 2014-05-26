@@ -17,7 +17,7 @@ function brandData(req, res) {
          if (err) { res.send(err); }
           else {
            console.log('Car brands print:\n');
-           console.log(data);
+           //console.log(data);
            res.send(data);
          }
     });
