@@ -48,7 +48,7 @@
             postData.name = document.getElementById("name").value;//用户名
             postData.obd_code = document.getElementById("obd_code").value;
             postData.brand= document.getElementById("brand").value;
-            postData.series= document.getElementById("selectSeries").value;
+            postData.series= document.getElementById("series").value;
             postData.modelYear= document.getElementById("modelYear").value;
             postData.nick= document.getElementById("nick").value;
             postData.phone= document.getElementById("phone").value;
@@ -102,7 +102,7 @@
         <!--汽车信息contentbox start--><div class="contentbox">
         <div class="columnname"><div>汽车信息</div></div>
         <div class="content"><ul><li>汽&nbsp;车&nbsp;品&nbsp;牌&nbsp;*：</li><li><input type="text" id="brand" name="brand" class="w132"/></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>系&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列*：</li><li><input type="text" class="w132"/></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>系&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列*：</li><li><select id="series" name="series"></select></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;款*：</li><li><input type="text" id="modelYear" name="modelYear" class="w132"/></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>当&nbsp;前&nbsp;里&nbsp;程&nbsp;*：</li><li><input type="text" id="mileage" name="mileage" class="w132" /></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>发动机类型*：</li><li><select id="engine_type" name="engine_type" class="w137" ><option value="-1" id="seleEngine">请选择</option><option value="S">自然吸气</option><option value="T">涡轮增压</option></select></li></ul><div class="clear"></div></div>
@@ -188,7 +188,7 @@
              for(var i=0;i<data.seriesData.length;i++){
                  str+='<option value="'+data.seriesData[i].seriesCode+'">'+data.seriesData[i].series+'</option> '
              }
-             document.getElementById('selectSeries').innerHTML=str;
+             document.getElementById('series').innerHTML=str;
          }
      });
  }
