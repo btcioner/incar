@@ -503,5 +503,45 @@ module Service{
                 cb(null);
             });
         }
+
+        public GetActivities(page:Pagination, filter:any, cb:(ex:TaskException, totalCount:number, acts:Activity[])=>void){
+            var sql = "SELECT %s FROM t_activity WHERE 1=1";
+            var dac = MySqlAccess.RetrievePool();
+
+            var task:any = { finished:0 };
+            task.begin = ()=>{
+                var sqlA = util.format(sql,"*");
+                dac.query(sqlA, filter, (ex,result)=>{
+                    task.A = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+
+                var sqlB = util.format(sql, "COUNT(*) count");
+                dac.query(sqlB, filter, (ex, result)=>{
+                    task.B = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+            };
+
+            task.end = ()=>{
+                if(task.finished < 2) return;
+                if(task.A.ex) { cb(new TaskException(-1, "查询活动失败", task.A.ex),0,null); return; }
+
+                var totalCount = 0;
+                if(!task.B.ex) totalCount = task.B.result[0].count;
+
+                var acts = [];
+                task.A.result.forEach((dto:any)=>{
+                    var act = new Activity(dto);
+                    acts.push(act);
+                });
+
+                cb(null, totalCount, acts);
+            };
+
+            task.begin();
+        }
     }
 }

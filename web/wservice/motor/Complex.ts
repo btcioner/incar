@@ -119,12 +119,12 @@ module Service{
         var dac = MySqlAccess.RetrievePool();
         var sql = "SELECT %s " +
             "FROM t_car_user as U " +
-            "JOIN t_staff AS A ON U.acc_id = A.id " +
+            "JOIN t_account AS A ON U.acc_id = A.id " +
             "JOIN t_car AS C ON U.car_id = C.id " +
             "LEFT OUTER JOIN t_4s AS O ON C.s4_id = O.id " +
             "LEFT OUTER JOIN t_car_dictionary AS S ON C.brand = S.brandCode and C.series = S.seriesCode " +
             "WHERE U.user_type = 1";
-        var args = new Array();
+        var args = [];
         if(req.query.org_id) {sql += " and C.s4_id = ?"; args.push(req.query.org_id);}
         if(req.query.org_city) { sql += " and O.city = ?"; args.push(req.query.org_city); }
         if(req.query.brand_id) { sql += " and C.brand = ?"; args.push(req.query.brand_id); }
