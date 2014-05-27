@@ -62,12 +62,19 @@ CREATE TABLE IF NOT EXISTS t_car(
     brand int                   COMMENT '品牌',
     series int                  COMMENT '车型',
     modelYear   int             COMMENT '年款',
-    disp int                    COMMENT '发动机排量',
+    engineType varchar(5)       COMMENT '发动机类型',
+    disp float                  COMMENT '发动机排量',
     mileage long                COMMENT '校准里程数',
     age int                     COMMENT '车龄',
 
     comment VARCHAR(32)         COMMENT '简要说明性文字',
     created_date DATE           COMMENT '创建日期',
+
+    hardwareVersion varchar(20) COMMENT '硬件版本号',
+    firmwareVersion varchar(20) COMMENT '固件版本号',
+    softwareVersion varchar(20) COMMENT '软件版本号',
+    diagnosisType int           COMMENT '诊断类型',
+    initCode int                COMMENT '恢复出厂设置序列号',
 
     UNIQUE UNQ_4S_LICENSE(s4_id, license)
 );
@@ -81,4 +88,27 @@ CREATE TABLE IF NOT EXISTS t_car_user(
     join_time TIMESTAMP COMMENT '时间戳',
     UNIQUE UNQ_CAR_USER_1(s4_id, acc_id, car_id),
     INDEX IX_CAR_USER_2(s4_id, car_id, acc_id)
+);
+-- 标签大类表
+CREATE TABLE IF NOT EXISTS t_tag_group(
+    id int auto_increment PRIMARY KEY COMMENT '编号',
+    name varchar(50) COMMENT '标签大类名称',
+    description varchar(300) COMMENT '标签大类说明',
+    type tinyint COMMENT '0-系统标签 1-自定义标签'
+);
+-- 标签表
+CREATE TABLE IF NOT EXISTS t_tag(
+    id int auto_increment PRIMARY KEY COMMENT '标签编号',
+    code varchar(50) COMMENT '标签标识',
+    name varchar(50) COMMENT '标签名称',
+    description varchar(300) COMMENT '标签说明',
+    active tinyint COMMENT '0-不可用 1-可用',
+    index idx_tag_code(code)
+);
+-- 车标签关系
+CREATE TABLE IF NOT EXISTS t_car_tag(
+    tag_id int COMMENT '标签ID',
+    car_id int COMMENT '车ID',
+    UNIQUE unq_car_tag(tag_id,car_id),
+    INDEX idx_car_tag(tag_id,car_id)
 );

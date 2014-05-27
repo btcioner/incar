@@ -54,11 +54,11 @@ var carCondition=[
     {"id":27,"value":"0.8"},
     {"id":28,"value":"0.170"},
     {"id":74,"value":"EOBD"}];
-var obdCode="WFQ00012925";
-var vid="11111";
-var vin="W0L0ZCF693108391A";
+var obdCode="WFQ00012926";
+var vid="11112";
+var vin="W0L0ZCF693108391B";
 //158913798138,158913805191
-var speedGroupArray=[0,80,160];
+var speedGroupArray=[45,90,160];
 
 for(var i=0;i<driveCount;i++){
     var runtime=getRandom(600,3600,0);

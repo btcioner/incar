@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS t_obd_info(
     brand int COMMENT '品牌',
     series int COMMENT '系列',
     modelYear int COMMENT '年款',
-    engineDisplacement varchar(10) COMMENT '发动机排量',
+    engineType varchar(10) COMMENT '发动机类型',
+    engineDisplacement float COMMENT '发动机排量',
 
     serverConfigCount int COMMENT '网络参数更新数量(0x00-0x05)',
     addressParam varchar(30) COMMENT '获取参数数据地址',
