@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS t_obd_history(
     primary key (id));
 
 -- 创建OBD基本信息表
+
 CREATE TABLE IF NOT EXISTS t_obd_info(
     id int auto_increment COMMENT '主键',
     obdCode varchar(20) COMMENT 'OBD设备号',

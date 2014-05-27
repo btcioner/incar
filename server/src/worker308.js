@@ -583,7 +583,7 @@ function packetProcess_1603(dataBuffer,cb) {
 
 
     var sql="select t.id,t.brand,t.series,t.modelYear,t.engine_type," +
-        "t.disp,t.init_code from t_car t where t.obdCode=?";
+        "t.disp,t.init_code from t_car t where t.obd_code=?";
     dao.findBySql(sql,obdCode,function(rows) {
         //3、如果找到了则校验传入的OBD信息和数据库中的OBD信息，若不同则更新
         if(rows.length>0){
