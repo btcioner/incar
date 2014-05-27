@@ -28,7 +28,7 @@ wxMenu.define = function(appid, appsecret){
                                 {
                                     "type":"click",
                                     "name":"行车手册",
-                                    "key":"MYCAR.MANUAL"
+                                    "key":"MY4S.MANUAL"
                                 },
                                 {
                                     "type":"click",
@@ -59,7 +59,7 @@ wxMenu.define = function(appid, appsecret){
                                 {
                                     "type":"click",
                                     "name":"资讯活动",
-                                    "key":"MY4S.MANUAL"
+                                    "key":"MY4S.INFO"
                                 },
                                 {
                                     "type":"click",
