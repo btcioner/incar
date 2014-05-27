@@ -40,7 +40,7 @@ function getBrand(db, callback) {
                        if(err){ callback(err);}
                        else {
                            if(srows){
-                               console.log('brandCode:'+bcode+'   brand length:'+srows.length+'  brand:'+brandData.brand);
+                               console.log('brandCode:'+rows[i].brandCode+'   brand length:'+srows.length+'  brand:'+brandData.brand);
                                var items=new Array();
                                for(var j=0;j<srows.length;j++){
                                    var series={};
