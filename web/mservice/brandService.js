@@ -48,14 +48,14 @@ function getBrand(db, callback) {
                                    series.parentNode=brandData.brand;
                                    series.series=srows[j].series;
                                    series.id=srows[j].seriesCode;
-                                   items[j]=series;
+                                   items.push(series);
                                }
                               brandData.items=items;
                            }
                            else {callback(new Error('No data.'))}
                        }
                    });
-                  report[i]= brandData;
+                  report.push(brandData);
                }
                callback(null,report);
            }else  {callback(new Error('error!!'))}
