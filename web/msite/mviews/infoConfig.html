@@ -142,8 +142,26 @@
               document.getElementById('modelYear').value='20'+result.modelYear;
               document.getElementById('license').value=result.license;
               document.getElementById('mileage').value=result.mileage;
-              document.getElementById('seleAge').innerHTML=result.age+'年';
-              document.getElementById('seleAge').value=result.age;
+              var ageTemp=today.getFullYear()-age.getFullYear();
+              if(ageTemp==0){
+                  document.getElementById('seleAge').innerHTML='1年以下';
+                  document.getElementById('seleAge').value=ageTemp;
+              }else if(ageTemp==1){
+                  document.getElementById('seleAge').innerHTML='1-2年';
+                  document.getElementById('seleAge').value=ageTemp;
+              }else if(ageTemp==2){
+                  document.getElementById('seleAge').innerHTML='2-3年';
+                  document.getElementById('seleAge').value=ageTemp;
+              }else if(ageTemp==3){
+                  document.getElementById('seleAge').innerHTML='3-4年';
+                  document.getElementById('seleAge').value=ageTemp;
+              }else if(ageTemp==4){
+                  document.getElementById('seleAge').innerHTML='4-5年';
+                  document.getElementById('seleAge').value=ageTemp;
+              }else if(ageTemp==5){
+                  document.getElementById('seleAge').innerHTML='5年以上';
+                  document.getElementById('seleAge').value=ageTemp;
+              }
               document.getElementById('disp').value=result.disp;
               document.getElementById('phone').value=result.phone;
               document.getElementById('nick').value=result.nick;
