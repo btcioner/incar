@@ -1,5 +1,6 @@
 /**
  * Created by Jesse Qu on 2/25/14.
+ * 158913807970
  */
 
 'use strict';
@@ -7,7 +8,7 @@
 var dao = require('../core/dao');
 var dataManager = require('../core/dataManager');
 var http = require("http");
-var byteCmd=[0xFE01,0xFE04,0xFE16,0xFE17,0xFE19];
+var byteCmd=[0xFE01,0xFE04,0xFE16,0xF913807970E17,0xFE19];
 var wordCmd=[0xFE06,0xFE08,0xFE0A,0xFE0C,0xFE0D,0xFE0E,0xFE0F,0xFE11,0xFE12,0xFE1A];
 var longCmd=[0xFE03,0xFE14];
 function sendToMessageServer(dataBuffer,commandWord){
@@ -428,62 +429,11 @@ function packetProcess_1602(dataBuffer) {
         console.log("成功创建报警信息:"+JSON.stringify(obdAlarm));
     });
 }
-function get1603Default(){
-    return {
-        createTime:new Date(),          //时间戳
-        lastUpdateTime:new Date(),
 
-        actionCount:0x02,               //执行动作数量(0x00或0x02)
-        initCode:0x00,                  //恢复出厂设置序列号
-        isCodeClear:0xF0,               //是否清码
 
-        carUpdateCount:0x05,            //车辆信息更新数量(0x00或0x05)
-        vid:"VID20140501",              //vid
-        brand:0xFF,                     //品牌
-        series:0xFF,                    //系列
-        modelYear:0xFF,                 //年款
-        engineDisplacement:"2.5T",      //发动机排量
 
-        serverConfigCount:0x05,         //网络参数更新数量(0x00-0x05)
-        addressParam:"220.249.72.235",  //获取参数数据地址
-        portParam:9005,               //获取参数数据端口
-        addressUpload:"220.249.72.235", //主动上传数据地址
-        portUpload:9005,              //主动上传数据端口
-        addressAlarm:"220.249.72.235",  //报警数据上传地址
-        portAlarm:9005,               //报警数据上传端口
-        addressMessage:"220.249.72.235",//短信回复数据地址
-        portMessage:9005,             //短信回复数据端口
-        addressLocation:"220.249.72.235",//定位数据地址
-        portLocation:9005,            //定位数据端口
-
-        speedGroup:"0,60,120,250",      //车速分段统计
-
-        locationCount:0x03,             //定位信息更新数量(0x00或0x03)
-        metrePerLocation:75,            //每行驶多少米定位一次
-        secondsPerLocation:9,           //每过多少秒定位一次
-        locationModel:0x00,             //定位模式/距离与时间的关系
-
-        alarmCount:0x04,                //报警信息更新数量(0x00或0x04)
-        overSpeed:120,                  //超速临界值(单位km/h，超过此值被判定为超速，默认120km/h)
-        overSpeedTime:6,                //超速持续时间(单位秒，超速持续多少秒时报警，默认6秒)
-        waterTemperatureAlarm:110,      //水温报警值(单位℃，默认110℃)
-        voltageAlarm:132,               //报警电压(单位0.1V，默认132，即13.2V)
-
-        fireOffCount:0x03,              //熄火后信息更新数量(0x00或0x03)
-        criticalVoltage:115,            //关机临界电压
-        closeAfterFlameOut:0xFF,        //熄火后关闭时间点
-        voltageThreshold:"120,153",     //熄火后电池电压阀值
-
-        runtimeCount:0x00,              //运行中数据更新数量(0x00或0x02，暂时只支持0x00)
-        uploadInterval:300,             //行驶中上传数据间隔时间
-        uploadParamId:"65024,65026,65027",//行驶中上传数据参数Id，参考4.01和4.02
-
-        updateId:"0.0.0"                //软件升级Id
-    };
-};
 //生成要回复的报文内容并返回，回复和数据库操作异步处理
 function get1603Response(obd){
-
     var responseBuffer = new Buffer(4096);
     dataManager.init(responseBuffer,0);
     dataManager.writeWord(0x1603);
@@ -501,7 +451,7 @@ function get1603Response(obd){
         dataManager.writeByte(obd.brand);
         dataManager.writeByte(obd.series);
         dataManager.writeByte(obd.modelYear);
-        dataManager.writeString(obd.engineDisplacement);
+        dataManager.writeString(obd.engineDisplacement+obd.engineType);
     }
     //服务器配置
     dataManager.writeByte(obd.serverConfigCount);
@@ -565,9 +515,57 @@ function get1603Response(obd){
 
     //其他数据
     dataManager.writeString(obd.updateId);
-    var aaa=dataManager.getBuffer();
-    return aaa;
+    return dataManager.getBuffer();
 }
+
+function get1603Default(){
+    return {
+        createTime:new Date(),          //时间戳
+        lastUpdateTime:new Date(),
+
+        actionCount:0x02,               //执行动作数量(0x00或0x02)
+        initCode:0x00,                  //恢复出厂设置序列号
+        isCodeClear:0xF0,               //是否清码
+
+        carUpdateCount:0x00,            //车辆信息更新数量(0x00或0x05)
+
+        serverConfigCount:0x05,         //网络参数更新数量(0x00-0x05)
+        addressParam:"220.249.72.235",  //获取参数数据地址
+        portParam:9005,                 //获取参数数据端口
+        addressUpload:"220.249.72.235", //主动上传数据地址
+        portUpload:9005,                //主动上传数据端口
+        addressAlarm:"220.249.72.235",  //报警数据上传地址
+        portAlarm:9005,                 //报警数据上传端口
+        addressMessage:"220.249.72.235",//短信回复数据地址
+        portMessage:9005,               //短信回复数据端口
+        addressLocation:"220.249.72.235",//定位数据地址
+        portLocation:9005,              //定位数据端口
+
+        speedGroup:"1,45,90,255",       //车速分段统计
+
+        locationCount:0x03,             //定位信息更新数量(0x00或0x03)
+        metrePerLocation:75,            //每行驶多少米定位一次
+        secondsPerLocation:9,           //每过多少秒定位一次
+        locationModel:0x00,             //定位模式/距离与时间的关系
+
+        alarmCount:0x04,                //报警信息更新数量(0x00或0x04)
+        overSpeed:120,                  //超速临界值(单位km/h，超过此值被判定为超速，默认120km/h)
+        overSpeedTime:6,                //超速持续时间(单位秒，超速持续多少秒时报警，默认6秒)
+        waterTemperatureAlarm:110,      //水温报警值(单位℃，默认110℃)
+        voltageAlarm:132,               //报警电压(单位0.1V，默认132，即13.2V)
+
+        fireOffCount:0x03,              //熄火后信息更新数量(0x00或0x03)
+        criticalVoltage:115,            //关机临界电压
+        closeAfterFlameOut:0xFF,        //熄火后关闭时间点
+        voltageThreshold:"120,153",     //熄火后电池电压阀值
+
+        runtimeCount:0x00,              //运行中数据更新数量(0x00或0x02，暂时只支持0x00)
+        uploadInterval:300,             //行驶中上传数据间隔时间
+        uploadParamId:"65024,65026,65027",//行驶中上传数据参数Id，参考4.01和4.02
+
+        updateId:"0.0.0"                //软件升级Id
+    };
+};
 function packetProcess_1603(dataBuffer,cb) {
     dataManager.init(dataBuffer,2);
     //1、根据内容获得OBD编号等信息
@@ -582,16 +580,29 @@ function packetProcess_1603(dataBuffer,cb) {
     var initCode=dataManager.nextByte();            //恢复出厂序列号
     //构建OBD对应的JSON对象，回复给OBD设备的数据来源
     //2、根据OBD编号查询OBD信息，一个JSON对象
-    var sql="select * from t_obd_info t where t.obdCode=?";
+
+
+    var sql="select t.id,t.brand,t.series,t.modelYear,t.engine_type," +
+        "t.disp,t.init_code from t_car t where t.obdCode=?";
     dao.findBySql(sql,obdCode,function(rows) {
         //3、如果找到了则校验传入的OBD信息和数据库中的OBD信息，若不同则更新
-        var obdInfo={};
         if(rows.length>0){
-            obdInfo=rows[0];
+            var obd=rows[0];
+            var obdInfo=get1603Default();
+            obdInfo.carUpdateCount=0x05;            //车辆信息更新数量(0x00或0x05)
+            obdInfo.vid=obd.id;                     //vid
+            obdInfo.brand=obd.brand;                //品牌
+            obdInfo.series=obd.series;              //系列
+            obdInfo.modelYear=obd.modelYear;        //年款
+            obdInfo.engineType=obd.engine_type;     //发动机类型
+            obdInfo.engineDisplacement=obd.disp;    //发动机排量
+            obdInfo.initCode=obd.init_code;         //恢复出厂序列号
+            cb(get1603Response(obdInfo));
         }
         //4、如果不存在则创建一个新的OBD，并写入默认数据
         else{
-            obdInfo=get1603Default();
+            console.log("无法识别的ObdCode:"+obdCode);
+            /*obdInfo=get1603Default();
             obdInfo.obdCode=obdCode;
             obdInfo.tripId=tripId;
             obdInfo.vid=vid;
@@ -605,9 +616,8 @@ function packetProcess_1603(dataBuffer,cb) {
             dao.executeBySql([sql],[obdInfo],function(err,rows,fields){
                 if(err)throw err;
                 console.log("添加成功:"+JSON.stringify(obdInfo));
-            });
+            });*/
         }
-        cb(get1603Response(obdInfo));
     });
 }
 

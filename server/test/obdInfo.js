@@ -21,6 +21,7 @@ var vid;                //vid
 var brand;              //品牌
 var series;             //系列
 var modelYear;          //年款
+var engineType;         //发动机类型
 var engineDisplacement; //发动机排量
 //-----上传数据网络配置
 var serverConfigCount;  //网络参数更新数量(0x00-0x05)
