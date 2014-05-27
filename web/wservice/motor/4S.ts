@@ -585,6 +585,28 @@ module Service{
             task.begin();
         }
 
+        public GetActivity(act_id:number, cb:(ex:TaskException, act:Activity)=>void){
+            var dac = MySqlAccess.RetrievePool();
+            var task:any = { finished:0 };
+            task.begin = ()=>{
+                var sql = "SELECT * FROM t_activity WHERE s4_id = ? and id = ?";
+                var args = [this.dto.id, act_id];
+                dac.query(sql, args, (ex, result)=>{
+                    if(ex) { cb(new TaskException(-1, "查询活动失败", ex), null); return; }
+                    else if(result.length === 0) { cb(new TaskException(-1, "指定的活动不存在", null), null); return; }
+                    else if(result.length > 1) { cb(new TaskException(-1, "活动数据错误", null), null); return; }
+                    this.GetTemplate(result[0].template_id, (ex, template)=>{
+                        if(ex) { cb(new TaskException(-1, "查询活动模版出错", ex), null); return;};
+                        var fnCreate = Service[template.dto.template];
+                        if(!fnCreate) { cb(new TaskException(-1, util.format("活动模版参数template类型%s无效", template.dto.template), null), null); return; }
+                        var act = new fnCreate(result[0]);
+                        cb(null, act);
+                    });
+                });
+            };
+            task.begin();
+        }
+
         public GetTemplates(page:Pagination, filter:any, cb:(ex:TaskException, totalCount:number, templates:Template[])=>void){
             var sql = "SELECT %s FROM t_activity_template WHERE s4_id=?";
             var dac = MySqlAccess.RetrievePool();

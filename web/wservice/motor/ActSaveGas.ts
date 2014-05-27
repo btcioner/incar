@@ -10,7 +10,7 @@ module Service{
             var dto:DTO.activity = super.DTO();
 
             if(dto.tm_start){
-                dto["month"] = dto.tm_start.getMonth() + "月";
+                dto["month"] = (dto.tm_start.getMonth() + 1) + "月";
             }
 
             return dto;

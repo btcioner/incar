@@ -20,7 +20,7 @@ exports = module.exports = function() {
             user: user,
             password: pwd,
             database: dbname,
-            timezone: '+8:00'
+            timezone: '-0800'
         });
     }
     return global.poolInCar;
