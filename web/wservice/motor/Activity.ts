@@ -55,6 +55,19 @@ module Service{
         constructor(dto){
             super(dto);
         }
+
+        public DTO():DTO.activity{
+            var dto:DTO.activity = super.DTO();
+
+            if(dto.status === 1) dto.status_name = "已创建";
+            else if(dto.status === 2) dto.status_name = "已发布";
+            else if(dto.status === 3) dto.status_name = "已开始";
+            else if(dto.status === 4) dto.status_name = "已结束";
+            else if(dto.status === 5) dto.status_name = "已公布";
+            else if(dto.status === 6) dto.status_name = "已取消";
+
+            return dto;
+        }
     }
 
     export class Template extends DTOBase<DTO.activity_template>{
