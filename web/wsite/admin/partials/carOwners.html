@@ -187,53 +187,31 @@
                   <table class="table table-bordered">
                       <thead>
                       <tr>
-                          <th>OBD编号</th>
-                          <th>win码</th>
+                          <th>城市</th>
+                          <th>4S店</th>
                           <th>品牌</th>
-                          <th>系列</th>
-                          <th>年款</th>
-                          <th>点火电压</th>
-                          <th>发动机运行时间</th>
-                          <th>行驶里程</th>
-                          <th>本次驾驶平均油耗</th>
-                          <th>超速行驶时间(>120km/h)</th>
-                          <th>急加速</th>
-                          <th>急减速</th>
-                          <th>急转弯</th>
-                          <th>熄火电压</th>
-                          <th>累计平均油耗</th>
-                          <th>累计行驶里程</th>
-                          <th>熄火后电压</th>
-                          <th>状态</th>
+                          <th>车系</th>
+                          <th>OBD编号</th>
+                          <th>WIN码</th>
                           <th>点火时间</th>
-                          <th>熄火时间</th>
+                          <th>行驶里程</th>
+                          <th>状态</th>
                           <th>操作</th>
                       </tr>
                       </thead>
                       <tbody>
                       <tr class="gradeX" ng-repeat="device in drvInfos">
-                          <td id="tdc">{{device.obdCode}}</td>
-                          <td id="tdc">{{device.vin}}</td>
+                          <td id="tdc">{{device.s4_city}}</td>
+                          <td id="tdc">{{device.s4_name}}</td>
                           <td id="tdc">{{device.brand_name}}</td>
                           <td id="tdc">{{device.series_name}}</td>
-                          <td id="tdc">{{device.modelYear}}</td>
-                          <td id="tdc">{{device.firingVoltage}}</td>
-                          <td id="tdc">{{device.runTime}}</td>
-                          <td id="tdc">{{device.currentMileage}}</td>
-                          <td id="tdc">{{device.currentAvgOilUsed}}</td>
-                          <td id="tdc">{{device.speedingTime}}</td>
-                          <td id="tdc">{{device.speedUp}}</td>
-                          <td id="tdc">{{device.speedDown}}</td>
-                          <td id="tdc">{{device.sharpTurn}}</td>
-                          <td id="tdc">{{device.flameVoltage}}</td>
-                          <td id="tdc">{{device.avgOilUsed}}</td>
-                          <td id="tdc">{{device.mileage}}</td>
-                          <td id="tdc">{{device.voltageAfter}}</td>
-                          <td id="tdc">{{device.carStatus}}</td>
+                          <td id="tdc">{{device.obdCode}}</td>
+                          <td id="tdc">{{device.vin}}</td>
                           <td id="tdc">{{device.fireTime}}</td>
-                          <td id="tdc">{{device.flameOutTime}}</td>
+                          <td id="tdc">{{device.currentMileage}}</td>
+                          <td id="tdc">{{device.carStatus}}</td>
                           <td id="tdc">
-                              <a class="btn btn-info btn-mini" ng-click="GetDriveDetail(device.obdCode,device.id);">查看</a>
+                              <a class="btn btn-info btn-mini" ng-click="GetDriveDetail(device.obdCode,device.id,$index);">查看</a>
                           </td>
                       </tr>
                       </tbody>
@@ -258,28 +236,75 @@
                   <table class="table table-bordered ">
                       <thead>
                       <tr>
-                          <th>OBD编号</th>
-                          <th style="background-color:#F9F9F9;">{{chooseOC}}</th>
-                          <th>SIM卡号</th>
-                          <th style="background-color:#F9F9F9;">{{deviceDetail.sim_number}}</th>
-                          <th>状态</th>
-                          <th style="background-color:#F9F9F9;">{{deviceDetail.act_type}}</th>
-                      </tr>
-                      <tr>
-                          <th>所属4S店</th>
-                          <th style="background-color:#F9F9F9;">{{deviceDetail.org_name}}</th>
+                          <th>车主姓名</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.city}}</th>
+                          <th>4S店</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.s4_name}}</th>
                           <th>品牌</th>
-                          <th style="background-color:#F9F9F9;">{{deviceDetail.brand}}</th>
-                          <th>车款</th>
-                          <th style="background-color:#F9F9F9;">{{deviceDetail.series}}</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.brand_name}}</th>
                       </tr>
                       <tr>
-                          <th>城市</th>
-                          <th style="background-color:#F9F9F9;">{{deviceDetail.org_city}}</th>
+                          <th>车系</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.series_name}}</th>
                           <th>车主</th>
                           <th style="background-color:#F9F9F9;">{{deviceDetail.nick}}</th>
                           <th>联系电话</th>
                           <th style="background-color:#F9F9F9;">{{deviceDetail.phone}}</th>
+                      </tr>
+                      <tr>
+                          <th>OBD编号</th>
+                          <th style="background-color:#F9F9F9;">{{chooseOC}}</th>
+                          <th>SIM卡号</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.sim_number}}</th>
+                          <th colspan="2"></th>
+                      </tr>
+                      <tr>
+                          <th>VIN码</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.vin}}</th>
+                          <th>状态</th>
+                          <th style="background-color:#F9F9F9;">{{deviceDetail.act_type_name}}</th>
+                          <th>点火时间</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.fireTime}}</th>
+                      </tr>
+                      <tr>
+                          <th>点火电压</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.firingVoltage}}</th>
+                          <th>发动机运行时间</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.runTime}}</th>
+                          <th>本次平均油耗</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.currentAvgOilUsed}}</th>
+                      </tr>
+                      <tr>
+                          <th>急加速次数</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.speedUp}}</th>
+                          <th>急减数次数</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.speedDown}}</th>
+                          <th>急转弯次数</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.sharpTurn}}</th>
+                      </tr>
+                      <tr>
+                          <th>熄火电压</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.flameOutVoltage}}</th>
+                          <th>累计平均油耗</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.avgOilUsed}}</th>
+                          <th>累计行驶里程</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.mileage}}</th>
+                      </tr>
+                      <tr>
+                          <th>0速段里程</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.speedGroup[0].time}}秒，{{driveDetail.speedGroup[0].distance}}米</th>
+                          <th>0-80速段里程</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.speedGroup[1].time}}秒，{{driveDetail.speedGroup[1].distance}}米</th>
+                          <th>80-160速段里程</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.speedGroup[2].time}}秒，{{driveDetail.speedGroup[2].distance}}米</th>
+                      </tr>
+                      <tr>
+                          <th>熄火时间</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.flameOutTime}}</th>
+                          <th>熄火后电压</th>
+                          <th style="background-color:#F9F9F9;">{{driveDetail.flameOutVoltage}}</th>
+                          <th></th>
+                          <th style="background-color:#F9F9F9;"></th>
                       </tr>
                       </thead>
                   </table>
@@ -291,8 +316,7 @@
                       <tr >
                           <th>OBD设备编号</th>
                           <th>行驶编号</th>
-                          <th>累计平均油耗</th>
-                          <th>累计行驶里程</th>
+                        <!--  <th>行驶里程</th>-->
                           <th>创建时间</th>
                           <th>操作</th>
                       </tr>
@@ -301,8 +325,7 @@
                       <tr class="gradeX" ng-repeat="device in details">
                           <td id="tdc">{{device.obdCode}}</td>
                           <td id="tdc">{{device.id}}</td>
-                          <td id="tdc">{{device.avgOilUsed}}</td>
-                          <td id="tdc">{{device.mileage}}</td>
+                        <!--  <td id="tdc">{{device.mileage}}</td>-->
                           <td id="tdc">{{device.createTime}}</td>
                           <td id="tdc"><a class="btn btn-info btn-mini" ng-click="GetOneMinuteDetail($index);">详细数据</a></td>
                       </tr>
@@ -350,6 +373,7 @@
           <div class="widget-title">
              <span class="icon"><i class="icon-th"></i></span> 
             <h5>车主列表</h5>
+              <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加车主</a>
           </div>
             <div class="widget-content nopadding">
                 <!--<table class="table table-bordered data-table">-->
@@ -361,27 +385,23 @@
                             <option>请选择</option>
                            </select></th>
                         <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4S店：&nbsp;&nbsp;
-                            <select style="width:150px;" ng-model="org_id" ng-options="to.id as to.name for to in org">
+                            <select style="width:150px;" ng-model="s4_id" ng-options="s4.id as s4.name for s4 in s4s">
                                 <option>请选择</option>
                             </select></th>
                         <th style="vertical-align: middle;">品牌：&nbsp;&nbsp;&nbsp;
-                            <select style="width:150px;" ng-model="brand_id" ng-options = "brand.id as brand.name for brand in carBrand" ng-change="changeSeries(brand_id)">
-                            <option>请选择</option>
-                        </select></th>
+                            <select style="width:150px;"  ng-model="brandCode" ng-options = "brand.brandCode as brand.brand for brand in carBrand" ng-change="changeBrand(brandCode)">
+                                <option>请选择</option>
+                            </select></th>
                         <th  style="vertical-align: middle;" rowspan="2"><a class="btn btn-success" style="" ng-click="SearchDriveInfo();">搜索</a></th>
                     </tr>
                     <tr>
                         <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车主姓名：
-                            <input type="text" class="span11" style="width:150px;" placeholder="" ng-model="queryNick"/></th>
+                            <input type="text"  style="width:150px;" placeholder="" ng-model="queryNick"/></th>
                         <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联系电话：
-                            <input type="text" class="span11" style="width:150px;" placeholder="" ng-model="queryPhone"/></th>
-                        <th style="vertical-align: middle;">车型：&nbsp;&nbsp;&nbsp;
-                            <select style="width:150px;" ng-model="series_id" ng-options="series.id as series.name for series in carSeries">
-                            <option>请选择</option>
-                        </select></th>
-                    </tr>
-                    <tr>
-                        <td colspan="4" style=""><a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加车主</a></td>
+                            <input type="text"  style="width:150px;" placeholder="" ng-model="queryPhone"/></th>
+                        <th style="vertical-align: middle;">车牌号：&nbsp;&nbsp;&nbsp;
+                            <input type="text"  style="width:150px;" placeholder="" ng-model="car_license"/></th>
+                            </th>
                     </tr>
                     </thead>
                 </table>
@@ -423,7 +443,7 @@
             <div><font color="red">{{tips}}</font></div>
             <div class="pagination alternate" style="float:right;">
                 共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
-                跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
+                跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId,1);">
                 <option>1</option>
             </select>页
             </div>

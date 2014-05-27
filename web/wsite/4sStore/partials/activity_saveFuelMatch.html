@@ -1,0 +1,1302 @@
+<!--节油大赛列表 begin-->
+<div class="widget-box" ng-show="matchListDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>节油大赛信息列表</h5>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加节油赛</a>
+    </div>
+    <div class="widget-content nopadding">
+        <!--<table class="table table-bordered data-table">-->
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态： &nbsp;&nbsp;&nbsp;
+                    <select style="width:150px;padding-left:15px;" >
+                        <option>请选择</option>
+                        <option>已创建</option>
+                        <option>已发布</option>
+                        <option>已开始</option>
+                        <option>已结束</option>
+                        <option>已公布</option>
+                    </select></th>
+                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;活动月份： &nbsp;&nbsp;&nbsp;
+                    <select style="width:150px;padding-left:15px;" >
+                        <option>请选择</option>
+                        <option>5月</option>
+                        <option>6月</option>
+                        <option>7月</option>
+                        <option>8月</option>
+                        <option>9月</option>
+                    </select></th>
+                <th style="vertical-align: middle;">活动关键字：<input type="text" style="width:150px;"/></th>
+                <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo();">搜索</button></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="widget-content nopadding">
+        <!--<table class="table table-bordered data-table">-->
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>活动名称</th>
+                <th>活动月份</th>
+                <th>创建时间</th>
+                <th>发布时间</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="gradeX">
+                <td id="tdc">绿色出行，节油我看行</td>
+                <td id="tdc">6月</td>
+                <td id="tdc">2014/05/14 14:45</td>
+                <td id="tdc">2014/05/15 15:00</td>
+                <td id="tdc">2014/05/16 14:45</td>
+                <td id="tdc">2014/05/22 14:45</td>
+                <td id="tdc">已创建</td>
+                <td id="tdc">
+                    <a class="btn btn-primary btn-mini" ng-click="preview(1);">预览</a>
+                    <a class="btn btn-info btn-mini" ng-click="modify(1);">修改</a>
+                    <a class="btn btn-warning btn-mini"  ng-click="cancelMatch(1);">取消</a>
+                </td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc">绿色出行，节油我看行</td>
+                <td id="tdc">6月</td>
+                <td id="tdc">2014/05/14 14:45</td>
+                <td id="tdc">2014/05/15 15:00</td>
+                <td id="tdc">2014/05/16 14:45</td>
+                <td id="tdc">2014/05/22 14:45</td>
+                <td id="tdc">已发布</td>
+                <td id="tdc">
+                    <a class="btn btn-primary btn-mini" ng-click="preview(1);">查看</a>
+                    <a class="btn btn-info btn-mini" ng-click="InfoView('已发布')">管理</a>
+                </td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc">绿色出行，节油我看行</td>
+                <td id="tdc">6月</td>
+                <td id="tdc">2014/05/14 14:45</td>
+                <td id="tdc">2014/05/15 15:00</td>
+                <td id="tdc">2014/05/16 14:45</td>
+                <td id="tdc">2014/05/22 14:45</td>
+                <td id="tdc">已开始</td>
+                <td id="tdc">
+                    <a class="btn btn-primary btn-mini" ng-click="preview(1);">查看</a>
+                    <a class="btn btn-info btn-mini" ng-click="InfoView('已开始')">管理</a>
+                </td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc">绿色出行，节油我看行</td>
+                <td id="tdc">6月</td>
+                <td id="tdc">2014/05/14 14:45</td>
+                <td id="tdc">2014/05/15 15:00</td>
+                <td id="tdc">2014/05/16 14:45</td>
+                <td id="tdc">2014/05/22 14:45</td>
+                <td id="tdc">已结束</td>
+                <td id="tdc">
+                    <a class="btn btn-primary btn-mini" ng-click="preview(1);">查看</a>
+                    <a class="btn btn-info btn-mini" ng-click="InfoView('已结束')">管理</a>
+                </td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc">绿色出行，节油我看行</td>
+                <td id="tdc">6月</td>
+                <td id="tdc">2014/05/14 14:45</td>
+                <td id="tdc">2014/05/15 15:00</td>
+                <td id="tdc">2014/05/16 14:45</td>
+                <td id="tdc">2014/05/22 14:45</td>
+                <td id="tdc">已公布</td>
+                <td id="tdc">
+                    <a class="btn btn-primary btn-mini" ng-click="preview(1);">查看</a>
+                    <a class="btn btn-info btn-mini" ng-click="InfoView('已公布')">管理</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+ <!--节油大赛列表 end-->
+<!--添加节油大赛 start-->
+<div class="widget-box" ng-show="matchAddDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>添加节油大赛</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <form action="#" method="get" class="form-horizontal">
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">活动名称：</label>
+                <div class="controls">
+                    <input type="text" class="span11" style="width:200px;" ng-model="match_name"  />
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">活动介绍：</label>
+                <div class="controls">
+                    <textarea  style="width:185px;" rows="6"></textarea>
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">比赛期间最小行驶里程：</label>
+                <div class="controls">
+                    <input type="text" class="span11" style="width:200px;" ng-model="mini_mileage" />
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">发布时间：</label>
+                <div class="controls">
+                    <input type="text" class="span11" style="width:200px;" ng-model="pub_time" />
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">开始时间：</label>
+                <div class="controls">
+                    <input type="text" class="span11" style="width:200px;" ng-model="start_time" />
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">结束时间：</label>
+                <div class="controls">
+                    <input type="text" class="span11" style="width:200px;" ng-model="end_time" />
+                </div>
+            </div>
+            <div class="control-group" >
+                <div class="widget-content notify-ui" style="text-align: center">
+                    <ul id="gritter-notify0" >
+                        <li style="text-align: left;padding-left: 400px;">
+                            <font style="margin-left:-40px;">发布至如下车主：</font>
+                            <br/>
+                            <input type="checkbox" name="radios" style="margin-left:73px;"/>
+                            <font >全选</font>
+                            <br/>
+                          <font >渠&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道：</font>
+                        <input type="checkbox" name="radios" />
+                          微信用户&nbsp;&nbsp;
+                        <input type="checkbox" name="radios" />
+                          客户端
+                        <br/>
+                          <font >车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：</font>
+                        <input type="checkbox" name="radios" />
+                          S系
+                          <br/>
+                         <font >用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;途：</font>
+                         <input type="checkbox" name="radios" />
+                            商用&nbsp;&nbsp;
+                         <input type="checkbox" name="radios" />
+                           家用
+                        <br/>
+                         <font>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</font>
+                        <input type="checkbox" name="radios" />
+                          小于1年车龄&nbsp;&nbsp;
+                        <input type="checkbox" name="radios" />
+                          1-2年车龄&nbsp;&nbsp;
+                        <input type="checkbox" name="radios" />
+                          2-3年车龄&nbsp;&nbsp;
+                        <input type="checkbox" name="radios" />
+                          3-4年车龄&nbsp;&nbsp;
+                        <input type="checkbox" name="radios" />
+                          4-5年车龄&nbsp;&nbsp;
+                        <input type="checkbox" name="radios" />
+                          大于5年车龄
+                          <br/>
+                            <font >用车时段：</font>
+                            <input type="checkbox" name="radios" />
+                            上下班&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            工作时&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            非工作时
+                            <br/>
+                          <font>用车频率：</font>
+                         <input type="checkbox" name="radios" />
+                            极低&nbsp;&nbsp;
+                          <input type="checkbox" name="radios" />
+                            低&nbsp;&nbsp;
+                           <input type="checkbox" name="radios" />
+                            中&nbsp;&nbsp;
+                           <input type="checkbox" name="radios" />
+                            高
+                            <br/>
+                            <font>驾驶行为：</font>
+                            <input type="checkbox" name="radios" />
+                            稳健&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            中庸&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            狂野
+                            <br/>
+                            <font style="margin-left: -13px;">自定义标签：</font>
+                            <input type="checkbox" name="radios" />
+                            自定义标签1&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            自定义标签2&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            自定义标签3
+                            <!--<br/>
+                            <input type="button" value="删除" class="btn btn-danger btn-mini">-->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="AddConfirm();">创建</button>
+                <button type="button" class="btn btn-danger"   ng-click="gotoBack(1)">取消</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--添加节油大赛 end-->
+<!--活动预览 start-->
+<div class="widget-box" ng-show="matchPreviewDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>活动预览</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <form action="#" method="get" class="form-horizontal">
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">活动名称：</label>
+                <div class="controls">
+                    绿色出行，节油我看行
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">活动介绍：</label>
+                <div class="controls">
+                    活动介绍
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">发布时间：</label>
+                <div class="controls">
+                  2014-05-16 10:44
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">开始时间：</label>
+                <div class="controls">
+                    2014-05-16 10:44
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">结束时间：</label>
+                <div class="controls">
+                    2014-05-16 10:44
+                </div>
+            </div>
+            <div class="control-group" >
+                <div class="control-group" >
+                    <label class="control-label" style="margin-left:300px;">标签：</label>
+                    <div class="controls">
+                        微信用户、S系、稳健型 or 客户端、S系、稳健型
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+               <!-- <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="publish();">发布</button>-->
+                <button type="button" class="btn btn-success"    style="margin-left:300px;" ng-click="gotoBack(2)">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--活动预览 end-->
+<!--修改节油大赛 start-->
+<div class="widget-box" ng-show="matchModifyDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>修改节油大赛</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <form action="#" method="get" class="form-horizontal">
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">活动名称：</label>
+                <div class="controls">
+                    <input type="text" class="span11" style="width:200px;" ng-model="match_name"  />
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">活动介绍：</label>
+                <div class="controls">
+                    <textarea  style="width:185px;" rows="8"></textarea>
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">比赛期间最小行驶里程：</label>
+                <div class="controls">
+                    <input type="text" class="span11" style="width:200px;" ng-model="mini_mileage" />
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">发布时间：</label>
+                <div class="controls">
+                    <input type="text" class="span11" style="width:200px;" ng-model="pub_time" />
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">开始时间：</label>
+                <div class="controls">
+                    <input type="text" class="span11" style="width:200px;" ng-model="start_time" />
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:300px;">结束时间：</label>
+                <div class="controls">
+                    <input type="text" class="span11" style="width:200px;" ng-model="end_time" />
+                </div>
+            </div>
+            <div class="control-group" >
+                <div class="widget-content notify-ui" style="text-align: center">
+                    <ul id="gritter-notify0" >
+                        <li style="text-align: left;padding-left: 400px;">
+                            <font style="margin-left:-40px;">发布至如下车主：</font>
+                            <br/>
+                            <input type="checkbox" name="radios" style="margin-left:73px;"/>
+                            <font >全选</font>
+                            <br/>
+                            <font >渠&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道：</font>
+                            <input type="checkbox" name="radios" checked/>
+                            微信用户&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            客户端
+                            <br/>
+                            <font >车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：</font>
+                            <input type="checkbox" name="radios" checked/>
+                            S系
+                            <br/>
+                            <font >用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;途：</font>
+                            <input type="checkbox" name="radios" checked/>
+                            商用&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            家用
+                            <br/>
+                            <font>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</font>
+                            <input type="checkbox" name="radios" />
+                            小于1年车龄&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" checked />
+                            1-2年车龄&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            2-3年车龄&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            3-4年车龄&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            4-5年车龄&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            大于5年车龄
+                            <br/>
+                            <font >用车时段：</font>
+                            <input type="checkbox" name="radios" />
+                            上下班&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" checked />
+                            工作时&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            非工作时
+                            <br/>
+                            <font>用车频率：</font>
+                            <input type="checkbox" name="radios" />
+                            极低&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            低&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" checked />
+                            中&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            高
+                            <br/>
+                            <font>驾驶行为：</font>
+                            <input type="checkbox" name="radios" />
+                            稳健&nbsp;&nbsp;
+                            <input type="checkbox" name="radios"  checked/>
+                            中庸&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            狂野
+                            <br/>
+                            <font style="margin-left: -13px;">自定义标签：</font>
+                            <input type="checkbox" name="radios" />
+                            自定义标签1&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" checked/>
+                            自定义标签2&nbsp;&nbsp;
+                            <input type="checkbox" name="radios" />
+                            自定义标签3
+                            <!--<br/>
+                            <input type="button" value="删除" class="btn btn-danger btn-mini">-->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="modifyConfirm();">修改</button>
+                <button type="button" class="btn btn-danger"   ng-click="gotoBack(3)">取消</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--修改节油大赛 end-->
+<!--已发布查看 begin-->
+<div class="widget-box" ng-show="matchPublishedDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>活动信息</h5>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="gotoBack(3)">返回</a>
+    </div>
+    <div class="widget-content nopadding">
+        <table class="table table-bordered ">
+            <thead>
+            <tr>
+                <th>活动名称</th>
+                <th style="background-color:#F9F9F9;">绿色出行，节油大赛</th>
+                <th>活动发布时间</th>
+                <th style="background-color:#F9F9F9;">2014-05-24</th>
+                <th>活动开始时间</th>
+                <th style="background-color:#F9F9F9;">2014-05-27</th>
+            </tr>
+            <tr>
+                <th>报名人数统计</th>
+                <th style="background-color:#F9F9F9;">7</th>
+                <th>活动状态</th>
+                <th style="background-color:#F9F9F9;">已发布</th>
+                <th>活动结束时间</th>
+                <th style="background-color:#F9F9F9;">2014-06-02</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+    <div class="widget-box" ng-show="matchPublishedDiv">
+
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>报名客户列表</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <!--<table class="table table-bordered data-table">-->
+        <table class="table table-bordered data-table">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>车牌号</th>
+                <th>车系</th>
+                <th>排量</th>
+                <th>手机号</th>
+                <th>OBD号</th>
+                <th>报名时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(2);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">C系</td>
+                <td id="tdc">3.0</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(2);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">C系</td>
+                <td id="tdc">3.0</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(2);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">C系</td>
+                <td id="tdc">3.0</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--已发布查看 end-->
+<!--已开始查看 begin-->
+<div class="widget-box" ng-show="matchStartedDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>活动信息</h5>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="gotoBack(5)">返回</a>
+    </div>
+    <div class="widget-content nopadding">
+        <table class="table table-bordered ">
+            <thead>
+            <tr>
+                <th>活动名称</th>
+                <th style="background-color:#F9F9F9;">绿色出行，节油大赛</th>
+                <th>活动发布时间</th>
+                <th style="background-color:#F9F9F9;">2014-05-24</th>
+                <th>活动开始时间</th>
+                <th style="background-color:#F9F9F9;">2014-05-27</th>
+            </tr>
+            <tr>
+                <th>报名人数统计</th>
+                <th style="background-color:#F9F9F9;">7</th>
+                <th>活动状态</th>
+                <th style="background-color:#F9F9F9;">已开始</th>
+                <th>活动结束时间</th>
+                <th style="background-color:#F9F9F9;">2014-06-02</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div class="widget-box" ng-show="matchStartedDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>赛况信息列表</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <!--<table class="table table-bordered data-table">-->
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车系： &nbsp;&nbsp;&nbsp;
+                    <select style="width:150px;padding-left:15px;" >
+                        <option>请选择</option>
+                    </select></th>
+                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排量：&nbsp;&nbsp;&nbsp;
+                    <select style="width:150px;" >
+                        <option>请选择</option>
+                    </select></th>
+                <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo();">搜索</button></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="widget-content nopadding">
+        <!--<table class="table table-bordered data-table">-->
+        <table class="table table-bordered data-table">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>车牌号</th>
+                <th>车系</th>
+                <th>排量</th>
+                <th>手机号</th>
+                <th>OBD号</th>
+                <th>参赛里程</th>
+                <th>参赛平均油耗</th>
+                <th>报名时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(4);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">C系</td>
+                <td id="tdc">3.0</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">50公里</td>
+                <td id="tdc">89</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(4);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">C系</td>
+                <td id="tdc">3.0</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">50公里</td>
+                <td id="tdc">89</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(4);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">C系</td>
+                <td id="tdc">3.0</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">50公里</td>
+                <td id="tdc">89</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--已开始查看 end-->
+<!--已结束查看 begin-->
+<div class="widget-box" ng-show="matchFinishedDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>活动信息</h5>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="gotoBack(6)">返回</a>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="publishResult(1)">发布结果</a>
+    </div>
+    <div class="widget-content nopadding">
+        <table class="table table-bordered ">
+            <thead>
+            <tr>
+                <th>活动名称</th>
+                <th style="background-color:#F9F9F9;">绿色出行，节油大赛</th>
+                <th>活动发布时间</th>
+                <th style="background-color:#F9F9F9;">2014-05-24</th>
+                <th>活动开始时间</th>
+                <th style="background-color:#F9F9F9;">2014-05-27</th>
+            </tr>
+            <tr>
+                <th>报名人数统计</th>
+                <th style="background-color:#F9F9F9;">7</th>
+                <th>活动状态</th>
+                <th style="background-color:#F9F9F9;">已结束</th>
+                <th>活动结束时间</th>
+                <th style="background-color:#F9F9F9;">2014-06-02</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+    <div class="widget-box" ng-show="matchFinishedDiv">
+        <div class="widget-title">
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>赛况信息列表</h5>
+        </div>
+    <div class="widget-content nopadding">
+        <!--<table class="table table-bordered data-table">-->
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车系： &nbsp;&nbsp;&nbsp;
+                    <select style="width:150px;padding-left:15px;" >
+                        <option>请选择</option>
+                    </select></th>
+                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排量：&nbsp;&nbsp;&nbsp;
+                    <select style="width:150px;" >
+                        <option>请选择</option>
+                    </select></th>
+                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否符合要求：&nbsp;&nbsp;&nbsp;
+                    <select style="width:150px;" >
+                        <option>请选择</option>
+                        <option>是</option>
+                        <option>否</option>
+                    </select></th>
+                <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo();">搜索</button></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="widget-content nopadding">
+        <!--<table class="table table-bordered data-table">-->
+        <table class="table table-bordered data-table">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>车牌号</th>
+                <th>车系</th>
+                <th>排量</th>
+                <th>手机号</th>
+                <th>OBD号</th>
+                <th>参赛里程</th>
+                <th>参赛平均油耗</th>
+                <th>是否符合要求</th>
+                <th>报名时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(1);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">C系</td>
+                <td id="tdc">3.0</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">50公里</td>
+                <td id="tdc">89</td>
+                <td id="tdc">是</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(1);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">C系</td>
+                <td id="tdc">3.0</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">50公里</td>
+                <td id="tdc">89</td>
+                <td id="tdc">否</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(1);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">C系</td>
+                <td id="tdc">3.0</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">50公里</td>
+                <td id="tdc">89</td>
+                <td id="tdc">是</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--已结束查看 end-->
+<!--已公布结果查看 begin-->
+<div class="widget-box" ng-show="matchPrizedDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>活动信息</h5>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="gotoBack(7)">返回</a>
+    </div>
+    <div class="widget-content nopadding">
+        <table class="table table-bordered ">
+            <thead>
+            <tr>
+                <th>活动名称</th>
+                <th style="background-color:#F9F9F9;">绿色出行，节油大赛</th>
+                <th>活动发布时间</th>
+                <th style="background-color:#F9F9F9;">2014-05-24</th>
+                <th>活动开始时间</th>
+                <th style="background-color:#F9F9F9;">2014-05-27</th>
+            </tr>
+            <tr>
+                <th>报名人数统计</th>
+                <th style="background-color:#F9F9F9;">7</th>
+                <th>活动状态</th>
+                <th style="background-color:#F9F9F9;">已公布</th>
+                <th>活动结束时间</th>
+                <th style="background-color:#F9F9F9;">2014-06-02</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+    <div class="widget-box" ng-show="matchPrizedDiv">
+        <div class="widget-title">
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>比赛结果信息</h5>
+        </div>
+    <div class="widget-content nopadding">
+        <table class="table table-bordered ">
+            <thead>
+            <tr>
+                <th style="vertical-align: middle;width: 100px;">获奖信息</th>
+                <th style="background-color:#F9F9F9;">获奖信息获奖信息获奖信息获奖信息获奖信息获奖信息获奖信息获奖信息获奖信息获奖信息
+                    获奖信息获奖信息获奖信息获奖信息获奖信息获奖信息获奖信息获奖信息获奖信息获奖信息</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    </div>
+    <div class="widget-box" ng-show="matchPrizedDiv">
+        <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>赛果排名列表</h5>
+    </div>
+        <div class="widget-content nopadding">
+            <!--<table class="table table-bordered data-table">-->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组别： &nbsp;&nbsp;&nbsp;
+                        <select style="width:150px;padding-left:15px;" >
+                            <option>请选择</option>
+                            <option>C系3.0T</option>
+                            <option>C系2.0T</option>
+                        </select></th>
+                    <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo();">搜索</button></th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    <div class="widget-content nopadding">
+        <!--<table class="table table-bordered data-table">-->
+        <table class="table table-bordered data-table">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>车牌号</th>
+                <th>组别</th>
+                <th>手机号</th>
+                <th>OBD号</th>
+                <th>参赛里程</th>
+                <th>参赛平均油耗</th>
+                <th>是否符合要求</th>
+                <th>报名时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(1);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">C系3.0T</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">50公里</td>
+                <td id="tdc">89</td>
+                <td id="tdc">是</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(1);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">C系2.0T</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">50公里</td>
+                <td id="tdc">89</td>
+                <td id="tdc">是</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(1);">王明青</a></td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">D系3.0T</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+                <td id="tdc">50公里</td>
+                <td id="tdc">89</td>
+                <td id="tdc">是</td>
+                <td id="tdc">2014-05-16 11:54</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+   <!-- <div class="widget-content nopadding">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组别： &nbsp;&nbsp;&nbsp;
+                    <select style="width:150px;padding-left:15px;" >
+                        <option>请选择</option>
+                        <option>所有</option>
+                        <option>C系2.0T</option>
+                        <option>C系3.0T</option>
+                        <option>E系2.0T</option>
+                        <option>E系2.0T</option>
+                    </select></th>
+
+                <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo();">搜索</button></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="widget-content nopadding">
+        <table class="table table-bordered data-table">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>名次</th>
+                <th>组别</th>
+                <th>车牌号</th>
+                <th>手机号</th>
+                <th>OBD号</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(3);">王明青</a></td>
+                <td id="tdc"><font color="red">第一名</font></td>
+                <td id="tdc">C系2.0T</td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(3);">王明青</a></td>
+                <td id="tdc"><font color="red">第二名</font></td>
+                <td id="tdc">C系2.0T</td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+            </tr>
+            <tr class="gradeX">
+                <td id="tdc"><a href="" ng-click="getCustDetail(3);">王明青</a></td>
+                <td id="tdc"><font color="red">第三名</font></td>
+                <td id="tdc">C系2.0T</td>
+                <td id="tdc">京A88888</td>
+                <td id="tdc">13296630210</td>
+                <td id="tdc">WFQ104323044</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>-->
+</div>
+<!--已公布结果查看 end-->
+
+<!--发布结果大赛 start-->
+<div class="widget-box" ng-show="matchPubResultDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>活动信息</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <table class="table table-bordered ">
+            <thead>
+            <tr>
+                <th>活动名称</th>
+                <th style="background-color:#F9F9F9;">绿色出行，节油大赛</th>
+                <th>活动发布时间</th>
+                <th style="background-color:#F9F9F9;">2014-05-24</th>
+                <th>活动开始时间</th>
+                <th style="background-color:#F9F9F9;">2014-05-27</th>
+            </tr>
+            <tr>
+                <th>报名人数统计</th>
+                <th style="background-color:#F9F9F9;">7</th>
+                <th>活动状态</th>
+                <th style="background-color:#F9F9F9;">已结束</th>
+                <th>活动结束时间</th>
+                <th style="background-color:#F9F9F9;">2014-06-02</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+    <div class="widget-box" ng-show="matchPubResultDiv">
+        <div class="widget-title">
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>发布比赛结果</h5>
+        </div>
+    <div class="widget-content nopadding">
+        <form action="#" method="get" class="form-horizontal">
+
+            <div class="control-group" >
+                <label class="control-label" style="margin-left:200px;">结果公布：</label>
+                <div class="controls">
+                    <textarea  style="width:300px;" rows="12"></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="publishConfirm();">公布</button>
+                <button type="button" class="btn btn-danger"   ng-click="gotoBack(8)">取消</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--发布大赛结果 end-->
+<!--客户详情Start-->
+<div class="widget-box" ng-show="cusDetailDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>客户详情</h5>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="callBack(flagid,1)">返回</a>
+    </div>
+    <div class="widget-content nopadding">
+        <table class="table table-bordered ">
+            <thead>
+            <tr>
+                <th>车主姓名</th>
+                <th style="background-color:#F9F9F9;"></th>
+                <th>联系电话</th>
+                <th style="background-color:#F9F9F9;"></th>
+                <th>OBD编号</th>
+                <th style="background-color:#F9F9F9;"></th>
+            </tr>
+            <tr>
+                <th>品牌</th>
+                <th style="background-color:#F9F9F9;"></th>
+                <th>车系</th>
+                <th style="background-color:#F9F9F9;"></th>
+                <th>车牌号</th>
+                <th style="background-color:#F9F9F9;"></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div class="widget-box" ng-show="cusTabDiv">
+<div class="widget-title">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab"  ng-click="detailTab(1)">保养记录</a></li>
+        <li><a data-toggle="tab"  ng-click="detailTab(2)">维修记录</a></li>
+        <li><a data-toggle="tab"  ng-click="detailTab(3)">关怀记录</a></li>
+        <li><a data-toggle="tab" ng-click="detailTab(4)">保险信息</a></li>
+        <li><a data-toggle="tab"  ng-click="detailTab(5)">行车记录</a></li>
+        <li><a data-toggle="tab"  ng-click="detailTab(6)">标签</a></li>
+    </ul>
+</div>
+<div class="widget-content tab-content">
+<div id="tab1" class="tab-pane active">
+    <table class="table table-bordered data-table">
+        <thead>
+        <tr>
+            <th>保养时间</th>
+            <th>保养来源</th>
+            <th>保养里程</th>
+            <th>保养类型</th>
+            <th>保养费用(RMB)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="gradeX" ng-repeat="cl in careList">
+            <td id="tdc"></td>
+            <td id="tdc">微信</td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div><font color="red"></font></div>
+    <div class="pagination alternate" style="float:right;">
+        共{{totalCount}}条&nbsp;当前/ &nbsp;
+        跳转至<select style="width:50px;" >
+        <option>1</option>
+    </select>页
+    </div>
+</div>
+<div id="tab2" class="tab-pane">
+    <table class="table table-bordered data-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>维修时间</th>
+            <th>维修来源</th>
+            <th>维修项目</th>
+            <th>维修里程</th>
+            <th>维修费用</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="gradeX">
+            <td id="tdc">1</td>
+            <td id="tdc">2013/03/08 13:00</td>
+            <td id="tdc">微信</td>
+            <td id="tdc">喷漆</td>
+            <td id="tdc">50000公里</td>
+            <td id="tdc">3000</td>
+        </tr>
+        <tr class="gradeX">
+            <td id="tdc">2</td>
+            <td id="tdc">2013/10/08 12:00</td>
+            <td id="tdc">微信</td>
+            <td id="tdc">换胎</td>
+            <td id="tdc">10982公里</td>
+            <td id="tdc">200</td>
+        </tr>
+        <tr class="gradeX">
+            <td id="tdc">3</td>
+            <td id="tdc">2014/03/08 19:00</td>
+            <td id="tdc">微信</td>
+            <td id="tdc">换方向盘</td>
+            <td id="tdc">23092公里</td>
+            <td id="tdc">500</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="tab3" class="tab-pane">
+    <table class="table table-bordered data-table">
+        <thead>
+        <tr>
+            <th>关怀时间</th>
+            <th>关怀类类别</th>
+            <th>关怀里程</th>
+            <th>关怀周期</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="gradeX" ng-repeat="rl in recordList">
+            <td id="tdc"></td>
+            <td id="tdc">保养关怀</td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div><font color="red"></font></div>
+    <div class="pagination alternate" style="float:right;">
+        共{{totalCount}}条&nbsp;当前/ &nbsp;
+        跳转至<select style="width:50px;" >
+        <option>1</option>
+    </select>页
+    </div>
+</div>
+<div id="tab4" class="tab-pane">
+    正在开发中...
+</div>
+<div id="tab5" class="tab-pane">
+    <table class="table table-bordered" ng-show="driveDiv">
+        <thead>
+        <tr>
+            <th>城市</th>
+            <th>4S店</th>
+            <th>品牌</th>
+            <th>车系</th>
+            <th>OBD编号</th>
+            <th>WIN码</th>
+            <th>点火时间</th>
+            <th>行驶里程</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="gradeX" ng-repeat="device in drvInfos">
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc">
+                <a class="btn btn-info btn-mini">查看</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!--一次行车数据 begin-->
+    <table class="table table-bordered " ng-show ="detailInfoDiv">
+        <thead>
+        <tr >
+            <th style="text-align: right" colspan="6"><a ng-click="gotoBack(1);" class="btn btn-info btn-mini">返回</a></th>
+        </tr>
+        <tr>
+            <th>VIN码</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>状态</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>点火时间</th>
+            <th style="background-color:#F9F9F9;"></th>
+        </tr>
+        <tr>
+            <th>点火电压</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>发动机运行时间</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>本次平均油耗</th>
+            <th style="background-color:#F9F9F9;"></th>
+        </tr>
+        <tr>
+            <th>急加速次数</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>急减数次数</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>急转弯次数</th>
+            <th style="background-color:#F9F9F9;"></th>
+        </tr>
+        <tr>
+            <th>熄火电压</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>累计平均油耗</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>累计行驶里程</th>
+            <th style="background-color:#F9F9F9;"></th>
+        </tr>
+        <tr>
+            <th>A速段里程</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>B速段里程</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>C速段里程</th>
+            <th style="background-color:#F9F9F9;"></th>
+        </tr>
+        <tr>
+            <th>D速段里程</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>E速段里程</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>F速段里程</th>
+            <th style="background-color:#F9F9F9;"></th>
+        </tr>
+        <tr>
+            <th>熄火时间</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>熄火后电压</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th colspan="2"></th>
+        </tr>
+        </thead>
+    </table>
+    <table class="table table-bordered" ng-show="oneDetailDiv">
+        <thead>
+        <tr >
+            <th>OBD设备编号</th>
+            <th>行驶编号</th>
+            <th>累计平均油耗</th>
+            <th>累计行驶里程</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="gradeX" ng-repeat="device in details">
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"><a class="btn btn-info btn-mini" >详细数据</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <!--一个行车数据 end-->
+    <!--一分钟数据流 begin-->
+    <table class="table table-bordered" ng-show="oneMinuteDetailDiv">
+        <thead>
+        <tr >
+            <th style="text-align: right" colspan="3"><a  class="btn btn-info btn-mini">返回</a></th>
+        </tr>
+        <tr >
+            <th>ID</th>
+            <th>参数</th>
+            <th>值</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="gradeX" ng-repeat="omdd in omdds">
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+            <td id="tdc"></td>
+        </tr>
+        </tbody>
+    </table>
+    <!--一分钟数据流 end-->
+    <div class="pagination alternate" style="float:right;" ng-show="paging1">
+        共条&nbsp;当前/ &nbsp;
+        跳转至<select style="width:50px;">
+        <option>1</option>
+    </select>页
+    </div>
+    <div class="pagination alternate" style="float:right;" ng-show="paging2">
+        共条&nbsp;当前/ &nbsp;
+        跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption" ng-change="changePage(changeId,2);">
+        <option>1</option>
+    </select>页
+    </div>
+</div>
+<div id="tab6" class="tab-pane">
+    <div class="controls">
+        系统标签：
+        <input type="checkbox" name="radios" checked disabled />
+        微信用户
+        <input type="checkbox" name="radios" checked disabled/>
+        家用
+        <input type="checkbox" name="radios" checked disabled />
+        上班时
+        <input type="checkbox" name="radios" checked disabled />
+        频率高
+        <input type="checkbox" name="radios" checked disabled />
+        稳健型
+    </div>
+    <div class="controls" style="margin-top:20px;">
+        自定义标签：
+        <input type="checkbox" name="radios" checked />
+        自定义标签1
+        <input type="checkbox" name="radios" />
+        自定义标签2
+    </div>
+</div>
+</div>
+</div>
+<!--客户详情End-->

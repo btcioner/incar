@@ -13,28 +13,26 @@ function carOwnersCtrl($scope, $http){
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
     $scope.city_name="";
-    $scope.org_id = 0;
+    $scope.s4_id = "";
     $scope.queryString="";
-    $scope.brand_id = "";
-    $scope.series_id = "";
+    $scope.brandCode = "";
     $scope.acc_nick = ""
     $scope.acc_phone = "";
     $scope.queryNick = "";
     $scope.queryPhone = "";
     $scope.obd_code="";
+    $scope.car_license="";
 
     //筛选框初始值 todo--要从数据库读出来
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
-    $scope.org= [{id:0,name:"请选择"},{id:4,name:'4S店A'},{id:5,name:'4S店C1'},{id:16,name:'奥体中心4S店'}]
-    $scope.carBrand=[{id:"zero",name:"请选择"},{id:0,name:"丰田/TOYOTA"},{id:1,name:"本田/Honda"},{id:2,name:"日产/NISSAN"},{id:3,name:"三菱/MITSUBISHIMOTORS"}];
-    $scope.carSeries=[{id:0,name:"请选择"}];
+
 
 
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl + 'carowner?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+        $http.get(baseurl + 'cmpx/carowner?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
             if(data.status == "ok")
             {
                 if(data.carowners.length == 0)
@@ -51,41 +49,21 @@ function carOwnersCtrl($scope, $http){
         }).error(function(data){
         alert("请求无响应");
         })
+        $http.get(baseurl+'brand').success(function(data){
+            $scope.carBrand = data.brands;
+        });
+        $http.get(baseurl+'4s').success(function(data){
+            $scope.s4s = data.s4s;
+        });
     }
 
-    //改变车型自动加载车款
-    $scope.changeSeries = function()
-    {
-
-        if($scope.brand_id !="zero")
-        {
-          switch($scope.brand_id)
-          {
-              case 0:
-                  $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"FJ酷路泽"},{id:2,name:"HIACE"},{id:3,name:"Siemma"},{id:4,name:"Venza威飒"}];
-                  break;
-              case 1:
-                  $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"INSIGHT"},{id:2,name:"本田CR-Z"},{id:3,name:"飞度(进口)"},{id:4,name:"里程"}];
-                  break;
-              case 2:
-                  $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"碧莲"},{id:2,name:"风度"},{id:3,name:"风雅"},{id:4,name:"贵士"}];
-                  break;
-              case 3:
-                  $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"ASX劲炫(进口)"},{id:2,name:"LANCER"},{id:3,name:"格鲁迪(进口)"},{id:4,name:"欧蓝德(进口)"}];
-                  break;
-          }
-    }
-    }
 
 
     //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
         if($scope.city_name=="请选择")$scope.city_name = "";
-        if($scope.org_id == 0)$scope.org_id = "";
-        if($scope.brand_id == "zero")$scope.brand_id = "";
-        if($scope.series_id == 0) $scope.series_id = "";
-        $scope.queryString = "&org_city="+$scope.city_name+"&org_id="+$scope.org_id+"&brand_id="+$scope.brand_id+"&series_id="+$scope.series_id+"&acc_nick="+$scope.queryNick+"&acc_phone="+$scope.queryPhone;
+        $scope.queryString = "&org_city="+$scope.city_name+"&org_id="+$scope.s4_id+"&brand_id="+$scope.brandCode+"&acc_nick="+$scope.queryNick+"&acc_phone="+$scope.queryPhone+"&license="+$scope.car_license;
         GetFirstPageInfo();
     }
 
@@ -103,12 +81,24 @@ function carOwnersCtrl($scope, $http){
 
 
     //分页跳转页面
-    $scope.changePage=function(changeId)
+    $scope.changePage=function(changeId,id)
     {
-        $scope.currentPage = changeId
-        GetFirstPageInfo();
-    }
+        $scope.currentPage = changeId ;
+        switch(id)
+        {
+            case 1://设备列表
+                GetFirstPageInfo();
+                break;
+            case 2: //行车数据
+                $scope.GetDriveInfo($scope.choosedOC);
+                break;
+            case 3://行程数据
+                $scope.GetDriveDetail($scope.choosedOC,$scope.drive_id,$scope.index);
+                break;
+        }
+        $scope.currentPage = 1;
 
+    }
 
     //修改
     $scope.modify = function(index){
@@ -120,10 +110,12 @@ function carOwnersCtrl($scope, $http){
     //修改确认
     $scope.ModifyConfirm = function()
     {
-        $http.put(baseurl + 'carowner/'+$scope.carOwnerDetail.acc_id,$scope.carOwnerDetail).success(function(data){
+        $scope.postData={nick:$scope.carOwnerDetail.acc_nick,phone:$scope.carOwnerDetail.acc_phone};
+        $http.put(baseurl + '4s/'+$scope.carOwnerDetail.org_id+'/cust/'+$scope.carOwnerDetail.acc_id+"/car/"+$scope.carOwnerDetail.car_id,$scope.postData).success(function(data){
             if(data.status == "ok")
             {
                 alert("修改成功");
+                GetFirstPageInfo();
                 $scope.carOwnerDiv = true;
                 $scope.carOwnerModifyDiv = false;
             }
@@ -137,6 +129,13 @@ function carOwnersCtrl($scope, $http){
 
     //添加按钮
     $scope.add = function(){
+        $scope.acc_name="";
+        $scope.acc_nick="";
+        $scope.acc_phone="";
+        $scope.brand_id="";
+        $scope.series_id="";
+        $scope.series_id="";
+        $scope.obd_code=="";
         $scope.carOwnerDiv = false;
         $scope.carOwnerAddDiv = true;
     }
@@ -158,20 +157,21 @@ function carOwnersCtrl($scope, $http){
             if(data.status == "ok")
             {
                 alert("添加成功！");
-                $scope.carowners[$scope.carowners.length]={
-                    "acc_id": $scope.carowners[$scope.carowners.length-1].id + 1,
-                    "org_id":$scope.org_id,
-                    "acc_name":$scope.acc_name,
-                    "acc_nick":$scope.acc_nick,
-                    "acc_phone":$scope.acc_phone,
-                    "car_brand":$scope.brand_id,
-                    "car_series":$scope.series_id,
-                    "car_license":$scope.series_id,
-                    "obd_code":$scope.obd_code
-                }
+                GetFirstPageInfo();
+//                $scope.carowners[$scope.carowners.length]={
+//                    "acc_id": $scope.carowners[$scope.carowners.length-1].id + 1,
+//                    "org_id":$scope.org_id,
+//                    "acc_name":$scope.acc_name,
+//                    "acc_nick":$scope.acc_nick,
+//                    "acc_phone":$scope.acc_phone,
+//                    "car_brand":$scope.brand_id,
+//                    "car_series":$scope.series_id,
+//                    "car_license":$scope.series_id,
+//                    "obd_code":$scope.obd_code
+//                }
                 $scope.carOwnerDiv = true;
                 $scope.carOwnerAddDiv = false;
-                GetFirstPageInfo();
+
             }
             else{
                 alert(data.status);
@@ -184,10 +184,11 @@ function carOwnersCtrl($scope, $http){
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
     {
-        $http.get(baseurl + 'obd/'+obd_code).success(function(data){
+        var randomTime = new Date();//防止浏览器缓存，加上随机时间。
+        $http.get(baseurl + 'obd/'+obd_code+"?t="+randomTime).success(function(data){
             if(data.status == "ok")
             {
-                $scope.deviceDetail = data.obd;
+                $scope.deviceDetail = data.car;
                 $scope.deviceDetail.obdNum = obd_code;
                 $scope.deviceDetail.act_type = $.changeStatus($scope.deviceDetail.act_type);
             }
@@ -199,13 +200,12 @@ function carOwnersCtrl($scope, $http){
                 alert("请求无响应");
             });
     }
-
     //查看一个OBD的行车数据
     $scope.GetDriveInfo = function(obd_code)
     {
         $scope.choosedOC = obd_code;
         GetOwnerInfo(obd_code);
-        $http.post(baseurl + 'GetDriveInfoAll?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord +'&obd_code='+obd_code)
+        $http.get(baseurl + 'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord +'&obd_code='+obd_code)
             .success(function(data){
                 if(data.status == "ok")
                 {
@@ -230,13 +230,14 @@ function carOwnersCtrl($scope, $http){
             });
     }
     //查看一个OBD一次行程的数据
-    $scope.GetDriveDetail = function(obd_code,drive_id)
+    $scope.GetDriveDetail = function(obd_code,drive_id,id)
     {
         $scope.choosedOC = obd_code;
         $scope.drive_id = drive_id;
-        $scope.postData = {token:$scope.token,code:obd_code,drive_id:drive_id};
+        $scope.index = id;
         GetOwnerInfo(obd_code);
-        $http.post(baseurl + 'GetDriveDetail?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord,$scope.postData).success(function(data){
+        $scope.driveDetail = $scope.drvInfos[id];
+        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
             if(data.status == "ok")
             {
                 if(data.details.length== 0)
@@ -263,9 +264,16 @@ function carOwnersCtrl($scope, $http){
     //一分钟内的行车数据流记录
     $scope.GetOneMinuteDetail = function(index)
     {
-        $scope.omdds = $scope.details[index].CarCondition.detail;
-        $scope.oneDetailDiv = false;
-        $scope.oneMinuteDetailDiv = true;
+        if($scope.details[index].detail == null || $scope.details[index].detail.length == 0)
+        {
+            alert("暂无详细数据");
+        }
+        else
+        {
+            $scope.omdds = $scope.details[index].detail;
+            $scope.oneDetailDiv = false;
+            $scope.oneMinuteDetailDiv = true;
+        }
     }
 
     //返回按钮
@@ -296,7 +304,7 @@ function carOwnersCtrl($scope, $http){
             case 5://数据流记录
                 $scope.oneMinuteDetailDiv = false;
                 $scope.oneDetailDiv = true;
-                $scope.GetDriveDetail($scope.choosedOC,$scope.drive_id);
+                $scope.GetDriveDetail($scope.choosedOC,$scope.drive_id,$scope.index);
                 break;
         }
     }

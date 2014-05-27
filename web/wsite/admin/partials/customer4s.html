@@ -38,6 +38,12 @@
                           </div>
                       </div>
                       <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">微信服务号：</label>
+                          <div class="controls">
+                              <input type="text" class="span11" ng-model="openid"  style="width:200px;" />
+                          </div>
+                      </div>
+                      <div class="control-group" >
                           <label class="control-label" style="margin-left:300px;">联系人：</label>
                           <div class="controls">
                               <input type="text" class="span11"  style="width:200px;" ng-model="admin_nick" />
@@ -108,6 +114,7 @@
           <div class="widget-title">
              <span class="icon"><i class="icon-th"></i></span> 
             <h5>4S客户列表</h5>
+              <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加4s店</a>
           </div>
             <div class="widget-content nopadding">
                 <!--<table class="table table-bordered data-table">-->
@@ -119,14 +126,11 @@
                                 <option>请选择</option>
                             </select></th>
                         <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4S店：&nbsp;&nbsp;&nbsp;
-                            <select style="width:150px;" ng-model="org_name" ng-options="to.name as to.name for to in org">
+                            <select style="width:150px;" ng-model="s4_name" ng-options="s4.name as s4.name for s4 in s4s_all">
                                 <option>请选择</option>
-                                <option></option>
+
                             </select></th>
                         <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo();">搜索</button></th>
-                    </tr>
-                    <tr>
-                        <td colspan="4" style=""><a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加4s店</a></td>
                     </tr>
                     </thead>
                 </table>
@@ -145,7 +149,7 @@
                 </tr>
               </thead>
               <tbody id="productListBody">
-                <tr class="gradeX" ng-repeat="customer in orgs">
+                <tr class="gradeX" ng-repeat="customer in s4s">
                     <td style="text-align: center">{{customer.name}}</td>
                     <td style="text-align: center">{{customer.admin_name}}</td>
                     <td style="text-align: center">{{customer.city}}</td>

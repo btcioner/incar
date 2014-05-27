@@ -30,6 +30,7 @@
     {
         if($routeParams.id==1) GetFirstPageInfo("applied");
         if($routeParams.id==2) GetFirstPageInfo("approved");
+        if($routeParams.id==0) GetFirstPageInfo("");
     }
     else{
         GetFirstPageInfo("");
@@ -39,7 +40,7 @@
         var queryStr = "";
         $scope.tips="";
         if(str!="") queryStr="&step="+str;
-        $http.get(baseurl+'organization/'+ $.cookie("org_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+queryStr+$scope.queryString).success(function(data){
+        $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+queryStr+$scope.queryString).success(function(data){
             $scope.careList = data.works;
             PagingInfo(data.totalCount);
             if(data.works.length > 0)
@@ -121,11 +122,11 @@
       {
           case "approve":
               $scope.postData = {op:"approve"};
-              $http.put(baseurl + 'organization/'+ $.cookie("org_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
+              $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                   if(data.status=="ok")
                   {
                     GetFirstPageInfo("");
-                    alert("已确认");
+                    alert("操作成功");
                     changeView(2);
                   }else{
                       alert("请求无相应");
@@ -136,11 +137,11 @@
               break;
           case "cancel":
               $scope.postData = {op:"cancel"};
-              $http.put(baseurl + 'organization/'+ $.cookie("org_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
+              $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                   if(data.status=="ok")
                   {
                       GetFirstPageInfo("");
-                      alert("已取消");
+                      alert("操作成功");
                       changeView(2);
                   }else
                   {
@@ -158,11 +159,11 @@
               break;
           case "abort":
               $scope.postData = {op:"abort",reason:"到了时间没来"};
-              $http.put(baseurl + 'organization/'+ $.cookie("org_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
+              $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                   if(data.status=="ok")
                   {
                       GetFirstPageInfo("");
-                      alert("未到店");
+                      alert("操作成功");
                       changeView(2);
                   }else{
                       alert("请求无相应");
@@ -234,8 +235,8 @@
     //添加预约
     $scope.addConfirm = function()
     {
-        $scope.postData = {"op":"apply","org_id":$.cookie("org_id"),"car_id":1,"cust_id":83,"working_time":$scope.working_time}
-        $http.post(baseurl+'organization/'+ $.cookie("org_id")+'/work/care',"").success(function(data){
+        $scope.postData = {"op":"apply","org_id":$.cookie("s4_id"),"car_id":1,"cust_id":83,"working_time":$scope.working_time}
+        $http.post(baseurl+'organization/'+ $.cookie("s4_id")+'/work/care',"").success(function(data){
 //            $scope.careList = data.works;
 //            PagingInfo(data.totalCount);
 //            if(data.works.length > 0)
@@ -264,11 +265,11 @@
         {
             case 1:
                 $scope.postData = {op:"done",care_items:$scope.care_items,care_cost:$scope.care_cost,begin_time:$scope.begin_time,end_time:$scope.end_time};
-                $http.put(baseurl + 'organization/'+ $.cookie("org_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
+                $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                     if(data.status == "ok")
                     {
                         GetFirstPageInfo("");
-                        alert("已完成");
+                        alert("操作成功");
                         changeView(2);
                     }
                     else
@@ -281,11 +282,11 @@
                 break;
             case 2:
                 $scope.postData={op: "reject", reason:$scope.jj_reason};
-                $http.put(baseurl + 'organization/'+ $.cookie("org_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
+                $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                     if(data.status == "ok")
                     {
                         GetFirstPageInfo("");
-                        alert("已拒绝");
+                        alert("操作成功");
                         changeView(2);
                     }
                     else{

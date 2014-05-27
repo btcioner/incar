@@ -22,30 +22,33 @@ function userManageCtrl($scope, $http){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/1/account?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $http.get(baseurl+'staff?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
             if(data.status == "ok")
             {
-                if(data.accounts.length == 0)
+                if(data.staffs.length == 0)
                 {
                     $scope.tips="暂无数据！";
                 }
-                for(var i = 0;i<data.accounts.length;i++ )
+                for(var i = 0;i<data.staffs.length;i++ )
                 {
-                    data.accounts[i].last_login_time= $.changeDate(data.accounts[i].last_login_time);
-                    if(data.accounts[i].status == 0)
+
+                    data.staffs[i].last_login_time= $.changeDate(data.staffs[i].last_login_time);
+
+                    if(data.staffs[i].status == 0)
                     {
-                        data.accounts[i]["class"] = "btn btn-info btn-mini";
-                        data.accounts[i].text = "解冻";
+                        data.staffs[i]["class"] = "btn btn-info btn-mini";
+                        data.staffs[i].text = "解冻";
+                        data.staffs[i].status="正常";
                     };
-                    if(data.accounts[i].status == 1){
-                        data.accounts[i]["class"] = "btn btn-warning btn-mini";
-                        data.accounts[i].text = "冻结";
+                    if(data.staffs[i].status == 1){
+                        data.staffs[i]["class"] = "btn btn-warning btn-mini";
+                        data.staffs[i].text = "冻结";
+                        data.staffs[i].status="冻结";
                     }
-                    data.accounts[i].status= $.changeUserStatus(data.accounts[i].status);
 
                 }
-                $scope.accounts = data.accounts;
-                PagingInfo(data.totalCount);
+                $scope.accounts = data.staffs;
+                PagingInfo(data.staffs.length);
             }
             else
             {
@@ -91,15 +94,6 @@ function userManageCtrl($scope, $http){
             if(data.status == "ok")
             {
                 alert("添加成功！");
-                $scope.accounts[$scope.accounts.length]={
-                    id: $scope.accounts[$scope.accounts.length-1].id + 1,
-                    name:$scope.account,
-                    nick:$scope.nick,
-                    role:$scope.roleName,
-                    phone:$scope.phone,
-                    email:$scope.email,
-                    status:"正常"
-                }
                 $scope.userAddDiv = false;
                 $scope.userListDiv = true;
                 GetFirstPageInfo();

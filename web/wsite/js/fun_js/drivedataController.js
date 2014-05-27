@@ -16,6 +16,9 @@ function driveDataCtrl($scope, $http){
     $scope.city_name="";
     $scope.org_name="";
     $scope.queryString="";
+    $scope.brandCode="";
+    $scope.seriesCode="";
+    $scope.s4_id = "";
 
     //筛选框初始值 todo--要从数据库读出来
     $scope.city = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
@@ -26,15 +29,19 @@ function driveDataCtrl($scope, $http){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.post(baseurl+'GetDriveInfoAll?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+        $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
             if(data.status == "ok")
             {
                 if(data.drvInfos.length == 0)
                 {
                     $scope.tips="暂无数据！";
                 }
-               // $.changeContentHeight("850px");
+
                 $scope.drvInfos = data.drvInfos;
+                for(var i=0;i<data.drvInfos.length;i++)
+                {
+                    $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
+                }
                 PagingInfo(data.totalCount);
             }
             else
@@ -44,13 +51,27 @@ function driveDataCtrl($scope, $http){
         }).error(function(data){
                 alert("请求无响应");
         })
+        $http.get(baseurl+'brand').success(function(data){
+            $scope.carBrand = data.brands;
+        });
+        $http.get(baseurl+'4s').success(function(data){
+            $scope.s4s = data.s4s;
+        });
     }
+
+    //查找品牌
+    $scope.changeBrand = function(brand_id)
+    {
+        $http.get(baseurl+'brand/'+brand_id+'/series').success(function(data){
+            $scope.carSeries = data.series;
+        });
+    }
+
 //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
           if($scope.city_name=="请选择")$scope.city_name="";
-          if($scope.org_name=="请选择")$scope.org_name="";
-          $scope.queryString = "&obd_code="+$scope.obd_num+"&city="+$scope.city_name+"&org="+$scope.org_name;
+          $scope.queryString = "&obd_code="+$scope.obd_num+"&city="+$scope.city_name+"&s4_id="+$scope.s4_id+"&brand="+$scope.brandCode+"&series="+$scope.seriesCode;
           GetFirstPageInfo();
     }
 
@@ -76,17 +97,21 @@ function driveDataCtrl($scope, $http){
                 GetFirstPageInfo();
                 break;
             case 2:
-                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id);
+                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id,$scope.index);
                 break;
         }
+        $scope.currentPage = 1;
     }
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
     {
-        $http.get(baseurl + 'obd/'+obd_code).success(function(data){
+        var randomTime = new Date();//防止浏览器缓存，加上随机时间。
+        $http.get(baseurl + 'obd/'+obd_code+"?t="+randomTime).success(function(data){
             if(data.status == "ok")
             {
-               $scope.deviceDetail = data.obd;
+                $scope.deviceDetail = data.car;
+                $scope.deviceDetail.obdNum = obd_code;
+                $scope.deviceDetail.act_type = $.changeStatus($scope.deviceDetail.act_type);
             }
             else
             {
@@ -94,16 +119,18 @@ function driveDataCtrl($scope, $http){
             }
         }).error(function(data){
                 alert("请求无响应");
-        });
+            });
     }
     //查看一个OBD一次行程的数据
-    $scope.GetDriveDetail = function(obd_code,drive_id)
+    $scope.GetDriveDetail = function(obd_code,drive_id,id)
     {
         $scope.chooseOC = obd_code;
         $scope.drive_id = drive_id;
-        $scope.postData = {token:$scope.token,code:obd_code,drive_id:drive_id};
+        $scope.index = id;
+      //  $scope.postData = {code:obd_code,drive_id:drive_id};
         GetOwnerInfo(obd_code);
-        $http.post(baseurl + 'GetDriveDetail?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord,$scope.postData).success(function(data){
+        $scope.driveDetail = $scope.drvInfos[id];
+        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
             if(data.status == "ok")
             {
                 if(data.details.length== 0)
@@ -124,21 +151,22 @@ function driveDataCtrl($scope, $http){
             }
         }).error(function(data){
                 alert("请求无响应");
-            });
+         });
+
     }
 
 
     //一分钟内的行车数据流记录
     $scope.GetOneMinuteDetail = function(index)
     {
-        if($scope.details[index].CarCondition.detail == null || $scope.details[index].CarCondition.detail.length == 0)
+        if($scope.details[index].detail == null || $scope.details[index].detail.length == 0)
         {
              alert("暂无详细数据");
         }
         else
         {
            // $.changeContentHeight("1000px");
-            $scope.omdds = $scope.details[index].CarCondition.detail;
+            $scope.omdds = $scope.details[index].detail;
             $scope.oneDetailDiv = false;
             $scope.oneMinuteDetailDiv = true;
         }
@@ -158,9 +186,8 @@ function driveDataCtrl($scope, $http){
             case 2: //数据流数据返回行程
                 $scope.oneDetailDiv = true;
                 $scope.oneMinuteDetailDiv = false;
-                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id);
+                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id,$scope.index);
                 break;
-
         }
     }
 

@@ -3,7 +3,7 @@
  */
 
 
-function  s_maintainCtrl($scope, $http){
+function  s_maintainCtrl($scope, $http,$routeParams){
     $scope.maintainListDiv = true;
     $scope.applyOperDiv = false;
     $scope.careListDiv = false;
@@ -12,11 +12,11 @@ function  s_maintainCtrl($scope, $http){
     $scope.working_time = "";
     $scope.reason = "";
 
-    GetFirstPageInfo();
+     GetFirstPageInfo();
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord)
+        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord)
             .success(function(data){
             if(data.status=="ok")
             {
@@ -122,8 +122,8 @@ function  s_maintainCtrl($scope, $http){
         switch(id)
         {
             case 1:
-                $scope.postData = {"op":"apply","org_id":$.cookie("org_id"),"car_id":$scope.car_id,"cust_id":$scope.cust_id,"working_time":$scope.working_time}
-                $http.post(baseurl+'organization/'+ $.cookie("org_id")+'/work/care',$scope.postData).success(function(data){
+                $scope.postData = {"op":"apply","org_id":$.cookie("s4_id"),"car_id":$scope.car_id,"cust_id":$scope.cust_id,"working_time":$scope.working_time}
+                $http.post(baseurl+'organization/'+ $.cookie("s4_id")+'/work/care',$scope.postData).success(function(data){
                      if(data.status=="ok")
                      {
                          alert("预约成功");
@@ -138,8 +138,8 @@ function  s_maintainCtrl($scope, $http){
                     });
                 break;
             case 2:
-                $scope.postData = {"op":"refuse","org_id":$.cookie("org_id"),"car_id":$scope.carDetails.id,"cust_id":$scope.carDetails.owner_id,"reason":$scope.reason}
-                $http.post(baseurl+'organization/'+ $.cookie("org_id")+'/work/care',$scope.postData).success(function(data){
+                $scope.postData = {"op":"refuse","org_id":$.cookie("s4_id"),"car_id":$scope.carDetails.id,"cust_id":$scope.carDetails.owner_id,"reason":$scope.reason}
+                $http.post(baseurl+'organization/'+ $.cookie("s4_id")+'/work/care',$scope.postData).success(function(data){
                     if(data.status=="ok")
                     {
                         alert("操作成功");
@@ -203,7 +203,7 @@ function  s_maintainCtrl($scope, $http){
             case 2://已拒绝
                 changeView(3);
                 $scope.tips="";
-                $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord)
+                $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord)
                     .success(function(data){
                         if(data.status=="ok")
                         {
