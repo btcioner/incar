@@ -60,7 +60,7 @@
            postData.phone=$('#phone').val();
            postData.mileage=$('#mileage').val();
            postData.carType=$('#carType').val();
-		  if(bookDate<=today) return;
+		  if(bookDate<=today) {alert("预约时间错误！");return;}
 		   else {
                $.ajax({
                   type: "post",
