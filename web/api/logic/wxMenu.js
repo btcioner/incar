@@ -49,7 +49,7 @@ wxMenu.define = function(appid, appsecret){
                                 {
                                     "type":"click",
                                     "name":"预约保养",
-                                "key":"MY4S.BOOKING"
+                                     "key":"MY4S.BOOKING"
     },
                                 {
                                     "type":"click",
@@ -150,6 +150,7 @@ wxMenu.onClick['MY4S.PROBE'] = function(message, session, next) {
 };
 
 wxMenu.onClick['MY4S.BOOKING'] = function(message, session, next) {
+    console.log("begin booking");
     my4S.book(message.FromUserName, session, function(err, result){
         if (err) {
             return next(err);

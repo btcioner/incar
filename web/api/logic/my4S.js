@@ -47,6 +47,7 @@ my4S.onManualMessages = function(message, session, callback) {
 };
 
 my4S.book = function(userName, session, callback){
+    console.log("begin book");
     // 模板将来要从数据库来读取
     var tpl = [
         '当前有如下特价工位：\n\n',

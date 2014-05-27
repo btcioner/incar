@@ -34,7 +34,7 @@ function slotBooking(req, res) {
 
 function getOrgId(db, userName, callback) {
     var pool = db();
-    pool.query('select s4_id from t_account where wx_oid = ?;',[userName], function(err, rows){
+    pool.query('select s4_id from t_account where wx_oid like ?;',["%"+userName+"%"], function(err, rows){
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {

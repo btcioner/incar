@@ -1,0 +1,58 @@
+#regsitercontaine {
+	background-image: url(../mimages/line_img.png);
+	background-repeat: repeat-y;
+	background-position: 9px;
+	width: 250px;
+	margin-right: auto;
+	margin-left: auto;
+	/* [disabled]background-color: #C9C; */
+	/* [disabled]padding-top: 14px; */
+}
+#regsitercontaine .contentbox {
+	background-image: url(../mimages/icon_02.png);
+	background-repeat: no-repeat;
+	background-position: left 20px;
+	padding-left: 25px;
+	padding-top: 20px;
+}
+#regsitercontaine .contentbox .columnname {
+	background-image: url(../mimages/icon_03.png);
+	background-repeat: no-repeat;
+	background-position: left top;
+	padding-left: 10px;
+	height: 18px;
+}
+#regsitercontaine .contentbox .columnname div {
+	height: 18px;
+	padding-right: 10px;
+	padding-left: 10px;
+	background-color: #c2973c;
+	color: #FFF;
+	line-height: 18px;
+	width: 50px;
+}
+#regsitercontaine .contentbox .content  {
+	padding-left: 10px;
+}
+
+#regsitercontaine .contentbox .content li {
+	float: left;
+	list-style-type: none;
+	/* [disabled]background-color: #0CF; */
+	height: 24px;
+	line-height: 22px;
+}
+#regsitercontaine .contentbox .content {
+	padding-top: 10px;
+}
+
+#regsitercontaine .contentbox .content li input {
+	height: 18px;
+}
+#regsiterbutton {
+	width: 96px;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+	padding-top: 10px;
+}

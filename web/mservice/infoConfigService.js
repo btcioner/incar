@@ -29,7 +29,7 @@ function infoConfig(req, res) {
                     res.send(err);
                 }
                 else{
-                    console.log(report);
+                    //console.log(report);
                     res.send(200, report);
                 }
             })
