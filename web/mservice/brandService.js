@@ -40,13 +40,13 @@ function getBrand(db, callback) {
                        if(err){ callback(err);}
                        else {
                            if(srows){
-                               console.log('   brand length:'+srows.length+'  brand:'+brandData.brand);
-                               var items=new Array();
+                              var items=new Array();
                                for(var j=0;j<srows.length;j++){
                                    var series={};
                                    series.parentNode=brandData.brand;
                                    series.series=srows[j].series;
                                    series.id=srows[j].seriesCode;
+                                   console.log('   seriesCode:'+srows[j].seriesCode+'  series:'+srows[j].series);
                                    items.push(series);
                                }
                               brandData.items=items;
