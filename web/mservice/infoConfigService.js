@@ -44,8 +44,9 @@ function getAccountInfo(db, userName, callback) {
     //userName = temp[0];
 
     pool.query('select id,s4_id,name,nick,phone from t_account where wx_oid like ?;',["%"+userName+"%"], function(err, rows){
-        if (err) { console.log("err-----");callback(err); }
+        if (err) { callback(err); }
         else {
+            console.log("nick:"+rows[0].nick);
             if (rows && rows.length === 1) {
                   report.id=rows[0].id;
                   report.s4_id=rows[0].s4_id;
