@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS t_activity_template(
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '唯一标识',
     s4_id INT UNSIGNED NOT NULL COMMENT '所属4S店',
     name VARCHAR(64) NOT NULL COMMENT '模版名称,用于标识活动类型',
+    template VARCHAR(32) NOT NULL COMMENT '模版内部名称',
     title VARCHAR(64) NOT NULL COMMENT '活动标题',
     brief VARCHAR(4096) COMMENT '活动简述',
     awards VARCHAR(4096) COMMENT '活动颁奖简述'

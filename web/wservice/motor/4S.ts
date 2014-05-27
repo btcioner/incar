@@ -505,20 +505,20 @@ module Service{
         }
 
         public GetActivities(page:Pagination, filter:any, cb:(ex:TaskException, totalCount:number, acts:Activity[])=>void){
-            var sql = "SELECT %s FROM t_activity WHERE 1=1";
+            var sql = "SELECT %s FROM t_activity WHERE s4_id=?";
             var dac = MySqlAccess.RetrievePool();
 
             var task:any = { finished:0 };
             task.begin = ()=>{
                 var sqlA = util.format(sql,"*");
-                dac.query(sqlA, filter, (ex,result)=>{
+                dac.query(sqlA, [this.dto.id], (ex,result)=>{
                     task.A = { ex:ex, result:result };
                     task.finished++;
                     task.end();
                 });
 
                 var sqlB = util.format(sql, "COUNT(*) count");
-                dac.query(sqlB, filter, (ex, result)=>{
+                dac.query(sqlB, [this.dto.id], (ex, result)=>{
                     task.B = { ex:ex, result:result };
                     task.finished++;
                     task.end();
@@ -542,6 +542,99 @@ module Service{
             };
 
             task.begin();
+        }
+
+        public GetTemplatedActivities(page:Pagination, filter:any, template:Template, fnCreate:(dto:any)=>void, cb:(ex:TaskException, total:number, acts:Activity[])=>void){
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "SELECT %s FROM t_activity WHERE s4_id=? and template_id=?";
+            var args = [this.dto.id, template.dto.id];
+
+            var task:any = { finished:0 };
+            task.begin = ()=>{
+                var sqlA = util.format(sql,"*");
+                dac.query(sqlA, args, (ex,result)=>{
+                    task.A = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+
+                var sqlB = util.format(sql, "COUNT(*) count");
+                dac.query(sqlB, args, (ex, result)=>{
+                    task.B = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+            };
+
+            task.end = ()=>{
+                if(task.finished < 2) return;
+                if(task.A.ex) { cb(new TaskException(-1, "查询活动失败", task.A.ex),0,null); return; }
+
+                var totalCount = 0;
+                if(!task.B.ex) totalCount = task.B.result[0].count;
+
+                var acts = [];
+                task.A.result.forEach((dto:any)=>{
+                    var act = new fnCreate(dto);
+                    acts.push(act);
+                });
+
+                cb(null, totalCount, acts);
+            };
+
+            task.begin();
+        }
+
+        public GetTemplates(page:Pagination, filter:any, cb:(ex:TaskException, totalCount:number, templates:Template[])=>void){
+            var sql = "SELECT %s FROM t_activity_template WHERE s4_id=?";
+            var dac = MySqlAccess.RetrievePool();
+
+            var task:any = { finished:0 };
+            task.begin = ()=>{
+                var sqlA = util.format(sql,"*");
+                dac.query(sqlA, [this.dto.id], (ex,result)=>{
+                    task.A = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+
+                var sqlB = util.format(sql, "COUNT(*) count");
+                dac.query(sqlB, [this.dto.id], (ex, result)=>{
+                    task.B = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+            };
+
+            task.end = ()=>{
+                if(task.finished < 2) return;
+                if(task.A.ex) { cb(new TaskException(-1, "查询活动失败", task.A.ex),0,null); return; }
+
+                var totalCount = 0;
+                if(!task.B.ex) totalCount = task.B.result[0].count;
+
+                var acts = [];
+                task.A.result.forEach((dto:any)=>{
+                    var act = new Template(dto);
+                    acts.push(act);
+                });
+
+                cb(null, totalCount, acts);
+            };
+
+            task.begin();
+        }
+
+        public GetTemplate(tpl_id:number, cb:(ex:TaskException, template:Template)=>void){
+            var sql = "SELECT * FROM t_activity_template WHERE id = ? and s4_id=?";
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, [tpl_id, this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "查询活动模版失败", ex), null); return; }
+                else if(result.length === 0) { cb(new TaskException(-2, "指定的活动模版不存在", null), null); return; }
+                else if(result.length > 1) { cb(new TaskException(-3, "模版数据存在错误", null), null); return; }
+                var template = new Template(result[0]);
+                cb(null, template);
+            });
         }
     }
 }

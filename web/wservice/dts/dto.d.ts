@@ -64,5 +64,15 @@ declare module Service{
             tm_end:Date;
             tm_publish:Date;
         }
+
+        export class activity_template{
+            id:number;
+            s4_id:number;
+            name:string;
+            template:string;
+            title:string;
+            brief:string;
+            awards:string;
+        }
     }
 }
