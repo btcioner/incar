@@ -50,7 +50,7 @@
            var postData={};
           if($('#start').val()==''||$('#end').val()==''){alert("请输入预约时间");return;}
           if($('#phone').val()==''||$('#phone').val()==null){alert("请输入联系电话");return;}
-		  bookDate=document.getElementById('start').value.toDateString();
+		  bookDate=document.getElementById("start").value;
            alert(bookDate);
 		  bookTime=$('#end').val().toDateString();
            alert(bookTime);
