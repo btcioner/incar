@@ -43,7 +43,7 @@ function getAccountInfo(db, userName, callback) {
     //var serverName = temp[1];
     //userName = temp[0];
 
-    pool.query('select id,s4_id,name,nick,phone from t_wx_user where wx_oid like ?;',["%"+userName+"%"], function(err, rows){
+    pool.query('select id,s4_id,name,nick,phone from t_account where wx_oid like ?;',["%"+userName+"%"], function(err, rows){
         if (err) { console.log("err-----");callback(err); }
         else {
             if (rows && rows.length === 1) {
