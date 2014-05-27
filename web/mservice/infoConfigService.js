@@ -90,9 +90,10 @@ function getCarInfo(db, callback){
 function getBrandName(db,brandCode,callback){
     var pool = db();
     pool.query('select brand from t_car_dictionary where brandCode=?;',[brandCode],function(err,rows){
-        if(err) callback(err);
+        if(err) { console.log("-----------err");callback(err);}
         else{
             if(rows) {
+                console.log("-----------"+rows[0].brand);
                 callback(null,rows[0].brand);
             }
             else{callback(new err('No data.'));}
