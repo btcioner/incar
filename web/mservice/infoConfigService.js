@@ -71,9 +71,9 @@ function getCarInfo(db, callback){
                             report.license=rows[0].license;
                             report.obd_code=rows[0].obd_code;
                             report.brand=rows[0].brand;
-                            report.brandName=getBrandName(db,rows[0].brand,function(err){callback(err);});
+                            getBrandName(db,rows[0].brand,function(err){callback(err);});
                             report.series=rows[0].series;
-                            report.seriesName=getSeriesName(db,rows[0].series,function(err){callback(err);});
+                            getSeriesName(db,rows[0].series,function(err){callback(err);});
                             report.modelYear=rows[0].modelYear;
                             report.disp=rows[0].disp;
                             report.mileage=rows[0].mileage;
@@ -90,11 +90,11 @@ function getCarInfo(db, callback){
 function getBrandName(db,brandCode,callback){
     var pool = db();
     pool.query('select brand from t_car_dictionary where brandCode=?;',[brandCode],function(err,rows){
-        if(err) { console.log("-----------err");callback(err);}
+        if(err) {callback(err);}
         else{
             if(rows) {
-                console.log("-----------"+rows[0].brand);
-                callback(null,rows[0].brand);
+                report.brandName=rows[0].brand;
+                callback(null,1);
             }
             else{callback(new err('No data.'));}
         }
@@ -106,7 +106,8 @@ function getSeriesName(db,seriesCode,callback){
         if(err) callback(err);
         else{
             if(rows) {
-                callback(null,rows[0].brand);
+                report.seriesName=rows[0].series;
+                callback(null,1);
             }
             else{callback(new err('No data.'));}
         }
