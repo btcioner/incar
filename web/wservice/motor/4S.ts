@@ -504,7 +504,7 @@ module Service{
             });
         }
 
-        public GetActivities(page:Pagination, filter:any, cb:(ex:TaskException, acts:Activity[])=>void){
+        public GetActivities(page:Pagination, filter:any, cb:(ex:TaskException, totalCount:number, acts:Activity[])=>void){
             var sql = "SELECT %s FROM t_activity WHERE 1=1";
             var dac = MySqlAccess.RetrievePool();
 
@@ -527,8 +527,21 @@ module Service{
 
             task.end = ()=>{
                 if(task.finished < 2) return;
-                if(task.A.ex) { cb(new TaskException(-1, "查询活动失败", task.A.ex), null); return; }
+                if(task.A.ex) { cb(new TaskException(-1, "查询活动失败", task.A.ex),0,null); return; }
+
+                var totalCount = 0;
+                if(!task.B.ex) totalCount = task.B.result[0].count;
+
+                var acts = [];
+                task.A.result.forEach((dto:any)=>{
+                    var act = new Activity(dto);
+                    acts.push(act);
+                });
+
+                cb(null, totalCount, acts);
             };
+
+            task.begin();
         }
     }
 }

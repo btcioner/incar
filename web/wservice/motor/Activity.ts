@@ -8,7 +8,10 @@ module Service{
         var repo4S = S4Repository.GetRepo();
         repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
             if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
-
+            s4.GetActivities(page, req.query, (ex, total, acts)=>{
+                if(ex) {res.json(ex); return;}
+                res.json({status:"ok", totalCount:total, acts:acts});
+            });
         });
     }
 
