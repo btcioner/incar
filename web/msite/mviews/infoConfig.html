@@ -91,7 +91,7 @@
         <div class="content"><ul><li>用&nbsp;&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;&nbsp;名*：</li><li><input type="text" id="name" name="name" readonly="readonly" class="w132"/></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>OBD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ID*：</li><li><input type="text" id="obd_code" name="obd_code" class="w132" /></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码*：</li><li><input type="password" id="password" name="password" class="w132"/></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>重&nbsp;复&nbsp;密&nbsp;码&nbsp;*：</li><li><input type="password" id="pwdagain" name="pwdagain" /></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>重&nbsp;复&nbsp;密&nbsp;码&nbsp;*：</li><li><input type="password" id="pwdagain" name="pwdagain" class="w132" /></li></ul><div class="clear"></div></div>
     </div><!--基本信息contentbox end-->
         <!--车主信息contentbox start--><div class="contentbox">
         <div class="columnname"><div>车主信息</div></div>
@@ -102,8 +102,16 @@
         <!--汽车信息contentbox start--><div class="contentbox">
         <div class="columnname"><div>汽车信息</div></div>
         <div class="content"><ul><li>汽&nbsp;车&nbsp;品&nbsp;牌&nbsp;*：</li><li><input type="text" id="brand" name="brand" class="w132"/></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>系&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列*：</li><li><select id="selectSeries" name="selectSeries" class="w137" ></select></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;款*：</li><li><input type="text" id="modelYear" name="modelYear" /></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>系&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列*：</li><li><select  id="age" name="age" class="w137" >
+            <option value="-1" id="seleAge">请选择</option>
+            <option value="0">1年以下</option>
+            <option value="1">1-2年</option>
+            <option value="2">2-3年</option>
+            <option value="3">3-4年</option>
+            <option value="4">4-5年</option>
+            <option value="5">大于5年</option>
+        </select></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;款*：</li><li><input type="text" id="modelYear" name="modelYear" class="w132"/></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>当&nbsp;前&nbsp;里&nbsp;程&nbsp;*：</li><li><input type="text" id="mileage" name="mileage" class="w132" /></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>发动机类型*：</li><li><select id="engine_type" name="engine_type" class="w137" ><option value="-1" id="seleEngine">请选择</option><option value="S">自然吸气</option><option value="T">涡轮增压</option></select></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>排&nbsp;&nbsp;&nbsp;&nbsp;气&nbsp;&nbsp;&nbsp;&nbsp;量*：</li><li><input type="text" id="disp" name="disp" class="w132"/></li></ul><div class="clear"></div></div>
