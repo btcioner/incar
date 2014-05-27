@@ -47,7 +47,7 @@ function getBrand(db, username,callback) {
                                             if(rows){
                                                 var seriesData=new Array();
                                                 for(var i=0;i<rows.length;i++){
-                                                    seriesData[i]=new {};
+                                                    seriesData[i]={};
                                                     seriesData[i].series=rows[i].series;
                                                     seriesData[i].seriesCode=rows[i].seriesCode;
                                                 }
