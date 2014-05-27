@@ -39,15 +39,13 @@ function infoConfig(req, res) {
 
 function getAccountInfo(db, userName, callback) {
     var pool = db();
-    //var temp = userName.split('@');
-    //var serverName = temp[1];
-    //userName = temp[0];
+    var temp = userName.split('@');
+    var serverName = temp[1];
+    userName = temp[0];
 
     pool.query('select id,s4_id,name,nick,phone from t_account where wx_oid like ?;',["%"+userName+"%"], function(err, rows){
         if (err) { callback(err); }
         else {
-            console.log("----------");
-            console.log(rows.length );
             if (rows && rows.length === 1) {
                   report.id=rows[0].id;
                   report.s4_id=rows[0].s4_id;
