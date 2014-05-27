@@ -71,6 +71,7 @@ function getCarInfo(db, callback){
                             report.obd_code=rows[0].obd_code;
                             report.brand=rows[0].brand;
                             getBrandName(db,rows[0].brand,function(err,data){
+                                console.log("-----"+data);
                                 report.brandName=data;
                             });
                             report.series=rows[0].series;
@@ -93,9 +94,8 @@ function getCarInfo(db, callback){
 function getBrandName(db,brandCode,callback){
     var pool = db();
     pool.query('select brand from t_car_dictionary where brandCode=?;',[brandCode],function(err,rows){
-        if(err) {console.log("+++++++++++");callback(err)}
+        if(err) {callback(err)}
         else{
-            console.log(rows[0].brand)
             callback(null,rows[0].brand);
              }
     });
