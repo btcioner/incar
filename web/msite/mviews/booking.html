@@ -51,8 +51,10 @@
           if($('#start').val()==''||$('#end').val()==''){alert("请输入预约时间");return;}
           if($('#phone').val()==''||$('#phone').val()==null){alert("请输入联系电话");return;}
 		  bookDate=$('#start').val().toDateString();
+           alert(bookDate);
 		  bookTime=$('#end').val().toDateString();
-          bookTime.setHours($('#end').val().substring(0,1),$('#end').val().substring(3));
+           alert(bookTime);
+         // bookTime.setHours($('#end').val().substring(0,1),$('#end').val().substring(3));
            alert(bookTime);
            postData.user=user;
            postData.nick=$('#ownerName').val();
