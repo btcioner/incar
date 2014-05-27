@@ -47,7 +47,7 @@ function getAccountInfo(db, userName, callback) {
         if (err) { callback(err); }
         else {
             console.log("----------");
-            console.log(rows.length === 1);
+            console.log(rows.length );
             if (rows && rows.length === 1) {
                   report.id=rows[0].id;
                   report.s4_id=rows[0].s4_id;
