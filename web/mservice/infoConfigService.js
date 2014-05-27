@@ -87,7 +87,7 @@ function getCarInfo(db, callback){
         }
     });
 }
-function getBrandName(db,brandCode){
+function getBrandName(db,brandCode,callback){
     var pool = db();
     pool.query('select brand from t_car_dictionary where brandCode=?;',[brandCode],function(err,rows){
         if(err) callback(err);
@@ -99,7 +99,7 @@ function getBrandName(db,brandCode){
         }
     });
 }
-function getSeriesName(db,seriesCode){
+function getSeriesName(db,seriesCode,callback){
     var pool = db();
     pool.query('select series from t_car_dictionary where seriesCode=?;',[seriesCode],function(err,rows){
         if(err) callback(err);
