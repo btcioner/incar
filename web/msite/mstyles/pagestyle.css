@@ -21,6 +21,18 @@ a img {
 .float {
 	float: left;
 }
+.button01 {
+	line-height: 28px;
+	color: #FFF;
+	background-image: url(../mimages/button_01.png);
+	background-repeat: no-repeat;
+	height: 28px;
+	width: 96px;
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+}
+
 .text_01 {
 	line-height: 20px;
 	text-align: center;
@@ -28,6 +40,12 @@ a img {
 .text_01 span {
 	font-weight: bold;
 }
+.text_02 {
+	color: #c2973c;
+	font-size: 11px;
+	line-height: 14px;
+}
+
 .imgbox01 {
 	padding-top: 16px;
 }
@@ -65,6 +83,10 @@ a img {
 .w108 {
 	width: 108px;
 }
+.w137 {
+	width: 137px;
+}
+
 .w10 {
 	width: 10px;
 }
