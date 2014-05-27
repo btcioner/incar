@@ -71,8 +71,8 @@ function getCarInfo(db, callback){
                             report.obd_code=rows[0].obd_code;
                             report.brand=rows[0].brand;
                             getBrandName(db,rows[0].brand,function(err,data){
-                                console.log("-----"+data);
-                                report.brandName=data;
+                                //console.log("-----"+data);
+                                report.abc=data;
                             });
                             report.series=rows[0].series;
                             getSeriesName(db,rows[0].series,function(err,data){
