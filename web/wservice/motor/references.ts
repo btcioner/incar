@@ -14,4 +14,5 @@
 /// <reference path="CarBrand.ts" />
 /// <reference path="CarCare.ts" />
 /// <reference path="Activity.ts" />
+/// <reference path="ActSaveGas.ts" />
 /// <reference path="Complex.ts" />
