@@ -11,54 +11,58 @@ exports = module.exports = function(service) {
 }
 
 function brandData(req, res) {
-
+    var postData = req.body;
+    console.log(postData);
     var db = this.db;
-    getBrand(db,  function(err, data) {
+    getBrand(db, postData.user ,function(err, data) {
          if (err) { res.send(err); }
           else {
            //console.log('Car brands print:\n');
-           //console.log(data);
+           console.log(data);
            res.send(data);
          }
     });
  }
 
-function getBrand(db, callback) {
+function getBrand(db, username,callback) {
     var pool = db();
-    var report = new Array();
+    var report ={};
    // console.log('brand search begin');
-    pool.query('select brandCode,brand from t_car_dictionary group by brandCode;',[], function(err, rows){
-        if (err) { callback(err); }
-        else {
-            if(rows){
-               for(var i=0;i<rows.length;i++){
-                   var brandData={};
-                   brandData.id=rows[i].brandCode;
-                   brandData.brand =rows[i].brand;
-                  //pool.query("SET character_set_client=utf8,character_set_connection=utf8");
-                   pool.query('select seriesCode,series from t_car_dictionary where brandCode=?;',[rows[i].brandCode],function(err, srows){
-                       if(err){ callback(err);}
-                       else {
-                           if(srows){
-                              var items=new Array();
-                               for(var j=0;j<srows.length;j++){
-                                   var series={};
-                                   series.parentNode=brandData.brand;
-                                   series.series=srows[j].series;
-                                   series.id=srows[j].seriesCode;
-                                   items.push(series);
-                               }
-                              brandData.items=items;
-                             console.log(brandData);
-                           }
-                           else {callback(new Error('No data.'))}
-                       }
-                   });
-                  report.push(brandData);
-               }
-                //console.log(report);
-               callback(null,report);
-           }else  {callback(new Error('error!!'))}
+    pool.query('select s4_id from t_account where wx_oid like ?;',["%"+username+"%"],function(err,rows){
+        if(err){callback(err);}
+        else{
+            if(rows&&rows.length===1){
+                pool.query('select brand from t_4s where id=?;',[rows[0].s4_id],function(err,rows){
+                    if(err){callback(err);}
+                    else{
+                        if(rows&&rows.length===1){
+                            pool.query('select brandCode,brand from t_car_dictionary where brandCode=?;',[rows[0].brand], function(err, rows){
+                                if(err){callback(err);}
+                                else{
+                                    report.brand=rows[0].brand;
+                                    report.brandCode=rows[0].brandCode;
+                                    pool.query('select seriesCode,series from t_car_dictionary where brandCode=?;',[rows[0].brandCode],function(err,rows){
+                                        if(err){callback(err);}
+                                        else{
+                                            if(rows){
+                                                var seriesData=new Array();
+                                                for(var i=0;i<rows.length;i++){
+                                                    seriesData[i]=new {};
+                                                    seriesData[i].series=rows[i].series;
+                                                    seriesData[i].seriesCode=rows[i].seriesCode;
+                                                }
+                                                report.seriesData=seriesData;
+                                                callback(null,report);
+                                            }else{callback(new Error('no series data.'));}
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                        else {callback(new Error('4s has no brand.'));}
+                    }
+                });
+            }else {callback(new Error('user has no 4s.'));}
         }
     });
 }

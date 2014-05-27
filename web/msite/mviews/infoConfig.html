@@ -32,7 +32,7 @@
             searchUser();
 
             //获取汽车品牌、车型数据
-            initPro();
+            initCarBrand();
             //
             document.getElementById("user").value=user;
             //document.getElementById("obd_code").value="WFQ00013044";
@@ -83,8 +83,7 @@
 </head>
 <body onLoad="init()" style="padding: 2">
 <div id="wrap">
-    <!--pagename start--><div id="pagename">注&nbsp;&nbsp;&nbsp;&nbsp;册</div><!--pagename end-->
-    <!--main_wrap start-->
+     <!--main_wrap start-->
     <div id="main_wrap">
         <!--regsitercontaine start--><div id="regsitercontaine">
         <!--基本信息contentbox start--><div class="contentbox">
@@ -102,28 +101,20 @@
     </div><!--车主信息contentbox end-->
         <!--汽车信息contentbox start--><div class="contentbox">
         <div class="columnname"><div>汽车信息</div></div>
-        <div class="content"><ul><li>汽&nbsp;车&nbsp;品&nbsp;牌&nbsp;*：</li><li><select id="brand" name="brand" class="w137"  ><option value="-1" id="seleBrand" >请选择</option></select></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>汽&nbsp;车&nbsp;品&nbsp;牌&nbsp;*：</li><li><input type="text" id="brand" name="brand"/></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>系&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列*：</li><li><select id="selectSeries" name="selectSeries" class="w137" ><option value="-1" id="seleSeries">请选择</option></select></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;款*：</li><li><select id="modelYear" name="modelYear" class="w137"><option value="-1" id="seleModelYear">请选择</option><option>2000</option><option>2001</option><option>2002</option><option>2003</option><option>2004</option><option>2005</option><option>2006</option><option>2007</option><option>2008</option><option>2009</option><option>2010</option><option>2011</option><option>2012</option><option>2013</option><option>2014</option><option>2015</option></select></select></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;款*：</li><li><input type="text" id="modelYear" name="modelYear" /></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>当&nbsp;前&nbsp;里&nbsp;程&nbsp;*：</li><li><input type="text" id="mileage" name="mileage"  /></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>发动机类型*：</li><li><select id="engine_type" name="engine_type" class="w137" ><option value="-1" id="seleEngine">请选择</option><option value="S">自然吸气</option><option value="T">涡轮增压</option></select></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>排&nbsp;&nbsp;&nbsp;&nbsp;气&nbsp;&nbsp;&nbsp;&nbsp;量*：</li><li><select id="disp" name="disp" class="w137" >
-            <option value="-1" id="seleDisp" >请选择</option><option>1.8</option><option>1.9</option>
-            <option>2.0</option><option>2.1</option><option>2.2</option><option>2.3</option><option>2.4</option><option>2.5</option><option>2.6</option><option>2.7</option><option>2.8</option><option>2.9</option>
-            <option>3.0</option><option>3.1</option><option>3.2</option><option>3.3</option><option>3.4</option><option>3.5</option><option>3.6</option><option>3.7</option><option>3.8</option><option>3.9</option>
-            <option>4.0</option><option>4.1</option><option>4.2</option><option>4.3</option><option>4.4</option><option>4.5</option><option>4.6</option><option>4.7</option><option>4.8</option><option>4.9</option>
-            <option>5.0</option><option>5.1</option><option>5.2</option><option>5.3</option><option>5.4</option><option>5.5</option><option>5.6</option><option>5.7</option><option>5.8</option><option>5.9</option>
-            <option>6.0</option><option>6.1</option><option>6.2</option><option>6.3</option><option>6.4</option><option>6.5</option>
-        </select></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>排&nbsp;&nbsp;&nbsp;&nbsp;气&nbsp;&nbsp;&nbsp;&nbsp;量*：</li><li><input type="text" id="disp" name="disp" /></li></ul><div class="clear"></div></div>
         <div class="content"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄*：</li><li><select  id="age" name="age" class="w137" >
             <option value="-1" id="seleAge">请选择</option>
             <option value="0">1年以下</option>
-            <option value="1">1年</option>
-            <option value="2">2年</option>
-            <option value="3">3年</option>
-            <option value="4">4年</option>
-            <option value="5">5年</option>
-            <option value="6">大于5年</option>
+            <option value="1">1-2年</option>
+            <option value="2">2-3年</option>
+            <option value="3">3-4年</option>
+            <option value="4">4-5年</option>
+            <option value="5">大于5年</option>
         </select></li></ul><div class="clear"></div></div>
     </div><!--汽车信息contentbox end-->
     </div><!--regsitercontaine end-->
@@ -143,18 +134,17 @@
               //document.getElementById('password').value=result.name;
               //document.getElementById('username').value=result.name;
               document.getElementById('obd_code').value=result.obd_code;
-              document.getElementById('seleBrand').innerHTML=result.brandName;
-              document.getElementById('seleBrand').value=result.brand;
-              document.getElementById('seleSeries').innerHTML=result.seriesName;
-              document.getElementById('seleSeries').value=result.series;
-              document.getElementById('seleModelYear').innerHTML=result.modelYear;
-              document.getElementById('seleModelYear').value=result.modelYear;
+              //document.getElementById('seleBrand').innerHTML=result.brandName;
+              //document.getElementById('seleBrand').value=result.brand;
+              //document.getElementById('seleSeries').innerHTML=result.seriesName;
+             // document.getElementById('seleSeries').value=result.series;
+             // document.getElementById('seleModelYear').innerHTML=result.modelYear;
+               document.getElementById('modelYear').value=result.modelYear;
               document.getElementById('license').value=result.license;
               document.getElementById('mileage').value=result.mileage;
               document.getElementById('seleAge').innerHTML=result.age+'年';
               document.getElementById('seleAge').value=result.age;
-              document.getElementById('seleDisp').innerHTML=result.disp;
-              document.getElementById('seleDisp').value=result.disp;
+              document.getElementById('disp').value=result.disp;
               document.getElementById('phone').value=result.phone;
               document.getElementById('nick').value=result.nick;
               document.getElementById('seleEngine').value=result.engine_type;
@@ -166,7 +156,22 @@
             }
         });
     }
-
+ function initCarBrand(){
+     $.ajax({
+         type: "POST",
+         url: "/mservice/brandService",
+         data: {'user':user},
+         dataType: "json",
+         success:function(data){
+             document.getElementById('brand').value=data.brand;
+             var str='<option value="-1">请选择</option>';
+             for(var i=0;i<data.seriesData.length;i++){
+                 str+='<option value="'+data.seriesData[i].seriesCode+'">'+data.seriesData[i].series+'</option> '
+             }
+             document.getElementById('selectSeries').innerHTML=str;
+         }
+     });
+ }
 </script>
 </body>
 </html>
