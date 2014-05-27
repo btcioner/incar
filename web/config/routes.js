@@ -106,6 +106,8 @@ module.exports = function(app) {
     app.get('/wservice/brand/:brand_id/series', wservice.GetBrandSeries);
     app.get('/wservice/brand/:brand_id/series/:series_id', wservice.GetSeries);
 
+    app.get('/wservice/4s/:s4_id/activity', authCheck, wservice.GetActivities);
+
     app.get('/wservice', wservice.html);
 
     // Routes for msite service
