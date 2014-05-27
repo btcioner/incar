@@ -50,5 +50,19 @@ declare module Service{
             user_type:number;
             user_type_name:string;
         }
+
+        export class activity{
+            id:number;
+            s4_id:number;
+            template_id:number;
+            title:string;
+            brief:string;
+            awards:string;
+            status:number;
+            tm_announce:Date;
+            tm_start:Date;
+            tm_end:Date;
+            tm_publish:Date;
+        }
     }
 }

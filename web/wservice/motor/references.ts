@@ -13,4 +13,5 @@
 /// <reference path="Work.ts" />
 /// <reference path="CarBrand.ts" />
 /// <reference path="CarCare.ts" />
+/// <reference path="Activity.ts" />
 /// <reference path="Complex.ts" />

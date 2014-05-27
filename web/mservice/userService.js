@@ -106,7 +106,9 @@ function carEnroll(req,res){
     var modelYear=params.modelYear;
     var license=params.license;
     var mileage=params.mileage;
-    var age=params.age;
+    var age=parseInt(params.age);
+    var ageDate=new Date();
+    ageDate.setYear(ageDate.getFullYear()-age);
     var disp=params.disp;
     var engine_type=params.engine_type;
     var user=getUserInfo(wx);
@@ -124,7 +126,7 @@ function carEnroll(req,res){
                 act_type:1,
                 disp:disp,
                 mileage:mileage,
-                age:age,
+                age:ageDate,
                 engine_type:engine_type,
                 created_date:new Date()
             };

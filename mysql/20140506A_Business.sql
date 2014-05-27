@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS t_4s(
     prov VARCHAR(16) COMMENT '省',
     city VARCHAR(16) COMMENT '市',
     description VARCHAR(512) COMMENT '简要说明性文字',
-
+    brand int COMMENT '品牌',
     wx_login VARCHAR(256) COMMENT '服务账号的微信公众平台登录名称',
     wx_pwd VARCHAR(64) COMMENT '服务账号的微信公众平台登录密码',
     wx_app_name VARCHAR(64) COMMENT '微信公众平台接口用户标识',
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS t_car(
     engineType varchar(5)       COMMENT '发动机类型',
     disp float                  COMMENT '发动机排量',
     mileage long                COMMENT '校准里程数',
-    age int                     COMMENT '车龄',
+    age date                    COMMENT '车龄',
 
     comment VARCHAR(32)         COMMENT '简要说明性文字',
     created_date DATE           COMMENT '创建日期',
@@ -103,6 +103,7 @@ CREATE TABLE IF NOT EXISTS t_tag(
     name varchar(50) COMMENT '标签名称',
     description varchar(300) COMMENT '标签说明',
     active tinyint COMMENT '0-不可用 1-可用',
+    groupId int COMMENT '标签大类Id',
     index idx_tag_code(code)
 );
 -- 车标签关系
