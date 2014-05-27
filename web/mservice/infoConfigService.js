@@ -71,9 +71,9 @@ function getCarInfo(db, callback){
                             report.license=rows[0].license;
                             report.obd_code=rows[0].obd_code;
                             report.brand=rows[0].brand;
-                            report.brandName=getBrandName(db,rows[0].brand);
+                            report.brandName=getBrandName(db,rows[0].brand,function(err){callback(err);});
                             report.series=rows[0].series;
-                            report.seriesName=getSeriesName(db,rows[0].series);
+                            report.seriesName=getSeriesName(db,rows[0].series,function(err){callback(err);});
                             report.modelYear=rows[0].modelYear;
                             report.disp=rows[0].disp;
                             report.mileage=rows[0].mileage;
