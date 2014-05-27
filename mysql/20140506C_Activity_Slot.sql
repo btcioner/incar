@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS t_promotion_slot(
     description  VARCHAR(512) COMMENT '优惠条例描述',
     promotion_time timestamp COMMENT '营销开始时间',
     promotion_status TINYINT NOT NULL DEFAULT '0' COMMENT '有效性标志 0-无效 1-有效',
-    tc VARCHAR(32) COMMENT '记录操作用户名',
+    tc VARCHAR(512) COMMENT '记录操作用户名',
     ts timestamp COMMENT '记录操作时间戳',
 
 	INDEX IX_PROMOTION_SLOT_1(id),
