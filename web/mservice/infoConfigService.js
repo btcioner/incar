@@ -52,7 +52,6 @@ function getAccountInfo(db, userName, callback) {
                   report.name=rows[0].name;
                   report.phone=rows[0].phone;
                   report.nick=rows[0].nick;
-                 console.log("nick:"+report.nick);
                   callback(null,1);
               } else { callback(new Error('zero of multiple rows returned for one wx user from account-channel map.')); }
                     }
