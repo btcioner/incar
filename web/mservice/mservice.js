@@ -16,6 +16,9 @@ var carbonService = require('./carbonService');
 var slotBookingService = require('./slotBookingService');
 var behaviorService = require('./behaviorService');
 var myDriveService = require('./myDriveService');
+var infoConfigService= require('./infoConfigService');
+var brandService= require('./brandService');
+var getOpenidService= require('./getOpenidService');
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
 
 userService(mservice);
@@ -25,6 +28,9 @@ carbonService(mservice);
 slotBookingService(mservice);
 behaviorService(mservice);
 myDriveService(mservice);
+infoConfigService(mservice);
+brandService(mservice);
+getOpenidService(mservice);
 (function(service) {
 
     function entrance(req, res) {

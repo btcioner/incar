@@ -18,44 +18,69 @@
     <script  src="../mscripts/car.js"></script>
 
     <!--日期控件资源  -->
-
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/menustyle.css" rel="stylesheet" type="text/css" />
     <script  src="../mscripts/jqm-datebox-1.4.0.comp.flipbox.min.js"></script>
     <script  src="../mscripts/jquery.mobile.min.js"></script>
 
     <link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">
     <link rel="stylesheet" href="../mstyles/jqm-datebox.min.css">
     <!--日期控件资源结束  -->
-
+    <script type="text/javascript">
+        //var tabIds=["menu_icon1","menu_icon2","menu_icon3","menu_icon4"];
+        $(function(){
+            //获得样式为menu的ul下面所有li下面所有的a，给他们绑定click事件
+            $("#menu_box>ul>li>a").click(onMenuClick);
+        });
+        function onMenuClick(){
+            var clickId=$(this).attr("id");
+            var boxId=clickId.replace("menu_icon","mainbox");
+            $("#main_wrap>div").hide();
+            $("#menu_box>ul>li>a").each(function(){
+                var id=$(this).attr("id");
+                if(id===clickId){
+                    $(this).removeClass().addClass(id+"b");
+                    $("#"+boxId).show();
+                }
+                else{
+                    $(this).removeClass().addClass(id+"a");
+                }
+            });
+        }
+    </script>
 
     <style scoped>
         #fuel_chart {
             position: relative;
             float: left;
+            width: 85%;
         }
         #fuel_y_axis {
             position: relative;
             float: left;
-            width: 30px;
+            width: 20px;
             height:200px;
         }
         #carbon_chart {
             position: relative;
             float: left;
+            width: 85%;
         }
         #carbon_y_axis {
             position: relative;
             float: left;
-            width: 30px;
+            width: 20px;
             height:200px;
         }
         #drive_chart {
             position: relative;
             float: left;
+            width: 85%;
         }
         #drive_y_axis {
             position: relative;
             float: left;
-            width: 30px;
+            width: 20px;
             height:200px;
         }
     </style>
@@ -78,6 +103,7 @@
         ];
         //页面加载初始化
         function init(){
+
             //获取当前日期，初始化日期控件
             today = new Date();
             year=today.getFullYear();    //获取完整的年份(4位,1970-????)
@@ -104,89 +130,181 @@
 </head>
 <body onLoad="init()" >
 <div style="width: 100%;height: 30px;text-align:center" >
-   <h4>分享我的驾驶记录</h4>
-</div>
-<h5>油耗数据</h5>
-<hr color="#CCCCCC" style="height:5px;width: 100%" >
+<div id="wrap">
 
-<div id="defaulDetail"  style="margin-bottom:5px; margin-top:5px">
-    <table style="font-size:14px;">
-        <tr><td style="text-align:right">最近一次行驶平均油耗为：</td><td id="lastFuel">7.0升/百公里</td></tr>
-        <tr><td style="text-align:right">行驶里程为：</td><td id="lastMiles">17.0公里</td></tr>
-        <tr><td style="text-align:right">耗油量为：</td><td id="lastTotalFuel">2.30升</td></tr>
-        <tr><td>&nbsp;</td></tr>
-        <tr><td style="text-align:right">本周行驶平均油耗为：</td><td id="weekFuel">7.2升/百公里</td></tr>
-        <tr><td style="text-align:right">行驶里程为：</td><td id="weekMiles">216.0公里</td></tr>
-        <tr><td style="text-align:right">耗油量为：</td><td id="weekTotalFuel">18.70升</td></tr>
-        <tr><td>&nbsp;</td></tr>
-        <tr><td style="text-align:right" id="fuelLable">本月行驶平均油耗为：</td><td id="avgFuel">7.1升/百公里</td></tr>
-        <tr><td style="text-align:right">行驶里程为：</td><td id="miles">468.0公里</td></tr>
-        <tr><td style="text-align:right">耗油量为：</td><td id="totalFuel">157.30升</td></tr>
-    </table>
-</div>
+    <!--menu_box start--><div id="menu_box">
+    <!--ULmenu start--><ul class="menu">
+    <li><a id="menu_icon1" href="###" class="menu_icon1b">油&nbsp;&nbsp;&nbsp;&nbsp;耗</a></li>
+    <li><a id="menu_icon2" href="###" class="menu_icon2a">碳排放量</a></li>
+    <li><a id="menu_icon3" href="###" class="menu_icon3a">驾驶偏好</a></li>
+    <li><a id="menu_icon4" href="###" class="menu_icon4a">速段统计</a></li>
+</ul><!--ULmenu end-->
+    <div class="clear"></div>
+</div><!--meun_box end-->
 
-<div class="chart-wrapper" style="margin-bottom: 10px;">
-    <div id="fuel_y_axis"></div>
-    <div id="fuel_chart"></div>
 </div>
-<div id="fule_note" style="text-align:center;margin-top: 20px;vertical-align: middle;margin-top: 215px;margin-left: 30px">
-    <div style="text-align: left;width: 49%;float: left" id="fuel_chartStart"></div>
-    <div style="text-align: right;width: 49%;float: left" id="fuel_chartEnd"></div>
-</div>
-<br>
-<div>
-    <h5>碳排放数据</h5>
+    <!--main_wrap start-->
+    <div id="main_wrap">
+        <!--mainbox1油耗内容 star--><div id="mainbox1">
+        <!--文字部分区1 start--><div>
+        <div class="boxstyle01_1">最近一次行驶</div>
+        <div class="boxstyle02">
+            <ul>
+                <li>平均油耗为：<span id="lastFuel">7.0升/百公里</span></li>
+                <li>行驶里程数：<span id="lastMiles">17.0公里</span></li>
+                <li>耗&nbsp;&nbsp;油&nbsp;&nbsp;量为：<span id="lastTotalFuel">2.30升</span></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div><!--文字部分区1 end-->
+        <div class="h18"></div>
+        <!--文字部分区2 start--><div>
+        <div class="boxstyle01_1">本周行驶</div>
+        <div class="boxstyle02">
+            <ul>
+                <li>平均油耗为：<span id="weekFuel">7.2升/百公里</span></li>
+                <li>行驶里程数：<span id="weekMiles">216.0公里</span></li>
+                <li>耗&nbsp;&nbsp;油&nbsp;&nbsp;量为：<span id="weekTotalFuel">18.70升</span></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div><!--文字部分区2 end-->
+        <div class="h18"></div>
+        <!--文字部分区3 start--><div>
+        <div class="boxstyle01_1">本时间段行驶</div>
+        <div class="boxstyle02">
+            <ul>
+                <li>平均油耗为：<span id="avgFuel">7.1升/百公里</span></li>
+                <li>行驶里程数：<span id="miles">468.0公里</span></li>
+                <li>耗&nbsp;&nbsp;油&nbsp;&nbsp;量为：<span id="totalFuel">157.30升</span></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div><!--文字部分区3  end-->
+        <!--imgbox01图片区1 start-->
+        <div class="imgbox01">
+            <div class="chart-wrapper" style="margin-bottom: 10px;">
+                <div id="fuel_y_axis"></div>
+                <div id="fuel_chart"></div>
+            </div>
+            <div id="fule_note" style="text-align:center;margin-top: 20px;vertical-align: middle;margin-top: 215px;margin-left: 30px">
+                <div style="text-align: left;width: 49%;float: left" id="fuel_chartStart"></div>
+                <div style="text-align: right;width: 49%;float: left" id="fuel_chartEnd"></div>
+            </div>
+        </div><!--imgbox01图片区1 end-->
+    </div><!--mainbox1油耗内容 end-->
+        <!--mainbox2碳排放内容 star--><div id="mainbox2" style="display:none;">
+        <!--文字部分区1 start--><div class="text_01">
+        <span>本次</span>行驶碳排放参考量为：<span id="lastCarbon">7.0kg</span><br />
+        <span>本周</span>行驶碳排放参考量为：<span id="weekCarbon">24kg</span><br />
+        <span>本时间段</span>行驶碳排放参考量为：<span id="monthCarbon">256kg</span>
+    </div><!--文字部分区1 end-->
+        <!--imgbox01图片区1 start--><div class="imgbox01">
+        <div class="chart-wrapper" style="margin-bottom: 10px;">
+            <div id="carbon_y_axis"></div>
+            <div id="carbon_chart"></div>
+        </div>
+        <div id="carbon_note" style="text-align:center;margin-top: 20px;vertical-align: middle;margin-top: 215px;margin-left: 30px">
+            <div style="text-align: left;width: 49%;float: left" id="carbon_chartStart"></div>
+            <div style="text-align: right;width: 49%;float: left" id="carbon_chartEnd"></div><br>
+        </div>
+    </div><!--imgbox01图片区1 end-->
+    </div><!--mainbox2碳排放内容 end-->
+        <!--mainbox3驾驶偏好内容 star--><div id="mainbox3" style="display:none;">
+        <!--文字部分区1 start--><div>
+        <div class="boxstyle01_1">最近一次行驶</div>
+        <div class="boxstyle02">
+            <ul>
+                <li>急转弯次数：<span id="lastTurn"></span></li>
+                <li>急加速次数：<span id="lastSpeedup"></span></li>
+                <li>急减速次数：<span id="lastSpeeddown"></span></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div><!--文字部分区1 end-->
+        <div class="h18"></div>
+        <!--文字部分区2 start--><div>
+        <div class="boxstyle01_1">本周行驶</div>
+        <div class="boxstyle02">
+            <ul>
+                <li>急转弯次数：<span id="weekTurn"></span></li>
+                <li>急加速次数：<span id="weekSpeedup"></span></li>
+                <li>急减速次数：<span id="weekSpeeddown"></span></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div><!--文字部分区2 end-->
+        <div class="h18"></div>
+        <!--文字部分区3 start--><div>
+        <div class="boxstyle01_1">本时间段行驶</div>
+        <div class="boxstyle02">
+            <ul>
+                <li>急转弯次数：<span id="nonthTurn"></span></li>
+                <li>急加速次数：<span id="monthSpeedup"></span></li>
+                <li>急减速次数：<span id="monthSpeeddown"></span></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div><!--文字部分区3  end-->
+        <!--imgbox01图片区1 start--><div class="imgbox01" style="margin-bottom: 10px;position: static;margin-left: -15%">
+        <div class="chart-wrapper" >
+            <div id="drive_y_axis"></div>
+            <div id="drive_chart"></div>
+        </div>
+        <div id="note" style="text-align:center;vertical-align: middle;margin-top: 190px;margin-left: 30px">
+            <div style="text-align: left;width: 49%;float: left" id="drive_chartStart"></div>
+            <div style="text-align: right;width: 49%;float: left" id="drive_chartEnd"></div><br>
+            <div style="width: 10px;background:#c05020;height: 5px;float: left;margin-top: 5px;margin-left: 20px" ></div>
+            <div style="float: left;margin-left: 10px;margin-right: 20px">急加速</div>
+            <div style="width: 10px;background:#30c020;height: 5px;float: left;margin-top: 5px" ></div>
+            <div style="float: left;margin-left: 10px;margin-right: 20px">急减速</div>
+            <div style="width: 10px;background:#6060c0;height: 5px;float: left;margin-top: 5px" ></div>
+            <div style="float: left;margin-left: 10px;margin-right: 20px">急转弯</div>
+        </div>
+    </div><!--imgbox01图片区1 end-->
+    </div><!--mainbox3驾驶偏好内容 end-->
+        <!--mainbox4速段统计内容 star--><div id="mainbox4" style="display:none;">
+        <!--文字部分区1 start--><div>
+        <div class="boxstyle01_2">最近一次行驶</div>
+        <div class="boxstyle02">
+            <ul>
+                <li>时速45公里以下行驶里程<span id="lastSlowSpeed"></span>公里;</li>
+                <li>时速45到90公里行驶里程<span id="LastMiddleSpeed"></span>公里;</li>
+                <li>时速90公里以上<span id="lastHighSpeed"></span>公里</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div><!--文字部分区1 end-->
+        <div class="h18"></div>
+        <!--文字部分区2 start--><div>
+        <div class="boxstyle01_2">本周行驶</div>
+        <div class="boxstyle02">
+            <ul>
+                <li>时速45公里以下行驶里程<span id="weekSlowSpeed"></span>公里;</li>
+                <li>时速45到90公里行驶里程<span id="weekMiddleSpeed"></span>公里;</li>
+                <li>时速90公里以上<span id="weekHighSpeed"></span>公里</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div><!--文字部分区2 end-->
+        <div class="h18"></div>
+        <!--文字部分区3 start--><div>
+        <div class="boxstyle01_2">本时间段行驶</div>
+        <div class="boxstyle02">
+            <ul>
+                <li>时速45公里以下行驶里程<span id="monthSlowSpeed"></span>公里;</li>
+                <li>时速45到90公里行驶里程<span id="monthMiddleSpeed"></span>公里;</li>
+                <li>时速90公里以上<span id="monthHighSpeed"></span>公里</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div><!--文字部分区3  end-->
+        <!--imgbox01图片区1 start--><div class="imgbox01">
+        <div id="chartdiv"></div>
+    </div><!--imgbox01图片区1 end-->
+    </div><!--mainbox4速段统计内容 end-->
 
-    <hr color="#CCCCCC" style="height:5px;" >
-    <div id="fuelDetail"  style="margin-bottom:5px; margin-top:5px">
-        <table style="font-size:14px;">
-            <tr><td style="text-align:right">本次行驶碳排放参考量为：</td><td id="lastCarbon">7.0kg</td></tr>
-            <tr><td style="text-align:right">本周行驶碳排放参考量为：</td><td id="weekCarbon">24kg</td></tr>
-            <tr><td style="text-align:right">本月行驶碳排放参考量为：</td><td id="monthCarbon">256kg</td></tr>
-        </table>
-    </div>
-
-    <div class="chart-wrapper" style="margin-bottom: 10px;">
-        <div id="carbon_y_axis"></div>
-        <div id="carbon_chart"></div>
-    </div>
-    <div id="carbon_note" style="text-align:center;margin-top: 20px;vertical-align: middle;margin-top: 215px;margin-left: 30px">
-        <div style="text-align: left;width: 49%;float: left" id="carbon_chartStart"></div>
-        <div style="text-align: right;width: 49%;float: left" id="carbon_chartEnd"></div><br>
-    </div>
-</div>
-<h5>驾驶行为</h5>
-<hr color="#CCCCCC" style="height:5px" >
-<div id="driveDetail"  style="margin-bottom:2px; margin-top:2px">
-    <table style="font-size:14px;">
-        <tr><td style="text-align:right">最近一次行驶急转弯次数：</td><td id="lastTurn"></td></tr>
-        <tr><td style="text-align:right">急加速次数：</td><td id="lastSpeedup"></td></tr>
-        <tr><td style="text-align:right">急加速次数：</td><td id="lastSpeeddown"></td></tr>
-        <tr><td>&nbsp;</td></tr>
-        <tr><td style="text-align:right">本周行驶急转弯次数：</td><td id="weekTurn"></td></tr>
-        <tr><td style="text-align:right">急加速次数：</td><td id="weekSpeedup"></td></tr>
-        <tr><td style="text-align:right">急减速次数：</td><td id="weekSpeeddown"></td></tr>
-        <tr><td>&nbsp;</td></tr>
-        <tr><td style="text-align:right" id="behaviorLable">本月行驶急转弯次数：</td><td id="nonthTurn"></td></tr>
-        <tr><td style="text-align:right">急加速次数：</td><td id="monthSpeedup"></td></tr>
-        <tr><td style="text-align:right">急减速次数：</td><td id="monthSpeeddown"></td></tr>
-
-    </table>
-</div>
-
-<div class="chart-wrapper" style="margin-bottom: 10px;">
-    <div id="drive_y_axis"></div>
-    <div id="drive_chart"></div>
-</div>
-<div id="note" style="text-align:center;vertical-align: middle;margin-top: 190px;margin-left: 30px">
-    <div style="text-align: left;width: 49%;float: left" id="drive_chartStart"></div>
-    <div style="text-align: right;width: 49%;float: left" id="drive_chartEnd"></div><br>
-    <div style="width: 10px;background:#c05020;height: 5px;float: left;margin-top: 5px;margin-left: 30px" ></div>
-    <div style="float: left;margin-left: 10px;margin-right: 20px">急加速</div>
-    <div style="width: 10px;background:#30c020;height: 5px;float: left;margin-top: 5px" ></div>
-    <div style="float: left;margin-left: 10px;margin-right: 20px">急减速</div>
-    <div style="width: 10px;background:#6060c0;height: 5px;float: left;margin-top: 5px" ></div>
-    <div style="float: left;margin-left: 10px;margin-right: 20px">急转弯</div>
+    </div><!--main_wrap end-->
 </div>
 <script>
 
@@ -313,7 +431,15 @@ function getDefaultData(user){
             }
 
             createChart();
-
+            document.getElementById("lastSlowSpeed").innerHTML=result.lastSpeed.slow;
+            document.getElementById("lastMiddleSpeed").innerHTML=result.lastSpeed.middle;
+            document.getElementById("lastHighSpeed").innerHTML=result.lastSpeed.high;
+            document.getElementById("weekSlowSpeed").innerHTML=result.weekSpeed.slow;
+            document.getElementById("weekMiddleSpeed").innerHTML=result.weekSpeed.middle;
+            document.getElementById("weekHighSpeed").innerHTML=result.weekSpeed.high;
+            document.getElementById("monthSlowSpeed").innerHTML=result.intervalSpeed.slow;
+            document.getElementById("monthMiddleSpeed").innerHTML=result.intervalSpeed.middle;
+            document.getElementById("monthHighSpeed").innerHTML=result.intervalSpeed.high;
         }
     });
 }

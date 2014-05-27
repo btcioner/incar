@@ -60,12 +60,13 @@ function userLogin(req,res){
 //登记并注册没有账户的微信用户
 function userEnroll(req, res) {
     var params=req.params;
-    var username=params.username;
+    var username=params.name;
     var password=params.password;
-    var openId=params.openId;
+    var openId=params.user;
     var openId4S=params.sopenId;
     var phone=params.phone;
-    var nickName=params.nickName;
+    var nickName=params.nick;
+
     var sql="select id from t_4s where openid=?";
     dao.findBySql(sql,[openId4S],function(rows){
         if(rows.length>0){
@@ -105,8 +106,9 @@ function carEnroll(req,res){
     var modelYear=params.modelYear;
     var license=params.license;
     var mileage=params.mileage;
-    var carAge=params.carAge;
-    var displacement=params.displacement;
+    var age=params.age;
+    var disp=params.disp;
+    var engine_type=params.engine_type;
     var user=getUserInfo(wx);
     var s4Id=user.s4_id;
     var sql="select id from t_car where obd_code=?";
@@ -120,9 +122,10 @@ function carEnroll(req,res){
                 modelYear:modelYear,
                 license:license,
                 act_type:1,
-                disp:displacement,
+                disp:disp,
                 mileage:mileage,
-                age:carAge,
+                age:age,
+                engine_type:engine_type,
                 created_date:new Date()
             };
             sql="update t_car set ? where id=?";

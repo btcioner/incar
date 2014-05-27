@@ -9,7 +9,7 @@
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script  src="../mscripts/car.js"></script>
 
-
+    <script src="../mscripts/sha1.js"></script>
     <script  src="../mscripts/jquery.mobile.min.js"></script>
 
     <link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">
@@ -30,23 +30,41 @@
             //获取user的微信openId
             user=getQueryString("user");
             //alert(user);
+            //查询用户信息，预先写入文本框
+            searchUser();
+
             //获取汽车品牌、车型数据
             initPro();
             //
             document.getElementById("user").value=user;
             //document.getElementById("obd_code").value="WFQ00013044";
             document.getElementById("owner_flag").value=1;
-            document.getElementById("enroll_time").value=today;
+            //document.getElementById("enroll_time").value=today;
 
         }
 
         //提交注册数据
-        function reg(){
+        function update(){
             var postData = {};
             postData.user = user;
-            postData.owner_flag = 1;
+            postData.name = document.getElementById("name").value;//用户名
             postData.obd_code = document.getElementById("obd_code").value;
-            postData.enroll_time = today;
+            postData.brand= document.getElementById("brand").value;
+            postData.series= document.getElementById("selectSeries").value;
+            postData.modelYear= document.getElementById("modelYear").value;
+            postData.nick= document.getElementById("nick").value;
+            postData.phone= document.getElementById("phone").value;
+            postData.license= document.getElementById("license").value;
+            postData.mileage= document.getElementById("mileage").value;
+            postData.engine_type= document.getElementById("engine_type").value;
+            postData.disp= document.getElementById("disp").value;
+            postData.age= document.getElementById("age").value;
+            postData.last_login_time = today;//最后登录时间
+            //检查密码是否修改
+            if(document.getElementById('password').value.trim()!=''){
+                if(document.getElementById('password').value!=document.getElementById('pwdagain').value) {alert("密码不一致");return;}
+                else  postData.password =hex_sha1(document.getElementById("password").value);
+            }
             $.ajax({
                 type: "POST",
                 url: "/mservice/enroll",
@@ -74,24 +92,68 @@
         <input type="hidden" id="owner_flag" name="owner_flag" />
         <input type="hidden" id="enroll_time" name="enroll_time" />
         <table style="font-size:14px;">
-            <tr><td style="text-align:right;" width="35%">用户名</td><td  width="65%"><input type="text" id="username" name="username" class="textfield" readonly="readonly"/></td></tr>
+            <tr><td style="text-align:right;" width="35%">用户名</td><td  width="65%"><input type="text" id="name" name="name" class="textfield" readonly="readonly"/></td></tr>
             <tr><td style="text-align:right;">密码</td><td><input type="password" id="password" name="password" class="textfield"/></td></tr>
             <tr><td style="text-align:right;">重复密码</td><td><input type="password" id="pwdagain" name="pwdagain" class="textfield"/></td></tr>
-            <tr><td style="text-align:right;" width="35%">OBD&nbsp;Id</td><td  width="65%"><input type="text" id="obd_code" name="obd_code" class="textfield" /></td></tr>
-            <tr><td style="text-align:right;">汽车品牌</td><td><select id="brand" name="brand"  style="font-size:20px" ><option value="-1" >请选择</option></select></td></tr>
-            <tr><td style="text-align:right;">系列</td><td><select id="selectSeries" name="selectSeries" style="font-size:20px"><option value="-1">请选择</option></select></td></tr>
-            <tr><td style="text-align:right;">年款</td><td><select id="manuyear" name="manuyear" style="font-size:20px"><option value="-1" >请选择</option><option>2000</option><option>2001</option><option>2002</option><option>2003</option><option>2004</option><option>2005</option><option>2006</option><option>2007</option><option>2008</option><option>2009</option><option>2010</option><option>2011</option><option>2012</option><option>2013</option><option>2014</option><option>2015</option></select></td></tr>
-            <tr><td style="text-align:right;">车主姓名</td><td><input type="text" id="ownername" name="ownername" class="textfield" /></td></tr>
-            <tr><td style="text-align:right;">联系电话</td><td><input type="text" id="phonenumber" name="phonenumber" class="textfield"/></td></tr>
-            <tr><td style="text-align:right;">车牌号</td><td><input type="text" id="platenumber" name="platenumber" class="textfield" /></td></tr>
-            <tr><td style="text-align:right;">当前里程</td><td><input type="text" id="currentMileage" name="currentMileage" class="textfield" /></td></tr>
-            <tr><td style="text-align:right;">发动机类型</td><td><select id="enginetype" name="displace" class="textfield" ><option value="-1" >请选择</option><option>自然吸气</option><option>涡轮增压</option></select></td></tr>
-            <tr><td style="text-align:right;">排气量</td><td><input type="text" id="displacement" name="displacement" class="textfield" /></td></tr>
-            <tr><td style="text-align:right;">车龄</td><td><select  id="carage" name="carage" class="textfield" ><option value="-1" >请选择</option><option value="0">1年以下</option><option value="1">1-2年</option><option value="2">2-5年</option><option value="5">5-10年</option><option value="10">10年以上</option></select></td></tr>
+            <tr><td style="text-align:right;" width="35%">OBD_CODE</td><td  width="65%"><input type="text" id="obd_code" name="obd_code" class="textfield" /></td></tr>
+            <tr><td style="text-align:right;">汽车品牌</td><td><select id="brand" name="brand"  style="font-size:20px" ><option value="-1" id="seleBrand" >请选择</option></select></td></tr>
+            <tr><td style="text-align:right;">系列</td><td><select id="selectSeries" name="selectSeries" style="font-size:20px"><option value="-1" id="seleSeries">请选择</option></select></td></tr>
+            <tr><td style="text-align:right;">年款</td><td><select id="modelYear" name="modelYear" style="font-size:20px"><option value="-1" id="seleModelYear">请选择</option><option>2000</option><option>2001</option><option>2002</option><option>2003</option><option>2004</option><option>2005</option><option>2006</option><option>2007</option><option>2008</option><option>2009</option><option>2010</option><option>2011</option><option>2012</option><option>2013</option><option>2014</option><option>2015</option></select></td></tr>
+            <tr><td style="text-align:right;">车主姓名</td><td><input type="text" id="nick" name="nick" class="textfield" /></td></tr>
+            <tr><td style="text-align:right;">联系电话</td><td><input type="text" id="phone" name="phone" class="textfield"/></td></tr>
+            <tr><td style="text-align:right;">车牌号</td><td><input type="text" id="license" name="license" class="textfield" /></td></tr>
+            <tr><td style="text-align:right;">当前里程</td><td><input type="text" id="mileage" name="mileage" class="textfield" /></td></tr>
+            <tr><td style="text-align:right;">发动机类型</td><td><select id="engine_type" name="engine_type" class="textfield" ><option value="-1" id="seleEngine">请选择</option><option value="S">自然吸气</option><option value="T">涡轮增压</option></select></td></tr>
+            <tr><td style="text-align:right;">排气量</td><td><select id="disp" name="disp" class="textfield" >
+                <option value="-1" id="seleDisp" >请选择</option><option>1.8</option><option>1.9</option>
+                <option>2.0</option><option>2.1</option><option>2.2</option><option>2.3</option><option>2.4</option><option>2.5</option><option>2.6</option><option>2.7</option><option>2.8</option><option>2.9</option>
+                <option>3.0</option><option>3.1</option><option>3.2</option><option>3.3</option><option>3.4</option><option>3.5</option><option>3.6</option><option>3.7</option><option>3.8</option><option>3.9</option>
+                <option>4.0</option><option>4.1</option><option>4.2</option><option>4.3</option><option>4.4</option><option>4.5</option><option>4.6</option><option>4.7</option><option>4.8</option><option>4.9</option>
+                <option>5.0</option><option>5.1</option><option>5.2</option><option>5.3</option><option>5.4</option><option>5.5</option><option>5.6</option><option>5.7</option><option>5.8</option><option>5.9</option>
+                <option>6.0</option><option>6.1</option><option>6.2</option><option>6.3</option><option>6.4</option><option>6.5</option>
+            </select></td></tr>
+            <tr><td style="text-align:right;">车龄</td><td><select  id="age" name="age" class="textfield" ><option value="-1" id="seleAge">请选择</option><option value="0">1年以下</option><option value="1">1年</option><option value="2">2年</option><option value="3">3年</option><option value="4">4年</option><option value="5">5年</option><option value="6">大于5年</option></select></td></tr>
         </table>
     </form>
     <div id="Tip"></div>
-    <p align="center"><input type="button" value="&nbsp;提&nbsp;&nbsp;交&nbsp;"   class="textfield" style="width:120px; height:40px" onclick="reg()"/>
+    <p align="center"><input type="button" value="&nbsp;提&nbsp;&nbsp;交&nbsp;"   class="textfield" style="width:120px; height:40px" onclick="update()"/>
 </div>
+<script>
+    function searchUser(){
+         $.ajax({
+            type: "POST",
+            url: "/mservice/infoConfig",
+            data: {'user':user},
+            dataType: "json",
+            success: function (result,status) {
+              document.getElementById('name').value=result.name;
+              //document.getElementById('password').value=result.name;
+              //document.getElementById('username').value=result.name;
+              document.getElementById('obd_code').value=result.obd_code;
+              document.getElementById('seleBrand').innerHTML=result.brandName;
+              document.getElementById('seleBrand').value=result.brand;
+              document.getElementById('seleSeries').innerHTML=result.seriesName;
+              document.getElementById('seleSeries').value=result.series;
+              document.getElementById('seleModelYear').innerHTML=result.modelYear;
+              document.getElementById('seleModelYear').value=result.modelYear;
+              document.getElementById('license').value=result.license;
+              document.getElementById('mileage').value=result.mileage;
+              document.getElementById('seleAge').innerHTML=result.age+'年';
+              document.getElementById('seleAge').value=result.age;
+              document.getElementById('seleDisp').innerHTML=result.disp;
+              document.getElementById('seleDisp').value=result.disp;
+              document.getElementById('phone').value=result.phone;
+              document.getElementById('nick').value=result.nick;
+              document.getElementById('seleEngine').value=result.engine_type;
+              if(result.engine_type=='T')document.getElementById('seleEngine').innerHTML='涡轮增压';
+              else document.getElementById('seleEngine').innerHTML='自然吸气';
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                alert("连接失败\n请检查网络连接是否正常");
+            }
+        });
+    }
+
+</script>
 </body>
 </html>
