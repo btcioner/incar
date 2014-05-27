@@ -50,7 +50,7 @@
            var postData={};
           if($('#start').val()==''||$('#end').val()==''){alert("请输入预约时间");return;}
           if($('#phone').val()==''||$('#phone').val()==null){alert("请输入联系电话");return;}
-		  bookDate=$('#start').val().toDateString();
+		  bookDate=document.getElementById('start').value.toDateString();
            alert(bookDate);
 		  bookTime=$('#end').val().toDateString();
            alert(bookTime);
@@ -95,7 +95,7 @@
        <div id="bookStatus" style="width: 100%">
           <table style="font-size:16px; margin-top:5px" cellspacing="3px">
              <tr><td class="tdStyle"> 预约日期</td><td> <input name="start" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align:middle;" /></td></tr>
-              <tr><td class="tdStyle"> 预约时间</td><td><input name="end" type="date" data-options='{"mode":"timeflipbox"}' data-role="datebox" id="en" style="vertical-align:middle;" /></td></tr>
+              <tr><td class="tdStyle"> 预约时间</td><td><input name="end" type="date" data-options='{"mode":"timeflipbox"}' data-role="datebox" id="end" style="vertical-align:middle;" /></td></tr>
               <tr><td class="tdStyle"> 车主姓名</td><td><input name="ownerName" type="text" class="textfield" id="ownerName"/></td></tr>
              <tr><td class="tdStyle"> 联系电话</td><td><input name="phone" type="text" class="textfield" id="phone"/></td></tr>
              <tr><td class="tdStyle"> 车牌号</td><td><input name="license" type="text" class="textfield" id="license"/></td></tr>
