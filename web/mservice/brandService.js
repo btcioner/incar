@@ -49,13 +49,14 @@ function getBrand(db, callback) {
                                    items.push(series);
                                }
                               brandData.items=items;
+                             console.log(brandData);
                            }
                            else {callback(new Error('No data.'))}
                        }
                    });
                   report.push(brandData);
                }
-                console.log(report);
+                //console.log(report);
                callback(null,report);
            }else  {callback(new Error('error!!'))}
         }
