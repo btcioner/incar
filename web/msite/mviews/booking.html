@@ -53,6 +53,7 @@
 		  bookDate=new Date($('#start').val());
 		  bookTime=new Date($('#end').val());
           bookTime.setHours($('#end').val().substring(0,1),$('#end').val().substring(3));
+           alert("data");
            postData.user=user;
            postData.nick=$('#ownerName').val();
            postData.bookingDate=bookDate;
@@ -61,6 +62,7 @@
            postData.phone=$('#phone').val();
            postData.mileage=$('#mileage').val();
            postData.carType=$('#carType').val();
+           alert("33333333");
 		  if(bookDate<=today) {alert("预约时间错误！");return;}
 		   else {
                $.ajax({
