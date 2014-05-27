@@ -14,7 +14,7 @@ function careCtrl($scope, $http){
         var queryStr = "";
         $scope.tips="";
         if(str!="") queryStr="&step="+str;
-        $http.get(baseurl+'work/organization/'+$.cookie("org_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $http.get(baseurl+'work/organization/'+$.cookie("s4_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
 
 
 

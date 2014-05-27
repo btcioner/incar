@@ -9,19 +9,20 @@ function s_customerCtrl($scope, $http,$routeParams){
     $scope.cusDetailDiv = false;
     $scope.cusListDiv = true;
     $scope.cusTabDiv = false;
-
+    $scope.labelListDiv = false;
+    $scope.labelAddDiv = false;
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
     $scope.city_name="";
     $scope.org_id = 0;
-    $scope.queryString = "&org_id="+ $.cookie("org_id");
-    $scope.brand_id = "";
-    $scope.series_id = "";
+    $scope.queryString = "&org_id="+ $.cookie("s4_id");
+    $scope.brandCode = "";
+    $scope.seriesCode = "";
     $scope.acc_nick = "";
     $scope.acc_phone = "";
     $scope.queryNick = "";
     $scope.queryPhone = "";
-    $scope.queryOBDCode = "";
+    $scope.car_license = "";
     $scope.obd_code="";
 
 
@@ -65,15 +66,14 @@ function s_customerCtrl($scope, $http,$routeParams){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-
-        $http.get(baseurl + '4s/1/cust?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+        $http.get(baseurl + 'cmpx/carowner?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
             if(data.status == "ok")
             {
-                if(data.custs.length == 0)
+                if(data.carowners.length == 0)
                 {
                     $scope.tips="暂无数据！";
                 }
-                $scope.carowners = data.custs;
+                $scope.carowners = data.carowners;
                 PagingInfo(data.totalCount);
             }
             else
@@ -100,9 +100,9 @@ function s_customerCtrl($scope, $http,$routeParams){
     //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
-        $scope.queryString = "&org_id="+ $.cookie("org_id");
+        $scope.queryString = "&org_id="+ $.cookie("s4_id");
         if($scope.city_name=="请选择")$scope.city_name = "";
-        $scope.queryString = $scope.queryString + "&org_city="+$scope.city_name+"&brand_id="+$scope.brandCode+"&series_id="+$scope.seriesCode+"&acc_nick="+$scope.queryNick+"&acc_phone="+$scope.queryPhone;
+        $scope.queryString = $scope.queryString + "&org_city="+$scope.city_name+"&brand_id="+$scope.brandCode+"&series_id="+$scope.seriesCode+"&acc_nick="+$scope.queryNick+"&acc_phone="+$scope.queryPhone+"&license="+$scope.car_license;
         GetFirstPageInfo();
     }
 
@@ -129,7 +129,7 @@ function s_customerCtrl($scope, $http,$routeParams){
                 GetFirstPageInfo();
                 break;
             case 2:
-                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id);
+                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id,$scope.index);
                 break;
             case 3:
                 getDriveList();
@@ -144,14 +144,30 @@ function s_customerCtrl($scope, $http,$routeParams){
             case 1:
                 $scope.cusDetailDiv = true;
                 $scope.cusListDiv = false;
-               // $scope.countDiv = false;
                 $scope.cusTabDiv = true;
+                $scope.labelListDiv = false;
+                $scope.labelAddDiv = false;
                 break;
             case 2:
                 $scope.cusDetailDiv = false;
                 $scope.cusListDiv = true;
-             //   $scope.countDiv = false;
                 $scope.cusTabDiv = false;
+                $scope.labelListDiv = false;
+                $scope.labelAddDiv = false;
+                break;
+            case 3:
+                $scope.cusDetailDiv = false;
+                $scope.cusListDiv = false;
+                $scope.cusTabDiv = false;
+                $scope.labelListDiv = true;
+                $scope.labelAddDiv = false;
+                break;
+            case 4:
+                $scope.cusDetailDiv = false;
+                $scope.cusListDiv = false;
+                $scope.cusTabDiv = false;
+                $scope.labelListDiv = false;
+                $scope.labelAddDiv = true;
                 break;
         }
     }
@@ -162,8 +178,8 @@ function s_customerCtrl($scope, $http,$routeParams){
         switch(id)
         {
             case 0:
-                GetFirstPageInfo();
-                break;
+            GetFirstPageInfo();
+            break;
             case 1:
                 GetFirstPageInfo();
                 break;
@@ -176,7 +192,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     function getReservationRecord()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.car_id).success(function(data){
+        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.car_id).success(function(data){
             $scope.careList = data.works;
             PagingInfo(data.totalCount);
             if(data.works.length > 0)
@@ -271,15 +287,21 @@ function s_customerCtrl($scope, $http,$routeParams){
    //查询行车数据
     function getDriveList()
     {
-        $scope.postData = "&org_id="+ $.cookie("org_id")+"&obd_code="+$scope.cusDetail.obd_code;
-        $http.post(baseurl+'GetDriveInfoAll?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.postData).success(function(data){
+        $scope.tips="";
+        $scope.queryString="&org_id="+ $.cookie("s4_id")+"&obd_code="+$scope.cusDetail.obd_code;
+        $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
             if(data.status == "ok")
             {
                 if(data.drvInfos.length == 0)
                 {
-                    alert("暂无详细数据");
+                    $scope.tips="暂无数据！";
                 }
+
                 $scope.drvInfos = data.drvInfos;
+                for(var i=0;i<data.drvInfos.length;i++)
+                {
+                    $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
+                }
                 PagingInfo(data.totalCount);
             }
             else
@@ -287,20 +309,29 @@ function s_customerCtrl($scope, $http,$routeParams){
                 alert(data.status);
             }
         }).error(function(data){
-        alert("请求无响应");
-    })
+                alert("请求无响应");
+            })
     }
 
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
     {
-        $http.get(baseurl + 'obd/'+obd_code).success(function(data){
+        $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car?obd_code='+obd_code).success(function(data){
             if(data.status == "ok")
             {
-                $scope.deviceDetail = data.obd;
+                $scope.carInfo = data.cars[0];
+                $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car/'+$scope.carInfo.id+'/cust?obd_code='+obd_code).success(function(data){
+                    if(data.status=="ok")
+                    {
+                        $scope.custInfo = data.custs[0];
+                    }else{
+                        alert(data.status);
+                    }
+                }).error(function(data){
+                        alert("请求无响应");
+                    });
             }
-            else
-            {
+            else{
                 alert(data.status);
             }
         }).error(function(data){
@@ -308,13 +339,14 @@ function s_customerCtrl($scope, $http,$routeParams){
             });
     }
     //查看一个OBD一次行程的数据
-    $scope.GetDriveDetail = function(obd_code,drive_id)
+    $scope.GetDriveDetail = function(obd_code,drive_id,id)
     {
         $scope.chooseOC = obd_code;
         $scope.drive_id = drive_id;
-        $scope.postData = {token:$scope.token,code:obd_code,drive_id:drive_id};
+        $scope.index = id;
         GetOwnerInfo(obd_code);
-        $http.post(baseurl + 'GetDriveDetail?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord,$scope.postData).success(function(data){
+        $scope.driveDetail = $scope.drvInfos[id];
+        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
             if(data.status == "ok")
             {
                 if(data.details.length== 0)
@@ -344,13 +376,13 @@ function s_customerCtrl($scope, $http,$routeParams){
     //一分钟内的行车数据流记录
     $scope.GetOneMinuteDetail = function(index)
     {
-        if($scope.details[index].CarCondition == null || $scope.details[index].CarCondition.detail == 0)
+        if($scope.details[index].detail == null || $scope.details[index].detail.length == 0)
         {
             alert("暂无详细数据");
         }
         else
         {
-            $scope.omdds = $scope.details[index].CarCondition;
+            $scope.omdds = $scope.details[index].detail;
             $scope.oneDetailDiv = false;
             $scope.detailInfoDiv = false;
             $scope.paging1 = false;
@@ -380,11 +412,34 @@ function s_customerCtrl($scope, $http,$routeParams){
                 $scope.oneDetailDiv = true;
                 $scope.detailInfoDiv = true;
                 $scope.oneMinuteDetailDiv = false;
-                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id);
+                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id,$scope.index);
+                break;
+            case 3:
+                changeView(2);
+                break;
+            case 4:
+                changeView(3)
                 break;
 
         }
     }
-
-
+ //自定义标签相关
+  $scope.labelTab = function(id)
+  {
+      switch(id)
+      {
+          case 0: //标签管理
+              changeView(3);
+              break;
+      }
+  }
+    //添加自定义标签按钮
+    $scope.addCustomLabel = function()
+    {
+        changeView(4);
+    }
+    $scope.confirmAddCustomLabel = function()
+    {
+       changeView(3);
+    }
 }

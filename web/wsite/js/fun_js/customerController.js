@@ -15,17 +15,21 @@ function customerCtrl($scope, $http){
     $scope.org_name="";
     $scope.queryString="";
     $scope.openid="";
+    $scope.account="";
+    $scope.password="";
+    $scope.city="";
+    $scope.s4_name="";
 
 
     //筛选框初始值 todo--要从数据库读出来
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
-    $scope.org= [{name:"请选择"},{name:'4S店A'},{name:'4S店C1'},{name:'奥体中心4S店'}]
 
 
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {
         $scope.tips="";
+
         $http.get(baseurl + 'cmpx/4s?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
             if(data.status == "ok")
             {
@@ -43,16 +47,18 @@ function customerCtrl($scope, $http){
         }).error(function(data){
                 alert("请求无响应");
         })
+        $http.get(baseurl+'4s').success(function(data){
+            $scope.s4s_all = data.s4s;
+        });
     }
 
 
     //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
-        if($scope.city_name=="请选择")$scope.city_name="";
-        if($scope.org_name=="请选择")$scope.org_name="";
-        $scope.queryString = "&city="+$scope.city_name+"&name="+$scope.org_name;
-        GetFirstPageInfo();
+         if($scope.city_name=="请选择")$scope.city_name="";
+         $scope.queryString = "&city="+$scope.city_name+"&name="+$scope.s4_name;
+         GetFirstPageInfo();
     }
 
     //get paging param info
@@ -76,6 +82,13 @@ function customerCtrl($scope, $http){
 
     //新增
     $scope.add = function(){
+        $scope.comName="";
+        $scope.city="";
+        $scope.password="";
+        $scope.account="";
+        $scope.admin_nick="";
+        $scope.admin_phone="";
+        $scope.openid="";
         $scope.customerListDiv = false;
         $scope.customerAddDiv = true;
     }
@@ -83,23 +96,23 @@ function customerCtrl($scope, $http){
    //新增确定
     $scope.addConfirm = function(){
         var sha1_password =hex_sha1($scope.password);//SHA1进行加密
-        $scope.postData={"name":$scope.comName,"class":"4S","status":1,"openid":"","city":$scope.city,"admin_pwd":sha1_password,
+        $scope.postData={"name":$scope.comName,"class":"4S","status":1,"city":$scope.city,"admin_pwd":sha1_password,
                            "admin_name":$scope.account,"admin_nick":$scope.admin_nick,"admin_phone":$scope.admin_phone,"openid":$scope.openid};
         $http.post(baseurl + 'cmpx/4s',$scope.postData).success(function(data){
             if(data.status == "ok")
             {
-                $scope.s4s[$scope.s4s.length]= {
-                    id:$scope.s4s[$scope.s4s.length-1].id + 1,
-                    name:$scope.comName,
-                    status:"1",
-                    openid:"",
-                    city:$scope.city,
-                    admin_name:$scope.account,
-                    admin_nick:$scope.admin_nick,
-                    admin_phone:$scope.admin_phone
-                }
-                GetFirstPageInfo();
+//                    $scope.s4s[$scope.s4s.length]= {
+//                    id:$scope.s4s[$scope.s4s.length-1].id + 1,
+//                    name:$scope.comName,
+//                    status:"1",
+//                    openid:"",
+//                    city:$scope.city,
+//                    admin_name:$scope.account,
+//                    admin_nick:$scope.admin_nick,
+//                    admin_phone:$scope.admin_phone
+//                }
                 alert("添加成功");
+                GetFirstPageInfo();
                 $scope.customerListDiv = true;
                 $scope.customerAddDiv = false;
             }
@@ -133,21 +146,30 @@ function customerCtrl($scope, $http){
         $scope.index = id;
         $scope.customerListDiv = false;
         $scope.customerModifyDiv = true;
-        $scope.oneCustomerInfo = $scope.orgs[id];
-        $scope.id = $scope.orgs[id].id;
+        $scope.oneCustomerInfo = $scope.s4s[id];
+        $scope.id = $scope.s4s[id].id;
+        $scope.admin_id=$scope.s4s[id].admin_id;
     }
 
     //修改确认
     $scope.modifyConfirm = function(oneCustomerInfo){
        $scope.oneCustomerInfo = oneCustomerInfo;
-       $scope.postData={"name":$scope.oneCustomerInfo.name,"class":"4S","status":1,"openid":"","city":$scope.oneCustomerInfo.city,
-                          "admin_nick":$scope.oneCustomerInfo.admin_nick,"admin_phone":$scope.oneCustomerInfo.admin_phone};
-       $http.put(baseurl + 'organization/'+$scope.id, $scope.postData).success(function(data){
+       $scope.postData={"name":$scope.oneCustomerInfo.name,"class":"4S","status":1,"openid":"","city":$scope.oneCustomerInfo.city};
+       $scope.postData1={"nick":$scope.oneCustomerInfo.admin_nick,"phone":$scope.oneCustomerInfo.admin_phone};
+       $http.put(baseurl + '4s/'+$scope.id, $scope.postData).success(function(data){
               if(data.status == "ok")
               {
-                  alert("修改成功");
-                  $scope.customerListDiv = true;
-                  $scope.customerModifyDiv = false;
+                  $http.put(baseurl + '4s/'+$scope.id+'/staff/'+$scope.admin_id,$scope.postData1).success(function(data){
+                      if(data.status == "ok")
+                      {
+                          alert("修改成功");
+                          GetFirstPageInfo();//get fist driveData for first page；
+                          $scope.customerListDiv = true;
+                          $scope.customerModifyDiv = false;
+                      }
+                  }).error(function(data){
+                          alert("请求没响应");
+                  })
               }
            else{
                   alert(data.status);
@@ -179,14 +201,4 @@ function customerCtrl($scope, $http){
              alert("请求没响应");
        })
    }
-
-    //删除
-    $scope.deleteRecord = function(index){
-        if(confirm("确定要删除吗？")){
-            $scope.users.splice(index, 1);
-        }
-    }
-
-
-
 }

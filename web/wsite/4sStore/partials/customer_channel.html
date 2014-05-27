@@ -114,9 +114,9 @@
                     </a> </div>
                     <div class="collapse accordion-body" id="collapseGServen">
                         <div class="widget-content" style="text-align: right;padding: 0">
+                            <button class="btn btn-info" style="width: 100%;" ng-click="labelTab(0);">标签管理</button>
                             <button class="btn btn-info" style="width: 100%;">自定义标签1</button>
-                            <button class="btn btn-info" style="width: 100%;">平庸</button>
-                            <button class="btn btn-info" style="width: 100%;">狂野</button>
+                            <button class="btn btn-info" style="width: 100%;">自定义标签2</button>
                         </div>
                     </div>
                 </div>
@@ -283,8 +283,8 @@
                             </thead>
                             <tbody>
                             <tr class="gradeX" ng-repeat="device in drvInfos">
-                                <td id="tdc"></td>
-                                <td id="tdc"></td>
+                                <td id="tdc">{{device.s4_city}}</td>
+                                <td id="tdc">{{device.s4_name}}</td>
                                 <td id="tdc">{{device.brand_name}}</td>
                                 <td id="tdc">{{device.series_name}}</td>
                                 <td id="tdc">{{device.obdCode}}</td>
@@ -293,7 +293,7 @@
                                 <td id="tdc">{{device.currentMileage}}</td>
                                 <td id="tdc">{{device.carStatus}}</td>
                                 <td id="tdc">
-                                    <a class="btn btn-info btn-mini" ng-click="GetDriveDetail(device.obdCode,device.id);">查看</a>
+                                    <a class="btn btn-info btn-mini" ng-click="GetDriveDetail(device.obdCode,device.id,$index);">查看</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -305,59 +305,75 @@
                                 <th style="text-align: right" colspan="6"><a ng-click="gotoBack(1);" class="btn btn-info btn-mini">返回</a></th>
                             </tr>
                             <tr>
+                                <th>城市</th>
+                                <th style="background-color:#F9F9F9;">{{custInfo.city}}</th>
+                                <th>4S店</th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.s4_name}}</th>
+                                <th>品牌</th>
+                                <th style="background-color:#F9F9F9;">{{carInfo.brand_name}}</th>
+                            </tr>
+                            <tr>
+                                <th>车系</th>
+                                <th style="background-color:#F9F9F9;">{{carInfo.series_name}}</th>
+                                <th>车主</th>
+                                <th style="background-color:#F9F9F9;">{{custInfo.nick}}</th>
+                                <th>联系电话</th>
+                                <th style="background-color:#F9F9F9;">{{custInfo.phone}}</th>
+                            </tr>
+                            <tr>
+                                <th>OBD编号</th>
+                                <th style="background-color:#F9F9F9;">{{carInfo.obd_code}}</th>
+                                <th>SIM卡号</th>
+                                <th style="background-color:#F9F9F9;">{{carInfo.sim_number}}</th>
+                                <th colspan="2"></th>
+                            </tr>
+                            <tr>
                                 <th>VIN码</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.vin}}</th>
                                 <th>状态</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{carInfo.act_type_name}}</th>
                                 <th>点火时间</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.fireTime}}</th>
                             </tr>
                             <tr>
                                 <th>点火电压</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.firingVoltage}}</th>
                                 <th>发动机运行时间</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.runTime}}</th>
                                 <th>本次平均油耗</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.currentAvgOilUsed}}</th>
                             </tr>
                             <tr>
                                 <th>急加速次数</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.speedUp}}</th>
                                 <th>急减数次数</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.speedDown}}</th>
                                 <th>急转弯次数</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.sharpTurn}}</th>
                             </tr>
                             <tr>
                                 <th>熄火电压</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.flameOutVoltage}}</th>
                                 <th>累计平均油耗</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.avgOilUsed}}</th>
                                 <th>累计行驶里程</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.mileage}}</th>
                             </tr>
                             <tr>
-                                <th>A速段里程</th>
-                                <th style="background-color:#F9F9F9;"></th>
-                                <th>B速段里程</th>
-                                <th style="background-color:#F9F9F9;"></th>
-                                <th>C速段里程</th>
-                                <th style="background-color:#F9F9F9;"></th>
-                            </tr>
-                            <tr>
-                                <th>D速段里程</th>
-                                <th style="background-color:#F9F9F9;"></th>
-                                <th>E速段里程</th>
-                                <th style="background-color:#F9F9F9;"></th>
-                                <th>F速段里程</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th>0速段里程</th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.speedGroup[0].time}}秒，{{driveDetail.speedGroup[0].distance}}米</th>
+                                <th>0-80速段里程</th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.speedGroup[1].time}}秒，{{driveDetail.speedGroup[1].distance}}米</th>
+                                <th>80-160速段里程</th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.speedGroup[2].time}}秒，{{driveDetail.speedGroup[2].distance}}米</th>
                             </tr>
                             <tr>
                                 <th>熄火时间</th>
-                                <th style="background-color:#F9F9F9;"></th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.flameOutTime}}</th>
                                 <th>熄火后电压</th>
+                                <th style="background-color:#F9F9F9;">{{driveDetail.flameOutVoltage}}</th>
+                                <th></th>
                                 <th style="background-color:#F9F9F9;"></th>
-                                <th colspan="2"></th>
                             </tr>
                             </thead>
                         </table>
@@ -366,8 +382,8 @@
                             <tr >
                                 <th>OBD设备编号</th>
                                 <th>行驶编号</th>
-                                <th>累计平均油耗</th>
-                                <th>累计行驶里程</th>
+                             <!--   <th>累计平均油耗</th>
+                                <th>累计行驶里程</th>-->
                                 <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
@@ -376,8 +392,8 @@
                             <tr class="gradeX" ng-repeat="device in details">
                                 <td id="tdc">{{device.obdCode}}</td>
                                 <td id="tdc">{{device.id}}</td>
-                                <td id="tdc">{{device.avgOilUsed}}</td>
-                                <td id="tdc">{{device.mileage}}</td>
+                             <!--   <td id="tdc">{{device.avgOilUsed}}</td>
+                                <td id="tdc">{{device.mileage}}</td>-->
                                 <td id="tdc">{{device.createTime}}</td>
                                 <td id="tdc"><a class="btn btn-info btn-mini" ng-click="GetOneMinuteDetail($index);">详细数据</a></td>
                             </tr>
@@ -405,6 +421,7 @@
                         </tbody>
                     </table>
                     <!--一分钟数据流 end-->
+                    <div><font color="red">{{tips}}</font></div>
                     <div class="pagination alternate" style="float:right;" ng-show="paging1">
                         共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
                         跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption" ng-change="changePage(changeId,3);">
@@ -442,7 +459,7 @@
                      </div>
                    </div>
                 </div>
-            <!--客户 begin-->
+            <!--客户列表 begin-->
             <div class="widget-box" ng-show="cusListDiv">
                 <div class="widget-title">
                     <span class="icon"><i class="icon-th"></i></span>
@@ -459,14 +476,14 @@
                                 <select style="width:150px;" ng-model="brandCode" ng-options = "brand.brandCode as brand.brand for brand in carBrand" ng-change="changeBrand(brandCode)">
                                    <option>请选择</option>
                                 </select></th>
-                            <th style="vertical-align: middle;">车型：&nbsp;&nbsp;&nbsp;
+                            <th style="vertical-align: middle;">车系：&nbsp;&nbsp;&nbsp;
                                 <select style="width:150px;" ng-model="seriesCode" ng-options="series.seriesCode as series.series for series in carSeries">
                                   <option>请选择</option>
                                 </select></th>
                         </tr>
                         <tr>
-                            <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OBD编号： &nbsp;&nbsp;&nbsp;
-                                <input type="text" class="span11" style="width:150px;" placeholder="" ng-model="queryOBDCode"/>
+                            <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车牌号： &nbsp;&nbsp;&nbsp;
+                                <input type="text" class="span11" style="width:150px;" placeholder="" ng-model="car_license"/>
                             </th>
                             <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;联系电话：
                                 <input type="text" class="span11" style="width:150px;" placeholder="" ng-model="queryPhone"/>
@@ -495,8 +512,8 @@
                         </thead>
                         <tbody>
                         <tr class="gradeX" ng-repeat="carowner in carowners">
-                            <td style="text-align: center">{{carowner.nick}}</td>
-                            <td style="text-align: center">{{carowner.phone}}</td>
+                            <td style="text-align: center">{{carowner.acc_nick}}</td>
+                            <td style="text-align: center">{{carowner.acc_phone}}</td>
                             <td style="text-align: center">{{carowner.car_brand}}</td>
                             <td style="text-align: center">{{carowner.car_series}}</td>
                             <td style="text-align: center">{{carowner.obd_code}}</td>
@@ -517,7 +534,80 @@
                 </select>页
                 </div>
             </div>
-            <!--保养提醒列表 end-->
+            <!--客户列表 end-->
+            <!--自定义标签管理 begin-->
+            <div class="widget-box" ng-show="labelListDiv">
+                <div class="widget-title">
+                    <span class="icon"><i class="icon-th"></i></span>
+                    <h5>自定义标签列表</h5>
+                    <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="addCustomLabel();">添加</a>
+                </div>
+
+                <div class="widget-content nopadding">
+                    <!--<table class="table table-bordered data-table">-->
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>标签名</th>
+                            <th>创建时间</th>
+                            <th>创建人</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeX" ng-repeat="carowner in carowners">
+                            <td style="text-align: center">自定义标签1</td>
+                            <td style="text-align: center">2014-05-23 14:36</td>
+                            <td style="text-align: center">李雷</td>
+                            <td style="text-align: center">正常</td>
+                            <td style="text-align: center">
+                                <a class="btn btn-info btn-mini" >停用</a>
+                            </td>
+                        </tr>
+                        <tr class="gradeX" ng-repeat="carowner in carowners">
+                            <td style="text-align: center">自定义标签2</td>
+                            <td style="text-align: center">2014-05-23 14:36</td>
+                            <td style="text-align: center">李雷</td>
+                            <td style="text-align: center">停用</td>
+                            <td style="text-align: center">
+                               -
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div><font color="red">{{tips}}</font></div>
+                <div class="pagination alternate" style="float:right;">
+                    共{{totalCount}}条&nbsp;页码{{currentPage}}/{{totalPage}} &nbsp;
+                    跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId,1);">
+                    <option>1</option>
+                </select>页
+                </div>
+            </div>
+            <!--自定义标签管理 end-->
+            <!--添加节油大赛 start-->
+            <div class="widget-box" ng-show="labelAddDiv">
+                <div class="widget-title">
+                    <span class="icon"><i class="icon-th"></i></span>
+                    <h5>添加标签</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <form action="#" method="get" class="form-horizontal">
+                        <div class="control-group" >
+                            <label class="control-label" style="margin-left:300px;">标签名称：</label>
+                            <div class="controls">
+                                <input type="text" class="span11" style="width:200px;" ng-model="label_name"  />
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirmAddCustomLabel();">添加</button>
+                            <button type="button" class="btn btn-danger"   ng-click="gotoBack(4)">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--添加节油大赛 end-->
         </div>
     </div>
 </div>

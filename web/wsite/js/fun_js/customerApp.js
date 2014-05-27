@@ -62,7 +62,7 @@ angular.module("SCustomerApp", [
 function s_statisticsCtrl($scope,$http)
 {
     $scope.countDiv = true;
-    $http.get(baseurl+'carowner?page=1&pagesize=1&org_id='+ $.cookie("org_id")).success(function(data){
+    $http.get(baseurl+'cmpx/carowner?page=1&pagesize=1&org_id='+ $.cookie("s4_id")).success(function(data){
         $scope.carOwnerCount = data.totalCount;
     })
 

@@ -59,6 +59,10 @@ function knowledgeBaseCtrl($scope, $http){
 
     //新增
     $scope.add = function(){
+        keyword:$scope.keyword,
+        $scope.title,
+        $scope.description,
+        $("#pro_img").val("");
         $scope.knowledgeListDiv = false;
         $scope.addKnowledgeDiv = true;
     }
@@ -67,15 +71,16 @@ function knowledgeBaseCtrl($scope, $http){
     $scope.AddConfirm = function()
     {
         $("#formId").ajaxForm(function(){
-            alert("添加成功");
-            $scope.manual[$scope.manual.length] = {
-                id:$scope.manual[length-1].id +1,
-                keyword:$scope.keyword,
-                title:$scope.title,
-                description:$scope.description,
-                filename:$("#pro_img").val()
-            }
             GetFirstPageInfo();
+            alert("添加成功");
+//            $scope.manual[$scope.manual.length] = {
+//                id:$scope.manual[length-1].id +1,
+//                keyword:$scope.keyword,
+//                title:$scope.title,
+//                description:$scope.description,
+//                filename:$("#pro_img").val()
+//            }
+
             $scope.knowledgeListDiv = true;
             $scope.addKnowledgeDiv = false;
         });
@@ -92,8 +97,9 @@ function knowledgeBaseCtrl($scope, $http){
     $scope.ModifyConfirm = function()
     {
         $("#formId_edit").ajaxForm(function(){
-            alert("修改成功");
             GetFirstPageInfo();
+            alert("修改成功");
+
             $scope.knowledgeListDiv = true;
             $scope.modifyKnowledgeDiv = false;
         });

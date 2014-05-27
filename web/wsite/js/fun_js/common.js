@@ -49,8 +49,8 @@ var baseurl="/wservice/";
     //修改用户的状态 0--冻结 1--正常
     $.changeUserStatus = function(status)
     {
-        if(status == "1") return "正常";
-        else if(status == "0" || status == null) return "冻结";
+        if(status == 1) return "正常";
+        if(status == 0 || status == null) return "冻结";
     }
     //把用户的状态从文字转成数字
     $.changeUserStatusToNum = function(status)

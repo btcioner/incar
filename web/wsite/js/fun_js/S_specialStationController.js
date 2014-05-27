@@ -16,7 +16,7 @@
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+ $.cookie("org_id")+'/promotionslot?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/promotionslot?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
             if(data.status == "ok")
             {
                 $scope.slots = data.slots;
@@ -111,7 +111,7 @@
             "tc":"",
             "ts":$.changeDate(new Date())
             };
-        $http.post(baseurl + 'organization/'+ $.cookie("org_id")+'/promotionslot',$scope.postData).success(function(data){
+        $http.post(baseurl + 'organization/'+ $.cookie("s4_id")+'/promotionslot',$scope.postData).success(function(data){
             if(data.status == "ok")
             {
                 alert("添加成功！");
