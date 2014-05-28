@@ -16,6 +16,22 @@ module Service{
             return dto;
         }
 
+        public LoadExtra(cb:(ex:TaskException, act:Activity)=>void){
+            var sql = "SELECT * FROM t_activity_save_gas WHERE id = ?";
+            var args = [this.dto.id];
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "加载节油大赛活动信息失败", ex), this); return; }
+                else if(result.length === 0) { cb(new TaskException(-1, "节油大赛活动信息不存在", null), this); return; }
+                else if(result.length > 1) { cb(new TaskException(-1, "节油大赛活动信息数据错误", null), this); return; }
+
+                var extra = result[0];
+                for (var p in extra) if (p !== "id" && extra.hasOwnProperty(p)) this.dto[p] = extra[p];
+
+                super.LoadExtra(cb);
+            });
+        }
+
         public GetMembers(page:Pagination, filter:any, cb:(ex:TaskException, total:number, members:ActivityMember[])=>void){
             var dac = MySqlAccess.RetrievePool();
             var sql = "SELECT %s\n" +
@@ -81,6 +97,49 @@ module Service{
                 var member = new ActivityMember(result[0]);
                 cb(null, member);
             });
+        }
+
+        public static LoadActivities(page:Pagination, filter:any, template:Template, s4_id:number, cb:(ex:TaskException, total:number, acts:ActSaveGas[])=>void){
+            var sql = "SELECT %s\n" +
+                "FROM t_activity A JOIN t_activity_save_gas E ON A.id = E.id\n" +
+                "WHERE A.s4_id=? and A.template_id=?";
+            var args = [s4_id, template.dto.id];
+
+            var dac = MySqlAccess.RetrievePool();
+            var task:any = { finished: 0 };
+            task.begin = ()=>{
+                var sqlA = util.format(sql, "A.*, E.*");
+                if(page.IsValid()) sqlA += page.sql;
+                dac.query(sqlA, args, (ex, result)=>{
+                    task.A = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+
+                var sqlB = util.format(sql, "COUNT(*) count");
+                dac.query(sqlB, args, (ex, result)=>{
+                    task.B = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+            };
+
+            task.end = ()=>{
+                if(task.finished < 2) return;
+                if(task.A.ex) { cb(new TaskException(-1, "查询节油大赛活动失败", task.A.ex), 0, null);  return; }
+
+                var total = 0;
+                if(!task.B.ex) total = task.B.result[0].count;
+
+                var acts = [];
+                task.A.result.forEach((dto:any)=>{
+                    var act = new ActSaveGas(dto);
+                    acts.push(act);
+                });
+
+                cb(null, total, acts);
+            };
+            task.begin();
         }
     }
 }

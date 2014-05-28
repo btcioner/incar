@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS t_activity(
     brief VARCHAR(4096) COMMENT '简述',
     awards VARCHAR(4096) COMMENT '颁奖简述',
     status TINYINT NOT NULL DEFAULT '1' COMMENT '状态1待公告 2已公告 3正在进行 4结束 5结果已发布 6取消',
+    tags VARCHAR(512) COMMENT '逗号分隔的TAG_ID',
     logo_url VARCHAR(256) COMMENT 'LOGO图片URL',
     tm_announce DATETIME COMMENT '公告时间',
     tm_start DATETIME COMMENT '开始时间',

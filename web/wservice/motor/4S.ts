@@ -544,47 +544,6 @@ module Service{
             task.begin();
         }
 
-        public GetTemplatedActivities(page:Pagination, filter:any, template:Template, fnCreate:(dto:any)=>void, cb:(ex:TaskException, total:number, acts:Activity[])=>void){
-            var dac = MySqlAccess.RetrievePool();
-            var sql = "SELECT %s FROM t_activity WHERE s4_id=? and template_id=?";
-            var args = [this.dto.id, template.dto.id];
-
-            var task:any = { finished:0 };
-            task.begin = ()=>{
-                var sqlA = util.format(sql,"*");
-                dac.query(sqlA, args, (ex,result)=>{
-                    task.A = { ex:ex, result:result };
-                    task.finished++;
-                    task.end();
-                });
-
-                var sqlB = util.format(sql, "COUNT(*) count");
-                dac.query(sqlB, args, (ex, result)=>{
-                    task.B = { ex:ex, result:result };
-                    task.finished++;
-                    task.end();
-                });
-            };
-
-            task.end = ()=>{
-                if(task.finished < 2) return;
-                if(task.A.ex) { cb(new TaskException(-1, "查询活动失败", task.A.ex),0,null); return; }
-
-                var totalCount = 0;
-                if(!task.B.ex) totalCount = task.B.result[0].count;
-
-                var acts = [];
-                task.A.result.forEach((dto:any)=>{
-                    var act = new fnCreate(dto);
-                    acts.push(act);
-                });
-
-                cb(null, totalCount, acts);
-            };
-
-            task.begin();
-        }
-
         public GetActivity(act_id:number, cb:(ex:TaskException, act:Activity)=>void){
             var dac = MySqlAccess.RetrievePool();
             var task:any = { finished:0 };
@@ -600,7 +559,10 @@ module Service{
                         var fnCreate = Service[template.dto.template];
                         if(!fnCreate) { cb(new TaskException(-1, util.format("活动模版参数template类型%s无效", template.dto.template), null), null); return; }
                         var act = new fnCreate(result[0]);
-                        cb(null, act);
+                        act.LoadExtra((ex, act)=>{
+                            if(ex) { cb(ex, act); return }
+                            cb(null, act);
+                        });
                     });
                 });
             };
