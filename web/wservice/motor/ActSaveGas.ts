@@ -137,6 +137,15 @@ module Service{
             });
         }
 
+        public Delete(cb:(ex:TaskException)=>void){
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "DELETE FROM t_activity_save_gas WHERE id = ?";
+            dac.query(sql, [this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "删除节油大赛活动失败", ex)); return; }
+                super.Delete(cb);
+            });
+        }
+
         // 批量加载同种类的活动
         public static LoadActivities(page:Pagination, filter:any, template:Template, s4_id:number, cb:(ex:TaskException, total:number, acts:ActSaveGas[])=>void){
             var sql = "SELECT %s\n" +

@@ -112,6 +112,7 @@ module.exports = function(app) {
     app.get('/wservice/4s/:s4_id/activity', authCheck, wservice.GetActivities);
     app.get('/wservice/4s/:s4_id/activity/:act_id', authCheck, wservice.GetActivity);
     app.put('/wservice/4s/:s4_id/activity/:act_id', authCheck, wservice.ModifyActivity);
+    app.delete('/wservice/4s/:s4_id/activity/:act_id', authCheck, wservice.DeleteActivity);
     app.get('/wservice/4s/:s4_id/activity/:act_id/cust', authCheck, wservice.GetActivityMembers);
     app.get('/wservice/4s/:s4_id/activity/:act_id/cust/:acc_id', authCheck, wservice.GetActivityMember);
 

@@ -173,6 +173,21 @@ module Service{
         });
     }
 
+    export function DeleteActivity(req, res){
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetActivity(req.params.act_id, (ex, act)=>{
+                if(ex) { res.json(ex); return;}
+
+                act.Delete((ex)=>{
+                    if(ex) { res.json(new TaskException(-1, "删除活动失败", ex)); return; }
+                    res.json({status:"ok"});
+                });
+            });
+        });
+    }
+
     export class Activity extends DTOBase<DTO.activity>{
         constructor(dto){
             super(dto);
@@ -295,6 +310,19 @@ module Service{
                 else if(result.affectedRows === 0) { cb(new TaskException(-1, "指定的活动已不存在", null)); return; }
                 // TODO: 修改活动的成员 this.dto.tags
                 cb(null);
+            });
+        }
+
+        public Delete(cb:(ex:TaskException)=>void){
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "DELETE FROM t_activity_member WHERE act_id=?";
+            dac.query(sql, [this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "删除活动成员失败", ex)); return;}
+                var sql = "DELETE FROM t_activity WHERE id = ?";
+                dac.query(sql, [this.dto.id], (ex, result)=>{
+                    if(ex) {cb(new TaskException(-2, "删除活动失败", ex)); return;}
+                    cb(null);
+                });
             });
         }
 
