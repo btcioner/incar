@@ -172,7 +172,7 @@
               else document.getElementById('seleEngine').innerHTML='自然吸气';
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
-                alert("连接失败\n请检查网络连接是否正常");
+                window.location="/msite/enroll.html?user="+user;
             }
         });
     }
@@ -182,21 +182,14 @@
          url: "/mservice/brandData",
          data: {'user':user},
          dataType: "json",
-         success:function(status,data){
-             if(status==200){
-                 document.getElementById('brand').value=data.brand;
+         success:function(data){
+               document.getElementById('brand').value=data.brand;
                  var str='<option value="-1">请选择</option>';
                  for(var i=0;i<data.seriesData.length;i++){
                      str+='<option value="'+data.seriesData[i].seriesCode+'">'+data.seriesData[i].series+'</option> '
                  }
                  document.getElementById('series').innerHTML=str;
-             }
-           },
-         error:function(){
-             if(status==400){
-                 window.location="/msite/enroll.html?user="+user;
-             }
-         }
+              }
      });
  }
 </script>
