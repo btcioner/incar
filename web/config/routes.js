@@ -111,6 +111,7 @@ module.exports = function(app) {
     app.post('/wservice/4s/:s4_id/template/:tpl_id/activity', authCheck, wservice.CreateActivity);
     app.get('/wservice/4s/:s4_id/activity', authCheck, wservice.GetActivities);
     app.get('/wservice/4s/:s4_id/activity/:act_id', authCheck, wservice.GetActivity);
+    app.put('/wservice/4s/:s4_id/activity/:act_id', authCheck, wservice.ModifyActivity);
     app.get('/wservice/4s/:s4_id/activity/:act_id/cust', authCheck, wservice.GetActivityMembers);
     app.get('/wservice/4s/:s4_id/activity/:act_id/cust/:acc_id', authCheck, wservice.GetActivityMember);
 

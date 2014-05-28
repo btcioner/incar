@@ -120,6 +120,23 @@ module Service{
             });
         }
 
+        public Modify(cb:(ex:TaskException)=>void) {
+            super.Modify((ex)=>{
+                if(ex) { cb(ex); return; }
+
+                var dto :any = { id: this.dto.id };
+                if(this.dto['min_milage']) dto.min_milage = this.dto['min_milage'];
+                var sql = "UPDATE t_activity_save_gas SET ? WHERE id = ?";
+                var dac = MySqlAccess.RetrievePool();
+                dac.query(sql, [dto, this.dto.id], (ex, result)=>{
+                    if(ex) { cb(new TaskException(-1, "修改节油大赛失败", ex)); return; }
+                    else if(result.affectedRows === 0) { cb(new TaskException(-1, "指定的节油大赛活动已不存在", null)); return;}
+                    // 修改成功
+                    cb(null);
+                });
+            });
+        }
+
         // 批量加载同种类的活动
         public static LoadActivities(page:Pagination, filter:any, template:Template, s4_id:number, cb:(ex:TaskException, total:number, acts:ActSaveGas[])=>void){
             var sql = "SELECT %s\n" +
