@@ -51,9 +51,33 @@ module Service{
         });
     }
 
+    export function GetActivity(req, res){
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetActivity(req.params.act_id, (ex, act)=>{
+                if(ex) { res.json(ex); return;}
+                res.json({status:"ok", activity:act.DTO()});
+            });
+        });
+    }
+
     export class Activity extends DTOBase<DTO.activity>{
         constructor(dto){
             super(dto);
+        }
+
+        public DTO():DTO.activity{
+            var dto:DTO.activity = super.DTO();
+
+            if(dto.status === 1) dto.status_name = "已创建";
+            else if(dto.status === 2) dto.status_name = "已发布";
+            else if(dto.status === 3) dto.status_name = "已开始";
+            else if(dto.status === 4) dto.status_name = "已结束";
+            else if(dto.status === 5) dto.status_name = "已公布";
+            else if(dto.status === 6) dto.status_name = "已取消";
+
+            return dto;
         }
     }
 

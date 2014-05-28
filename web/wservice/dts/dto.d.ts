@@ -63,6 +63,7 @@ declare module Service{
             tm_start:Date;
             tm_end:Date;
             tm_publish:Date;
+            status_name:string;
         }
 
         export class activity_template{
