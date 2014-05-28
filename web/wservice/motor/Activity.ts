@@ -236,8 +236,14 @@ module Service{
             };
             dac.query(sql, [dtoAct], (ex, result)=>{
                 if(ex) { cb(new TaskException(-1, "创建活动失败", ex), null); return; }
-                cb(null, result.insertId);
+                this.dto.id = result.insertId;
+                this.ResolveMembers(cb);
             });
+        }
+
+        public ResolveMembers(cb:(ex:TaskException, id:number)=>void){
+            // TODO: 解析活动的成员 this.dto.tags;
+            cb(null, this.dto.id);
         }
     }
 
