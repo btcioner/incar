@@ -59,6 +59,7 @@ declare module Service{
             brief:string;
             awards:string;
             status:number;
+            logo_url:string;
             tm_announce:Date;
             tm_start:Date;
             tm_end:Date;
@@ -74,6 +75,16 @@ declare module Service{
             title:string;
             brief:string;
             awards:string;
+        }
+
+        export class activity_member{
+            act_id:number;
+            cust_id:number;
+            status:number;
+            ref_car_id:number;
+            ref_tags:string;
+            ref_tag_tm:Date;
+            status_name:string;
         }
     }
 }
