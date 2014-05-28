@@ -8,12 +8,13 @@
 
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script  src="../mscripts/car.js"></script>
-
+    <script src="../mscripts/sha1.js"></script>
 
     <script  src="../mscripts/jquery.mobile.min.js"></script>
 
-    <link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">
-
+   <!-- <link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">-->
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
 
 <style >
         .textfield{
@@ -52,8 +53,13 @@
   //提交注册数据
   function reg(){
       if($('#obd_code').val()==null||$('#obd_code').val().length<1){alert("请填写OBD编号");return;}
-      if($('#username').val()==null||$('#username').val().length<1){alert("请填写用户名");return;}
+      if($('#name').val()==null||$('#name').val().length<1){alert("请填写用户名");return;}
       if($('#password').val()==null||$('#password').val().length<1){alert("请填写密码");return;}
+      //检查密码是否一致
+      if(document.getElementById('password').value.trim()!=''){
+          if(document.getElementById('password').value!=document.getElementById('pwdagain').value) {alert("密码不一致");return;}
+          else  postData.password =hex_sha1(document.getElementById("password").value);
+      }
       if($('#brand').val()==null||$('#brand').val()=='-1'){alert("请选择汽车品牌");return;}
       if($('#selectSeries').val()==null||$('#selectSeries').val()=='-1'){alert("请选择品牌系列");return;}
       if($('#manuyear').val()==null||$('#manuyear').val()=='-1'){alert("请选择年款");return;}
@@ -68,20 +74,20 @@
           return;
       }else{
       var postData = {};
-      postData.openid = user;
-      postData.owner_flag = 1;
-      postData.obdCode = document.getElementById("obd_code").value;
-      postData.enroll_time = today;
-      postData.name=$("#ownername").val();
-      postData.phone=$("#phonenumber").val();
-      postData.brand=$("#brand").val();
-      postData.seriese=$("#selectSeries").val();
-      postData.modelYear=$("#manuyear").val();
-      postData.license=$("#platenumber").val();
-      postData.mileage=$("#currentMileage").val();
-      postData.enginetype=$("#enginetype").val();
-      postData.displacement=$("#displacement").val();
-      postData.carage=$("#carage").val();
+          postData.user = user;
+          postData.name = document.getElementById("name").value;//用户名
+          postData.obd_code = document.getElementById("obd_code").value;
+          postData.brand= document.getElementById("brand").value;
+          postData.series= document.getElementById("series").value;
+          postData.modelYear= document.getElementById("modelYear").value;
+          postData.nick= document.getElementById("nick").value;
+          postData.phone= document.getElementById("phone").value;
+          postData.license= document.getElementById("license").value;
+          postData.mileage= document.getElementById("mileage").value;
+          postData.engine_type= document.getElementById("engine_type").value;
+          postData.disp= document.getElementById("disp").value;
+          postData.age= document.getElementById("age").value;
+          postData.last_login_time = today;//最后登录时间
       $.ajax({
           type: "POST",
           url: "/mservice/enroll",
@@ -101,35 +107,43 @@
 </script>
 </head>
 <body onLoad="init()" style="padding: 2;text-align: center">
-<h4>欢迎注册</h4>
-<img src="../mimages/logo.jpg" width="100%" height="50px">
-
- <div id="enroll"  style="margin-bottom:30px; margin-top:10px;font-size:16px">
-(带<span style="color:red;">*</span>为必填项)
-
-   <form id="enrollFom" method="post" action="/mservice/enroll">
-     <input type="hidden" id="user" name="user" />
-     <input type="hidden" id="owner_flag" name="owner_flag" />
-     <input type="hidden" id="enroll_time" name="enroll_time" />
-     <table style="font-size:14px;border-collapse: collapse; border-spacing:  0 " >
-       <tr><td style="text-align:right;" width="35%">用户名<span style="color:red">*</span></td><td  width="65%"><input type="text" id="username" name="username" class="textfield"/></td></tr>
-       <tr><td style="text-align:right;" width="35%">OBD&nbsp;Id<span style="color:red">*</span></td><td  width="65%"><input type="text" id="obd_code" name="obd_code" class="textfield" /></td></tr>
-         <tr><td style="text-align:right;">密码<span style="color:red">*</span></td><td><input type="password" id="password" name="password" class="textfield"/></td></tr>
-         <tr><td style="text-align:right;">重复密码<span style="color:red">*</span></td><td><input type="password" id="pwdagain" name="pwdagain" class="textfield"/></td></tr>
-       <tr><td style="text-align:right;">汽车品牌<span style="color:red">*</span></td><td><select id="brand" name="brand"  style="font-size:20px" data-native-menu="true"><option value="-1" >请选择</option></select></td></tr>
-       <tr><td style="text-align:right;">系列<span style="color:red">*</span></td><td><select id="selectSeries" name="selectSeries" style="font-size:20px"><option value="-1" >请选择</option></select></td></tr>
-       <tr><td style="text-align:right;">年款<span style="color:red">*</span></td><td><select id="manuyear" name="manuyear" style="font-size:20px"><option value="-1">请选择</option><option>2000</option><option>2001</option><option>2002</option><option>2003</option><option>2004</option><option>2005</option><option>2006</option><option>2007</option><option>2008</option><option>2009</option><option>2010</option><option>2011</option><option>2012</option><option>2013</option><option>2014</option><option>2015</option></select></td></tr>
-       <tr><td style="text-align:right;">车主姓名<span style="color:red">*</span></td><td><input type="text" id="ownername" name="ownername" class="textfield" /></td></tr>
-       <tr><td style="text-align:right;">联系电话<span style="color:red">*</span></td><td><input type="text" id="phonenumber" name="phonenumber" class="textfield"/></td></tr>
-       <tr><td style="text-align:right;">车牌号</td><td><input type="text" id="platenumber" name="platenumber" class="textfield" /></td></tr>
-       <tr><td style="text-align:right;">当前里程<span style="color:red">*</span></td><td><input type="text" id="currentMileage" name="currentMileage" class="textfield" /></td></tr>
-       <tr><td style="text-align:right;">发动机类型<span style="color:red">*</span></td><td><select id="enginetype" name="displace" class="textfield" ><option value="-1" >请选择</option><option>自然吸气</option><option>涡轮增压</option></select></td></tr>
-       <tr><td style="text-align:right;">排气量<span style="color:red">*</span></td><td><input type="text" id="displacement" name="displacement" class="textfield" /></td></tr>
-       <tr><td style="text-align:right;">车龄<span style="color:red">*</span></td><td><select  id="carage" name="carage" class="textfield" ><option value="-1" >请选择</option><option value="0">1年以下</option><option value="1">1-2年</option><option value="2">2-5年</option><option value="5">5-10年</option><option value="10">10年以上</option></select></td></tr>
-     </table>
-  </form>
-     <div id="Tip"></div>
-     <p align="center"><input type="button" value="&nbsp;注&nbsp;&nbsp;册&nbsp;"   class="textfield" style="width:100%; height:60px" onclick="reg()"/>
-  </div>
+<!--main_wrap start-->
+<div id="main_wrap">
+    <!--regsitercontaine start--><div id="regsitercontaine">
+    <!--基本信息contentbox start--><div class="contentbox">
+    <div class="columnname"><div>基本信息</div></div>
+    <div class="content"><ul><li>用&nbsp;&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;&nbsp;名*：</li><li><input type="text" id="name" name="name" readonly="readonly" class="w132"/></li></ul><div class="clear"></div></div>
+    <div class="content"><ul><li>OBD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ID*：</li><li><input type="text" id="obd_code" name="obd_code" class="w132" /></li></ul><div class="clear"></div></div>
+    <div class="content"><ul><li>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码*：</li><li><input type="password" id="password" name="password" class="w132"/></li></ul><div class="clear"></div></div>
+    <div class="content"><ul><li>重&nbsp;复&nbsp;密&nbsp;码&nbsp;*：</li><li><input type="password" id="pwdagain" name="pwdagain" class="w132" /></li></ul><div class="clear"></div></div>
+</div><!--基本信息contentbox end-->
+    <!--车主信息contentbox start--><div class="contentbox">
+    <div class="columnname"><div>车主信息</div></div>
+    <div class="content"><ul><li>车&nbsp;主&nbsp;姓&nbsp;名&nbsp;*：</li><li><input type="text" id="nick" name="nick" class="w132"/></li></ul><div class="clear"></div></div>
+    <div class="content"><ul><li>联&nbsp;系&nbsp;电&nbsp;话&nbsp;*：</li><li><input type="text" id="phone" name="phone" class="w132"/></li></ul><div class="clear"></div></div>
+    <div class="content"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;牌&nbsp;&nbsp;&nbsp;&nbsp;号*：</li><li><input type="text" id="license" name="license" class="w132"/></li></ul><div class="clear"></div></div>
+</div><!--车主信息contentbox end-->
+    <!--汽车信息contentbox start--><div class="contentbox">
+    <div class="columnname"><div>汽车信息</div></div>
+    <div class="content"><ul><li>汽&nbsp;车&nbsp;品&nbsp;牌&nbsp;*：</li><li><input type="text" id="brand" name="brand" class="w132"/></li></ul><div class="clear"></div></div>
+    <div class="content"><ul><li>系&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列*：</li><li><select id="series" name="series" class="w137"></select></li></ul><div class="clear"></div></div>
+    <div class="content"><ul><li>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;款*：</li><li><input type="text" id="modelYear" name="modelYear" class="w132"/></li></ul><div class="clear"></div></div>
+    <div class="content"><ul><li>当&nbsp;前&nbsp;里&nbsp;程&nbsp;*：</li><li><input type="text" id="mileage" name="mileage" class="w132" /></li></ul><div class="clear"></div></div>
+    <div class="content"><ul><li>发动机类型*：</li><li><select id="engine_type" name="engine_type" class="w137" ><option value="-1" id="seleEngine">请选择</option><option value="S">自然吸气</option><option value="T">涡轮增压</option></select></li></ul><div class="clear"></div></div>
+    <div class="content"><ul><li>排&nbsp;&nbsp;&nbsp;&nbsp;气&nbsp;&nbsp;&nbsp;&nbsp;量*：</li><li><input type="text" id="disp" name="disp" class="w132"/></li></ul><div class="clear"></div></div>
+    <div class="content"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄*：</li><li><select  id="age" name="age" class="w137" >
+        <option value="-1" id="seleAge">请选择</option>
+        <option value="0">1年以下</option>
+        <option value="1">1-2年</option>
+        <option value="2">2-3年</option>
+        <option value="3">3-4年</option>
+        <option value="4">4-5年</option>
+        <option value="5">大于5年</option>
+    </select></li></ul><div class="clear"></div></div>
+</div><!--汽车信息contentbox end-->
+</div><!--regsitercontaine end-->
+    <!--regsiterbutton start--><div id="regsiterbutton"><span class="text_02">*号为必填项</span><br /><a href="#" class="button01" onclick="update()">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</a></div><!--regsiterbutton end-->
+</div><!--main_wrap end-->
+</div>
 </body>
 </html>
