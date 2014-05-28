@@ -53,9 +53,8 @@
 		  bookDate=new Date(document.getElementById("start").value);
            //alert(bookDate);
 		  bookTime=new Date(document.getElementById("start").value);
-          bookTime.setHours($('#end').val().substring(0,1),$('#end').val().substring(3));
-           alert($('#end').val());
-           alert($('#end').val().substring(0,1));
+          bookTime.setHours($('#end').val().split(':')[0]);
+           alert($('#end').val().split(':')[0]);
            postData.user=user;
            postData.nick=$('#ownerName').val();
            postData.bookingDate=bookDate.toDateString();
@@ -74,7 +73,9 @@
                   dataType: "json",
                   success: function (result,status) {
                       //alert(result.fuelData.length);
-                     document.getElementById("bookStatus").innerHTML="<h2 style='text-align: center'>预约已提交，请注意查收返回信息！</h2>";
+                     document.getElementById("bookStatus").innerHTML="<h2 style='text-align: center'>您的预约申请已提交，<br>"+
+                     " 我们会在48小时内通过微信与您联系，<br>"+
+                        "请您注意查看，谢谢！</h2>";
                      document.getElementById("regsiterbutton").innerHTML='';
                   },
                   error:function(){
