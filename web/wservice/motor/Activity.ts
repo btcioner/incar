@@ -39,13 +39,13 @@ module Service{
         repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
             if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
             s4.GetTemplate(req.params.tpl_id, (ex, template)=>{
-                if(ex) { res.json(-2, "查询活动模版失败", ex); return; }
-                var fnActX = Service[template.dto.template];
-                if(!fnActX) { res.json(new TaskException(-3, util.format("活动模版参数template类型%s无效", template.dto.template), null)); return;}
-                s4.GetTemplatedActivities(page,req.query,template, fnActX, (ex,total, acts)=>{
+                if(ex) { res.json(new TaskException(-2, "查询活动模版失败", ex)); return; }
+                var fnLoadActs = Service[template.dto.template].LoadActivities;
+                if(!fnLoadActs) { res.json(new TaskException(-3, util.format("活动模版参数template类型%s无效", template.dto.template), null)); return;}
+                fnLoadActs(page, req.query, template, s4.dto.id, (ex, total, acts)=>{
                     if(ex) { res.json(ex); return; }
-                    var activities = DTOBase.ExtractDTOs(acts);
-                    res.json({status:"ok", totalCount:total, activities:activities});
+                    var dtos = DTOBase.ExtractDTOs(acts);
+                    res.json({status:"ok", totalCount:total, activities:dtos});
                 });
             });
         });
@@ -95,9 +95,26 @@ module Service{
         });
     }
 
+    export function CreateActivity(req, res){
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetTemplate(req.params.tpl_id, (ex, template)=>{
+                if(ex) { res.json(-2, "查询活动模版失败", ex); return; }
+                var fnActX = Service[template.dto.template];
+                if(!fnActX) { res.json(new TaskException(-3, util.format("活动模版参数template类型%s无效", template.dto.template), null)); return;}
+                // var act = new fnActX(result[0]);
+            });
+        });
+    }
+
     export class Activity extends DTOBase<DTO.activity>{
         constructor(dto){
             super(dto);
+        }
+
+        public LoadExtra(cb:(ex:TaskException, act:Activity)=>void){
+            cb(null, this);
         }
 
         public DTO():DTO.activity{
