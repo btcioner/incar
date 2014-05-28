@@ -80,6 +80,21 @@ module Service{
         });
     }
 
+    export function GetActivityMember(req, res){
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetActivity(req.params.act_id, (ex, act)=>{
+                if(ex) { res.json(ex); return;}
+                act.GetMember(req.params.acc_id, (ex, member)=>{
+                    if(ex) { res.json(ex); return;}
+                    var dto = member.DTO();
+                    res.json({status:"ok", member:dto});
+                });
+            });
+        });
+    }
+
     export class Activity extends DTOBase<DTO.activity>{
         constructor(dto){
             super(dto);
@@ -102,19 +117,14 @@ module Service{
             var dac = MySqlAccess.RetrievePool();
             var sql = "SELECT %s\n" +
                 "FROM t_activity_member M\n" +
-                "\tJOIN t_account A ON M.cust_id=A.id and A.s4_id=?\n" +
-                "\tLEFT OUTER JOIN t_car C ON M.ref_car_id = C.id and C.s4_id=A.s4_id\n" +
-                "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand=D.brandCode and C.series=D.seriesCode\n" +
-                "WHERE 1=1";
-            var args = [this.dto.s4_id];
+                "WHERE M.act_id=?";
+            var args = [this.dto.id];
 
             if(filter.status){ sql += " and M.status=?"; args.push(filter.status); }
 
             var task:any = { finished:0 };
             task.begin = ()=>{
-                var sqlA = util.format(sql, "M.*," +
-                    "A.name, A.nick, A.phone, A.email, A.wx_oid, A.sex, A.city, A.province, A.country, A.headimgurl," +
-                    "C.obd_code, C.license, C.brand, C.series, D.brand AS brand_name, D.series AS series_name");
+                var sqlA = util.format(sql, "M.*,");
                 if(page.IsValid()) sqlA += page.sql;
                 dac.query(sqlA, args, (ex, result)=>{
                     task.A = {ex:ex, result:result};
@@ -144,6 +154,19 @@ module Service{
             };
 
             task.begin();
+        }
+
+        public GetMember(acc_id:number, cb:(ex:TaskException, member:ActivityMember)=>void) {
+            var sql = "SELECT * FROM t_activity_member WHERE act_id=? and cust_id=?";
+            var args = [this.dto.id, acc_id];
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, args, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "查询活动成员失败", ex), null); return; }
+                else if(result.length === 0) { cb(new TaskException(-1, "指定的活动成员不存在", null), null); return; }
+                else if(result.length > 1) { cb(new TaskException(-1, "活动成员数据错误", null), null); return; }
+                var member = new ActivityMember(result[0]);
+                cb(null, member);
+            });
         }
     }
 
