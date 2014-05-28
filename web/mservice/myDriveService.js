@@ -513,7 +513,7 @@ function getSpeedForLastTime(db, obdCode, callback){
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
-                var speedJsonArray=new Array(1,rows[0].speedGroup.length-1);
+                var speedJsonArray=new Array(rows[0].speedGroup.substring(1,rows[0].speedGroup.length-1));
                 //speedJsonArray=rows[0].speedGroup;
                 console.log(speedJsonArray);
                 var speedJson={};
