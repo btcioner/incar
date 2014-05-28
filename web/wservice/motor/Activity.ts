@@ -96,6 +96,31 @@ module Service{
     }
 
     export function CreateActivity(req, res){
+        if(Object.keys(req.body).length === 0){
+            res.json({
+                postSample:{
+                    title:"节油大赛2014年第3期(6月)",
+                    brief:"活动规则:...",
+                    tm_announce:'2014-05-20 9:00',
+                    tm_start:'2014-06-01 9:00',
+                    tm_end:'2014-06-20 18:00',
+                    min_milage:200,
+                    logo_url:'/upload/img/1.jpg',
+                    tags:'23,75,234,112'
+                },
+                remark:"必填:title"
+            });
+            return;
+        }
+
+        var data = req.body;
+        var err = "";
+        if(!data.title) { err += "缺少参数title"; }
+        if(err.length > 0){
+            res.json(new TaskException(-1, err, null));
+            return;
+        }
+
         var repo4S = S4Repository.GetRepo();
         repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
             if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
@@ -103,7 +128,13 @@ module Service{
                 if(ex) { res.json(-2, "查询活动模版失败", ex); return; }
                 var fnActX = Service[template.dto.template];
                 if(!fnActX) { res.json(new TaskException(-3, util.format("活动模版参数template类型%s无效", template.dto.template), null)); return;}
-                // var act = new fnActX(result[0]);
+                var act = new fnActX(req.body);
+                act.dto.s4_id = s4.dto.id;
+                act.dto.template_id = template.dto.id;
+                act.Create((ex, id)=>{
+                    if(ex) { res.json(ex); return; }
+                    res.json({status:"ok", id:id});
+                });
             });
         });
     }
@@ -184,6 +215,10 @@ module Service{
                 var member = new ActivityMember(result[0]);
                 cb(null, member);
             });
+        }
+
+        public Create(cb:(ex:TaskException, id:number)=>void){
+            cb(new TaskException(-1, "活动创建方法缺失", null), 0);
         }
     }
 

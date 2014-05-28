@@ -9,7 +9,7 @@ module Service{
         public DTO():DTO.activity{
             var dto:DTO.activity = super.DTO();
 
-            if(dto.tm_start){
+            if(dto.tm_start && dto.tm_start.getMonth){
                 dto["month"] = (dto.tm_start.getMonth() + 1) + "月";
             }
 
@@ -99,6 +99,51 @@ module Service{
             });
         }
 
+        public Create(cb:(ex:TaskException, id:number)=>void){
+            var dac = MySqlAccess.RetrievePool();
+            var dto:any = this.dto;
+            var task:any = { finished:0 };
+            task.begin = ()=>{
+                var sql = "INSERT t_activity SET ?";
+                task.dtoAct = {
+                    s4_id:      dto.s4_id,
+                    template_id:dto.template_id,
+                    title:      dto.title,
+                    brief:      dto.brief,
+                    status:     1,
+                    tm_announce:dto.tm_announce,
+                    tm_start:   dto.tm_start,
+                    tm_end:     dto.tm_end,
+                    logo_url:   dto.logo_url,
+                    tags:       dto.tags
+                };
+                dac.query(sql, [task.dtoAct], (ex, result)=>{
+                    if(ex) { cb(new TaskException(-1, "创建活动失败", ex), null); return; }
+                    task.dtoAct.id = result.insertId;
+                    task.end();
+                });
+            };
+
+            task.end = ()=>{
+                var sql = "INSERT t_activity_save_gas SET ?";
+                task.dtoActSaveGas = {
+                    id:         task.dtoAct.id,
+                    min_milage: dto.min_milage
+                };
+                dac.query(sql, [task.dtoActSaveGas], (ex, result)=>{
+                    if(ex) {
+                        dac.query("DELETE FROM t_activity WHERE id=?", [task.dtoAct.id], (ex, result)=>{});
+                        cb(new TaskException(-1, "创建节油大赛活动失败", ex), null);
+                        return;
+                    }
+                    cb(null, task.dtoAct.id);
+                });
+            };
+
+            task.begin();
+        }
+
+        // 批量加载同种类的活动
         public static LoadActivities(page:Pagination, filter:any, template:Template, s4_id:number, cb:(ex:TaskException, total:number, acts:ActSaveGas[])=>void){
             var sql = "SELECT %s\n" +
                 "FROM t_activity A JOIN t_activity_save_gas E ON A.id = E.id\n" +

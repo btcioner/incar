@@ -64,6 +64,7 @@ declare module Service{
             tm_start:Date;
             tm_end:Date;
             tm_publish:Date;
+            tags:string;
             status_name:string;
         }
 
