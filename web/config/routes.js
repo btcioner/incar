@@ -110,6 +110,7 @@ module.exports = function(app) {
     app.get('/wservice/4s/:s4_id/template/:tpl_id/activity', authCheck, wservice.GetActivitiesByTemplate);
     app.get('/wservice/4s/:s4_id/activity', authCheck, wservice.GetActivities);
     app.get('/wservice/4s/:s4_id/activity/:act_id', authCheck, wservice.GetActivity);
+    app.get('/wservice/4s/:s4_id/activity/:act_id/cust', authCheck, wservice.GetActivityMembers);
 
     app.get('/wservice', wservice.html);
 
