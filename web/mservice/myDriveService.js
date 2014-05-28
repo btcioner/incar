@@ -515,7 +515,6 @@ function getSpeedForLastTime(db, obdCode, callback){
             if (rows && rows.length === 1) {
                 var speedJsonArray=eval("("+rows[0].speedGroup+")");
                 var speedJson={};
-                console.log(speedJsonArray[0].distance)
                 speedJson.slow=''+speedJsonArray[0].distance;
                 speedJson.middle=speedJsonArray[1].distance;
                 speedJson.high=speedJsonArray[2].distance;
@@ -533,16 +532,17 @@ function getSpeedForLastWeek(db, obdCode, callback){
                 var slow=0;
                 var middle=0;
                 var high=0;
+                var speedJson={};
                 for(var i=0;i<rows.length;i++){
-                    var speedJsonArray=new Array();
-                    speedJsonArray=rows[i];
-                    var speedJson={};
-                    speedJson={'idling':speedJsonArray[0].distance,'slow':speedJsonArray[1].distance,'middle':speedJsonArray[2].distance,'high':speedJsonArray[3].distance}
-                    slow+=speedJson.slow;
-                    middle+=speedJson.middle;
-                    high+=speedJson.high;
+                    var speedJsonArray=eval("("+rows[0].speedGroup+")");
+                    slow+=speedJsonArray[0].distance;
+                    middle+=speedJsonArray[1].distance;
+                    high+=speedJsonArray[2].distance;
                 }
-                return callback(null, {'slow':slow,'middle':middle,'high':high});
+                speedJson.slow=slow;
+                speedJson.middle=middle;
+               speedJson.high=high;
+                return callback(null,speedJson );
             } else { return callback(new Error('multiple rows returned for speed data of lasted time.')); }
         }
     });
@@ -556,16 +556,17 @@ function getSpeedForInterval(db, obdCode, startDatetime, endDatetime,callback){
                 var slow=0;
                 var middle=0;
                 var high=0;
+                var speedJson={};
                 for(var i=0;i<rows.length;i++){
-                    var speedJsonArray=new Array();
-                    speedJsonArray=rows[i];
-                    var speedJson={};
-                    speedJson={'slow':speedJsonArray[0].distance,'middle':speedJsonArray[1].distance,'high':speedJsonArray[2].distance}
-                    slow+=speedJson.slow;
-                    middle+=speedJson.middle;
-                    high+=speedJson.high;
+                    var speedJsonArray=eval("("+rows[0].speedGroup+")");
+                    slow+=speedJsonArray[0].distance;
+                    middle+=speedJsonArray[1].distance;
+                    high+=speedJsonArray[2].distance;
                 }
-                return callback(null, {'slow':slow,'middle':middle,'high':high});
+                speedJson.slow=slow;
+                speedJson.middle=middle;
+                speedJson.high=high;
+                return callback(null,speedJson );
             } else { return callback(new Error('multiple rows returned for speed data of lasted time.')); }
         }
     });
