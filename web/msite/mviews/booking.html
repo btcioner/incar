@@ -55,6 +55,7 @@
 		  bookTime=new Date(document.getElementById("start").value);
           bookTime.setHours($('#end').val().split(':')[0]);
            alert($('#end').val().split(':')[0]);
+           alert(bookTime);
            postData.user=user;
            postData.nick=$('#ownerName').val();
            postData.bookingDate=bookDate.toDateString();
