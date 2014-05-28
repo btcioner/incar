@@ -492,7 +492,7 @@
                 document.getElementById("monthSlowSpeed").innerHTML=result.intervalSpeed.slow;
                 document.getElementById("monthMiddleSpeed").innerHTML=result.intervalSpeed.middle;
                 document.getElementById("monthHighSpeed").innerHTML=result.intervalSpeed.high;
-                //createPie();
+                createPie();
             }
         });
     }
@@ -536,6 +536,16 @@
                 document.getElementById("drive_chartEnd").innerHTML=endDate.getFullYear()+"-"+(endDate.getMonth()+1)+"-"+endDate.getDate();
                 //alert("绘图开始");
                 createChart();
+                document.getElementById("lastSlowSpeed").innerHTML=result.lastSpeed.slow;
+                document.getElementById("lastMiddleSpeed").innerHTML=result.lastSpeed.middle;
+                document.getElementById("lastHighSpeed").innerHTML=result.lastSpeed.high;
+                document.getElementById("weekSlowSpeed").innerHTML=result.weekSpeed.slow;
+                document.getElementById("weekMiddleSpeed").innerHTML=result.weekSpeed.middle;
+                document.getElementById("weekHighSpeed").innerHTML=result.weekSpeed.high;
+                document.getElementById("monthSlowSpeed").innerHTML=result.intervalSpeed.slow;
+                document.getElementById("monthMiddleSpeed").innerHTML=result.intervalSpeed.middle;
+                document.getElementById("monthHighSpeed").innerHTML=result.intervalSpeed.high;
+                createPie();
             }
         });
     }
