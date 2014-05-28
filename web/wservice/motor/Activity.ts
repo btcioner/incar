@@ -218,7 +218,26 @@ module Service{
         }
 
         public Create(cb:(ex:TaskException, id:number)=>void){
-            cb(new TaskException(-1, "活动创建方法缺失", null), 0);
+            var dac = MySqlAccess.RetrievePool();
+            var dto:any = this.dto;
+
+            var sql = "INSERT t_activity SET ?";
+            var dtoAct = {
+                s4_id:      dto.s4_id,
+                template_id:dto.template_id,
+                title:      dto.title,
+                brief:      dto.brief,
+                status:     1,
+                tm_announce:dto.tm_announce,
+                tm_start:   dto.tm_start,
+                tm_end:     dto.tm_end,
+                logo_url:   dto.logo_url,
+                tags:       dto.tags
+            };
+            dac.query(sql, [dtoAct], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "创建活动失败", ex), null); return; }
+                cb(null, result.insertId);
+            });
         }
     }
 

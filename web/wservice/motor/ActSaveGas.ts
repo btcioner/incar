@@ -100,47 +100,24 @@ module Service{
         }
 
         public Create(cb:(ex:TaskException, id:number)=>void){
-            var dac = MySqlAccess.RetrievePool();
-            var dto:any = this.dto;
-            var task:any = { finished:0 };
-            task.begin = ()=>{
-                var sql = "INSERT t_activity SET ?";
-                task.dtoAct = {
-                    s4_id:      dto.s4_id,
-                    template_id:dto.template_id,
-                    title:      dto.title,
-                    brief:      dto.brief,
-                    status:     1,
-                    tm_announce:dto.tm_announce,
-                    tm_start:   dto.tm_start,
-                    tm_end:     dto.tm_end,
-                    logo_url:   dto.logo_url,
-                    tags:       dto.tags
-                };
-                dac.query(sql, [task.dtoAct], (ex, result)=>{
-                    if(ex) { cb(new TaskException(-1, "创建活动失败", ex), null); return; }
-                    task.dtoAct.id = result.insertId;
-                    task.end();
-                });
-            };
+            super.Create((ex, id)=>{
+                if(ex) { cb(ex, id); return; }
 
-            task.end = ()=>{
+                var dac = MySqlAccess.RetrievePool();
                 var sql = "INSERT t_activity_save_gas SET ?";
-                task.dtoActSaveGas = {
-                    id:         task.dtoAct.id,
-                    min_milage: dto.min_milage
+                var dtoActSaveGas = {
+                    id:         id,
+                    min_milage: this.dto['min_milage']
                 };
-                dac.query(sql, [task.dtoActSaveGas], (ex, result)=>{
+                dac.query(sql, [dtoActSaveGas], (ex, result)=>{
                     if(ex) {
-                        dac.query("DELETE FROM t_activity WHERE id=?", [task.dtoAct.id], (ex, result)=>{});
-                        cb(new TaskException(-1, "创建节油大赛活动失败", ex), null);
+                        dac.query("DELETE FROM t_activity WHERE id=?", [dtoActSaveGas.id], (ex, result)=>{});
+                        cb(new TaskException(-1, "创建节油大赛活动失败", ex), dtoActSaveGas.id);
                         return;
                     }
-                    cb(null, task.dtoAct.id);
+                    cb(null, dtoActSaveGas.id);
                 });
-            };
-
-            task.begin();
+            });
         }
 
         // 批量加载同种类的活动
