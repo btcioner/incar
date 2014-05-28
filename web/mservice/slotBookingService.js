@@ -14,11 +14,12 @@ function slotBooking(req, res) {
 
     var self = this;
     var postData = req.body;
-
+    console.log(postData);
     postData.bookingDate = new Date(Date.parse(postData.bookingDate));
     //postData.bookingTime = new Date(Date.parse(postData.bookingTime));
    // postData.timeSlot = new Date(postData.bookingDate.getFullYear(),postData.bookingDate.getMonth(),postData.bookingDate.getDate(),postData.bookingTime.getHours(), postData.bookingTime.getMinutes(), postData.bookingTime.getSeconds());
     postData.timeSlot=new Date( postData.bookingDate);
+    console.log(postData.timeSlot);
     postData.timeSlot.setHours(postData.bookingTime.split(":")[0]);
     console.log(postData.timeSlot);
     delete postData.bookingDate;
