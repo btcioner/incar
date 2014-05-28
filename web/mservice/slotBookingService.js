@@ -18,6 +18,7 @@ function slotBooking(req, res) {
     postData.bookingDate = new Date(Date.parse(postData.bookingDate));
     postData.bookingTime = new Date(Date.parse(postData.bookingTime));
     postData.timeSlot = new Date(postData.bookingDate.getFullYear(),postData.bookingDate.getMonth(),postData.bookingDate.getDate(),postData.bookingTime.getHours(), postData.bookingTime.getMinutes(), postData.bookingTime.getSeconds());
+    console.log(postData.timeSlot);
     delete postData.bookingDate;
     delete postData.bookingTime;
     console.log(postData);
