@@ -9,7 +9,7 @@ module Service{
         public DTO():DTO.activity{
             var dto:DTO.activity = super.DTO();
 
-            if(dto.tm_start){
+            if(dto.tm_start && dto.tm_start.getMonth){
                 dto["month"] = (dto.tm_start.getMonth() + 1) + "月";
             }
 
@@ -99,6 +99,54 @@ module Service{
             });
         }
 
+        public Create(cb:(ex:TaskException, id:number)=>void){
+            super.Create((ex, id)=>{
+                if(ex) { cb(ex, id); return; }
+
+                var dac = MySqlAccess.RetrievePool();
+                var sql = "INSERT t_activity_save_gas SET ?";
+                var dtoActSaveGas = {
+                    id:         id,
+                    min_milage: this.dto['min_milage']
+                };
+                dac.query(sql, [dtoActSaveGas], (ex, result)=>{
+                    if(ex) {
+                        dac.query("DELETE FROM t_activity WHERE id=?", [dtoActSaveGas.id], (ex, result)=>{});
+                        cb(new TaskException(-1, "创建节油大赛活动失败", ex), dtoActSaveGas.id);
+                        return;
+                    }
+                    cb(null, dtoActSaveGas.id);
+                });
+            });
+        }
+
+        public Modify(cb:(ex:TaskException)=>void) {
+            super.Modify((ex)=>{
+                if(ex) { cb(ex); return; }
+
+                var dto :any = { id: this.dto.id };
+                if(this.dto['min_milage']) dto.min_milage = this.dto['min_milage'];
+                var sql = "UPDATE t_activity_save_gas SET ? WHERE id = ?";
+                var dac = MySqlAccess.RetrievePool();
+                dac.query(sql, [dto, this.dto.id], (ex, result)=>{
+                    if(ex) { cb(new TaskException(-1, "修改节油大赛失败", ex)); return; }
+                    else if(result.affectedRows === 0) { cb(new TaskException(-1, "指定的节油大赛活动已不存在", null)); return;}
+                    // 修改成功
+                    cb(null);
+                });
+            });
+        }
+
+        public Delete(cb:(ex:TaskException)=>void){
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "DELETE FROM t_activity_save_gas WHERE id = ?";
+            dac.query(sql, [this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "删除节油大赛活动失败", ex)); return; }
+                super.Delete(cb);
+            });
+        }
+
+        // 批量加载同种类的活动
         public static LoadActivities(page:Pagination, filter:any, template:Template, s4_id:number, cb:(ex:TaskException, total:number, acts:ActSaveGas[])=>void){
             var sql = "SELECT %s\n" +
                 "FROM t_activity A JOIN t_activity_save_gas E ON A.id = E.id\n" +

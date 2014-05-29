@@ -96,6 +96,31 @@ module Service{
     }
 
     export function CreateActivity(req, res){
+        if(Object.keys(req.body).length === 0){
+            res.json({
+                postSample:{
+                    title:"节油大赛2014年第3期(6月)",
+                    brief:"活动规则:...",
+                    tm_announce:'2014-05-20 9:00',
+                    tm_start:'2014-06-01 9:00',
+                    tm_end:'2014-06-20 18:00',
+                    min_milage:200,
+                    logo_url:'/upload/img/1.jpg',
+                    tags:'23,75,234,112'
+                },
+                remark:"必填:title"
+            });
+            return;
+        }
+
+        var data = req.body;
+        var err = "";
+        if(!data.title) { err += "缺少参数title"; }
+        if(err.length > 0){
+            res.json(new TaskException(-1, err, null));
+            return;
+        }
+
         var repo4S = S4Repository.GetRepo();
         repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
             if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
@@ -103,7 +128,62 @@ module Service{
                 if(ex) { res.json(-2, "查询活动模版失败", ex); return; }
                 var fnActX = Service[template.dto.template];
                 if(!fnActX) { res.json(new TaskException(-3, util.format("活动模版参数template类型%s无效", template.dto.template), null)); return;}
-                // var act = new fnActX(result[0]);
+                var act = new fnActX(req.body);
+                act.dto.s4_id = s4.dto.id;
+                act.dto.template_id = template.dto.id;
+                act.Create((ex, id)=>{
+                    if(ex) { res.json(ex); return; }
+                    res.json({status:"ok", id:id});
+                });
+            });
+        });
+    }
+
+    export function ModifyActivity(req, res){
+        if(Object.keys(req.body).length === 0){
+            res.json({
+                putSample:{
+                    title:"节油大赛2014年第3期(6月)",
+                    brief:"活动规则:...",
+                    tm_announce:'2014-05-20 9:00',
+                    tm_start:'2014-06-01 9:00',
+                    tm_end:'2014-06-20 18:00',
+                    min_milage:200,
+                    logo_url:'/upload/img/1.jpg',
+                    tags:'23,75,234,112'
+                },
+                remark:"必填:无"
+            });
+            return;
+        }
+
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetActivity(req.params.act_id, (ex, act)=>{
+                if(ex) { res.json(ex); return;}
+                act.dto = req.body;
+                // 强制ID不变
+                act.dto.id = req.params.act_id;
+                act.Modify((ex)=>{
+                    if(ex) { res.json(new TaskException(-1, "修改活动失败", ex)); return; }
+                    res.json({status:"ok"});
+                });
+            });
+        });
+    }
+
+    export function DeleteActivity(req, res){
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetActivity(req.params.act_id, (ex, act)=>{
+                if(ex) { res.json(ex); return;}
+
+                act.Delete((ex)=>{
+                    if(ex) { res.json(new TaskException(-1, "删除活动失败", ex)); return; }
+                    res.json({status:"ok"});
+                });
             });
         });
     }
@@ -184,6 +264,71 @@ module Service{
                 var member = new ActivityMember(result[0]);
                 cb(null, member);
             });
+        }
+
+        public Create(cb:(ex:TaskException, id:number)=>void){
+            var dac = MySqlAccess.RetrievePool();
+            var dto:any = this.dto;
+
+            var sql = "INSERT t_activity SET ?";
+            var dtoAct = {
+                s4_id:      dto.s4_id,
+                template_id:dto.template_id,
+                title:      dto.title,
+                brief:      dto.brief,
+                status:     1,
+                tm_announce:dto.tm_announce,
+                tm_start:   dto.tm_start,
+                tm_end:     dto.tm_end,
+                logo_url:   dto.logo_url,
+                tags:       dto.tags
+            };
+            dac.query(sql, [dtoAct], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "创建活动失败", ex), null); return; }
+                this.dto.id = result.insertId;
+                this.ResolveMembers(cb);
+            });
+        }
+
+        public Modify(cb:(ex:TaskException)=>void){
+            var dto : any = { id:this.dto.id };
+            if(this.dto.title) dto.title = this.dto.title;
+            if(this.dto.brief) dto.brief = this.dto.brief;
+            if(this.dto.awards) dto.awards = this.dto.awards;
+            if(!isNaN(this.dto.status)) dto.status = this.dto.status;
+            if(this.dto.tm_announce) dto.tm_announce = this.dto.tm_announce;
+            if(this.dto.tm_start) dto.tm_start = this.dto.tm_start;
+            if(this.dto.tm_end) dto.tm_end = this.dto.tm_end;
+            if(this.dto.tm_publish) dto.tm_publish = this.dto.tm_publish;
+            if(this.dto.logo_url) dto.logo_url = this.dto.logo_url;
+            if(this.dto.tags) dto.tags = this.dto.tags;
+
+            var sql = "UPDATE t_activity SET ? WHERE id = ?";
+            var dac = MySqlAccess.RetrievePool();
+            dac.query(sql, [dto, this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "修改活动失败", ex)); return; }
+                else if(result.affectedRows === 0) { cb(new TaskException(-1, "指定的活动已不存在", null)); return; }
+                // TODO: 修改活动的成员 this.dto.tags
+                cb(null);
+            });
+        }
+
+        public Delete(cb:(ex:TaskException)=>void){
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "DELETE FROM t_activity_member WHERE act_id=?";
+            dac.query(sql, [this.dto.id], (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "删除活动成员失败", ex)); return;}
+                var sql = "DELETE FROM t_activity WHERE id = ?";
+                dac.query(sql, [this.dto.id], (ex, result)=>{
+                    if(ex) {cb(new TaskException(-2, "删除活动失败", ex)); return;}
+                    cb(null);
+                });
+            });
+        }
+
+        public ResolveMembers(cb:(ex:TaskException, id:number)=>void){
+            // TODO: 解析活动的成员 this.dto.tags;
+            cb(null, this.dto.id);
         }
     }
 
