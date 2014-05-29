@@ -10,7 +10,7 @@ var my4S = require('./my4S');
 var menuBuilder = require('./menu');
 var wxMenu = {};
 
-wxMenu.define = function(appid, appsecret){
+wxMenu.defineWXMenu = function(appid, appsecret){
     return function() {
         var api = new WXAPI(appid, appsecret);
         api.createMenu({
