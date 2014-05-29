@@ -85,7 +85,7 @@ wxMenu.define = function(appid, appsecret){
                                 {
                                     "type":"view",
                                     "name":"设置",
-                                    "url":"http://linuxsrv.winphone.us/msite/getCode.html"
+                                    "url":"http://linuxsrv.winphone.us/msite/getCodeForConf.html"
                                 }
                             ]
                     }
@@ -147,10 +147,21 @@ wxMenu.onClick['MYCAR.BEHAVIOR'] = function(message, session, next) {
 };
 
 wxMenu.onClick['MY4S.PROBE'] = function(message, session, next) {
+    my4S.trialrun(message.FromUserName, session, function(err, result){
+        if (err) {
+            return next(err);
+        }
+        return next(null, [{
+            title: '试乘试驾',
+            description: result,
+            picurl: '',
+            url: 'http://linuxsrv.winphone.us/msite/trialrun.html?user=' + message.FromUserName + '@' + message.ToUserName
+        }]);
+    });
 };
 
 wxMenu.onClick['MY4S.BOOKING'] = function(message, session, next) {
-    console.log("begin booking");
+
     my4S.book(message.FromUserName, session, function(err, result){
         if (err) {
             return next(err);

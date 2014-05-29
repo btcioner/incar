@@ -97,7 +97,21 @@ my4S.book = function(userName, session, callback){
         }
     });
 };
-
+my4S.trialrun=function(userName, session, callback){
+    var tpl = [
+        '本店提供：\n\n',
+        '<% var idx = 1; %>',
+        '<% slots.forEach(function(slot){ %>',
+        '<%=idx%>:  <%= slot.time.Format("yyyy-MM-dd hh:mm:ss") %>\n\n',
+        '<% idx++; %>',
+        '<% }); %>',
+        '\n',
+        '回复特价工位号进行预约\n\n',
+        '或点击本消息进行其他时段预约\n\n',
+        '\n'
+    ].join('');
+    var compiled = ejs.compile(tpl);
+}
 my4S.manual = function(userName, session, callback){
     // 模板将来要从数据库来读取
     var tpl = [

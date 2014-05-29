@@ -7,23 +7,16 @@ var mysql = require('mysql');
 
 function getOrgId(db, userName, callback) {
     var pool = db();
-    pool.query('select sopenid from t_wx_user where openid = ?;',[userName], function(err, rows){
+    pool.query('select s4_id from t_account where openid like ?;',["%"+userName+"%"], function(err, rows){
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
-                pool.query('select orgId from t_wx_service_account where openid = ?;',[rows[0].sopenid], function(err, rows){
-                    if (err) { callback(err); }
-                    else {
-                        if (rows && rows.length === 1) {
-                            callback(null, rows[0].orgId);
+
+                            callback(null, rows[0].s4_id);
                         } else { callback(new Error('zero or multiple rows () returned for one wx user id.')); }
                     }
-                });
-            } else {
-                callback(new Error('zero or multiple rows(sopenid) returned for one wx user openid.'));
-            }
-        }
-    });
+            });
+
 }
 
 var booking = {};
