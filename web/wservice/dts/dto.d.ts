@@ -60,6 +60,7 @@ declare module Service{
             awards:string;
             status:number;
             logo_url:string;
+            tm_created:Date;
             tm_announce:Date;
             tm_start:Date;
             tm_end:Date;

@@ -270,7 +270,7 @@ module Service{
             var dac = MySqlAccess.RetrievePool();
             var dto:any = this.dto;
 
-            var sql = "INSERT t_activity SET ?";
+            var sql = "INSERT t_activity SET tm_created=CURRENT_TIMESTAMP, ?";
             var dtoAct = {
                 s4_id:      dto.s4_id,
                 template_id:dto.template_id,
