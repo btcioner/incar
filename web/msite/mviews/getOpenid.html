@@ -8,6 +8,7 @@
     <script>
      var code=getQueryString("code");
      var status=getQueryString("status");
+     alert(status=='conf');
      var reqUrl="https://api.weixin.qq.com/sns/oauth2/access_token?"+
              "appid=wx5de0018d8c7b0b0d&secret=ea3cbd792917a19f7d043b02b7a7a0c6"+
              "&code="+code+"&grant_type=authorization_code";
