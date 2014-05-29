@@ -79,8 +79,7 @@ module.exports = function(app) {
     app.use(cookieParser());
     app.use(connect.session({secret: 'IncarTechnologies', cookie: {maxAge: 180000}}));
 
-    app.use('/api/*', weixin(api.getServiceToken)
-        .text(api.onTextMsg)
+    app.use('/api/*',text(api.onTextMsg)
         .image(api.onImageMsg)
         .voice(api.onVoiceMsg)
         .video(api.onVideoMsg)
