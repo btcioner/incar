@@ -9,8 +9,12 @@ module Service{
         public DTO():DTO.activity{
             var dto:DTO.activity = super.DTO();
 
-            if(dto.tm_start && dto.tm_start.getMonth){
-                dto["month"] = (dto.tm_start.getMonth() + 1) + "月";
+            try{
+                var tm = new Date(Date.parse(dto.tm_start.toString()));
+                dto["month"] = (tm.getMonth() + 1) + "月";
+            }
+            catch(ex){
+                // ignore any...
             }
 
             return dto;
