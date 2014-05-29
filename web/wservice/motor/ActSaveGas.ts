@@ -44,11 +44,10 @@ module Service{
                 "\tLEFT OUTER JOIN t_car C ON M.ref_car_id = C.id and C.s4_id=A.s4_id\n" +
                 "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand=D.brandCode and C.series=D.seriesCode\n" +
                 "\tLEFT OUTER JOIN t_obd_drive R ON C.obd_code=R.obdCode and R.fireTime >= ? and R.flameOutTime <= ?\n" +
-                "WHERE 1=1\n" +
-                "GROUP BY C.id";
+                "WHERE 1=1";
             var args = [this.dto.s4_id, this.dto.tm_start, this.dto.tm_end];
-
-            if(filter.status){ sql += " and M.status=?"; args.push(filter.status); }
+            if(!isNaN(filter.status)){ sql += " and M.status=?"; args.push(filter.status); }
+            sql += "\nGROUP BY C.id";
 
             var task:any = { finished:0 };
             task.begin = ()=>{
@@ -75,7 +74,7 @@ module Service{
                 if(task.finished < 2) return;
                 if(task.A.ex) { cb(new TaskException(-1, "查询活动成员失败", task.A.ex), 0, null); return; }
                 var total = 0;
-                if(!task.B.ex) total = task.B.result[0].count;
+                if(!task.B.ex) total = task.B.result.length;
                 var members = [];
                 task.A.result.forEach((dto:any)=>{
                     var m = new ActivityMember(dto);
