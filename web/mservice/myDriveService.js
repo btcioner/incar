@@ -344,6 +344,7 @@ function getCarbonData(db, obdCode, startDatetime, endDatetime, callback) {
                     if (!! carbonResult) {
                         carbonResult = carbonResult.toFixed(2);
                     }
+
                     return { carbon: carbonResult, index: '' };  // (idx + 1) };
                 }));
             } else { callback(new Error('errors in get fuel data points.')); }
