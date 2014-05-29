@@ -17,7 +17,7 @@ module Service{
     }
 
     export function GetActivities(req, res){
-        res.setHeader("Accept-Query", "page,pagesize,status,tm_start_begin,tm_start_end,month");
+        res.setHeader("Accept-Query", "page,pagesize,status,tm_start_begin,tm_start_end,month,title");
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var repo4S = S4Repository.GetRepo();
@@ -32,7 +32,7 @@ module Service{
     }
 
     export function GetActivitiesByTemplate(req, res){
-        res.setHeader("Accept-Query", "page,pagesize,status,tm_start_begin,tm_start_end,month");
+        res.setHeader("Accept-Query", "page,pagesize,status,tm_start_begin,tm_start_end,month,title");
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var repo4S = S4Repository.GetRepo();

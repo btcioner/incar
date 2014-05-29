@@ -160,12 +160,13 @@ module Service{
             var sql = "SELECT %s\n" +
                 "FROM t_activity A JOIN t_activity_save_gas E ON A.id = E.id\n" +
                 "WHERE A.s4_id=? and A.template_id=?";
-            var args = [s4_id, template.dto.id];
+            var args:Array<Object> = [s4_id, template.dto.id];
 
             if(filter.status) { sql += " and A.status=?"; args.push(filter.status); }
             if(filter.tm_start_begin) { sql += " and tm_start >= ?"; args.push(filter.bm_start_begin); }
             if(filter.tm_start_end) { sql += " and tm_start <= ?"; args.push(filter.bm_start_end); }
             if(filter.month) { sql += " and MONTH(tm_start) = ?"; args.push(filter.month); }
+            if(filter.title) { sql += " and title like ?"; args.push("%"+filter.title+"%"); }
 
             sql += "\nORDER BY tm_start DESC";
 
