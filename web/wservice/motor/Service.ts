@@ -7,11 +7,14 @@ module Service{
 
     // 上传文件
     export function UploadFile(req, res){
+        res.setHeader("Content-Type", "application/json");
         var count = 0;
         var uploads:any = {};
         for(var name in req.files){
-            count++;
-            uploads[name] = req.files[name].path.replace(/\\/g, '/');
+            if(req.files[name].size > 0) {
+                count++;
+                uploads[name] = req.files[name].path.replace(/\\/g, '/');
+            }
         }
         if(count > 0){
             res.json({status:"ok", files:uploads});
