@@ -100,6 +100,83 @@ wxMenu.define = function(appid, appsecret){
         });
     };
 };
+var menuObject={
+    "button":
+        [
+            {
+                "name":"我的车",
+                "sub_button":
+                    [
+                        {
+                            "type":"click",
+                            "name":"行车分析",
+                            "key":"MYCAR.MYDRIVE"
+                        },
+                        {
+                            "type":"click",
+                            "name":"行车手册",
+                            "key":"MY4S.MANUAL"
+                        },
+                        {
+                            "type":"click",
+                            "name":"远程检测",
+                            "key":"MYCAR.MAINTAIN"
+                        },
+                        {
+                            "type":"click",
+                            "name":"行车报告",
+                            "key":"MYCAR.COST"
+                        }
+                    ]
+            },
+            {
+                "name":"我的4S",
+                "sub_button":
+                    [
+                        {
+                            "type":"click",
+                            "name":"预约保养",
+                            "key":"MY4S.BOOKING"
+                        },
+                        {
+                            "type":"click",
+                            "name":"试乘试驾",
+                            "key":"MY4S.PROBE"
+                        },
+                        {
+                            "type":"click",
+                            "name":"资讯活动",
+                            "key":"MY4S.INFO"
+                        },
+                        {
+                            "type":"click",
+                            "name":"联系我们",
+                            "key":"MY4S.CONTACT"
+                        }
+                    ]
+            },
+            {
+                "name":"发现",
+                "sub_button":
+                    [
+                        {
+                            "type":"view",
+                            "name":"我的活动",
+                            "url":"http://linuxsrv.winphone.us/shopping"
+                        },
+                        {
+                            "type":"view",
+                            "name":"我的预约",
+                            "url":"http://linuxsrv.winphone.us/promotions"
+                        },
+                        {
+                            "type":"view",
+                            "name":"设置",
+                            "url":"http://linuxsrv.winphone.us/msite/getCodeForConf.html"
+                        }
+                    ]
+            }]
+};
 wxMenu.defineTasks = function(tickTasks, callback) {
     menuBuilder(tickTasks, this.menuObject, callback);
 };
