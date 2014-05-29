@@ -506,19 +506,23 @@ module Service{
 
         public GetActivities(page:Pagination, filter:any, cb:(ex:TaskException, totalCount:number, acts:Activity[])=>void){
             var sql = "SELECT %s FROM t_activity WHERE s4_id=?";
+            var args = [this.dto.id];
+
+            if(filter.status) { sql += " and status = ?"; args.push(filter.status); }
+
             var dac = MySqlAccess.RetrievePool();
 
             var task:any = { finished:0 };
             task.begin = ()=>{
                 var sqlA = util.format(sql,"*");
-                dac.query(sqlA, [this.dto.id], (ex,result)=>{
+                dac.query(sqlA, args, (ex,result)=>{
                     task.A = { ex:ex, result:result };
                     task.finished++;
                     task.end();
                 });
 
                 var sqlB = util.format(sql, "COUNT(*) count");
-                dac.query(sqlB, [this.dto.id], (ex, result)=>{
+                dac.query(sqlB, args, (ex, result)=>{
                     task.B = { ex:ex, result:result };
                     task.finished++;
                     task.end();

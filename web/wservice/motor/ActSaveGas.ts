@@ -162,6 +162,8 @@ module Service{
                 "WHERE A.s4_id=? and A.template_id=?";
             var args = [s4_id, template.dto.id];
 
+            if(filter.status) { sql += " and A.status=?"; args.push(filter.status); }
+
             var dac = MySqlAccess.RetrievePool();
             var task:any = { finished: 0 };
             task.begin = ()=>{
