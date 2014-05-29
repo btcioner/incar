@@ -116,6 +116,7 @@ module.exports = function(app) {
     app.delete('/wservice/4s/:s4_id/activity/:act_id', authCheck, wservice.DeleteActivity);
     app.get('/wservice/4s/:s4_id/activity/:act_id/cust', authCheck, wservice.GetActivityMembers);
     app.get('/wservice/4s/:s4_id/activity/:act_id/cust/:acc_id', authCheck, wservice.GetActivityMember);
+    app.get('/wservice/4s/:s4_id/activity/:act_id/:exfn', authCheck, wservice.ActivityExFn);
 
     app.get('/wservice', wservice.html);
 
