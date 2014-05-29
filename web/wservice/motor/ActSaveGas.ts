@@ -163,6 +163,11 @@ module Service{
             var args = [s4_id, template.dto.id];
 
             if(filter.status) { sql += " and A.status=?"; args.push(filter.status); }
+            if(filter.tm_start_begin) { sql += " and tm_start >= ?"; args.push(filter.bm_start_begin); }
+            if(filter.tm_start_end) { sql += " and tm_start <= ?"; args.push(filter.bm_start_end); }
+            if(filter.month) { sql += " and MONTH(tm_start) = ?"; args.push(filter.month); }
+
+            sql += "\nORDER BY tm_start DESC";
 
             var dac = MySqlAccess.RetrievePool();
             var task:any = { finished: 0 };
