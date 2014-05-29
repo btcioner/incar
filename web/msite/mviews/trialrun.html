@@ -15,9 +15,23 @@
     <!--日期控件资源结束  -->
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
     <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
+    <script>
+        var user;
+        var today
+        function init(){
+             user=getQueryString("user");
+             today=new Date();
+            year=today.getFullYear();    //获取完整的年份(4位,1970-????)
+            month=(today.getMonth()+1>9)?today.getMonth()+1:"0"+(today.getMonth()+1);     //获取当前月份(0-11,0代表1月)
+            day=today.getDate()>9?today.getDate():"0"+today.getDate();;        //获取当前日(1-31)
+            document.getElementById("start").value=year+"-"+month+"-"+day;
+            searchUser();
+        }
+
+    </script>
 </head>
 
-<body>
+<body onload="init()">
 <div id="wrap">
     <!--main_wrap start-->
     <div id="main_wrap">
@@ -51,5 +65,24 @@
         <!--regsiterbutton start--><div id="regsiterbutton"><a href="#" class="button01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</a></div><!--regsiterbutton end-->
     </div><!--main_wrap end-->
 </div>
+<script>
+    function searchUser(){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/infoConfig",
+            data: {'user':user},
+            dataType: "json",
+            success: function (result,status) {
+             if(result.phone)   document.getElementById('phone').value=result.phone;
+             if(result.nick)   document.getElementById('name').value=result.nick;
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                //alert("连接失败\n请检查网络连接是否正常");
+            }
+        });
+    }
+
+</script>
+
 </body>
 </html>
