@@ -199,3 +199,12 @@ a img {
 	border-bottom-style: solid;
 	border-bottom-color: #aa7300;
 }
+.img_04 {
+	background-image: url(../mimages/img_04.png);
+	background-repeat: no-repeat;
+	height: 162px;
+	width: 280px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #aa7300;
+}
