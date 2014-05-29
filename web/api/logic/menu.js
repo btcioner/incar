@@ -22,7 +22,7 @@ exports = module.exports = function(tickTasks, menuObject, callback) {
                     var api = new WXAPI(element.appId, element.appSecret);
                     api.createMenu(menuObject, function(err, result){
                         if (err) {
-                            console.log('Error occurred when weixin menu was newly defined - ' + err + '\n');
+                            console.log('Error occurred when weixin menu was newly defined - ---' + err + '\n');
                         }
                         else {
                             console.log('Weixin menu was newly defined!!\n');
