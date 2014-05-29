@@ -177,9 +177,9 @@ var menuObject={
                     ]
             }]
 };
-/*wxMenu.defineTasks = function(tickTasks, callback) {
+wxMenu.defineTasks = function(tickTasks, callback) {
     menuBuilder(tickTasks, menuObject, callback);
-};*/
+};
 wxMenu.textMsgRepliers = [];
 
 wxMenu.textMsgRepliers['my4S.onBooking'] = my4S.onBookingMessages;
