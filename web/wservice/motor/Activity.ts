@@ -197,9 +197,9 @@ module Service{
     export function ActivityGo(){
         var dac = MySqlAccess.RetrievePool();
         var sql = [
-            "UPDATE t_activity SET status = 2 WHERE status = 1 and tm_announce >= CURRENT_TIMESTAMP",
-            "UPDATE t_activity SET status = 3 WHERE status = 2 and tm_start >= CURRENT_TIMESTAMP",
-            "UPDATE t_activity SET status = 4 WHERE status = 3 and tm_end > CURRENT_TIMESTAMP",
+            "UPDATE t_activity SET status = 2 WHERE status = 1 and tm_announce <= CURRENT_TIMESTAMP",
+            "UPDATE t_activity SET status = 3 WHERE status = 2 and tm_start <= CURRENT_TIMESTAMP",
+            "UPDATE t_activity SET status = 4 WHERE status = 3 and tm_end < CURRENT_TIMESTAMP",
         ];
         dac.query(sql[0], null, (ex, result)=>{
             if(ex) { console.log("更新活动状态失败status=1->2"); }
