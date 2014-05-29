@@ -29,6 +29,7 @@ module.exports = function(app) {
     // Routes for wsite service
     var authCheck = [wservice.CheckAuthority];
    // app.get('/wservice/hello', wservice.HelloAPI);
+    app.post('/wservice/upload', wservice.UploadFile);
     app.post('/wservice/login', wservice.Login);
     app.get('/wservice/logout', wservice.Logout);
 

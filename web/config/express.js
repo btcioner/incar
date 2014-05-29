@@ -92,7 +92,7 @@ module.exports = function(app) {
     app.set('delayedInitializer', api.ticks(process.nextTick));
 
     app.use('/wservice/manual', multiPart({keepExtensions: true, uploadDir: './data/manual', limit:10*1024*1024}));
-
+    app.use('/wservice/upload', multiPart({keepExtensions: true, uploadDir: './data/upload', limit:10*1024*1024}));
 };
 
 
