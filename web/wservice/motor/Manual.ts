@@ -69,6 +69,10 @@ module Service {
     }
 
     export function AddManual(req, res):void{
+        if(req.headers["user-agent"] && req.headers["user-agent"].indexOf("Trident")>=0)
+            res.setHeader("Content-Type", "text/plain");
+        else
+            res.setHeader("Content-Type", "application/json");
         if(Object.keys(req.body).length === 0){
             res.json({postData:{
                 keyword: "备胎",
@@ -98,6 +102,10 @@ module Service {
     }
 
     export function ModifyManual(req, res):void{
+        if(req.headers["user-agent"] && req.headers["user-agent"].indexOf("Trident")>=0)
+            res.setHeader("Content-Type", "text/plain");
+        else
+            res.setHeader("Content-Type", "application/json");
         if(Object.keys(req.body).length === 0){
             res.json({putData:{
                 keyword: "备胎",
