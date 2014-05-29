@@ -178,7 +178,7 @@ var menuObject={
             }]
 };
 wxMenu.defineTasks = function(tickTasks, callback) {
-    menuBuilder(tickTasks, this.menuObject, callback);
+    menuBuilder(tickTasks, menuObject, callback);
 };
 wxMenu.textMsgRepliers = [];
 
