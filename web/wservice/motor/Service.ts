@@ -5,6 +5,22 @@ module Service{
     // 测试用途
     export function HelloAPI(req, res){ res.send({status:"ok", text:"Hello API!"}); }
 
+    // 上传文件
+    export function UploadFile(req, res){
+        var count = 0;
+        var uploads:any = {};
+        for(var name in req.files){
+            count++;
+            uploads[name] = req.files[name].path.replace(/\\/g, '/');
+        }
+        if(count > 0){
+            res.json({status:"ok", files:uploads});
+        }
+        else{
+            res.json(new TaskException(-1, "上传失败", null));
+        }
+    }
+
     // 临时用于测试目的
     export function html(req:any, res:any):void{
         res.sendfile("./wservice/test.html");
