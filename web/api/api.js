@@ -11,10 +11,8 @@ var api = {};
 function defaultTextMsgReplier(message, session, callback) {
     return callback({type: 'text', content: '您没有激活任何命令，或您的回复已经过期！'});
 }
-api.defineWXMenu = function(appid, appsecret) {
-    return wxMenu.define(appid, appsecret);
-};
-/*api.ticks = function(ticker) {
+
+api.ticks = function(ticker) {
     return function(callback) {
         var tickTasks = new TickTasks(ticker);
         wxMenu.defineTasks(tickTasks, function(err, result){
@@ -23,7 +21,7 @@ api.defineWXMenu = function(appid, appsecret) {
         });
     };
 };
-*/
+
 api.getServiceToken = function(appName, openid, callback) {
     return wxToken.getTokenOrSetOpenId(appName, openid, callback);
 };
