@@ -29,6 +29,8 @@ module Service{
                 res.json({status:"ok", totalCount:total, activities:activities});
             });
         });
+
+        Service.ActivityGo();
     }
 
     export function GetActivitiesByTemplate(req, res){
@@ -49,6 +51,8 @@ module Service{
                 });
             });
         });
+
+        Service.ActivityGo();
     }
 
     export function GetActivity(req, res){
@@ -60,6 +64,8 @@ module Service{
                 res.json({status:"ok", activity:act.DTO()});
             });
         });
+
+        Service.ActivityGo();
     }
 
     export function GetActivityMembers(req, res){
@@ -183,6 +189,24 @@ module Service{
                 act.Delete((ex)=>{
                     if(ex) { res.json(new TaskException(-1, "删除活动失败", ex)); return; }
                     res.json({status:"ok"});
+                });
+            });
+        });
+    }
+
+    export function ActivityGo(){
+        var dac = MySqlAccess.RetrievePool();
+        var sql = [
+            "UPDATE t_activity SET status = 2 WHERE status = 1 and tm_announce >= CURRENT_TIMESTAMP",
+            "UPDATE t_activity SET status = 3 WHERE status = 2 and tm_start >= CURRENT_TIMESTAMP",
+            "UPDATE t_activity SET status = 4 WHERE status = 3 and tm_end > CURRENT_TIMESTAMP",
+        ];
+        dac.query(sql[0], null, (ex, result)=>{
+            if(ex) { console.log("更新活动状态失败status=1->2"); }
+            dac.query(sql[1], null, (ex, result)=>{
+                if(ex) { console.log("更新活动状态失败status=2->3"); }
+                dac.query(sql[2], null, (ex, result)=>{
+                    if(ex) { console.log("更新活动状态失败status=3->4"); }
                 });
             });
         });
