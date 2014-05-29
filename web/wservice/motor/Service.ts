@@ -7,7 +7,10 @@ module Service{
 
     // 上传文件
     export function UploadFile(req, res){
-        res.setHeader("Content-Type", "application/json");
+        if(req.headers["user-agent"] && req.headers["user-agent"].indexOf("Trident")>=0)
+            res.setHeader("Content-Type", "text/plain");
+        else
+            res.setHeader("Content-Type", "application/json");
         var count = 0;
         var uploads:any = {};
         for(var name in req.files){
