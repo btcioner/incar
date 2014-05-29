@@ -43,8 +43,10 @@ module Service{
                 "\tJOIN t_account A ON M.cust_id=A.id and A.s4_id=?\n" +
                 "\tLEFT OUTER JOIN t_car C ON M.ref_car_id = C.id and C.s4_id=A.s4_id\n" +
                 "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand=D.brandCode and C.series=D.seriesCode\n" +
-                "WHERE 1=1";
-            var args = [this.dto.s4_id];
+                "\tLEFT OUTER JOIN t_obd_drive R ON C.obd_code=R.obdCode and R.fireTime >= ? and R.flameOutTime <= ?\n" +
+                "WHERE 1=1\n" +
+                "GROUP BY C.id";
+            var args = [this.dto.s4_id, this.dto.tm_start, this.dto.tm_end];
 
             if(filter.status){ sql += " and M.status=?"; args.push(filter.status); }
 
@@ -52,7 +54,8 @@ module Service{
             task.begin = ()=>{
                 var sqlA = util.format(sql, "M.*," +
                     "A.name, A.nick, A.phone, A.email, A.wx_oid, A.sex, A.city, A.province, A.country, A.headimgurl," +
-                    "C.obd_code, C.license, C.brand, C.series, D.brand AS brand_name, D.series AS series_name");
+                    "C.obd_code, C.license, C.brand, C.series, D.brand AS brand_name, D.series AS series_name," +
+                    "sum(R.currentMileage) AS milage, sum(currentAvgOilUsed*currentMileage)/sum(currentMileage) AS avgOil");
                 if(page.IsValid()) sqlA += page.sql;
                 dac.query(sqlA, args, (ex, result)=>{
                     task.A = {ex:ex, result:result};
@@ -86,13 +89,15 @@ module Service{
 
         public GetMember(acc_id:number, cb:(ex:TaskException, member:ActivityMember)=>void) {
             var sql = "SELECT M.status,\n" +
-                "\tA.nick,A.phone,C.license,C.obd_code,D.brand AS brand_name,D.series AS series_name\n" +
+                "\tA.nick,A.phone,C.license,C.obd_code,D.brand AS brand_name,D.series AS series_name,\n" +
+                "\tsum(R.currentMileage) AS milage, sum(currentAvgOilUsed*currentMileage)/sum(currentMileage) AS avgOil\n" +
                 "FROM t_activity_member M\n" +
                 "\tJOIN t_account A ON M.cust_id=A.id and A.s4_id=?" +
                 "\tLEFT OUTER JOIN t_car C ON M.ref_car_id=C.id and C.s4_id=A.s4_id" +
                 "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand=D.brandCode and C.series=D.seriesCode\n"+
+                "\tLEFT OUTER JOIN t_obd_drive R ON C.obd_code=R.obdCode and R.fireTime >= ? and R.flameOutTime <= ?\n" +
                 "WHERE M.act_id=? and M.cust_id=?";
-            var args = [this.dto.s4_id,this.dto.id, acc_id];
+            var args = [this.dto.s4_id, this.dto.tm_start, this.dto.tm_end,this.dto.id, acc_id];
             var dac = MySqlAccess.RetrievePool();
             dac.query(sql, args, (ex, result)=>{
                 if(ex) { cb(new TaskException(-1, "查询活动成员失败", ex), null); return; }
