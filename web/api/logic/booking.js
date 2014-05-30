@@ -49,7 +49,7 @@ booking.getBrand=function(sopenid,callback){
     pool.query('select brand from t_4s where openid=?;',[sopenid],function(err,result){
          if(err) callback(err);
         else {
-             if(result&result.length===1) {
+             if(result&&result.length===1) {
                  pool.query('select brandName from t_car_dictionary where brand=?;',[result[0].brand],function(err,rows){
                          if(err) callback(err);
                          else callback(null,rows[0].brandName);
