@@ -50,9 +50,9 @@ booking.getBrand=function(sopenid,callback){
          if(err) callback(err);
         else {
              if(result&&result.length===1) {
-                 pool.query('select brandName from t_car_dictionary where brand=?;',[result[0].brand],function(err,rows){
+                 pool.query('select brand from t_car_dictionary where brandCode=?;',[result[0].brand],function(err,rows){
                          if(err) callback(err);
-                         else callback(null,rows[0].brandName);
+                         else callback(null,rows[0].brand);
                  });
              }else callback(new Error('The 4s is not exist.'))
               }
