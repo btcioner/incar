@@ -188,7 +188,6 @@ wxMenu.textMsgRepliers['my4S.onManual'] = my4S.onManualMessages;
 wxMenu.onClick = [];
 
 wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, session, next) {
-    console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     myCar.myDriveReport(message.FromUserName, message.ToUserName, function(err, reportContent){
         if (err) {
             // error handling ...

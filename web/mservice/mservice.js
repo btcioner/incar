@@ -19,6 +19,7 @@ var myDriveService = require('./myDriveService');
 var infoConfigService= require('./infoConfigService');
 var brandService= require('./brandService');
 var getOpenidService= require('./getOpenidService');
+var trialrunService= require('./trialrunService');
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
 
 userService(mservice);
@@ -31,6 +32,7 @@ myDriveService(mservice);
 infoConfigService(mservice);
 brandService(mservice);
 getOpenidService(mservice);
+trialrunService(mservice);
 (function(service) {
 
     function entrance(req, res) {
