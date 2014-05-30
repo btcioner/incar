@@ -42,8 +42,8 @@
         <div class="formstyle01"><ul><li>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</li><li><input name="name" id="name" type="text" class="w190" /></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li>联系电话：</li><li><input name="phone" id="phone" type="text" class="w190" /></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</li><li><select name="seriesName" id="seriesName"  class="w190" ><option>请选择</option></select></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li>预约日期：</li><li><input name="bookDate" class="w190" type="bookDate" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align: middle"/></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li>预约时间：</li><li><select id="bookTime" name="bookTime" class="w190"  style="width: 100%;min-height: 1.4em;width: 15em">
+        <div class="formstyle01"><ul><li>预约日期：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align: middle"/></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li>预约时间：</li><li><select id="end" name="end" class="w190"  style="width: 100%;min-height: 1.4em;width: 15em">
             <option>9:00</option>
             <option>9:30</option>
             <option>10:00</option>
@@ -92,7 +92,7 @@
           success: function (result,status) {
               var seriesStr="<option>请选择</option>";
               for(var i=0;i<result.length;i++){
-                  seriesStr+="<option value='"+result[i].seriesCode+"'>"+result[i].series+"</option>"
+                  seriesStr+="<option>"+result[i].series+"</option>"
               }
               document.getElementById('seriesName').innerHTML=seriesStr;
           },
@@ -101,28 +101,28 @@
           }
       });
   }
-   function submitTrialrun(){
-       var postData={};
-       postData.user=user;
-       postData.name=document.getElementById("name").value;
-       postData.phone=document.getElementById("phone").value;
-       postData.seriesName=document.getElementById("seriesName").value;
-       postData.bookDate=document.getElementById("bookDate").value;
-       postData.bookTime=document.getElementById("bookTime").value;
-       $.ajax({
-           type: "POST",
-           url: "/mservice/trialrun",
-           data: postData,
-           dataType: "json",
-           success: function (result,status) {
-            window.location="/msite/trialResult.html?state=1";
-           },
-           error:function(XMLHttpRequest, textStatus, errorThrown){
-               //alert("连接失败\n请检查网络连接是否正常");
-               window.location="/msite/trialResult.html?state=0";
-           }
-       });
-   }
+    function submitTrialrun(){
+        var postData={};
+        postData.user=user;
+        postData.name=document.getElementById("name").value;
+        postData.phone=document.getElementById("phone").value;
+        postData.seriesName=document.getElementById("seriesName").value;
+        postData.bookDate=document.getElementById("start").value.toDateString();
+        postData.bookTime=document.getElementById("end").value;
+        $.ajax({
+            type: "POST",
+            url: "/mservice/trialrun",
+            data: postData,
+            dataType: "json",
+            success: function (result,status) {
+                window.location="/msite/trialResult.html?state=1";
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                //alert("连接失败\n请检查网络连接是否正常");
+                window.location="/msite/trialResult.html?state=0";
+            }
+        });
+    }
 </script>
 
 </body>
