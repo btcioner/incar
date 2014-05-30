@@ -29,11 +29,7 @@ function getBrand(db, sopenid,callback) {
     var pool = db();
     var report ={};
    // console.log('brand search begin');
-    pool.query('select s4_id from t_account where wx_oid like ?;',["%"+sopenid+"%"],function(err,rows){
-        if(err){callback(err);}
-        else{
-            if(rows&&rows.length===1){
-                pool.query('select brand from t_4s where id=?;',[rows[0].s4_id],function(err,rows){
+   pool.query('select brand from t_4s where openid=?;',[sopenid],function(err,rows){
                     if(err){callback(err);}
                     else{
                         if(rows&&rows.length===1){
@@ -64,7 +60,5 @@ function getBrand(db, sopenid,callback) {
                         else {callback(new Error('4s has no brand.'));}
                     }
                 });
-            }else {callback(new Error('user has no 4s.'));}
-        }
-    });
+
 }
