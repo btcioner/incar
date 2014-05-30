@@ -119,7 +119,7 @@ my4S.trialrun=function(userName,sopenid, session, callback){
            }
     });
    */
-    session.textMsgReplierIndex = 'my4S.onTrialrun';
+    //session.textMsgReplierIndex = 'my4S.onTrialrun';
     callback(null,compiled({}));
 }
 my4S.manual = function(userName, session, callback){
