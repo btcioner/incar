@@ -224,8 +224,7 @@ wxMenu.onClick['MYCAR.BEHAVIOR'] = function(message, session, next) {
 };
 
 wxMenu.onClick['MY4S.PROBE'] = function(message, session, next) {
-    console.log("------------------------------++++++++++++++");
-    my4S.trialrun(message.FromUserName, session, function(err, result){
+    my4S.trialrun(message.FromUserName, message.toUserName,session, function(err, result){
         if (err) {
             return next(err);
         }

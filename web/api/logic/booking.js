@@ -37,13 +37,27 @@ booking.applySlot = function(userName, slot, callback) {
     console.log(slot);
     getOrgId(this.db, userName, function(err, orgId) {
         if (err) { return callback(err); }
-        pool.query('insert into t_slot_booking(storeId, slot_location, slot_time, promotion_id, channel, channel_specific, booking_time, booking_status, tc, ts) values (?,?,?,?,?,?, now(), 1,?,now());', [orgId, slot.location, slot.time, slot.id, 'weixin', userName, userName+'@weixin'], function(err, result) {
+        pool.query('insert into t_slot_booking(storeId, slot_location, slot_time, promotion_id, channel, channel_specific, booking_time, booking_status, tc, ts) values (?,?,?,?,?,?, now(), 1,?,now());',
+            [orgId, slot.location, slot.time, slot.id, 'weixin', userName, userName+'@weixin'], function(err, result) {
             if (err) { return callback(err); }
             return callback(null, result);
         });
     });
 };
-
+booking.getBrand=function(sopenid,callback){
+    var pool = this.db();
+    pool.query('select brand from t_4s where openid=?;',[sopenid],function(err,result){
+         if(err) callback(err);
+        else {
+             if(result&result.length===1) {
+                 pool.query('select brandName from t_car_dictionary where brand=?;',[result[0].brand],function(err,rows){
+                         if(err) callback(err);
+                         else callback(null,rows[0].brandName);
+                 });
+             }else callback(new Error('The 4s is not exist.'))
+              }
+    });
+}
 
 booking.db = require('../../config/db');
 

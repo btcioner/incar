@@ -97,16 +97,30 @@ my4S.book = function(userName, session, callback){
         }
     });
 };
-my4S.trialrun=function(userName, session, callback){
+my4S.trialrun=function(userName,sopenid, session, callback){
     var tpl = [
-        '本店提供XXX品牌试乘试驾：\n\n',
+        '本店提供',
+        '<%=data.brandName%>',
+        '品牌试乘试驾：\n\n',
 
         '请点击进入详情进行预约\n\n',
         '',
         '\n'
     ].join('');
     var compiled = ejs.compile(tpl);
-    callback(null,compiled);
+    booking.getBrand(sopenid,function(err,result){
+           if(err){
+               session.textMsgReplierIndex = null;
+               //if (session.slotData) delete session.slotData;
+               callback(err);
+           }else{
+               var data={};
+               data.brandName=result;
+               session.textMsgReplierIndex = 'my4S.onTrialrun';
+               callback(null,compiled({}));
+           }
+    });
+
 }
 my4S.manual = function(userName, session, callback){
     // 模板将来要从数据库来读取
