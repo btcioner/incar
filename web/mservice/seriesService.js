@@ -6,7 +6,7 @@
 var mysql = require('mysql');
 
 exports = module.exports = function(service) {
-    service.post.getSeriesName = getSeriesName;
+    service.post.getSeries= getSeriesName;
 }
 function getSeriesName(req,res){
     var postData = req.body;

@@ -86,7 +86,7 @@
       var sopenid=user.split('@')[1];
       $.ajax({
           type: "POST",
-          url: "/mservice/gerSeriesName",
+          url: "/mservice/getSeries",
           data: {'sopenId':sopenid},
           dataType: "json",
           success: function (result,status) {
