@@ -14,7 +14,8 @@ function brandData(req, res) {
     var postData = req.body;
     console.log(postData);
     var db = this.db;
-    getBrand(db, postData.user ,function(err, data) {
+    var sopenid=postData.user.split('@')[1];
+    getBrand(db, sopenid ,function(err, data) {
          if (err) { res.send(err); }
           else {
            //console.log('Car brands print:\n');
@@ -24,11 +25,11 @@ function brandData(req, res) {
     });
  }
 
-function getBrand(db, username,callback) {
+function getBrand(db, sopenid,callback) {
     var pool = db();
     var report ={};
    // console.log('brand search begin');
-    pool.query('select s4_id from t_account where wx_oid like ?;',["%"+username+"%"],function(err,rows){
+    pool.query('select s4_id from t_account where wx_oid like ?;',["%"+sopenid+"%"],function(err,rows){
         if(err){callback(err);}
         else{
             if(rows&&rows.length===1){
