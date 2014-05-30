@@ -99,14 +99,14 @@ my4S.book = function(userName, session, callback){
 };
 my4S.trialrun=function(userName,sopenid, session, callback){
     var tpl = [
-        '本店提供各系列车试乘试驾：\n\n',
+        '本店提供<%=brandName%>各系列车试乘试驾：\n\n',
 
         '请点击进入详情进行预约\n\n',
         '',
         '\n'
     ].join('');
     var compiled = ejs.compile(tpl);
-    /*booking.getBrand(sopenid,function(err,result){
+    booking.getBrand(sopenid,function(err,result){
            if(err){
                session.textMsgReplierIndex = null;
                //if (session.slotData) delete session.slotData;
@@ -115,12 +115,12 @@ my4S.trialrun=function(userName,sopenid, session, callback){
                var data={};
                data.brandName=result;
                session.textMsgReplierIndex = 'my4S.onTrialrun';
-               callback(null,compiled({}));
+               callback(null,compiled(data));
            }
     });
-   */
+
     //session.textMsgReplierIndex = 'my4S.onTrialrun';
-    callback(null,compiled({}));
+    //callback(null,compiled({}));
 }
 my4S.manual = function(userName, session, callback){
     // 模板将来要从数据库来读取
