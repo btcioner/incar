@@ -15,6 +15,7 @@ function brandData(req, res) {
     console.log(postData);
     var db = this.db;
     var sopenid=postData.user.split('@')[1];
+    console.log(sopenid+"00000000000");
     getBrand(db, sopenid ,function(err, data) {
          if (err) { res.send(err); }
           else {
