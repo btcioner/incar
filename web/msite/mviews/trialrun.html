@@ -102,6 +102,7 @@
       });
   }
     function submitTrialrun(){
+        alert("begin");
         var postData={};
         postData.user=user;
         postData.name=document.getElementById("name").value;
@@ -109,6 +110,7 @@
         postData.seriesName=document.getElementById("seriesName").value;
         postData.bookDate=document.getElementById("start").value.toDateString();
         postData.bookTime=document.getElementById("end").value;
+        alert("开始提交");
         $.ajax({
             type: "POST",
             url: "/mservice/trialrun",
