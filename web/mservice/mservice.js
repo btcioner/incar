@@ -20,6 +20,7 @@ var infoConfigService= require('./infoConfigService');
 var brandService= require('./brandService');
 var getOpenidService= require('./getOpenidService');
 var trialrunService= require('./trialrunService');
+var seriesService= require('./seriesService');
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
 
 userService(mservice);
@@ -33,6 +34,7 @@ infoConfigService(mservice);
 brandService(mservice);
 getOpenidService(mservice);
 trialrunService(mservice);
+seriesService(mservice);
 (function(service) {
 
     function entrance(req, res) {
