@@ -41,7 +41,7 @@
         //获取user的微信openId
 			user=getQueryString("user");
 		//获取汽车品牌、车型数据
-		    initPro();
+           initCarBrand();
 		  //
       document.getElementById("user").value=user;
       //document.getElementById("obd_code").value="WFQ00013044";
@@ -146,5 +146,23 @@
     <!--regsiterbutton start--><div id="regsiterbutton"><a href="#" class="button01" onclick="update()">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</a></div><!--regsiterbutton end-->
 </div><!--main_wrap end-->
 </div>
+<script>
+    function initCarBrand(){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/brandData",
+            data: {'user':user},
+            dataType: "json",
+            success:function(data){
+                document.getElementById('brand').value=data.brand;
+                var str='<option value="-1">请选择</option>';
+                for(var i=0;i<data.seriesData.length;i++){
+                    str+='<option value="'+data.seriesData[i].seriesCode+'">'+data.seriesData[i].series+'</option> '
+                }
+                document.getElementById('series').innerHTML=str;
+            }
+        });
+    }
+</script>
 </body>
 </html>
