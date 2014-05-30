@@ -36,7 +36,8 @@ module Service{
             });
         }
 
-        public GetMembers(page:Pagination, filter:any, cb:(ex:TaskException, total:number, members:ActivityMember[])=>void){
+        public GetMembers(res:any, page:Pagination, filter:any, cb:(ex:TaskException, total:number, members:ActivityMember[])=>void){
+            res.setHeader("Accept-Query", "page,pagesize,status,disp,series,enough_mileage");
             var dac = MySqlAccess.RetrievePool();
             var sql = "SELECT %s\n" +
                 "FROM t_activity_member M\n" +
@@ -44,27 +45,31 @@ module Service{
                 "\tLEFT OUTER JOIN t_car C ON M.ref_car_id = C.id and C.s4_id=A.s4_id\n" +
                 "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand=D.brandCode and C.series=D.seriesCode\n" +
                 "\tLEFT OUTER JOIN t_obd_drive R ON C.obd_code=R.obdCode and R.fireTime >= ? and R.flameOutTime <= ?\n" +
-                "WHERE 1=1\n" +
-                "GROUP BY C.id";
+                "WHERE 1=1";
             var args = [this.dto.s4_id, this.dto.tm_start, this.dto.tm_end];
-
-            if(filter.status){ sql += " and M.status=?"; args.push(filter.status); }
+            if(!isNaN(filter.status)){ sql += " and M.status=?"; args.push(filter.status); }
+            if(!isNaN(filter.disp)){ sql += " and C.disp=?"; args.push(filter.disp); }
+            if(filter.series) { sql += " and C.series=?"; args.push(filter.series); }
+            sql += "\nGROUP BY C.id";
+            if(filter.enough_mileage) { sql += " HAVING mileage >= ?"; args.push(this.dto['min_milage']); }
 
             var task:any = { finished:0 };
             task.begin = ()=>{
                 var sqlA = util.format(sql, "M.*," +
                     "A.name, A.nick, A.phone, A.email, A.wx_oid, A.sex, A.city, A.province, A.country, A.headimgurl," +
-                    "C.obd_code, C.license, C.brand, C.series, D.brand AS brand_name, D.series AS series_name," +
-                    "sum(R.currentMileage) AS milage, sum(currentAvgOilUsed*currentMileage)/sum(currentMileage) AS avgOil");
-                if(page.IsValid()) sqlA += page.sql;
-                dac.query(sqlA, args, (ex, result)=>{
+                    "C.obd_code, C.license, C.brand, C.series, C.disp, D.brand AS brand_name, D.series AS series_name," +
+                    "sum(R.currentMileage) AS mileage, sum(currentAvgOilUsed*currentMileage)/sum(currentMileage) AS avgOil");
+                var sqlA2 = util.format("SELECT * FROM (%s) T ORDER BY avgOil", sqlA);
+                if(page.IsValid()) sqlA2 += page.sql;
+                dac.query(sqlA2, args, (ex, result)=>{
                     task.A = {ex:ex, result:result};
                     task.finished++;
                     task.end();
                 });
 
-                var sqlB = util.format(sql, "COUNT(*) count");
-                dac.query(sqlB, args, (ex, result)=>{
+                var sqlB = util.format(sql, "sum(R.currentMileage) AS mileage");
+                var sqlB2 = util.format("SELECT COUNT(*) count FROM (%s) T", sqlB);
+                dac.query(sqlB2, args, (ex, result)=>{
                     task.B = { ex:ex, result:result };
                     task.finished++;
                     task.end();
@@ -89,8 +94,8 @@ module Service{
 
         public GetMember(acc_id:number, cb:(ex:TaskException, member:ActivityMember)=>void) {
             var sql = "SELECT M.status,\n" +
-                "\tA.nick,A.phone,C.license,C.obd_code,D.brand AS brand_name,D.series AS series_name,\n" +
-                "\tsum(R.currentMileage) AS milage, sum(currentAvgOilUsed*currentMileage)/sum(currentMileage) AS avgOil\n" +
+                "\tA.nick,A.phone,C.license,C.obd_code,C.disp,D.brand AS brand_name,D.series AS series_name,\n" +
+                "\tsum(R.currentMileage) AS mileage, sum(currentAvgOilUsed*currentMileage)/sum(currentMileage) AS avgOil\n" +
                 "FROM t_activity_member M\n" +
                 "\tJOIN t_account A ON M.cust_id=A.id and A.s4_id=?" +
                 "\tLEFT OUTER JOIN t_car C ON M.ref_car_id=C.id and C.s4_id=A.s4_id" +
@@ -155,17 +160,42 @@ module Service{
             });
         }
 
+        public s_p(req, res){
+            res.setHeader("Accept-Query", "status");
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "SELECT sum(R.currentMileage) AS mileage, C.brand, C.series, C.disp, D.brand AS brand_name, D.series AS series_name\n" +
+                "FROM t_activity_member M\n" +
+                "\tJOIN t_account A ON M.cust_id=A.id and A.s4_id=?\n" +
+                "\tLEFT OUTER JOIN t_car C ON M.ref_car_id = C.id and C.s4_id=A.s4_id\n" +
+                "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand=D.brandCode and C.series=D.seriesCode\n" +
+                "\tLEFT OUTER JOIN t_obd_drive R ON C.obd_code=R.obdCode and R.fireTime >= ? and R.flameOutTime <= ?\n" +
+                "WHERE 1=1";
+            var args = [this.dto.s4_id, this.dto.tm_start, this.dto.tm_end];
+            if(!isNaN(req.query.status)){ sql += " and M.status=?"; args.push(req.query.status); }
+            else if(req.query.status){ sql += " and M.status in (?)";  args.push(req.query.status);}
+            sql += "\nGROUP BY C.id HAVING mileage >= ?";
+            args.push(this.dto['min_milage']);
+
+            var sql2 = util.format("SELECT distinct brand, series, disp, brand_name, series_name FROM (%s) T ORDER BY brand, series", sql);
+            dac.query(sql2, args, (ex, result)=>{
+                if(ex) { res.json(new TaskException(-1, "查询出错", ex)); return; }
+                res.json({status:"ok", s_p:result});
+            });
+        }
+
         // 批量加载同种类的活动
-        public static LoadActivities(page:Pagination, filter:any, template:Template, s4_id:number, cb:(ex:TaskException, total:number, acts:ActSaveGas[])=>void){
+        public static LoadActivities(res:any, page:Pagination, filter:any, template:Template, s4_id:number, cb:(ex:TaskException, total:number, acts:ActSaveGas[])=>void){
+            res.setHeader("Accept-Query", "page,pagesize,status,tm_start_begin,tm_start_end,month,title");
             var sql = "SELECT %s\n" +
                 "FROM t_activity A JOIN t_activity_save_gas E ON A.id = E.id\n" +
                 "WHERE A.s4_id=? and A.template_id=?";
-            var args = [s4_id, template.dto.id];
+            var args:Array<Object> = [s4_id, template.dto.id];
 
             if(filter.status) { sql += " and A.status=?"; args.push(filter.status); }
             if(filter.tm_start_begin) { sql += " and tm_start >= ?"; args.push(filter.bm_start_begin); }
             if(filter.tm_start_end) { sql += " and tm_start <= ?"; args.push(filter.bm_start_end); }
             if(filter.month) { sql += " and MONTH(tm_start) = ?"; args.push(filter.month); }
+            if(filter.title) { sql += " and title like ?"; args.push("%"+filter.title+"%"); }
 
             sql += "\nORDER BY tm_start DESC";
 

@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS t_activity(
     tm_start DATETIME COMMENT '开始时间',
     tm_end DATETIME COMMENT '结束时间',
     tm_publish DATETIME COMMENT '结果发布时间',
-    INDEX IDX_ACT_1(s4_id,template_id)
+    INDEX IDX_ACT_1(s4_id,template_id),
+    INDEX IDX_ACT_2(status)
 );
 
 -- 活动参与人
