@@ -26,7 +26,7 @@
             day=today.getDate()>9?today.getDate():"0"+today.getDate();;        //获取当前日(1-31)
             document.getElementById("start").value=year+"-"+month+"-"+day;
             searchUser();
-            searchSeriesName();
+           // searchSeriesName();
         }
 
     </script>
@@ -41,7 +41,7 @@
         <!--预约试驾表单contentboxstyle01 start--><div class="contentboxstyle01">
         <div class="formstyle01"><ul><li>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</li><li><input name="name" id="name" type="text" class="w190" /></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li>联系电话：</li><li><input name="phone" id="phone" type="text" class="w190" /></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</li><li><select name="seriesNmae" id="seriesNmae"  class="w190" ></select></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</li><li><select name="seriesName" id="seriesName"  class="w190" ></select></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li>预约日期：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align: middle"/></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li>预约时间：</li><li><select id="end" name="end" class="w190"  style="width: 100%;min-height: 1.4em;width: 15em">
             <option>9:00</option>
