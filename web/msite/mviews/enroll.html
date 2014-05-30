@@ -52,6 +52,7 @@
 
   //提交注册数据
   function reg(){
+      var postData = {};
       if($('#obd_code').val()==null||$('#obd_code').val().length<1){alert("请填写OBD编号");return;}
       if($('#name').val()==null||$('#name').val().length<1){alert("请填写用户名");return;}
       if($('#password').val()==null||$('#password').val().length<1){alert("请填写密码");return;}
@@ -69,11 +70,8 @@
       if($('#enginetype').val()==null||$('#enginetype').val().length=='-1'){alert("请选择发动机类型");return;}
       if($('#displacement').val()==null||$('#displacement').val().length<1){alert("请填写排气量");return;}
       if($('#carage').val()==null||$('#carage').val().length=='-1'){alert("请选择车龄");return;}
-      if($('#password').val()!=$('#pwdagain').val()){
-          alert("密码不一致");
-          return;
-      }else{
-      var postData = {};
+      alert("1");
+
           postData.user = user;
           postData.name = document.getElementById("name").value;//用户名
           postData.obd_code = document.getElementById("obd_code").value;
@@ -88,6 +86,7 @@
           postData.disp= document.getElementById("disp").value;
           postData.age= document.getElementById("age").value;
           postData.last_login_time = today;//最后登录时间
+      alert("2");
       $.ajax({
           type: "POST",
           url: "/mservice/enroll",
@@ -102,7 +101,7 @@
               alert("注册失败\n请检查OBD Id是否正确");
           }
       });
-   }
+
   }
 </script>
 </head>
