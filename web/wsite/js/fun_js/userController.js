@@ -22,7 +22,8 @@ function userManageCtrl($scope, $http){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl+'staff?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $scope.randomTime = "&t="+new Date();
+        $http.get(baseurl+'staff?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.staffs.length == 0)
@@ -38,12 +39,12 @@ function userManageCtrl($scope, $http){
                     {
                         data.staffs[i]["class"] = "btn btn-info btn-mini";
                         data.staffs[i].text = "解冻";
-                        data.staffs[i].status="正常";
+                        data.staffs[i].status="冻结";
                     };
                     if(data.staffs[i].status == 1){
                         data.staffs[i]["class"] = "btn btn-warning btn-mini";
                         data.staffs[i].text = "冻结";
-                        data.staffs[i].status="冻结";
+                        data.staffs[i].status="正常";
                     }
 
                 }

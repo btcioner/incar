@@ -5,25 +5,116 @@
 function s_fuelMatchCtrl($scope,$http)
 {
 
-   $scope.matchListDiv = true;
-   $scope.matchModifyDiv = false;
-   $scope.matchPreviewDiv = false;
-   $scope.matchPublishedDiv = false;
-   $scope.matchAddDiv = false;
-   $scope.flagid = "";
+    $scope.matchListDiv = true;
+    $scope.matchModifyDiv = false;
+    $scope.matchPreviewDiv = false;
+    $scope.matchPublishedDiv = false;
+    $scope.matchAddDiv = false;
+    $scope.flagid = "";
+    $scope.currentPage = 1;
+    $scope.pageRecord = 10;
+    $scope.title = "";
+    $scope.brief = "";
+    $scope.tm_announce = "";
+    $scope.tm_start = "";
+    $scope.tm_end = "";
+    $scope.min_milage = "";
+    $scope.logo_url = "";
+    $scope.tags = "";
+    $scope.titleMove = "";
+    var editor;
+
+    GetFirstPageInfo();//get fist driveData for first page；
+
+    function GetFirstPageInfo()
+    {
+        $scope.tips="";
+        $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity?page="+$scope.currentPage+"&pagesize="+$scope.pageRecord).success(function(data){
+            if(data.status == "ok")
+            {
+                if(data.activities.length ==0)
+                {
+                    $scope.tips="暂无数据";
+                }
+                $scope.fuelMatch = data.activities;
+                PagingInfo(data.totalCount);
+            }
+        }).error(function(data){
+             alert("请求无响应");
+        })
+    }
+
+    //get paging param info
+    function PagingInfo(totalCount)
+    {
+        $scope.totalCount = totalCount;
+        $scope.totalPage = Math.ceil( $scope.totalCount /  $scope.pageRecord)
+        $scope.totalOption=[{}];
+        for(var i = 0 ;i< $scope.totalPage;i++)
+        {
+            $scope.totalOption[i]={size:i+1};
+        }
+    }
+
+    //分页跳转页面
+    $scope.changePage=function(id)
+    {
+        $scope.currentPage = id ;
+        GetFirstPageInfo();
+    }
 
     //点击添加按钮
     $scope.add = function()
     {
+        KindEditor.ready(function(K) {
+            editor = K.create('textarea[name="content"]', {
+                width : 380,
+                height : 350,
+                minWidth : 380,
+                minHeight : 350,
+                allowFileManager : true,
+                items : [
+                    'bold','italic','underline','|','insertorderedlist','insertunorderedlist','|','image','|',
+                    'removeformat','forecolor','hilitecolor'
+                ]
+            });
+        });
         $scope.matchListDiv = false;
         $scope.matchAddDiv = true;
+    }
+
+
+
+    //标题改变
+    $scope.titleChange = function()
+    {
+       // alert( $scope.title);
+        if($scope.title.length < 50)
+        {
+            $scope.titleMove = $scope.title;
+        }
+        else{
+            $scope.titleMove = $scope.title.substring(0,50);
+        }
     }
 
     //创建节油大赛
     $scope.AddConfirm = function()
     {
-        $scope.matchListDiv = true;
-        $scope.matchAddDiv = false;
+       // 获取编辑器里面的内容 alert(editor.html());
+        $scope.postData={title:$scope.title,brief:editor.html(),tm_announce:$scope.tm_announce,tm_start:$scope.tm_start,
+        tm_end:$scope.tm_end,min_milage:$scope.min_milage,logo_url:$scope.logo_url,tags:"23,75,234,112"};
+        $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity",$scope.postData).success(function(data){
+            if(data.status == "ok")
+            {
+               alert("添加成功!");
+               GetFirstPageInfo();
+               $scope.matchListDiv = true;
+               $scope.matchAddDiv = false;
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            })
     }
    //预览
     $scope.preview = function(id)
@@ -38,8 +129,22 @@ function s_fuelMatchCtrl($scope,$http)
         $scope.matchPreviewDiv = false;
     }
     //修改按钮
-    $scope.modify = function(id)
+    $scope.modify = function(fm_id,index)
     {
+        var editor;
+        KindEditor.ready(function(K) {
+            editor = K.create('textarea[name="content"]', {
+                width : 380,
+                height : 350,
+                minWidth : 380,
+                minHeight : 350,
+                allowFileManager : true,
+                items : [
+                    'bold','italic','underline','|','insertorderedlist','insertunorderedlist','|','image','|',
+                    'removeformat','forecolor','hilitecolor'
+                ]
+            });
+        });
         $scope.matchListDiv = false;
         $scope.matchModifyDiv = true;
     }
@@ -50,10 +155,24 @@ function s_fuelMatchCtrl($scope,$http)
         $scope.matchModifyDiv = false;
     }
     //取消
-    $scope.cancelMatch = function(id)
+    $scope.cancelMatch = function(fm_id,index)
     {
-        alert("确定要取消吗？");
-
+        if(confirm("您确定是否要删除该比赛！"))
+        {
+            $http.delete(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+fm_id).success(function(data){
+                if(data.status == "ok")
+                {
+                    alert("删除成功！");
+                    $scope.fuelMatch.splice(index, 1);
+                    PagingInfo( $scope.totalCount-1);
+                }
+                else{
+                    alert(data.status);
+                }
+            }).error(function(data){
+                    alert("请求无响应");
+            })
+        }
     }
     //查看
     $scope.InfoView = function(sta)
@@ -81,6 +200,20 @@ function s_fuelMatchCtrl($scope,$http)
     //发布结果按钮
     $scope.publishResult = function(id)
     {
+        var editor;
+        KindEditor.ready(function(K) {
+            editor = K.create('textarea[name="content"]', {
+                width : 380,
+                height : 350,
+                minWidth : 380,
+                minHeight : 350,
+                allowFileManager : true,
+                items : [
+                    'bold','italic','underline','|','insertorderedlist','insertunorderedlist','|','image','|',
+                    'removeformat','forecolor','hilitecolor'
+                ]
+            });
+        });
         $scope.matchFinishedDiv = false;
         $scope.matchPubResultDiv = true;
     }
@@ -216,5 +349,44 @@ function s_fuelMatchCtrl($scope,$http)
                 break;
 
         }
+    }
+}
+
+function changeImg(name)
+{
+    var filepath = $("#"+name).val();
+    var extStart=filepath.lastIndexOf(".");
+    var ext=filepath.substring(extStart,filepath.length).toUpperCase();
+    if(ext!=".BMP"&&ext!=".PNG"&&ext!=".JPG"&&ext!=".JPEG"){
+        alert("图片限于bmp,png,jpeg,jpg格式");
+        $("#"+name).val("");
+    }
+    else{
+//         $("#formId_edit").submit();
+//          var ajax_option={
+//            url:"/wservice/upload",//默认是form action
+//
+//            success:function(data){
+//               alert(data.status);
+//              }
+//            };
+//            $('#formId_edit').ajaxSubmit(ajax_option);
+
+
+
+//       $.ajax({
+//            cache: true,
+//            type: "POST",
+//            enctype:"multipart/form-data",
+//            url:"/wservice/upload",
+//            data:$('#formId_edit').serialize(),// 你的formid
+//            async: false,
+//            error: function(request) {
+//            alert("Connection error");
+//        },
+//        success: function(data) {
+//           alert(data.status);
+//        }
+//    });
     }
 }

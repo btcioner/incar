@@ -4,6 +4,11 @@
 <title>活动信息</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        textarea {
+               display: block;
+           }
+    </style>
 <link rel="stylesheet" href="../css/bootstrap.min.css" />
 <link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="../css/uniform.css" />
@@ -11,6 +16,7 @@
 <link rel="stylesheet" href="../css/maruti-style.css" />
 <link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" type="text/css" href="../css/mycss/main.css" />
+<link rel="stylesheet" href="../kindeditor/themes/default/default.css" />
 </head>
 <body  ng-controller="mainCtrl">
 <!--Header-part-->
@@ -42,50 +48,69 @@
         <li> <a href="creating.html" target="_parent"><i class="icon icon-th-list"></i> <span>设置</span></a></li>
     </ul>
 </div>
+
 <div id="content">
   <div id="content-header">
       <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">活动信息</a></div>
   </div>
     <div class="row-fluid">
-        <div class="span1" style="margin-left: 30px;width:10%">
-        <div class="accordion" id="collapse-group" >
-            <div class="accordion-group widget-box">
-                <div class="accordion-heading">
-                    <div class="widget-title"> <a  href="#main" data-toggle="collapse" > <span class="icon"><i class="icon-thumbs-up"></i></span>
-                        <h5>特价工位</h5>
-                    </a> </div>
+        <div class="span1" style="width: 10%;float: left;margin: 2px">
+            <div class="accordion" id="collapse-group">
+                <div class="accordion-group widget-box">
+                    <div class="accordion-heading">
+                        <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne" data-toggle="collapse"> <span class="icon"><i class="icon-magnet"></i></span>
+                            <h5>特价工位</h5>
+                        </a> </div>
+                    </div>
+                    <div class="collapse accordion-body" id="collapseGOne">
+                        <div class="widget-content" style="text-align: right;padding: 0">
+                            <button class="btn btn-info" style="width: 100%;" ng-click="">微信</button>
+                            <button class="btn btn-info" style="width: 100%;">客户端</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-group widget-box">
+                    <div class="accordion-heading">
+                        <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo" data-toggle="collapse"> <span class="icon"><i class="icon-magnet"></i></span>
+                            <h5>活动资讯</h5>
+                        </a> </div>
+                    </div>
+                    <div class="collapse accordion-body" id="collapseGTwo" >
+                        <div class="widget-content" style="text-align: right;padding: 0">
+                            <button class="btn btn-info" style="width: 100%;" ng-click="">微信</button>
+                            <button class="btn btn-info" style="width: 100%;">客户端</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-group widget-box" style="margin-top: 2px">
+                    <div class="accordion-heading">
+                        <div class="widget-title"> <a  href="#saveFuelMatch/{{randomTime}}" data-toggle="collapse" ng-click="changeTime()"> <span class="icon"><i class="icon-briefcase"></i></span>
+                            <h5 >节油大赛</h5>
+                        </a></div>
+                    </div>
+                </div>
+                <div class="accordion-group widget-box" style="margin-top: 2px">
+                    <div class="accordion-heading">
+                        <div class="widget-title"> <a  href="#lotteryTicket" data-toggle="collapse"> <span class="icon"><i class="icon-filter"></i></span>
+                            <h5 >送彩票</h5>
+                        </a> </div>
+                    </div>
                 </div>
             </div>
-            <div class="accordion-group widget-box" style="margin-top: 2px">
-                <div class="accordion-heading">
-                    <div class="widget-title"> <a href="#promoteInfo" data-toggle="collapse"> <span class="icon"><i class="icon-question-sign"></i></span>
-                        <h5 >活动资讯</h5>
-                    </a> </div>
-                </div>
             </div>
-            <div class="accordion-group widget-box" style="margin-top: 2px">
-                <div class="accordion-heading">
-                    <div class="widget-title"> <a  href="#saveFuelMatch/{{randomTime}}" data-toggle="collapse" ng-click="changeTime()"> <span class="icon"><i class="icon-briefcase"></i></span>
-                        <h5 >节油大赛</h5>
-                    </a> </div>
-                </div>
-             </div>
-            <div class="accordion-group widget-box" style="margin-top: 2px">
-                <div class="accordion-heading">
-                    <div class="widget-title"> <a  href="#lotteryTicket" data-toggle="collapse"> <span class="icon"><i class="icon-filter"></i></span>
-                        <h5 >送彩票</h5>
-                    </a> </div>
-                </div>
-            </div>
+        <div class="span10" ng-view="" style="width: 86%;float: left" >
+
+
         </div>
     </div>
-        <div class="span10" ng-view="" style="width:81.5%" ></div>
-    </div>
-</div>
+
 </div>
 <div class="row-fluid">
+
   <div id="footer" class="span12"> 2014 &copy; 英卡</div>
 </div>
+<script charset="utf-8" src="../kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="../kindeditor/lang/zh_CN.js"></script>
 <script src="../js/jquery.min.js"></script>
 <script src="../js/jquery.cookie.js"></script>
 <script src="../js/jquery.dataTables.min.js"></script>
@@ -106,6 +131,12 @@
 <script src="../js/fun_js/S_specialStationController.js"></script>
 <script src="../js/fun_js/S_fuelMatchController.js"></script>
 <script type="text/javascript">
+    var editor;
+    KindEditor.ready(function(K) {
+        editor = K.create('textarea[name="content"]', {
+            allowFileManager : true
+        });
+    });
     function addTag(id)
     {
        var liContent = " <li style='text-align: left;padding-left: 400px;'>"+

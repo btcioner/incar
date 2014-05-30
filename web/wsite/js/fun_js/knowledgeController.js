@@ -19,7 +19,8 @@ function knowledgeBaseCtrl($scope, $http){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl + 'manual?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $scope.randomTime = "&t="+new Date();
+        $http.get(baseurl + 'manual?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.manual.length == 0)

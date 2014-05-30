@@ -39,6 +39,8 @@ angular.module("DriveDataApp", [])
                     for(var i=0;i<data.drvInfos.length;i++)
                     {
                         $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
+                        $scope.drvInfos[i].fireTime = $.changeDate($scope.drvInfos[i].fireTime);
+                        $scope.drvInfos[i].flameOutTime = $.changeDate($scope.drvInfos[i].flameOutTime);
                     }
                     PagingInfo(data.totalCount);
                 }
@@ -147,6 +149,10 @@ angular.module("DriveDataApp", [])
                         alert("暂无行程数据");
                     }
                     else{
+                        for(var i=0;i<data.details.length;i++)
+                        {
+                            data.details[i].createTime = $.changeDate(data.details[i].createTime);
+                        }
                         $scope.driveDiv = false;
                         $scope.oneDetailDiv = true;
                         $scope.details = data.details;

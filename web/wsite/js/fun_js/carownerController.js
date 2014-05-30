@@ -26,13 +26,12 @@ function carOwnersCtrl($scope, $http){
     //筛选框初始值 todo--要从数据库读出来
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
 
-
-
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl + 'cmpx/carowner?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+        $scope.randomTime = "&t="+new Date();
+        $http.get(baseurl + 'cmpx/carowner?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.carowners.length == 0)
@@ -111,7 +110,8 @@ function carOwnersCtrl($scope, $http){
     $scope.ModifyConfirm = function()
     {
         $scope.postData={nick:$scope.carOwnerDetail.acc_nick,phone:$scope.carOwnerDetail.acc_phone};
-        $http.put(baseurl + '4s/'+$scope.carOwnerDetail.org_id+'/cust/'+$scope.carOwnerDetail.acc_id+"/car/"+$scope.carOwnerDetail.car_id,$scope.postData).success(function(data){
+        //4s/:s4_id/cust/:cust_id
+        $http.put(baseurl + '4s/'+$scope.carOwnerDetail.org_id+'/cust/'+$scope.carOwnerDetail.acc_id,$scope.postData).success(function(data){
             if(data.status == "ok")
             {
                 alert("修改成功");
@@ -215,9 +215,16 @@ function carOwnersCtrl($scope, $http){
                     }
                     else
                     {
+                        $scope.drvInfos = data.drvInfos;
+                        for(var i=0;i<data.drvInfos.length;i++)
+                        {
+                            $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
+                            $scope.drvInfos[i].fireTime = $.changeDate($scope.drvInfos[i].fireTime);
+                            $scope.drvInfos[i].flameOutTime = $.changeDate($scope.drvInfos[i].flameOutTime);
+                        }
                         $scope.detailDiv = true;
                         $scope.carOwnerDiv = false;
-                        $scope.drvInfos = data.drvInfos;
+
                         PagingInfo(data.totalCount);
                     }
                 }
@@ -246,6 +253,10 @@ function carOwnersCtrl($scope, $http){
                 }
                 else
                 {
+                    for(var i=0;i<data.details.length;i++)
+                    {
+                        data.details[i].createTime = $.changeDate(data.details[i].createTime);
+                    }
                     $scope.detailDiv = false;
                     $scope.oneDetailDiv = true;
                     $scope.details = data.details;

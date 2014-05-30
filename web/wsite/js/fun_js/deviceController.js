@@ -48,11 +48,13 @@ function deviceCtrl($scope, $http)
 
     //首次请求数据库数据
     GetFirstPageInfo(false);//get fist driveData for first page；
+
     function GetFirstPageInfo(flag)
     {
          $scope.tips="";
          if(!flag) $scope.changeId = 1;
-          $http.get(baseurl+'obd?page='+$scope.currentPage+'&pagesize='+ $scope.pageRecord+$scope.queryString,$scope.postData).success(function(data){
+         $scope.randomTime = "&t="+new Date();
+         $http.get(baseurl+'obd?page='+$scope.currentPage+'&pagesize='+ $scope.pageRecord+$scope.queryString+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 for(var i=0;i<data.cars.length;i++)
@@ -129,7 +131,7 @@ function deviceCtrl($scope, $http)
         $scope.changeId = 1;
         /*添加OBD设备 todo在填入设备好之后应该立即提示是否存在该设备号*/
         $scope.postData = {obd_code:$scope.obd_code};
-        $scope.date = $.changeDate(new Date());
+    //  $scope.date = $.changeDate(new Date());
         $http.post(baseurl + 'obd',$scope.postData).success(function(data){
             if(data.status == "ok")
             {
@@ -190,6 +192,8 @@ function deviceCtrl($scope, $http)
                     for(var i=0;i<data.drvInfos.length;i++)
                     {
                         $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
+                        $scope.drvInfos[i].fireTime = $.changeDate($scope.drvInfos[i].fireTime);
+                        $scope.drvInfos[i].flameOutTime = $.changeDate($scope.drvInfos[i].flameOutTime);
                     }
                   $scope.detailDiv = true;
                   $scope.deviceList = false;
@@ -224,6 +228,10 @@ function deviceCtrl($scope, $http)
                 }
                 else
                 {
+                    for(var i=0;i<data.details.length;i++)
+                    {
+                        data.details[i].createTime = $.changeDate(data.details[i].createTime);
+                    }
                     $scope.detailDiv = false;
                     $scope.oneDetailDiv = true;
                     $scope.details = data.details;

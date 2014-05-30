@@ -301,6 +301,8 @@ function s_customerCtrl($scope, $http,$routeParams){
                 for(var i=0;i<data.drvInfos.length;i++)
                 {
                     $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
+                    $scope.drvInfos[i].fireTime = $.changeDate($scope.drvInfos[i].fireTime);
+                    $scope.drvInfos[i].flameOutTime = $.changeDate($scope.drvInfos[i].flameOutTime);
                 }
                 PagingInfo(data.totalCount);
             }
@@ -354,6 +356,10 @@ function s_customerCtrl($scope, $http,$routeParams){
                     alert("暂无行程数据");
                 }
                 else{
+                    for(var i=0;i<data.details.length;i++)
+                    {
+                        data.details[i].createTime = $.changeDate(data.details[i].createTime);
+                    }
                     $scope.driveDiv = false;
                     $scope.detailInfoDiv = true;
                     $scope.oneDetailDiv = true;
