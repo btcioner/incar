@@ -53,6 +53,7 @@ function getBrand(db, sopenid,callback) {
                                                     seriesData[i].seriesCode=rows[i].seriesCode;
                                                 }
                                                 report.seriesData=seriesData;
+                                                console.log(report);
                                                 callback(null,report);
                                             }else{callback(new Error('no series data.'));}
                                         }
