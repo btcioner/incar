@@ -11,11 +11,12 @@ angular.module("SActivityApp", [
     'ngRoute'
 ]).config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.
-        when('/main', {
+
+        when('/collapseGOne', {
             controller: 's_specialStationCtrl',
             templateUrl: '/4sStore/partials/activity_main.html'//特价工位
         })
-        .when('/promoteInfo',{
+        .when('/collapseGTwo',{
             controller:'s_activityCtrl',
             templateUrl:'/4sStore/partials/activity_promoteInfo.html'//活动资讯
         })
