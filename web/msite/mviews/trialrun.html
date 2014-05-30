@@ -60,6 +60,7 @@
             <option>16:30</option>
             <option>17:00</option>
         </select></li></ul><div class="clear"></div></div>
+        <input type="hidden" id="acc_id" />
     </div><!--预约试驾表单contentboxstyle01 end-->
     </div><!--containe_280 end-->
         <div class="w10"></div>
@@ -74,8 +75,9 @@
             data: {'user':user},
             dataType: "json",
             success: function (result,status) {
-             if(result.phone)   document.getElementById('phone').value=result.phone;
-             if(result.nick)   document.getElementById('name').value=result.nick;
+             document.getElementById('phone').value=result.phone;
+             document.getElementById('name').value=result.nick;
+             document.getElementById('acc_id').value=result.id;
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("连接失败\n请检查网络连接是否正常");
@@ -104,10 +106,13 @@
     function submitTrialrun(){
         alert("begin");
         var postData={};
-        postData.user=user;
+        var temp=user.split('@');
+        postData.wx_oid=temp[0]+":"+temp[1];
+        postData.acc_id=document.getElementById("acc_id").value;
         postData.name=document.getElementById("name").value;
         postData.phone=document.getElementById("phone").value;
         postData.seriesName=document.getElementById("seriesName").value;
+        alert("1");
         postData.bookDate=document.getElementById("start").value.toDateString();
         postData.bookTime=document.getElementById("end").value;
         alert("开始提交");
