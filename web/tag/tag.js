@@ -217,7 +217,8 @@ exports.buildTags=function(req,res){
                 }
             }
             dao.executeBySql(sqls,args,function(){
-                res.write(JSON.stringify({status:'success'}));
+                console.log("OK");
+                res.json({status:'success'});
             });
         });
     });
@@ -252,12 +253,64 @@ exports.tagList= function(req,res){
             }
         }
         console.log(JSON.stringify(list));
-        res.write(JSON.stringify(list));
+        res.json(list);
     });
 }
+/**
+ * 通过标签查询
+ */
+exports.searchByTag= function(req,res){
+    var body=req.body;
+    var tags=body.tags.split(",");
+    if(tags.length>0){
+        var sql="select g.id as groupId,t.id as tagId " +
+            "from t_tag_group g " +
+            "left join t_tag t on t.groupId=g.id"
+        dao.findBySql(sql,[],function(rows){
+            var tagMap={};
+            for(var i=0;i<rows.length;i++){
+                var groupId=rows[i].groupId;
+                var tagId=rows[i].tagId;
+                tagMap[tagId]=groupId;
+            }
+            var tagList={};
+            for(i=0;i<tags.length;i++){
+                var tagId=tags[i];
+                var groupId=tagMap[tagId];
+                var tagArray=tagList[groupId];
+                if(!tagArray){
+                    tagArray=[];
+                    tagList[groupId]=tagArray;
+                }
+                tagArray.push(tagId);
+            }
+            sql="";
+            console.log(JSON.stringify(list));
+            res.write(JSON.stringify(list));
+        });
+    }
+    else{
+        res.json({status:'failure'});
+    }
+}
 
+function buildSearchSql(tagList){
+    var sql="select c.id,c.obd_code,u.id,u.name,t.id,t.name from t_car c " +
+        "left join t_car_user cu on cu.car_id=c.id " +
+        "left join t_account u on cu.acc_id=u.id " +
+        "left join t_car_tag ct on ct.car_id=c.id " +
+        "left join t_tag t on t.id=ct.tag_id " +
+        "where 1=1 ";
+    for(var key in tagList){
+        var tags=tagList[key];
+        if(tags&&tags.length>0){
+            sql+=" and t.id in (";
+            for(var i=0;i<tags.length;i++){
 
-
+            }
+        }
+    }
+}
 
 
 
