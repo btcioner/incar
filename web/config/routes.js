@@ -9,7 +9,7 @@ var wsOBD=require('../wservice/obd');
 var obdMessage=require('../wservice/obdMessage');
 var wservice = require('../wservice/motor');
 var mservice = require('../mservice/mservice');
-
+var tagService=require('../tag/tag');
 /** 
  *  Application routes
  */
@@ -41,7 +41,7 @@ module.exports = function(app) {
     app.put('/wservice/obd/:obd_code', authCheck, wservice.ModifyCarByOBD);
     app.delete('/wservice/obd/:obd_code', authCheck, wservice.DeleteCarByOBD);
 
-   app.get('/wservice/4s', authCheck, wservice.Get4S);
+    app.get('/wservice/4s', authCheck, wservice.Get4S);
     app.post('/wservice/4s', authCheck, wservice.Add4S);
     app.get('/wservice/4s/:s4_id', authCheck, wservice.Get4SById);
     app.put('/wservice/4s/:s4_id', authCheck, wservice.Modify4S);
@@ -72,6 +72,9 @@ module.exports = function(app) {
     app.put('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.ModifyCar);
     app.delete('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.DeleteCar);
     app.get('/wservice/4s/:s4_id/car/:car_id/cust', authCheck, wservice.GetCustomerByCarId);
+
+    app.get('/tag/tagList/:brand',tagService.tagList);
+    app.get('/tag/buildTags',tagService.buildTags);
 
     app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin); // app.get('/wservice/organization', wservice.GetOrganization);
     app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin); // app.post('/wservice/organization', wservice.AddOrganization);
