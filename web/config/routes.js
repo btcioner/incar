@@ -74,7 +74,9 @@ module.exports = function(app) {
     app.get('/wservice/4s/:s4_id/car/:car_id/cust', authCheck, wservice.GetCustomerByCarId);
 
     app.get('/tag/tagList/:brand',tagService.tagList);
-    app.get('/tag/buildTags',tagService.buildTags);
+    app.put('/tag/buildTags',tagService.buildTags);
+    app.get('/tag/searchByTag/:tags',tagService.searchByTags);
+    app.get('/tag/searchForUsers',tagService.searchForUsers);
 
     app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin); // app.get('/wservice/organization', wservice.GetOrganization);
     app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin); // app.post('/wservice/organization', wservice.AddOrganization);

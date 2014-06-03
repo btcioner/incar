@@ -261,11 +261,54 @@ exports.tagList= function(req,res){
     });
 }
 /**
- * 通过标签查询
+ * 通过标签及用户信息查询
  */
-exports.searchByTag= function(req,res){
+exports.searchForUsers= function(req,res){
     var body=req.body;
-    var tags=body.tags.split(",");
+    var tagId=body.tagId;
+    var nickName=body.nickName;
+    var userPhone=body.userPhone;
+    var license=body.license;
+    var brand=body.brand;
+    var sql="select distinct c.id as carId,c.obd_code as obdCode," +
+        "c.series as series,c.brand as brand," +
+        "c.license as license,u.id as accountId," +
+        "u.nick as nickName,u.phone as phone " +
+        "from t_car c " +
+        "left join t_car_user cu on cu.car_id=c.id " +
+        "left join t_account u on cu.acc_id=u.id " +
+        "left join t_car_tag ct on ct.car_id=c.id " +
+        "where 1=1";
+    var args=[];
+    if(tagId){
+        sql+=" and ct.tag_id=?";
+        args.push(tagId);
+    }
+    if(nickName){
+        sql+=" and u.nick like ?";
+        args.push("%"+nickName+"%");
+    }
+    if(userPhone){
+        sql+=" and u.phone like ?";
+        args.push("%"+userPhone+"%");
+    }
+    if(license){
+        sql+=" and c.license like ?";
+        args.push("%"+license+"%");
+    }
+    if(brand){
+        sql+=" and c.brand=?";
+        args.push(brand);
+    }
+    dao.findBySql(sql,args,function(rows){
+        console.log(rows);
+    });
+}
+/**
+ * 通过复合标签查询
+ */
+exports.searchByTags= function(req,res){
+    var tags=req.params.tags.split(",");
     if(tags.length>0){
         var sql="select g.id as groupId,g.type as groupType,t.id as tagId " +
             "from t_tag_group g " +
@@ -281,18 +324,24 @@ exports.searchByTag= function(req,res){
             var tagList={};
             for(i=0;i<tags.length;i++){
                 var tagId=tags[i];
-                var groupId=tagMap[tagId].groupId;
-                var type=tagMap[tagId].type;
-                var tagArray=tagList[groupId];
-                if(!tagArray){
-                    tagArray=[];
-                    tagList[groupId]=tagArray;
+                var tagInfo=tagMap[tagId];
+                var groupId=tagInfo.groupId;
+                var type=tagInfo.type;
+                var tagInfo=tagList[groupId];
+
+                if(!tagInfo){
+                    tagInfo={type:type,tags:[]};
+                    tagList[groupId]=tagInfo;
                 }
-                tagArray.push(tagId);
+                tagInfo.tags.push(tagId);
             }
-            sql="";
-            console.log(JSON.stringify(list));
-            res.write(JSON.stringify(list));
+            var sqlBuild=buildSearchSql(tagList);
+            sql=sqlBuild.sql;
+            var args=sqlBuild.args;
+            dao.findBySql(sql,args,function(rows){
+                res.json(rows);
+            });
+
         });
     }
     else{
@@ -301,27 +350,41 @@ exports.searchByTag= function(req,res){
 }
 
 function buildSearchSql(tagList){
-    //tagList={1:[2,3,4],2:[],3:[5,6,0],4:[8]}
-    var sql="select c.id,c.obd_code,u.id,u.name,t.id,t.name from t_car c " +
+    tagList={1:{type:0,tags:[2,3,4]},2:{type:null,tags:[]},3:{type:0,tags:[5,6,0]},4:{type:1,tags:[8]}};
+    var sqlStart="select distinct c.id as carId,c.obd_code as obdCode,u.id as accountId from t_car c " +
         "left join t_car_user cu on cu.car_id=c.id " +
-        "left join t_account u on cu.acc_id=u.id " +
-        "left join t_car_tag ct on ct.car_id=c.id " +
-        "left join t_tag t on t.id=ct.tag_id " +
-        "where 1=1 ";
+        "left join t_account u on cu.acc_id=u.id ";
+    var sqlJoin="";
+    var sqlWhere="where 1=1 ";
+    var sqlCustomerTag="";
+    var args=[];
     for(var key in tagList){
-        var tags=tagList[key];
+        var type=tagList[key].type;
+        var tags=tagList[key].tags;
         if(tags&&tags.length>0){
-            sql+=" and t.id in (";
+            sqlJoin+="left join t_car_tag ct"+key+" on ct"+key+".car_id=c.id ";
+            var sqlTemp=" ct"+key+".car_id in (";
             for(var i=0;i<tags.length;i++){
                 if(i>0){
-                    sql+=",";
+                    sqlTemp+=",?";
                 }
-                sql+=tags[i];
+                else{
+                    sqlTemp+="?";
+                }
+                args.push(tags[i]);
             }
-            sql+=")";
+            sqlTemp+=")";
+            if(type>0){
+                sqlCustomerTag+=" or"+sqlTemp;
+            }
+            else{
+                sqlWhere+=" and"+sqlTemp;
+            }
         }
     }
+    var sql=sqlStart+sqlJoin+sqlWhere+sqlCustomerTag;
     console.log(sql);
+    return {sql:sql,args:args};
 }
 
 //buildSearchSql({});
