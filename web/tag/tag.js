@@ -248,12 +248,16 @@ exports.tagList= function(req,res){
                 group['tags'].push({tagId:tagId,tagName:tagName});
             }
             else{
-                group={groupName:groupName,type:type,tags:[{tagId:tagId,tagName:tagName}]};
+                group={groupId:groupId,groupName:groupName,type:type,tags:[{tagId:tagId,tagName:tagName}]};
                 list[groupId]=group;
             }
         }
         console.log(JSON.stringify(list));
-        res.json(list);
+        var tagList=[];
+        for(var key in list){
+            tagList.push(list[key]);
+        }
+        res.json(tagList);
     });
 }
 /**
@@ -263,7 +267,7 @@ exports.searchByTag= function(req,res){
     var body=req.body;
     var tags=body.tags.split(",");
     if(tags.length>0){
-        var sql="select g.id as groupId,t.id as tagId " +
+        var sql="select g.id as groupId,g.type as groupType,t.id as tagId " +
             "from t_tag_group g " +
             "left join t_tag t on t.groupId=g.id"
         dao.findBySql(sql,[],function(rows){
@@ -271,12 +275,14 @@ exports.searchByTag= function(req,res){
             for(var i=0;i<rows.length;i++){
                 var groupId=rows[i].groupId;
                 var tagId=rows[i].tagId;
-                tagMap[tagId]=groupId;
+                var type=rows[i].groupType;
+                tagMap[tagId]={groupId:groupId,type:type};
             }
             var tagList={};
             for(i=0;i<tags.length;i++){
                 var tagId=tags[i];
-                var groupId=tagMap[tagId];
+                var groupId=tagMap[tagId].groupId;
+                var type=tagMap[tagId].type;
                 var tagArray=tagList[groupId];
                 if(!tagArray){
                     tagArray=[];
@@ -295,6 +301,7 @@ exports.searchByTag= function(req,res){
 }
 
 function buildSearchSql(tagList){
+    //tagList={1:[2,3,4],2:[],3:[5,6,0],4:[8]}
     var sql="select c.id,c.obd_code,u.id,u.name,t.id,t.name from t_car c " +
         "left join t_car_user cu on cu.car_id=c.id " +
         "left join t_account u on cu.acc_id=u.id " +
@@ -306,13 +313,18 @@ function buildSearchSql(tagList){
         if(tags&&tags.length>0){
             sql+=" and t.id in (";
             for(var i=0;i<tags.length;i++){
-
+                if(i>0){
+                    sql+=",";
+                }
+                sql+=tags[i];
             }
+            sql+=")";
         }
     }
+    console.log(sql);
 }
 
-
+//buildSearchSql({});
 
 
 
