@@ -36,11 +36,12 @@ function driveDataCtrl($scope, $http){
                 {
                     $scope.tips="暂无数据！";
                 }
-
                 $scope.drvInfos = data.drvInfos;
                 for(var i=0;i<data.drvInfos.length;i++)
                 {
                     $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
+                    $scope.drvInfos[i].fireTime = $.changeDate($scope.drvInfos[i].fireTime);
+                    $scope.drvInfos[i].flameOutTime = $.changeDate($scope.drvInfos[i].flameOutTime);
                 }
                 PagingInfo(data.totalCount);
             }
@@ -52,25 +53,41 @@ function driveDataCtrl($scope, $http){
                 alert("请求无响应");
         })
         $http.get(baseurl+'brand').success(function(data){
-            $scope.carBrand = data.brands;
+        //    $scope.carBrand0 =[{brand:"请选择",brandCode:""},{brand:"所有",brandCode:""}]
+            $scope.carBrand1 = data.brands;
+            $scope.carBrand =[{brandCode:"",brand:"所有"}];
+            var m = $scope.carBrand1.length;
+            var n =$scope.carBrand.length;
+            for(var i=n;i < n+m;i++)
+            {
+                $scope.carBrand[i] = $scope.carBrand1[i-n];
+            }
         });
         $http.get(baseurl+'4s').success(function(data){
-            $scope.s4s = data.s4s;
+            $scope.s4s1 = data.s4s;
+            $scope.s4s = [{id:"",name:"所有"}];
+            var r = $scope.s4s.length;
+            var q = $scope.s4s1.length;
+            for(var i = r;i< r+q;i++)
+            {
+                $scope.s4s[i]=$scope.s4s1[i-r];
+            }
         });
     }
 
     //查找品牌
     $scope.changeBrand = function(brand_id)
     {
-        $http.get(baseurl+'brand/'+brand_id+'/series').success(function(data){
-            $scope.carSeries = data.series;
-        });
+            $http.get(baseurl+'brand/'+brand_id+'/series').success(function(data){
+                $scope.carSeries = data.series;
+            });
     }
 
 //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
           if($scope.city_name=="请选择")$scope.city_name="";
+          if($scope.brandCode=="")$scope.seriesCode ="";
           $scope.queryString = "&obd_code="+$scope.obd_num+"&city="+$scope.city_name+"&s4_id="+$scope.s4_id+"&brand="+$scope.brandCode+"&series="+$scope.seriesCode;
           GetFirstPageInfo();
     }
@@ -139,6 +156,10 @@ function driveDataCtrl($scope, $http){
                 }
                 else{
                    // $.changeContentHeight("630px");
+                    for(var i=0;i<data.details.length;i++)
+                    {
+                        data.details[i].createTime = $.changeDate(data.details[i].createTime);
+                    }
                     $scope.driveDiv = false;
                     $scope.oneDetailDiv = true;
                     $scope.details = data.details;

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>预约试驾</title>
+    <title>试乘试驾</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
@@ -26,6 +26,7 @@
             day=today.getDate()>9?today.getDate():"0"+today.getDate();;        //获取当前日(1-31)
             document.getElementById("start").value=year+"-"+month+"-"+day;
             searchUser();
+            searchSeriesName();
         }
 
     </script>
@@ -40,8 +41,8 @@
         <!--预约试驾表单contentboxstyle01 start--><div class="contentboxstyle01">
         <div class="formstyle01"><ul><li>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</li><li><input name="name" id="name" type="text" class="w190" /></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li>联系电话：</li><li><input name="phone" id="phone" type="text" class="w190" /></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</li><li><input name="seriesNmae" id="seriesNmae" type="text" class="w190" /></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li>预约日期：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="width: 11.2em;min-height: 1.4em"/></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</li><li><select name="seriesName" id="seriesName"  class="w190" ><option>请选择</option></select></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li>预约日期：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align: middle"/></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li>预约时间：</li><li><select id="end" name="end" class="w190"  style="width: 100%;min-height: 1.4em;width: 15em">
             <option>9:00</option>
             <option>9:30</option>
@@ -59,10 +60,11 @@
             <option>16:30</option>
             <option>17:00</option>
         </select></li></ul><div class="clear"></div></div>
+        <input type="hidden" id="acc_id" />
     </div><!--预约试驾表单contentboxstyle01 end-->
     </div><!--containe_280 end-->
         <div class="w10"></div>
-        <!--regsiterbutton start--><div id="regsiterbutton"><a href="#" class="button01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</a></div><!--regsiterbutton end-->
+        <!--regsiterbutton start--><div id="regsiterbutton"><a href="#" class="button01" onclick="submitTrialrun()">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</a></div><!--regsiterbutton end-->
     </div><!--main_wrap end-->
 </div>
 <script>
@@ -73,15 +75,60 @@
             data: {'user':user},
             dataType: "json",
             success: function (result,status) {
-             if(result.phone)   document.getElementById('phone').value=result.phone;
-             if(result.nick)   document.getElementById('name').value=result.nick;
+             document.getElementById('phone').value=result.phone;
+             document.getElementById('name').value=result.nick;
+             document.getElementById('acc_id').value=result.id;
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("连接失败\n请检查网络连接是否正常");
             }
         });
     }
-
+  function searchSeriesName(){
+      var sopenid=user.split('@')[1];
+      $.ajax({
+          type: "POST",
+          url: "/mservice/getSeries",
+          data: {'sopenId':sopenid},
+          dataType: "json",
+          success: function (result,status) {
+              var seriesStr="<option>请选择</option>";
+              for(var i=0;i<result.length;i++){
+                  seriesStr+="<option>"+result[i].series+"</option>"
+              }
+              document.getElementById('seriesName').innerHTML=seriesStr;
+          },
+          error:function(XMLHttpRequest, textStatus, errorThrown){
+              //alert("连接失败\n请检查网络连接是否正常");
+          }
+      });
+  }
+    function submitTrialrun(){
+        alert("begin");
+        var postData={};
+        var temp=user.split('@');
+        postData.wx_oid=temp[0]+":"+temp[1];
+        postData.acc_id=document.getElementById("acc_id").value;
+        postData.name=document.getElementById("name").value;
+        postData.phone=document.getElementById("phone").value;
+        postData.seriesName=document.getElementById("seriesName").value;
+        postData.bookDate=document.getElementById("start").value;
+        postData.bookTime=document.getElementById("end").value;
+        alert("开始提交");
+        $.ajax({
+            type: "POST",
+            url: "/mservice/trialrun",
+            data: postData,
+            dataType: "json",
+            success: function (result,status) {
+                window.location="/msite/trialResult.html?state=1";
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                //alert("连接失败\n请检查网络连接是否正常");
+                window.location="/msite/trialResult.html?state=0";
+            }
+        });
+    }
 </script>
 
 </body>

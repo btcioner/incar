@@ -29,8 +29,8 @@ function customerCtrl($scope, $http){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-
-        $http.get(baseurl + 'cmpx/4s?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+        $scope.randomTime = "&t="+new Date();
+        $http.get(baseurl + 'cmpx/4s?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.s4s.length == 0)

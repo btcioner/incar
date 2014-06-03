@@ -10,3 +10,9 @@ a:active
 {
     text-decoration: none;
 }
+#picshow
+{
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);
+    width:88px;
+    height:125px;
+}

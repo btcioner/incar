@@ -19,23 +19,31 @@ var baseurl="/wservice/";
         var year = date.substring(0,4);
         var month = date.substring(5,7);
         var day = date.substring(8,10);
+
         return (year+"-"+month+"-"+day);
+
     }
     $.changeDate = function(date)
     {
+//        if(date == "0000-00-00 00:00:00" || date == null) return null;
+//        var year = new Date(Date.parse(date)).getFullYear();
+//
+//        var month = (new Date(Date.parse(date)).getMonth()) + 1;
+//        var day = new Date(Date.parse(date)).getDate();
+//        var hour = new Date(Date.parse(date)).getHours();
+//        var minute = new Date(Date.parse(date)).getMinutes();
+//        if(month < 10) month= "0" + month;
+//        if(day < 10) day= "0" + day;
+//        if(hour < 10) hour = "0" + hour;
+//        if(minute < 10) minute= "0" + minute;
+//
+//        return (year+"-"+month+"-"+day+" "+hour+":"+minute);
         if(date == "0000-00-00 00:00:00" || date == null) return null;
-        var year = new Date(Date.parse(date)).getFullYear();
-
-        var month = (new Date(Date.parse(date)).getMonth()) + 1;
-        var day = new Date(Date.parse(date)).getDate();
-        var hour = new Date(Date.parse(date)).getHours();
-        var minute = new Date(Date.parse(date)).getMinutes();
-        if(month < 10) month= "0" + month;
-        if(day < 10) day= "0" + day;
-        if(hour < 10) hour = "0" + hour;
-        if(minute < 10) minute= "0" + minute;
-
-        return (year+"-"+month+"-"+day+" "+hour+":"+minute);
+        var year = date.substring(0,4);
+        var month = date.substring(5,7);
+        var day = date.substring(8,10);
+        var time = date.substring(11,16)
+        return (year+"-"+month+"-"+day+" "+time);
     }
 
     //修改OBD设备的状态  0--未激活  1--已激活  2--故障

@@ -34,7 +34,6 @@ module Service{
     }
 
     export function GetActivitiesByTemplate(req, res){
-        res.setHeader("Accept-Query", "page,pagesize,status,tm_start_begin,tm_start_end,month,title");
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var repo4S = S4Repository.GetRepo();
@@ -44,7 +43,7 @@ module Service{
                 if(ex) { res.json(new TaskException(-2, "查询活动模版失败", ex)); return; }
                 var fnLoadActs = Service[template.dto.template].LoadActivities;
                 if(!fnLoadActs) { res.json(new TaskException(-3, util.format("活动模版参数template类型%s无效", template.dto.template), null)); return;}
-                fnLoadActs(page, req.query, template, s4.dto.id, (ex, total, acts)=>{
+                fnLoadActs(res, page, req.query, template, s4.dto.id, (ex, total, acts)=>{
                     if(ex) { res.json(ex); return; }
                     var dtos = DTOBase.ExtractDTOs(acts);
                     res.json({status:"ok", totalCount:total, activities:dtos});
@@ -69,7 +68,6 @@ module Service{
     }
 
     export function GetActivityMembers(req, res){
-        res.setHeader("Accept-Query", "page,pagesize,status");
         var page = new Pagination(req.query.page,req.query.pagesize);
 
         var repo4S = S4Repository.GetRepo();
@@ -77,7 +75,7 @@ module Service{
             if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
             s4.GetActivity(req.params.act_id, (ex, act)=>{
                 if(ex) { res.json(ex); return;}
-                act.GetMembers(page, req.query, (ex, total, members)=>{
+                act.GetMembers(res, page, req.query, (ex, total, members)=>{
                     if(ex) { res.json(ex); return;}
                     var dtos = DTOBase.ExtractDTOs(members);
                     res.json({status:"ok", totalCount:total, members:dtos});
@@ -194,6 +192,19 @@ module Service{
         });
     }
 
+    export function ActivityExFn(req, res){
+        var repo4S = S4Repository.GetRepo();
+        repo4S.Get4SById(req.params.s4_id, (ex, s4)=>{
+            if(ex) { res.json(new TaskException(-1, "查询4S店失败", ex)); return; }
+            s4.GetActivity(req.params.act_id, (ex, act)=>{
+                if(ex) { res.json(ex); return;}
+                var exfn = act[req.params.exfn];
+                if(!exfn) { res.send(404); return; }
+                exfn.call(act, req, res);
+            });
+        });
+    }
+
     export function ActivityGo(){
         var dac = MySqlAccess.RetrievePool();
         var sql = [
@@ -234,7 +245,8 @@ module Service{
             return dto;
         }
 
-        public GetMembers(page:Pagination, filter:any, cb:(ex:TaskException, total:number, members:ActivityMember[])=>void){
+        public GetMembers(res:any, page:Pagination, filter:any, cb:(ex:TaskException, total:number, members:ActivityMember[])=>void){
+            res.setHeader("Accept-Query", "page,pagesize,status");
             var dac = MySqlAccess.RetrievePool();
             var sql = "SELECT %s\n" +
                 "FROM t_activity_member M\n" +

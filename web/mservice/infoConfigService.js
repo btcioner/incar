@@ -26,7 +26,7 @@ function infoConfig(req, res) {
         else {
             getCarInfo(db, function(err, data){
                 if (err) {
-                    res.send(err);
+                    res.send(400,err);
                 }
                 else{
                     //console.log(report);

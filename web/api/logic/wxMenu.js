@@ -188,7 +188,6 @@ wxMenu.textMsgRepliers['my4S.onManual'] = my4S.onManualMessages;
 wxMenu.onClick = [];
 
 wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, session, next) {
-    console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     myCar.myDriveReport(message.FromUserName, message.ToUserName, function(err, reportContent){
         if (err) {
             // error handling ...
@@ -206,27 +205,8 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, session, next) {
 };
 
 
-
-wxMenu.onClick['MYCAR.BEHAVIOR'] = function(message, session, next) {
-    myCar.driveBehaviorReport(message.FromUserName, message.ToUserName, function(err, reportContent){
-        if (err) {
-            // error handling ...
-            next(err);
-        }
-        else {
-            next(null, [{
-                title: '驾驶行为报告',
-                description: reportContent,
-                picurl: '',
-                url: 'http://linuxsrv.winphone.us/msite/drivingBehavior.html?user=' + message.FromUserName + '@' + message.ToUserName
-            }]);
-        }
-    });
-};
-
 wxMenu.onClick['MY4S.PROBE'] = function(message, session, next) {
-    console.log("------------------------------++++++++++++++");
-    my4S.trialrun(message.FromUserName, session, function(err, result){
+    my4S.trialrun(message.FromUserName, message.ToUserName,session, function(err, result){
         if (err) {
             return next(err);
         }

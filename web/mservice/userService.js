@@ -9,7 +9,7 @@ var dao=require("../core/dataAccess/dao");
 exports = module.exports = function(service) {
     service.post.enroll = userEnroll;
 }
-function getUserInfo(wxFlag){
+function getUserInfo(wx){
     var sql="select * from t_account where wx_oid like ?";
     dao.findBySql(sql,['%'+wx+'%'],function(rows){
         if(rows.length>0){
@@ -62,8 +62,9 @@ function userEnroll(req, res) {
     var params=req.params;
     var username=params.name;
     var password=params.password;
-    var openId=params.user;
-    var openId4S=params.sopenId;
+    var temp=params.user.split('@');
+    var openId=temp[0];
+    var openId4S=temp[1];
     var phone=params.phone;
     var nickName=params.nick;
 
@@ -74,7 +75,7 @@ function userEnroll(req, res) {
             var user={
                 name:username,
                 pwd:password,
-                wx_oid:openId+'-'+openId4S,
+                wx_oid:openId+':'+openId4S,
                 phone:phone,
                 nick:nickName,
                 s4_id:s4id
@@ -92,14 +93,15 @@ function userEnroll(req, res) {
             res.wirte({status:'failed',message:'无法识别的4SOpenId'});
         }
     });
-
+    carEnroll(req,res);
 }
 //车辆登记
 function carEnroll(req,res){
     var params=req.params;
-    var openId=params.openId;
-    var openId4S=params.sopenId;
-    var wx=openId+"-"+openId4S
+    var temp=params.user.split('@');
+    var openId=temp[0];
+    var openId4S=temp[1];
+    var wx=openId+":"+openId4S
     var obdCode=params.obdCode;
     var brand=params.brand;
     var series=params.series;
