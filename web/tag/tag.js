@@ -260,6 +260,7 @@ exports.tagList= function(req,res){
         res.json(tagList);
     });
 }
+
 /**
  * 通过标签及用户信息查询
  */
@@ -304,6 +305,57 @@ exports.searchForUsers= function(req,res){
         console.log(rows);
     });
 }
+/**
+ * 给车打标签
+ */
+exports.markTags= function(req,res){
+    var carId=req.params['carId'];
+    var tags=req.params['tags'].split(",");
+    var sqlList=["delete from t_car_tag where car_id=? and tag_id in(" +
+        "select t.id from t_tag t inner join t_tag_group tg on tg.id=t.groupId " +
+        "where tg.type>1)"];
+    var args=[[carId]];
+    for(var i=0;i<tags.length;i++){
+        sqlList.push("insert into t_car_tag set ?");
+        args.push({car_id:carId,tag_id:tags[i]});
+    }
+    dao.executeBySql(sqlList,args,function(){
+        console.log("OK");
+    });
+}
+/**
+ * 添加自定义标签
+ */
+exports.addTag= function(req,res){
+    var groupId=req.params['groupId'];
+    var tagName=req.params['tagName'];
+    var description=req.params['description'];
+    var code=req.params['code'];
+    var active=req.params['active'];
+    if(!groupId)groupId=8;
+    if(!description)description='';
+    if(!code)code='';
+    if(!active)active=1;
+    var sql="insert into t_tag set ?";
+    var args={groupId:groupId,name:tagName,description:description,code:code,active:active};
+    dao.insertBySql(sql,args,function(info,tag){
+        tag.id=info.insertId;
+        console.log("成功添加标签:"+JSON.stringify(tag));
+        res.json({status:'success'});
+    });
+}
+/**
+ * 删除自定义标签
+ */
+exports.delTag= function(req,res){
+    var tagId=req.params['tagId'];
+    var sqlList=["delete from t_tag where id=?","delete from t_car_tag where tag_id=?"];
+    var args=[[tagId],[tagId]];
+    dao.executeBySql(sqlList,args,function(){
+        res.json({status:'success'});
+    });
+}
+
 /**
  * 通过复合标签查询
  */
