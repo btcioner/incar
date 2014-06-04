@@ -73,10 +73,13 @@ module.exports = function(app) {
     app.delete('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.DeleteCar);
     app.get('/wservice/4s/:s4_id/car/:car_id/cust', authCheck, wservice.GetCustomerByCarId);
 
-    app.get('/tag/tagList/:brand',tagService.tagList);
-    app.put('/tag/buildTags',tagService.buildTags);
-    app.get('/tag/searchByTag/:tags',tagService.searchByTags);
-    app.get('/tag/searchForUsers',tagService.searchForUsers);
+    app.get('/tag/tagList/:brand',tagService.tagList);          //获取所有标签信息(通过系列过滤)
+    app.put('/tag/buildTags',tagService.buildTags);             //重算车辆信息并打上标签
+    app.get('/tag/searchByTags/:tags',tagService.searchByTags); //通过标签查询车辆信息
+    app.get('/tag/searchForUsers',tagService.searchForUsers);   //通过条件查询车辆信息
+    app.put('/tag/markTags',tagService.markTags);               //给指定车辆打上自定义标签
+    app.post('/tag/addTag',tagService.addTag);                  //添加自定义标签
+    app.delete('/tag/delTag/:tagId',tagService.delTag);            //删除自定义标签
 
     app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin); // app.get('/wservice/organization', wservice.GetOrganization);
     app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin); // app.post('/wservice/organization', wservice.AddOrganization);

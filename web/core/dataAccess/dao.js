@@ -80,8 +80,7 @@ exports.executeBySql=function(sqlArray,argsArray,callback){
                 connection.query(sqlArray[i],argsArray[i]);
             }
             connection.commit(function(err){
-                if(err)throw err;
-                callback();
+                callback(err);
                 connection.release();
             });
         });
