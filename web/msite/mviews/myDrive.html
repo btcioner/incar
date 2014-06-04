@@ -612,39 +612,38 @@
 <script type="text/javascript">
 
 function pieChart(){
-    $(function () {
-        $('#container').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            title:速度分布图,
-            tooltip:false,
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        color: '#000000',
-                        connectorColor: '#000000',
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                    }
+    $('#container').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title:false,
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
                 }
-            },
-            series: [{
-                type: 'pie',
-                name: 'Speed  area',
-                data: [
-                    ['慢速',   45.0],
-                    ['中速',   26.8],
-                    ['高速',    28.2]
-                ]
-            }]
-        });
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'Browser share',
+            data: [
+                ['低速',   45.0],
+                ['中速',    26.8],
+                ['高速',    28.2]
+            ]
+        }]
     });
-
 }
 </script>
 </body>
