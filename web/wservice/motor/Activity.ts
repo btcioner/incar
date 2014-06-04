@@ -347,8 +347,13 @@ module Service{
             dac.query(sql, [dto, this.dto.id], (ex, result)=>{
                 if(ex) { cb(new TaskException(-1, "修改活动失败", ex)); return; }
                 else if(result.affectedRows === 0) { cb(new TaskException(-1, "指定的活动已不存在", null)); return; }
-                // TODO: 修改活动的成员 this.dto.tags
-                cb(null);
+                // 更新活动成员(删除后再添加)
+                var sqlDel = "DELETE FROM t_activity_member WHERE act_id=?";
+                dac.query(sqlDel, [this.dto.id], (ex, result)=>{
+                    this.ResolveMembers((ex, id)=>{
+                        cb(ex);
+                    });
+                });
             });
         }
 
