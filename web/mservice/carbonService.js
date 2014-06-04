@@ -106,7 +106,7 @@ function getCarbonData(db, obdCode, startDatetime, endDatetime, callback) {
     var pool = db();
 
     var sqlWithParameters = [
-        'select SUM(currentAvgOilUsed*currentMileage) fuelTotal, SUM(currentMileage) mileTotal ',
+        'select SUM(avgOilUsed*mileage/100) fuelTotal, SUM(currentMileage) mileTotal ',
         'from t_obd_drive ',
         'where (fireTime < flameoutTime) and (fireTime > ?) and (fireTime < ?) and (obdCode = ?) '
     ].join('');
