@@ -56,7 +56,7 @@
         #fuel_y_axis {
             position: relative;
             float: left;
-            width: 20px;
+            width: 30px;
             height:200px;
         }
         #carbon_chart {
@@ -67,7 +67,7 @@
         #carbon_y_axis {
             position: relative;
             float: left;
-            width: 20px;
+            width: 30px;
             height:200px;
         }
         #drive_chart {
@@ -512,7 +512,7 @@
                 document.getElementById("monthSlowSpeed").innerHTML=result.intervalSpeed.slow;
                 document.getElementById("monthMiddleSpeed").innerHTML=result.intervalSpeed.middle;
                 document.getElementById("monthHighSpeed").innerHTML=result.intervalSpeed.high;
-                pieChart();
+                pieChart(result.intervalSpeed.slow,result.intervalSpeed.middle,result.intervalSpeed.high);
             }
         });
     }
@@ -565,7 +565,7 @@
                 document.getElementById("monthSlowSpeed").innerHTML=result.intervalSpeed.slow;
                 document.getElementById("monthMiddleSpeed").innerHTML=result.intervalSpeed.middle;
                 document.getElementById("monthHighSpeed").innerHTML=result.intervalSpeed.high;
-                createPie();
+                pieChart(result.intervalSpeed.slow,result.intervalSpeed.middle,result.intervalSpeed.high);
             }
         });
     }
@@ -612,7 +612,9 @@
 </script>
 <script type="text/javascript">
 
-function pieChart(){
+function pieChart(slow,middle,high){
+    var sum=slow+middle+high;
+    if(sum!=0){
     $('#container').highcharts({
         chart: {
             plotBackgroundColor: null,
@@ -639,12 +641,18 @@ function pieChart(){
             type: 'pie',
             name: 'Browser share',
             data: [
-                ['低速',   45.0],
-                ['中速',    26.8],
-                ['高速',    28.2]
+                ['低速',  returnFloat1(slow/sum)],
+                ['中速',  returnFloat1(middle/sum)],
+                ['高速',  returnFloat1(high/sum)]
             ]
         }]
     });
+    }
+}
+function returnFloat1(value) {    value = Math.round(parseFloat(value) * 10) / 10;
+    if (value.toString().indexOf(".") < 0)
+        value = value.toString() + ".0";
+    return value;
 }
 </script>
 </body>
