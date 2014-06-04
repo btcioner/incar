@@ -7,9 +7,10 @@
 <!--rickshaw图表控件资源  -->
     <script  src="../mscripts/d3.min.js"></script>
     <script  src="../mscripts/rickshaw.min.js"></script>
-    <script  src="../mscripts/amcharts.js"></script>
+
     <link type="text/css" rel="stylesheet" href="../mstyles/graph.css">
     <link type="text/css" rel="stylesheet" href="../mstyles/lines.css">
+
     <!--rickshaw图表控件资源结束  -->
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script  src="../mscripts/car.js"></script>
@@ -22,7 +23,8 @@
     <!--日期控件资源结束  -->
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
     <link href="../mstyles/menustyle.css" rel="stylesheet" type="text/css" />
-
+    <script  src="../mscripts/highcharts.js"></script>
+    <script  src="../mscripts/exporting.js"></script>
     <script type="text/javascript">
 	//var tabIds=["menu_icon1","menu_icon2","menu_icon3","menu_icon4"];
 	$(function(){
@@ -338,8 +340,9 @@
        <div class="clear"></div>
        </div><!--文字部分区3  end-->
        <!--imgbox01图片区1 start--><div class="imgbox01">
-         <div id="chartdiv"></div>
-       </div><!--imgbox01图片区1 end-->
+      <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+  </div><!--imgbox01图片区1 end-->
       </div><!--mainbox4速段统计内容 end--> 
     
   </div><!--main_wrap end-->
@@ -508,7 +511,7 @@
                 document.getElementById("monthSlowSpeed").innerHTML=result.intervalSpeed.slow;
                 document.getElementById("monthMiddleSpeed").innerHTML=result.intervalSpeed.middle;
                 document.getElementById("monthHighSpeed").innerHTML=result.intervalSpeed.high;
-                createPie();
+                pieChart();
             }
         });
     }
@@ -607,44 +610,54 @@
     ];
 </script>
 <script type="text/javascript">
-    function createPie(){
-        var chart;
-        var legend;
-        var chartData = [{
-            country: "上海",
-            value: 260},
-            {
-                country: "北京",
-                value: 201},
-            {
-                country: "成都",
-                value: 65},
-            {
-                country: "武汉",
-                value: 39},
-            {
-                country: "天津",
-                value: 19},
-            {
-                country: "乌鲁木齐",
-                value: 10}];
-        AmCharts.ready(function() {
-            // 饼图
-            chart = new AmCharts.AmPieChart();
-            chart.dataProvider = chartData;
-            chart.titleField = "country";
-            chart.valueField = "value";
-            chart.outlineColor = "";
-            chart.outlineAlpha = 0.8;
-            chart.outlineThickness = 2;
-            // 3D
-            chart.depth3D = 20;
-            chart.angle = 30;
-            // 图形写入
-            chart.write("chartdiv");
-        });
-    }
 
+function pieChart(){
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: 'Browser market shares at a specific website, 2010'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Browser share',
+                data: [
+                    ['Firefox',   45.0],
+                    ['IE',       26.8],
+                    {
+                        name: 'Chrome',
+                        y: 12.8,
+                        sliced: true,
+                        selected: true
+                    },
+                    ['Safari',    8.5],
+                    ['Opera',     6.2],
+                    ['Others',   0.7]
+                ]
+            }]
+        });
+    });
+
+}
 </script>
 </body>
 </html>
