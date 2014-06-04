@@ -1,5 +1,8 @@
 /// <reference path="references.ts" />
 
+var mTag :any = require('../tag/tag');
+var mMySQL:any = require('mysql');
+
 module Service{
     export function GetTemplates(req, res){
         res.setHeader("Accept-Query", "page,pagesize");
@@ -363,8 +366,30 @@ module Service{
         }
 
         public ResolveMembers(cb:(ex:TaskException, id:number)=>void){
-            // TODO: 解析活动的成员 this.dto.tags;
-            cb(null, this.dto.id);
+            // 解析活动的成员 this.dto.tags;
+            var cbx = (data)=> {
+                if (data.status !== 'failure') {
+                    var i = 0, values = '';
+                    while (i < data.length) {
+                        if (i > 0) values += "\nUNION ";
+                        values += util.format("SELECT %s,%s,%s", this.dto.id, data[i].accountId, data[i].carId);
+                        i++;
+                    }
+                    if (data.length > 0) {
+                        var dac = MySqlAccess.RetrievePool();
+                        var sql = util.format("INSERT t_activity_member(act_id,cust_id,ref_car_id) SELECT * FROM (%s) T",values);
+                        dac.query(sql, null, (ex, result)=>{
+                            dac.query("UPDATE t_activity_member SET ref_tags=?, ref_tag_tm=CURRENT_TIMESTAMP WHERE act_id=?",
+                                [this.dto.tags, this.dto.id], (ex, result)=>{});
+                        });
+                    }
+                }
+                cb(null, this.dto.id);
+            };
+
+            var req = { params:{ tags: this.dto.tags } };
+            var res = { json: cbx };
+            mTag.searchByTags(req, res);
         }
     }
 
