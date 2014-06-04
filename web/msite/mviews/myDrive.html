@@ -339,13 +339,13 @@
        </div>
        <div class="clear"></div>
        </div><!--文字部分区3  end-->
+       <!--imgbox01图片区1 start-->
+      <div id="container" style="min-width: 310px;width: 75%; height: 200px; margin-left: -25px;margin-top: 20px;padding: 0">
 
+
+  </div><!--imgbox01图片区1 end-->
       </div><!--mainbox4速段统计内容 end-->
-      <!--imgbox01图片区1 start-->
-      <div id="container" style="min-width: 310px;width: 75%; height: 200px; margin-left: 5px;margin-top: 20px;padding: 0">
 
-
-      </div><!--imgbox01图片区1 end-->
   </div><!--main_wrap end-->
 </div>
 <script>
@@ -455,7 +455,6 @@
         var start=new Date();
         start.setDate(1);
         //alert(start);alert(today);
-
         $.ajax({
             type: "post",
             url: "/mservice/myDriveData",
@@ -566,7 +565,7 @@
                 document.getElementById("monthSlowSpeed").innerHTML=result.intervalSpeed.slow;
                 document.getElementById("monthMiddleSpeed").innerHTML=result.intervalSpeed.middle;
                 document.getElementById("monthHighSpeed").innerHTML=result.intervalSpeed.high;
-                pieChart();
+                createPie();
             }
         });
     }
