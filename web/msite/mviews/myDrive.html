@@ -641,9 +641,9 @@ function pieChart(slow,middle,high){
             type: 'pie',
             name: 'Browser share',
             data: [
-                ['低速',  returnFloat1(slow/sum)],
-                ['中速',  returnFloat1(middle/sum)],
-                ['高速',  returnFloat1(high/sum)]
+                ['低速',  returnFloat1(parseFloat(slow)/sum)],
+                ['中速',  returnFloat1(parseFloat(middle)/sum)],
+                ['高速',  returnFloat1(parseFloat(high)/sum)]
             ]
         }]
     });
