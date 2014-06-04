@@ -455,6 +455,7 @@
         var start=new Date();
         start.setDate(1);
         //alert(start);alert(today);
+
         $.ajax({
             type: "post",
             url: "/mservice/myDriveData",
@@ -565,7 +566,7 @@
                 document.getElementById("monthSlowSpeed").innerHTML=result.intervalSpeed.slow;
                 document.getElementById("monthMiddleSpeed").innerHTML=result.intervalSpeed.middle;
                 document.getElementById("monthHighSpeed").innerHTML=result.intervalSpeed.high;
-                createPie();
+                pieChart();
             }
         });
     }
