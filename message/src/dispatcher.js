@@ -53,7 +53,6 @@ function setValueByID(id,value){
         dataManager.writeWord(value);
         return;
     }
-    console.log(id+"-"+byteCmd+"\n"+byteCmd.indexOf(id));
     if(byteCmd.indexOf(id)>=0){
 
         dataManager.writeByte(value);
@@ -187,7 +186,6 @@ function send16E0(sim){
     dataManager.writeWord(0x16E0);
     message.send(dataManager.getBuffer());
 }
-
 
 
 //接收Web端发送短信的请求并完成短信发送

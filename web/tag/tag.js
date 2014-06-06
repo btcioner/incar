@@ -306,6 +306,35 @@ exports.searchForUsers= function(req,res){
     });
 }
 /**
+ * 查询某车的标签
+ */
+exports.getTagsByCarId= function(req,res){
+    var carId=req.params['carId'];
+    var sql="select tg.type as tagType,t.id as tagId,t.name as tagName " +
+        "from t_tag t " +
+        "left join t_tag_group tg on tg.id=t.groupId " +
+        "left join t_car_tag ct on ct.tag_id=t.id " +
+        "where ct.car_id=?";
+    dao.findBySql(sql,[carId],function(rows){
+        var type0=[];
+        var type1=[];
+        for(var i=0;i<rows.length;i++){
+            var type=rows[i].tagType;
+            var tagId=rows[i].tagId;
+            var tagName=rows[i].tagName;
+            if(type===0){
+                type0.push({tagId:tagId,tagName:tagName});
+            }
+            else{
+                type1.push({tagId:tagId,tagName:tagName});
+            }
+        }
+        var list={systemTag:type0,customTag:type1};
+        console.log(list);
+        res.json(list);
+    });
+}
+/**
  * 给车打标签
  */
 exports.markTags= function(req,res){

@@ -530,16 +530,16 @@ function get1603Default(){
         carUpdateCount:0x00,            //车辆信息更新数量(0x00或0x05)
 
         serverConfigCount:0x05,         //网络参数更新数量(0x00-0x05)
-        addressParam:"220.249.72.235",  //获取参数数据地址
-        portParam:9005,                 //获取参数数据端口
-        addressUpload:"220.249.72.235", //主动上传数据地址
-        portUpload:9005,                //主动上传数据端口
-        addressAlarm:"220.249.72.235",  //报警数据上传地址
-        portAlarm:9005,                 //报警数据上传端口
-        addressMessage:"220.249.72.235",//短信回复数据地址
-        portMessage:9005,               //短信回复数据端口
-        addressLocation:"220.249.72.235",//定位数据地址
-        portLocation:9005,              //定位数据端口
+        addressParam:"lahmyyc2014.vicp.cc",  //获取参数数据地址
+        portParam:48928,                 //获取参数数据端口
+        addressUpload:"lahmyyc2014.vicp.cc", //主动上传数据地址
+        portUpload:48928,                //主动上传数据端口
+        addressAlarm:"lahmyyc2014.vicp.cc",  //报警数据上传地址
+        portAlarm:48928,                 //报警数据上传端口
+        addressMessage:"lahmyyc2014.vicp.cc",//短信回复数据地址
+        portMessage:48928,               //短信回复数据端口
+        addressLocation:"lahmyyc2014.vicp.cc",//定位数据地址
+        portLocation:48928,              //定位数据端口
 
         speedGroup:"1,45,90,255",       //车速分段统计
 

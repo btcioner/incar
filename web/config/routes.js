@@ -12,6 +12,7 @@ var mservice = require('../mservice/mservice');
 var tagService=require('../tag/tag');
 /** 
  *  Application routes
+ *  13007196492(联通卡)
  */
 module.exports = function(app) {
     //车辆相关
@@ -76,6 +77,7 @@ module.exports = function(app) {
     app.get('/tag/tagList/:brand',tagService.tagList);          //获取所有标签信息(通过系列过滤)
     app.put('/tag/buildTags',tagService.buildTags);             //重算车辆信息并打上标签
     app.get('/tag/searchByTags/:tags',tagService.searchByTags); //通过标签查询车辆信息
+    app.get('/tag/getTagsByCarId/:carId',tagService.getTagsByCarId); //通过车Id查询标签信息
     app.get('/tag/searchForUsers',tagService.searchForUsers);   //通过条件查询车辆信息
     app.put('/tag/markTags',tagService.markTags);               //给指定车辆打上自定义标签
     app.post('/tag/addTag',tagService.addTag);                  //添加自定义标签

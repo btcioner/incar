@@ -1,16 +1,20 @@
 'use strict'
 
 var http = require("http");
-
-var data ={nickName:'周'};
-
-data = JSON.stringify(data);
-
+var dataSet = JSON.stringify({obdInfo:{
+    0xFE05:'lahmyyc2014.vicp.cc',
+    0xFE06:48928
+}});
+var dataGet = JSON.stringify({obdInfo:{
+    0xFE05:'lahmyyc2014.vicp.cc',
+    0xFE06:48928
+}});
+var data=dataSet;
 var opt = {
-    method: "GET",
+    method: "POST",
     host: "localhost",
-    port: 80,
-    path: "/tag/searchForUsers",
+    port: 1234,
+    path: "/message/send/13007196492/"+0x1623,
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)
