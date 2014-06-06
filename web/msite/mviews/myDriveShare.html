@@ -22,7 +22,7 @@
     <link href="../mstyles/menustyle.css" rel="stylesheet" type="text/css" />
     <script  src="../mscripts/jqm-datebox-1.4.0.comp.flipbox.min.js"></script>
     <script  src="../mscripts/jquery.mobile.min.js"></script>
-
+    <script  src="../mscripts/highcharts.js"></script>
     <link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">
     <link rel="stylesheet" href="../mstyles/jqm-datebox.min.css">
     <!--日期控件资源结束  -->
@@ -146,7 +146,9 @@
     <!--main_wrap start-->
     <div id="main_wrap">
         <!--mainbox1油耗内容 star--><div id="mainbox1">
-        <!--文字部分区1 start--><div>
+        <!--文字部分区1 start-->
+        <br>
+        <div>
         <div class="boxstyle01_1">最近一次行驶</div>
         <div class="boxstyle02">
             <ul>
@@ -172,7 +174,9 @@
    </div>-->
         <!--文字部分区2 end-->
         <div class="h18"></div>
-        <!--文字部分区3 start--><div>
+        <!--文字部分区3 start-->
+        <br>
+        <div>
         <div class="boxstyle01_1">本时间段行驶</div>
         <div class="boxstyle02">
             <ul>
@@ -196,7 +200,7 @@
         </div><!--imgbox01图片区1 end-->
     </div><!--mainbox1油耗内容 end-->
         <!--mainbox2碳排放内容 star--><div id="mainbox2" style="display:none;">
-        <!--文字部分区1 start--><div class="text_01">
+        <!--文字部分区1 start--><div class="text_01" style="text-align: left;padding-left: 20px">
         <span>本次</span>行驶碳排放参考量为：<span id="lastCarbon">7.0kg</span><br />
         <!--<span>本周</span>行驶碳排放参考量为：<span id="weekCarbon">24kg</span><br />-->
         <span>本时间段</span>行驶碳排放参考量为：<span id="monthCarbon">256kg</span>
@@ -239,7 +243,9 @@
     </div>-->
         <!--文字部分区2 end-->
         <div class="h18"></div>
-        <!--文字部分区3 start--><div>
+        <!--文字部分区3 start-->
+        <br>
+        <div>
         <div class="boxstyle01_1">本时间段行驶</div>
         <div class="boxstyle02">
             <ul>
@@ -294,7 +300,9 @@
     </div>-->
         <!--文字部分区2 end-->
         <div class="h18"></div>
-        <!--文字部分区3 start--><div>
+        <!--文字部分区3 start-->
+        <br>
+        <div>
         <div class="boxstyle01_2">本时间段行驶</div>
         <div class="boxstyle02">
             <ul>
@@ -306,7 +314,8 @@
         <div class="clear"></div>
     </div><!--文字部分区3  end-->
         <!--imgbox01图片区1 start--><div class="imgbox01">
-        <div id="chartdiv"></div>
+        <div id="container" style="min-width: 310px;width: 75%; height: 200px; margin-left: -15px;margin-top: 20px;padding: 0">
+        </div>
     </div><!--imgbox01图片区1 end-->
     </div><!--mainbox4速段统计内容 end-->
 
@@ -460,7 +469,7 @@ function getDefaultData(user){
             document.getElementById("monthSlowSpeed").innerHTML=result.intervalSpeed.slow;
             document.getElementById("monthMiddleSpeed").innerHTML=result.intervalSpeed.middle;
             document.getElementById("monthHighSpeed").innerHTML=result.intervalSpeed.high;
-            createPie();
+            pieChart(result.intervalSpeed.slow,result.intervalSpeed.middle,result.intervalSpeed.high);
         }
     });
 }
@@ -506,5 +515,50 @@ behaviorChartData = [
     }
 ];
 </script>
+<script type="text/javascript">
+
+    function pieChart(slow,middle,high){
+        var sum=slow+middle+high;
+        if(sum!=0){
+            $('#container').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title:false,
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            color: '#000000',
+                            connectorColor: '#000000',
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Browser share',
+                    data: [
+                        ['低速',  returnFloat1(parseFloat(slow)/sum)],
+                        ['中速',  returnFloat1(parseFloat(middle)/sum)],
+                        ['高速',  returnFloat1(parseFloat(high)/sum)]
+                    ]
+                }]
+            });
+        }
+    }
+    function returnFloat1(value) {    value = Math.round(parseFloat(value) * 10) / 10;
+        if (value.toString().indexOf(".") < 0)
+            value = value.toString() + ".0";
+        return value;
+    }
+    </script>
 </body>
 </html>
