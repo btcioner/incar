@@ -252,7 +252,6 @@ exports.tagList= function(req,res){
                 list[groupId]=group;
             }
         }
-        console.log(JSON.stringify(list));
         var tagList=[];
         for(var key in list){
             tagList.push(list[key]);
@@ -260,7 +259,74 @@ exports.tagList= function(req,res){
         res.json(tagList);
     });
 }
-
+/**
+ * 获得当前4S店所有标签大类及其标签的相关信息(系统标签)
+ */
+exports.tagListSystem= function(req,res){
+    var brand=req.params.brand;
+    var sql="select g.id as groupId,g.name as groupName," +
+        "t.id as tagId,t.name as tagName " +
+        "from t_tag_group g " +
+        "left join t_tag t on t.groupId=g.id " +
+        "where g.type=? and( g.id>1 or g.id=1 and subStr(t.code,4,instr(t.code,'-')-4)=?)";
+    dao.findBySql(sql,[0,brand],function(rows){
+        var list={};
+        for(var i=0;i<rows.length;i++){
+            var groupId=rows[i].groupId;
+            var groupName=rows[i].groupName;
+            var tagId=rows[i].tagId;
+            var tagName=rows[i].tagName;
+            var group=list[groupId];
+            if(group){
+                group['tags'].push({tagId:tagId,tagName:tagName});
+            }
+            else{
+                group={groupId:groupId,groupName:groupName,tags:[{tagId:tagId,tagName:tagName}]};
+                list[groupId]=group;
+            }
+        }
+        var tagList=[];
+        for(var key in list){
+            tagList.push(list[key]);
+        }
+        res.json(tagList);
+    });
+}
+/**
+ * 获得当前4S店所有标签大类及其标签的相关信息(自定义标签)
+ */
+exports.tagListCustom= function(req,res){
+    var sql="select g.id as groupId,g.name as groupName," +
+        "t.id as tagId,t.name as tagName," +
+        "t.createTime as createTime,t.creator as creator " +
+        "from t_tag_group g " +
+        "left join t_tag t on t.groupId=g.id " +
+        "where g.type>?";
+    dao.findBySql(sql,[0],function(rows){
+        var list={};
+        for(var i=0;i<rows.length;i++){
+            var groupId=rows[i].groupId;
+            var groupName=rows[i].groupName;
+            var tagId=rows[i].tagId;
+            var tagName=rows[i].tagName;
+            var createTime=rows[i].createTime;
+            var creator=rows[i].creator;
+            var group=list[groupId];
+            if(group){
+                group['tags'].push({tagId:tagId,tagName:tagName,createTime:createTime,creator:creator});
+            }
+            else{
+                group={groupId:groupId,groupName:groupName,tags:[{tagId:tagId,tagName:tagName,createTime:createTime,creator:creator}]};
+                list[groupId]=group;
+            }
+        }
+        var tagList=[];
+        for(var key in list){
+            tagList.push(list[key]);
+        }
+        res.json(tagList);
+    });
+}
 /**
  * 通过标签及用户信息查询
  */

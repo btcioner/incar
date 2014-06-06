@@ -75,6 +75,8 @@ module.exports = function(app) {
     app.get('/wservice/4s/:s4_id/car/:car_id/cust', authCheck, wservice.GetCustomerByCarId);
 
     app.get('/tag/tagList/:brand',tagService.tagList);          //获取所有标签信息(通过系列过滤)
+    app.get('/tag/tagListSystem/:brand',tagService.tagListSystem);//获取所有系统标签信息(通过系列过滤)
+    app.get('/tag/tagListCustom/',tagService.tagListCustom);    //获取所有自定义标签信息
     app.put('/tag/buildTags',tagService.buildTags);             //重算车辆信息并打上标签
     app.get('/tag/searchByTags/:tags',tagService.searchByTags); //通过标签查询车辆信息
     app.get('/tag/getTagsByCarId/:carId',tagService.getTagsByCarId); //通过车Id查询标签信息

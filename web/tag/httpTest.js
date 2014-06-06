@@ -14,7 +14,7 @@ var opt = {
     method: "GET",
     host: "localhost",
     port: 80,
-    path: "/tag/searchForUsers",
+    path: "/tag/tagListCustom/",
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)
@@ -22,8 +22,6 @@ var opt = {
 };
 
 var req = http.request(opt, function(res) {
-    console.log('STATUS: ' + res.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(res.headers));
     res.setEncoding('utf8');
     res.on('data', function (chunk) {
         console.log('BODY: ' + chunk);
