@@ -26,17 +26,26 @@ function s_customerCtrl($scope, $http,$routeParams){
     $scope.obd_code="";
 
 
-//    $scope.countDiv = true;
-//    if($routeParams.id!=null)
-//    {
+
+    if($routeParams.id!=null)
+    {
 //        changeView(2);
 //        GetFirstPageInfo();//get fist driveData for first page；
-//    }
-//    else{
+        if($routeParams.id == "add")
+        {
+
+            changeView(3);
+        }
+        else{
+           searchForUsers($routeParams.id);
+        }
+    }
+    else{
 //        $http.get(baseurl+'carowner?page=1&pagesize=1&org_id='+ $.cookie("org_id")).success(function(data){
 //            $scope.carOwnerCount = data.totalCount;
 //        })
-//    }
+        GetFirstPageInfo();//get fist driveData for first page；
+    }
 //    $scope.changeTag = function(id)
 //    {
 //
@@ -62,7 +71,31 @@ function s_customerCtrl($scope, $http,$routeParams){
 //    }
     //筛选框初始值 todo--要从数据库读出来
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
-    GetFirstPageInfo();//get fist driveData for first page；
+    function searchForUsers(id)
+    {
+        $scope.tips="";
+        $http.get('/tag/searchForUsers?tagId='+id).success(function(data){
+//            if(data.status == "ok")
+//            {
+//                if(data.carowners.length == 0)
+//                {
+//                    $scope.tips="暂无数据！";
+//                }
+//                $scope.carowners = data.carowners;
+//                PagingInfo(data.totalCount);
+//            }
+//            else
+//            {
+//                alert(data.status);
+//            }
+        }).error(function(data){
+                alert("请求无响应");
+            })
+        $http.get(baseurl+'brand').success(function(data){
+            $scope.carBrand = data.brands;
+        });
+    }
+
     function GetFirstPageInfo()
     {
         $scope.tips="";
@@ -87,6 +120,7 @@ function s_customerCtrl($scope, $http,$routeParams){
             $scope.carBrand = data.brands;
         });
     }
+
 
 
     //查找品牌

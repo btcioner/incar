@@ -10,53 +10,76 @@ angular.module("SCustomerApp", [
     'ngRoute'
 ]).config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.
-        when('/main', {
-            controller: 's_statisticsCtrl',
-            templateUrl: '/4sStore/partials/customer_main.html'//主页显示统计信息
+        when('/collapseG_1',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//车系
         })
-        .when('/collapseGOne',{
+        .when('/collapseG_2',{
             controller:'s_customerCtrl',
-            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部保养信息
+            templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
-        .when('/collapseGTwo',{
+        .when('/collapseG_2/:id',{
             controller:'s_customerCtrl',
-            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
-         })
-        .when('/collapseGThree',{
-            controller:'s_customerCtrl',
-            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
+            templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
-        .when('/collapseGFour',{
+        .when('/collapseG_3',{
             controller:'s_customerCtrl',
-            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
+            templateUrl:'/4sStore/partials/customer_channel.html'//用车频率
         })
-        .when('/collapseGFive',{
+        .when('/collapseG_4',{
             controller:'s_customerCtrl',
-            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
+            templateUrl:'/4sStore/partials/customer_channel.html'//驾驶偏好
         })
-        .when('/collapseGSix',{
+        .when('/collapseG_5',{
             controller:'s_customerCtrl',
-            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
+            templateUrl:'/4sStore/partials/customer_channel.html'//车龄
         })
-        .when('/collapseGServen',{
+        .when('/collapseG_6',{
             controller:'s_customerCtrl',
-            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
+            templateUrl:'/4sStore/partials/customer_channel.html'//渠道
         })
-        .when('/collapseGEight',{
+        .when('/collapseG_7',{
             controller:'s_customerCtrl',
-            templateUrl:'/4sStore/partials/customer_channel.html'//显示全部维修信息
+            templateUrl:'/4sStore/partials/customer_channel.html'//用车时段
+        })
+        .when('/collapseG_8',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//自定义标签
+        })
+        .when('/collapseG_X',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//自定义标签
+        })
+        .when('/collapseG_X/:id',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//自定义标签
         })
         .otherwise({
-           redirectTo:'/main'//跳转到预约服务的主界面
+            controller: 's_statisticsCtrl',
+            templateUrl: '/4sStore/partials/customer_main.html'//主页显示统计
         });
        // $locationProvider.html5Mode(true);
-}).controller("customerCtrl",function($scope){
+}).controller("customerCtrl",function($scope,$http){
         $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
-//        $scope.randomTime  = new Date();
-//        $scope.changeTime = function()
-//        {
-//            $scope.randomTime  = new Date();
-//        }
+        //获取所有客户标签接口
+        getAllTags();
+        function getAllTags()
+        {
+            $http.get("/tag/tagList/8").success(function(data){
+                $scope.tagsGroup = data;
+                for(var i=0;i<$scope.tagsGroup.length;i++)
+                {
+                    $scope.tagsGroup[i].link = "#collapseG_"+ $scope.tagsGroup[i].groupId;
+                    $scope.tagsGroup[i].fid = "collapseG_"+ $scope.tagsGroup[i].groupId;
+                    for(var j=0;j<$scope.tagsGroup[i].tags.length;j++)
+                    {
+                        $scope.tagsGroup[i].tags[j].tagFlag = "";
+                    }
+                }
+            }).error(function(data){
+                    alert("请求无响应");
+                });
+        }
     });
 
 function s_statisticsCtrl($scope,$http)
@@ -65,5 +88,4 @@ function s_statisticsCtrl($scope,$http)
     $http.get(baseurl+'cmpx/carowner?page=1&pagesize=1&org_id='+ $.cookie("s4_id")).success(function(data){
         $scope.carOwnerCount = data.totalCount;
     })
-
 }

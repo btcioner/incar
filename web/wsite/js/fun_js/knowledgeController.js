@@ -97,7 +97,7 @@ function knowledgeBaseCtrl($scope, $http){
     //修改确认
     $scope.ModifyConfirm = function()
     {
-        $("#formId_edit").ajaxForm(function(){
+        $("#formId_edit").ajaxForm(function(data){
             GetFirstPageInfo();
             alert("修改成功");
 

@@ -22,8 +22,7 @@ function customerCtrl($scope, $http){
 
 
     //筛选框初始值 todo--要从数据库读出来
-    $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
-
+    $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}];
 
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
