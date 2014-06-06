@@ -271,6 +271,8 @@ exports.searchForUsers= function(req,res){
     var userPhone=body.userPhone;
     var license=body.license;
     var brand=body.brand;
+    var page=parseInt(body.page);
+    var pageSize=parseInt(body['pageSize']);
     var sql="select distinct c.id as carId,c.obd_code as obdCode," +
         "c.series as series,c.brand as brand," +
         "c.license as license,u.id as accountId," +
@@ -301,9 +303,23 @@ exports.searchForUsers= function(req,res){
         sql+=" and c.brand=?";
         args.push(brand);
     }
-    dao.findBySql(sql,args,function(rows){
-        console.log(rows);
-    });
+    if(page&&pageSize){
+        var sqlCount="select count(t.carId) as rowCount from ("+sql+") as t";
+        var sqlPage="select * from ("+sql+") as t limit ?,?";
+        dao.findBySql(sqlCount,args,function(rows){
+            var rowCount=rows[0]['rowCount'];
+            args.push((page-1)*pageSize);
+            args.push(pageSize);
+            dao.findBySql(sqlPage,args,function(rows){
+                res.json({status:'success',rowCount:rowCount,data:rows});
+            });
+        });
+    }
+    else{
+        dao.findBySql(sql,args,function(rows){
+            res.json({status:'success',rowCount:rows.length,data:rows});
+        });
+    }
 }
 /**
  * 查询某车的标签
