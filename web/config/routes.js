@@ -47,9 +47,6 @@ module.exports = function(app) {
     app.get('/wservice/4s/:s4_id', authCheck, wservice.Get4SById);
     app.put('/wservice/4s/:s4_id', authCheck, wservice.Modify4S);
 
-    app.post('/wservice/4s/:s4_id/login', wservice.Login);
-    app.get('/wservice/4s/:s4_id/logout', wservice.Logout);
-
     app.get('/wservice/4s/:s4_id/staff', authCheck, wservice.GetStaff);
     app.post('/wservice/4s/:s4_id/staff', authCheck, wservice.AddStaff);
     app.get('/wservice/4s/:s4_id/staff/:staff_id', authCheck, wservice.GetStaffById);

@@ -34,6 +34,7 @@ module Service{
             res.json({
                 postSample:{
                     name:"北五环4S店",
+                    short_name:"5ring4s.com",
                     status:1,
                     openid:"Uu6t4FYMrAq3xJP0zs",
                     prov:"北京",
@@ -52,9 +53,12 @@ module Service{
         var data = req.body;
         var err = "";
         if(!data.name) err += "缺少参数name";
+        if(!data.short_name) err += "缺少参数short_name";
+        var regexName = new RegExp("^[a-z0-9_\\.]{3,32}$", "i");
+        if(!regexName.test(data.short_name)) err += 'short_name只能由数字或字母组成,最少3字符,最多32字符;';
         if(err) { res.json(new TaskException(-1, err, null)); return; }
 
-        var dto:any = { name: data.name };
+        var dto:any = { name: data.name, short_name:data.short_name };
         if(!isNaN(data.status)) dto.status = data.status;
         else dto.status = 1;
         if(isStringNotEmpty(data.openid)) dto.openid = data.openid;
@@ -79,6 +83,7 @@ module Service{
             res.json({
                 postSample:{
                     name:"北五环4S店",
+                    short_name:"5ring4s.com",
                     status:1,
                     openid:"Uu6t4FYMrAq3xJP0zs",
                     prov:"北京",
@@ -94,9 +99,16 @@ module Service{
             return;
         }
 
+        if(isStringNotEmpty(data.short_name)) {
+            var regexName = new RegExp("^[a-z0-9_\\.]{3,32}$", "i");
+            if (!regexName.test(req.body.short_name))
+                res.json(new TaskException(-1, "short_name只能由数字或字母组成,最少3字符,最多32字符", null));
+        }
+
         var data = req.body;
         var dto:any = { id: req.params.s4_id };
         if(isStringNotEmpty(data.name)) dto.name = data.name;
+        if(isStringNotEmpty(data.short_name)) dto.short_name = data.short_name;
         if(!isNaN(data.status)) dto.status = data.status;
         if(isStringNotEmpty(data.openid)) dto.openid = data.openid;
         if(isStringNotEmpty(data.prov)) dto.prov = data.prov;

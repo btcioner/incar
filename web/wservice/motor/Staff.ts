@@ -27,7 +27,7 @@ module Service{
         if(Object.keys(req.body).length === 0){
             res.json({
                 postSample:{
-                    name:"admin",
+                    name:"admin@test4s.com",
                     pwd:"7d1d8b1504f2bf1da3db3cb8751ec62f197aa124",
                     agent:"InCarWebsite"
                 },
@@ -50,13 +50,24 @@ module Service{
         var sql = "SELECT *\n" +
             "FROM t_staff WHERE name = ? and pwd = ? and %s LIMIT 1";
         var args = [data.name, data.pwd];
-        if(req.params.s4_id){
+
+        // 拆分出short_name
+        var name2 = data.name.split('@',2);
+        if(name2.length === 1){
+            sql = util.format(sql, "s4_id is null");
+        }
+        else if (name2.length === 2){
+            sql = util.format(sql, "s4_id = (SELECT id FROM t_4s WHERE short_name = ?)");
+            args[0] = name2[0];
+            args.push(name2[1]);
+        }
+        /*if(req.params.s4_id){
             sql = util.format(sql, "s4_id = ?");
             args.push(req.params.s4_id);
         }
         else{
             sql = util.format(sql, "s4_id is null");
-        }
+        }*/
         dac.query(sql, args,
             (err, result)=>{
                 if(!err){
