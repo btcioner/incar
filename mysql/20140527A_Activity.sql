@@ -10,6 +10,13 @@ CREATE TABLE IF NOT EXISTS t_activity_template(
     INDEX IDX_ACT_1(s4_id,name)
 );
 
+INSERT t_activity_template(id,s4_id,name,template,title,brief,awards)
+    SELECT T.* FROM
+    (SELECT 1 AS id, 1 ,'节油大赛','ActSaveGas','线上节油大赛第?期','节油大赛规则(4096字节):...','恭喜以下参赛选手获奖:...'
+     UNION SELECT 2, 1,'资讯信息','ActAd','最新特大喜讯','特大喜讯(4096字节):...','恭喜以下参赛选手获奖:...')
+     AS T
+WHERE T.id not in (SELECT id FROM t_activity_template);
+
 -- 活动通用信息
 CREATE TABLE IF NOT EXISTS t_activity(
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '唯一标识',
