@@ -446,19 +446,6 @@ function getDefaultData(user){
             }
 
 
-            document.getElementById("lastSlowSpeed").innerHTML=result.lastSpeed.slow;
-            document.getElementById("lastMiddleSpeed").innerHTML=result.lastSpeed.middle;
-            document.getElementById("lastHighSpeed").innerHTML=result.lastSpeed.high;
-            //document.getElementById("weekSlowSpeed").innerHTML=result.weekSpeed.slow;
-            //document.getElementById("weekMiddleSpeed").innerHTML=result.weekSpeed.middle;
-            //document.getElementById("weekHighSpeed").innerHTML=result.weekSpeed.high;
-            document.getElementById("monthSlowSpeed").innerHTML=result.intervalSpeed.slow;
-            document.getElementById("monthMiddleSpeed").innerHTML=result.intervalSpeed.middle;
-            document.getElementById("monthHighSpeed").innerHTML=result.intervalSpeed.high;
-
-            if(result.behaviorData.length>1){
-                behaviorChartData= driveChartDataConvert(result.behaviorData);
-            }
             createChart();
             document.getElementById("lastSlowSpeed").innerHTML=result.lastSpeed.slow;
             document.getElementById("lastMiddleSpeed").innerHTML=result.lastSpeed.middle;
@@ -546,9 +533,9 @@ behaviorChartData = [
                     type: 'pie',
                     name: 'Browser share',
                     data: [
-                        ['低速',  returnFloat1(parseFloat(slow)/sum)],
-                        ['中速',  returnFloat1(parseFloat(middle)/sum)],
-                        ['高速',  returnFloat1(parseFloat(high)/sum)]
+                        ['低速',  returnFloat1(slow*1.0/sum)],
+                        ['中速',  returnFloat1(middle*1.0/sum)],
+                        ['高速',  returnFloat1(high*1.0/sum)]
                     ]
                 }]
             });
