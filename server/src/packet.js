@@ -60,7 +60,7 @@ exports.packetResolve=function(datagram){
     offset = packetLength;
     var checksumInPacket = dataBuffer.readUInt16BE(offset);
     if (checksum !== checksumInPacket){
-        console.log("数据包校验和验证失败...");
+        console.log("数据包校验和验证失败,计算值："+checksum+",数据值："+checksumInPacket);
         return null;
     }
 

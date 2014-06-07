@@ -45,8 +45,8 @@ module Service{
                 "\tLEFT OUTER JOIN t_car C ON M.ref_car_id = C.id and C.s4_id=A.s4_id\n" +
                 "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand=D.brandCode and C.series=D.seriesCode\n" +
                 "\tLEFT OUTER JOIN t_obd_drive R ON C.obd_code=R.obdCode and R.fireTime >= ? and R.flameOutTime <= ?\n" +
-                "WHERE 1=1";
-            var args = [this.dto.s4_id, this.dto.tm_start, this.dto.tm_end];
+                "WHERE M.act_id=?";
+            var args = [this.dto.s4_id, this.dto.tm_start, this.dto.tm_end, this.dto.id];
             if(!isNaN(filter.status)){ sql += " and M.status=?"; args.push(filter.status); }
             if(!isNaN(filter.disp)){ sql += " and C.disp=?"; args.push(filter.disp); }
             if(filter.series) { sql += " and C.series=?"; args.push(filter.series); }

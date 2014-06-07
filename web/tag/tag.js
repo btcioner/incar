@@ -230,12 +230,15 @@ exports.buildTags=function(req,res){
  */
 exports.tagList= function(req,res){
     var brand=req.params.brand;
+    var s4Id=req.params.s4Id;
     var sql="select g.id as groupId,g.name as groupName,g.type," +
         "t.id as tagId,t.name as tagName " +
         "from t_tag_group g " +
         "left join t_tag t on t.groupId=g.id " +
-        "where g.id>1 or g.id=1 and subStr(t.code,4,instr(t.code,'-')-4)=?";
-    dao.findBySql(sql,[brand],function(rows){
+        "where g.id in (2,3,4,5,6,7) " +
+        "or g.id=1 and subStr(t.code,4,instr(t.code,'-')-4)=? " +
+        "or g.id=8 and t.s4Id=? ";
+    dao.findBySql(sql,[brand,s4Id],function(rows){
         var list={};
         for(var i=0;i<rows.length;i++){
             var groupId=rows[i].groupId;
@@ -252,7 +255,6 @@ exports.tagList= function(req,res){
                 list[groupId]=group;
             }
         }
-        console.log(JSON.stringify(list));
         var tagList=[];
         for(var key in list){
             tagList.push(list[key]);
@@ -260,27 +262,100 @@ exports.tagList= function(req,res){
         res.json(tagList);
     });
 }
-
+/**
+ * 获得当前4S店所有标签大类及其标签的相关信息(系统标签)
+ */
+exports.tagListSystem= function(req,res){
+    var brand=req.params.brand;
+    var sql="select g.id as groupId,g.name as groupName," +
+        "t.id as tagId,t.name as tagName " +
+        "from t_tag_group g " +
+        "left join t_tag t on t.groupId=g.id " +
+        "where g.type=? and( g.id>1 or g.id=1 and subStr(t.code,4,instr(t.code,'-')-4)=?)";
+    dao.findBySql(sql,[0,brand],function(rows){
+        var list={};
+        for(var i=0;i<rows.length;i++){
+            var groupId=rows[i].groupId;
+            var groupName=rows[i].groupName;
+            var tagId=rows[i].tagId;
+            var tagName=rows[i].tagName;
+            var group=list[groupId];
+            if(group){
+                group['tags'].push({tagId:tagId,tagName:tagName});
+            }
+            else{
+                group={groupId:groupId,groupName:groupName,tags:[{tagId:tagId,tagName:tagName}]};
+                list[groupId]=group;
+            }
+        }
+        var tagList=[];
+        for(var key in list){
+            tagList.push(list[key]);
+        }
+        res.json(tagList);
+    });
+}
+/**
+ * 获得当前4S店所有标签大类及其标签的相关信息(自定义标签)
+ */
+exports.tagListCustom= function(req,res){
+    var s4Id=req.params.s4Id;
+    var sql="select g.id as groupId,g.name as groupName," +
+        "t.id as tagId,t.name as tagName," +
+        "t.createTime as createTime,t.creator as creator " +
+        "from t_tag_group g " +
+        "left join t_tag t on t.groupId=g.id " +
+        "where g.type>? and t.s4Id=?";
+    dao.findBySql(sql,[0,s4Id],function(rows){
+        var list={};
+        for(var i=0;i<rows.length;i++){
+            var groupId=rows[i].groupId;
+            var groupName=rows[i].groupName;
+            var tagId=rows[i].tagId;
+            var tagName=rows[i].tagName;
+            var createTime=rows[i].createTime;
+            var creator=rows[i].creator;
+            var group=list[groupId];
+            if(group){
+                group['tags'].push({tagId:tagId,tagName:tagName,createTime:createTime,creator:creator});
+            }
+            else{
+                group={groupId:groupId,groupName:groupName,tags:[{tagId:tagId,tagName:tagName,createTime:createTime,creator:creator}]};
+                list[groupId]=group;
+            }
+        }
+        var tagList=[];
+        for(var key in list){
+            tagList.push(list[key]);
+        }
+        res.json(tagList);
+    });
+}
 /**
  * 通过标签及用户信息查询
  */
 exports.searchForUsers= function(req,res){
+    var s4Id=req.params.s4Id;
     var body=req.body;
     var tagId=body.tagId;
     var nickName=body.nickName;
     var userPhone=body.userPhone;
     var license=body.license;
     var brand=body.brand;
+    var page=parseInt(body.page);
+    var pageSize=parseInt(body['pageSize']);
     var sql="select distinct c.id as carId,c.obd_code as obdCode," +
         "c.series as series,c.brand as brand," +
+        "d.series as seriesName,d.brand as brandName," +
         "c.license as license,u.id as accountId," +
         "u.nick as nickName,u.phone as phone " +
         "from t_car c " +
         "left join t_car_user cu on cu.car_id=c.id " +
         "left join t_account u on cu.acc_id=u.id " +
         "left join t_car_tag ct on ct.car_id=c.id " +
-        "where 1=1";
-    var args=[];
+        "left join t_car_dictionary d on d.brandCode=c.brand and d.seriesCode=c.series " +
+        "where c.s4_id=?";
+    var args=[s4Id];
     if(tagId){
         sql+=" and ct.tag_id=?";
         args.push(tagId);
@@ -301,8 +376,51 @@ exports.searchForUsers= function(req,res){
         sql+=" and c.brand=?";
         args.push(brand);
     }
-    dao.findBySql(sql,args,function(rows){
-        console.log(rows);
+    if(page&&pageSize){
+        var sqlCount="select count(t.carId) as rowCount from ("+sql+") as t";
+        var sqlPage="select * from ("+sql+") as t limit ?,?";
+        dao.findBySql(sqlCount,args,function(rows){
+            var rowCount=rows[0]['rowCount'];
+            args.push((page-1)*pageSize);
+            args.push(pageSize);
+            dao.findBySql(sqlPage,args,function(rows){
+                res.json({status:'success',rowCount:rowCount,data:rows});
+            });
+        });
+    }
+    else{
+        dao.findBySql(sql,args,function(rows){
+            res.json({status:'success',rowCount:rows.length,data:rows});
+        });
+    }
+}
+/**
+ * 查询某车的标签
+ */
+exports.getTagsByCarId= function(req,res){
+    var carId=req.params['carId'];
+    var sql="select tg.type as tagType,t.id as tagId,t.name as tagName " +
+        "from t_tag t " +
+        "left join t_tag_group tg on tg.id=t.groupId " +
+        "left join t_car_tag ct on ct.tag_id=t.id " +
+        "where ct.car_id=?";
+    dao.findBySql(sql,[carId],function(rows){
+        var type0=[];
+        var type1=[];
+        for(var i=0;i<rows.length;i++){
+            var type=rows[i].tagType;
+            var tagId=rows[i].tagId;
+            var tagName=rows[i].tagName;
+            if(type===0){
+                type0.push({tagId:tagId,tagName:tagName});
+            }
+            else{
+                type1.push({tagId:tagId,tagName:tagName});
+            }
+        }
+        var list={systemTag:type0,customTag:type1};
+        console.log(list);
+        res.json(list);
     });
 }
 /**
@@ -327,11 +445,13 @@ exports.markTags= function(req,res){
  * 添加自定义标签
  */
 exports.addTag= function(req,res){
-    var groupId=req.params['groupId'];
-    var tagName=req.params['tagName'];
-    var description=req.params['description'];
-    var code=req.params['code'];
-    var active=req.params['active'];
+    var body=req.body;
+    var s4Id=body['s4Id'];
+    var groupId=body['groupId'];
+    var tagName=body['tagName'];
+    var description=body['description'];
+    var code=body['code'];
+    var active=body['active'];
     if(!groupId)groupId=8;
     if(!description)description='';
     if(!code)code='';
