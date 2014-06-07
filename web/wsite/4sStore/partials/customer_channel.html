@@ -47,19 +47,19 @@
                         <thead>
                         <tr>
                             <th>车主姓名</th>
-                            <th style="background-color:#F9F9F9;">{{cusDetail.acc_nick}}</th>
+                            <th style="background-color:#F9F9F9;">{{cusDetail.nickName}}</th>
                             <th>联系电话</th>
-                            <th style="background-color:#F9F9F9;">{{cusDetail.acc_phone}}</th>
+                            <th style="background-color:#F9F9F9;">{{cusDetail.phone}}</th>
                             <th>OBD编号</th>
-                            <th style="background-color:#F9F9F9;">{{cusDetail.obd_code}}</th>
+                            <th style="background-color:#F9F9F9;">{{cusDetail.obdCode}}</th>
                         </tr>
                         <tr>
                             <th>品牌</th>
-                            <th style="background-color:#F9F9F9;">{{cusDetail.car_brand}}</th>
+                            <th style="background-color:#F9F9F9;">{{cusDetail.brand}}</th>
                             <th>车系</th>
-                            <th style="background-color:#F9F9F9;">{{cusDetail.car_series}}</th>
+                            <th style="background-color:#F9F9F9;">{{cusDetail.series}}</th>
                             <th>车牌号</th>
-                            <th style="background-color:#F9F9F9;">{{cusDetail.car_license}}</th>
+                            <th style="background-color:#F9F9F9;">{{cusDetail.license}}</th>
                         </tr>
                         </thead>
                     </table>
@@ -423,11 +423,11 @@
                         </thead>
                         <tbody>
                         <tr class="gradeX" ng-repeat="carowner in carowners">
-                            <td style="text-align: center">{{carowner.acc_nick}}</td>
-                            <td style="text-align: center">{{carowner.acc_phone}}</td>
-                            <td style="text-align: center">{{carowner.car_brand}}</td>
-                            <td style="text-align: center">{{carowner.car_series}}</td>
-                            <td style="text-align: center">{{carowner.obd_code}}</td>
+                            <td style="text-align: center">{{carowner.nickName}}</td>
+                            <td style="text-align: center">{{carowner.phone}}</td>
+                            <td style="text-align: center">{{carowner.brand}}</td>
+                            <td style="text-align: center">{{carowner.series}}</td>
+                            <td style="text-align: center">{{carowner.obdCode}}</td>
                             <td style="text-align: center">2014-04-15 13:00</td>
                             <td style="text-align: center">保养提醒</td>
                             <td style="text-align: center">

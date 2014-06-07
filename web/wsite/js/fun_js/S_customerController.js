@@ -15,7 +15,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     $scope.pageRecord = 10;
     $scope.city_name="";
     $scope.org_id = 0;
-    $scope.queryString = "&org_id="+ $.cookie("s4_id");
+    $scope.queryString = "";
     $scope.brandCode = "";
     $scope.seriesCode = "";
     $scope.acc_nick = "";
@@ -33,81 +33,34 @@ function s_customerCtrl($scope, $http,$routeParams){
 //        GetFirstPageInfo();//get fist driveData for first page；
         if($routeParams.id == "add")
         {
-
             changeView(3);
         }
         else{
-           searchForUsers($routeParams.id);
+           // searchForUsers($routeParams.id);
+            $scope.queryString = "&tagId="+$routeParams.id;
         }
     }
     else{
-//        $http.get(baseurl+'carowner?page=1&pagesize=1&org_id='+ $.cookie("org_id")).success(function(data){
-//            $scope.carOwnerCount = data.totalCount;
-//        })
-        GetFirstPageInfo();//get fist driveData for first page；
-    }
-//    $scope.changeTag = function(id)
-//    {
-//
-//        switch(id)
-//        {
-//            case 0:
-//                changeView(2);
-//                GetFirstPageInfo();//get fist driveData for first page；
-//                break;
-//            case 1:
-//                changeView(2);
-//                GetFirstPageInfo();//get fist driveData for first page；
-//                break;
-//        }
-//    }
-//
-//    $scope.changeAccordion = function()
-//    {
-//        $("#collapseGOne").removeClass;
-//        $("#collapseGOne").addClass("collapse accordion-body");
-//        $("#collapseGThree").removeClass;
-//        $("#collapseGThree").addClass("collapse in accordion-body");
-//    }
-    //筛选框初始值 todo--要从数据库读出来
-    $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
-    function searchForUsers(id)
-    {
-        $scope.tips="";
-        $http.get('/tag/searchForUsers?tagId='+id).success(function(data){
-//            if(data.status == "ok")
-//            {
-//                if(data.carowners.length == 0)
-//                {
-//                    $scope.tips="暂无数据！";
-//                }
-//                $scope.carowners = data.carowners;
-//                PagingInfo(data.totalCount);
-//            }
-//            else
-//            {
-//                alert(data.status);
-//            }
-        }).error(function(data){
-                alert("请求无响应");
-            })
-        $http.get(baseurl+'brand').success(function(data){
-            $scope.carBrand = data.brands;
-        });
+         //  $scope.queryString = "&org_id="+ $.cookie("s4_id");
     }
 
+    //筛选框初始值 todo--要从数据库读出来
+    $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
+
+    GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl + 'cmpx/carowner?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
-            if(data.status == "ok")
+        $http.get('/tag/searchForUsers?page='+$scope.currentPage+'&pageSize='+$scope.pageRecord+$scope.queryString).success(function(data){
+            if(data.status == "success")
             {
-                if(data.carowners.length == 0)
+                if(data.data.length == 0)
                 {
                     $scope.tips="暂无数据！";
                 }
-                $scope.carowners = data.carowners;
-                PagingInfo(data.totalCount);
+                $scope.carowners = data.data;
+
+                PagingInfo(data.rowCount);
             }
             else
             {
@@ -226,7 +179,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     function getReservationRecord()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.car_id).success(function(data){
+        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.carId).success(function(data){
             $scope.careList = data.works;
             PagingInfo(data.totalCount);
             if(data.works.length > 0)
@@ -251,7 +204,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     function getCareRecord()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.car_id).success(function(data){
+        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.carId).success(function(data){
            $scope.recordList = data.records;
             PagingInfo(data.totalCount);
            if(data.records.length > 0)
@@ -322,7 +275,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     function getDriveList()
     {
         $scope.tips="";
-        $scope.queryString="&org_id="+ $.cookie("s4_id")+"&obd_code="+$scope.cusDetail.obd_code;
+        $scope.queryString="&org_id="+ $.cookie("s4_id")+"&obd_code="+$scope.cusDetail.obdCode;
         $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
             if(data.status == "ok")
             {
