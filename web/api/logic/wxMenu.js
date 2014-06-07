@@ -218,7 +218,19 @@ wxMenu.onClick['MY4S.PROBE'] = function(message, session, next) {
         }]);
     });
 };
-
+wxMenu.onClick['MY4S.INFO'] = function(message, session, next) {
+    my4S.my4sInfo(message.FromUserName, message.ToUserName,session, function(err, result){
+        if (err) {
+            return next(err);
+        }
+        return next(null, [{
+            title: '资讯活动',
+            description: result,
+            picurl: '',
+            url: 'http://linuxsrv.winphone.us/msite/my4sInfo.html?user=' + message.FromUserName + '@' + message.ToUserName
+        }]);
+    });
+};
 wxMenu.onClick['MY4S.BOOKING'] = function(message, session, next) {
 
     my4S.book(message.FromUserName, session, function(err, result){

@@ -39,29 +39,11 @@
     <div class="clear"></div>
 </div><!---表头 end-->
     <!--我的预约表体 start--><div>
-    <ul class="tablebox01">
+    <ul class="tablebox01" id="bookContent">
         <!--我的预约表行 start-->
+
+        <!--
         <li>
-        <ul class="rows01">
-            <li class="icon"><span class="icon_4a"></span></li>
-            <li><span class="text_04">鄂A88888</span></li>
-            <li><span>14/05/29<br />10:30</span></li>
-            <li><span>14/05/30<br />10:30</span></li>
-            <li><span class="text_04">新申请</span></li>
-            <li><span class="text_04"><a href="###">取消</a></span></li>
-        </ul>
-    </li><!--我的预约表行 end-->
-        <!--我的预约表行 start--><li>
-        <ul class="rows02">
-            <li class="icon"><span class="icon_4b"></span></li>
-            <li><span class="text_04">鄂A88888</span></li>
-            <li><span>14/05/29<br />10:30</span></li>
-            <li><span>14/05/30<br />10:30</span></li>
-            <li><span class="text_04">新申请</span></li>
-            <li><span class="text_04"><a href="###">取消</a></span></li>
-        </ul>
-    </li><!--我的预约表行 end-->
-        <!--我的预约表行 start--><li>
         <ul class="rows01">
             <li class="icon"><span class="icon_5a"></span></li>
             <li><span class="text_04">鄂A88888</span></li>
@@ -70,37 +52,10 @@
             <li><span class="text_04">新申请</span></li>
             <li><span class="text_04"><a href="###">取消</a></span></li>
         </ul>
-    </li><!--我的预约表行 end-->
-        <!--我的预约表行 start--><li>
-        <ul class="rows02">
-            <li class="icon"><span class="icon_5b"></span></li>
-            <li><span class="text_04">鄂A88888</span></li>
-            <li><span>14/05/29<br />10:30</span></li>
-            <li><span>14/05/30<br />10:30</span></li>
-            <li><span class="text_04">新申请</span></li>
-            <li><span class="text_04"><a href="###">取消</a></span></li>
-        </ul>
-    </li><!--我的预约表行 end-->
-        <!--我的预约表行 start--><li>
-        <ul class="rows01">
-            <li class="icon"><span class="icon_4a"></span></li>
-            <li><span class="text_04">鄂A88888</span></li>
-            <li><span>14/05/29<br />10:30</span></li>
-            <li><span>14/05/30<br />10:30</span></li>
-            <li><span class="text_04">新申请</span></li>
-            <li><span class="text_04"><a href="###">取消</a></span></li>
-        </ul>
-    </li><!--我的预约表行 end-->
-        <!--我的预约表行 start--><li>
-        <ul class="rows02">
-            <li class="icon"><span class="icon_4b"></span></li>
-            <li><span class="text_04">鄂A88888</span></li>
-            <li><span>14/05/29<br />10:30</span></li>
-            <li><span>14/05/30<br />10:30</span></li>
-            <li><span class="text_04">新申请</span></li>
-            <li><span class="text_04"><a href="###">取消</a></span></li>
-        </ul>
-    </li><!--我的预约表行 end-->
+    </li>
+    -->
+    <!--我的预约表行 end-->
+
     </ul>
     <div class="clear"></div>
 </div><!--我的预约表体 end-->
@@ -117,7 +72,7 @@
                 //alert("success");
                 obd_code=result.obd_code;
                 license=result.license;
-                s4id=result.s4id;
+                s4id=result.s4_openid;
               },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("您还未注册或未绑定OBD信息\n请先注册账号！");
@@ -125,6 +80,7 @@
             }
         });
     }
+    //获取试驾预约数据
     function searchTrialrun(){
         $.ajax({
             type: "POST",
@@ -132,14 +88,126 @@
             data: {'user':user,'s4id':s4id},
             dataType: "json",
             success: function (result,status) {
-
+              var strTemp="";
+              for(var i=0;i<result.length;i++){
+                  var rowLabel;
+                  if(i%2==0) rowLabel="rows02";  else rowLabel="rows01"; //判断奇偶行
+                  //判断申请状态
+                  var status="";
+                  if(result[i].bookingStatus==1) status="待确认";
+                  else if(result[i].bookingStatus==2) status="被拒绝";
+                  else if(result[i].bookingStatus==3) status="已批准";
+                  else if(result[i].bookingStatus==2) status="已取消";
+                  else status="无效";
+                  //申请提交时间
+                  var tsDate=result[i].ts.getYear()+"/"+
+                            ((result[i].ts.getMonth()+1)>9)?(result[i].ts.getMonth()+1):"0"+(result[i].ts.getMonth()+1) +"/"+
+                            (result[i].ts.getDate()>9)?result[i].ts.getDate():"0"+result[i].ts.getDate();
+                  var tsTime=(result[i].ts.getHours()>9)?result[i].ts.getHours():"0"+result[i].ts.getHours()+":"+
+                              (result[i].ts.getMinutes()>9)?result[i].ts.getMinutes():"0"+result[i].ts.getMinutes();
+                  //申请试驾时间
+                  var trialrunDate=result[i].bookingtime.getYear()+"/"+
+                          ((result[i].bookingtime.getMonth()+1)>9)?(result[i].bookingtime.getMonth()+1):"0"+(result[i].bookingtime.getMonth()+1) +"/"+
+                          (result[i].bookingtime.getDate()>9)?result[i].bookingtime.getDate():"0"+result[i].bookingtime.getDate();
+                  var trialrunTime=(result[i].bookingtime.getHours()>9)?result[i].bookingtime.getHours():"0"+result[i].bookingtime.getHours()+":"+
+                          (result[i].bookingtime.getMinutes()>9)?result[i].bookingtime.getMinutes():"0"+result[i].bookingtime.getMinutes();
+                  strTemp+='<li>' +
+                             '<ul class='+rowLabel+'>' +
+                                '<li class="icon"><span class="icon_4b"></span></li>' +
+                                '<li><span class="text_04">'+result[i].seriesName+'</span></li>' +
+                                '<li><span>'+tsDate+'<br />'+tsTime+'</span></li>' +
+                                '<li><span>'+trialrunDate+'<br />'+trialrunTime+'</span></li>' +
+                                '<li><span class="text_04">'+status+'</span></li>' +
+                                '<li><span class="text_04"><a href="###" onclick="cancelTrialrun('+result[i].id+')">取消</a></span></li>' +
+                             '</ul>' +
+                          '</li>';
+              }
+                document.getElementById("bookContent").innerHTML=strTemp;
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
 
             }
         });
     }
-    function searchBook(){}
+    //取消试驾预约
+    function cancelTrialrun(id){
+        var con=confirm("您确定要取消这个试驾预约吗？");
+        if(con){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/cancelTrialrun",
+            data: {'id':id},
+            dataType: "json",
+            success:function(){
+              alert("预约已取消\n页面将重新加载");
+              window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
+            }
+         });
+        }else {return;}
+    }
+    function searchBook(){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/myBooking",
+            data: {'user':user,'s4id':s4id},
+            dataType: "json",
+            success: function (result,status) {
+                var strTemp="";
+                for(var i=0;i<result.length;i++){
+                    var rowLabel;
+                    if(i%2==0) rowLabel="rows02";  else rowLabel="rows01"; //判断奇偶行
+                    //判断申请状态
+                    var status="";
+                    if(result[i].bookingStatus==1) status="待确认";
+                    else if(result[i].bookingStatus==2) status="被拒绝";
+                    else if(result[i].bookingStatus==3) status="已批准";
+                    else if(result[i].bookingStatus==2) status="已取消";
+                    else status="无效";
+                    //申请提交时间
+                    var tsDate=result[i].ts.getYear()+"/"+
+                            ((result[i].ts.getMonth()+1)>9)?(result[i].ts.getMonth()+1):"0"+(result[i].ts.getMonth()+1) +"/"+
+                            (result[i].ts.getDate()>9)?result[i].ts.getDate():"0"+result[i].ts.getDate();
+                    var tsTime=(result[i].ts.getHours()>9)?result[i].ts.getHours():"0"+result[i].ts.getHours()+":"+
+                            (result[i].ts.getMinutes()>9)?result[i].ts.getMinutes():"0"+result[i].ts.getMinutes();
+                    //申请试驾时间
+                    var trialrunDate=result[i].bookingtime.getYear()+"/"+
+                            ((result[i].bookingtime.getMonth()+1)>9)?(result[i].bookingtime.getMonth()+1):"0"+(result[i].bookingtime.getMonth()+1) +"/"+
+                            (result[i].bookingtime.getDate()>9)?result[i].bookingtime.getDate():"0"+result[i].bookingtime.getDate();
+                    var trialrunTime=(result[i].bookingtime.getHours()>9)?result[i].bookingtime.getHours():"0"+result[i].bookingtime.getHours()+":"+
+                            (result[i].bookingtime.getMinutes()>9)?result[i].bookingtime.getMinutes():"0"+result[i].bookingtime.getMinutes();
+                    strTemp+='<li>' +
+                            '<ul class='+rowLabel+'>' +
+                            '<li class="icon"><span class="icon_4a"></span></li>' +
+                            '<li><span class="text_04">'+license+'</span></li>' +
+                            '<li><span>'+tsDate+'<br />'+tsTime+'</span></li>' +
+                            '<li><span>'+trialrunDate+'<br />'+trialrunTime+'</span></li>' +
+                            '<li><span class="text_04">'+status+'</span></li>' +
+                            '<li><span class="text_04"><a href="###" onclick="cancelBook('+result[i].id+')">取消</a></span></li>' +
+                            '</ul>' +
+                            '</li>';
+                }
+                document.getElementById("bookContent").innerHTML+=strTemp;
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+
+            }
+        });
+    }
+    function cancelBook(id){
+        var con=confirm("您确定要取消这个保养预约吗？");
+        if(con){
+            $.ajax({
+                type: "POST",
+                url: "/mservice/cancelSlotBooking",
+                data: {'id':id},
+                dataType: "json",
+                success:function(){
+                    alert("预约已取消\n页面将重新加载");
+                    window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
+                }
+            });
+        }else {return;}
+    }
 </script>
 </body>
 </html>

@@ -21,14 +21,14 @@ function myTrialrun(req, res) {
     search(db, user,s4id,function(err, data) {
         if (err) { res.send(200,err); }
         else {
-            res.send(400,data);
+            res.send(data);
         }
     });
 }
 
 function search(db, user,s4id,callback) {
     var pool = db();
-   pool.query('select  bookingtime,seriesName,bookingStatus,ts   from  t_trialrun where wx_oid like ?;',
+   pool.query('select id,bookingtime,seriesName,bookingStatus,ts   from  t_trialrun where wx_oid like ? order by bookingtime desc;',
         ['%'+user+':'+s4id+'%'],function(err,rows){
             if(err){callback(err);}
             else{
@@ -36,6 +36,7 @@ function search(db, user,s4id,callback) {
                     var trialrun=new Array();
                     for(var i=0;i<rows.length;i++){
                         var data={};
+                        data.id=rows[i].id;
                         data.bookingtime=rows[i].bookingtime;
                         data.seriesName=rows[i].seriesName;
                         data.bookingStatus=rows[i].bookingStatus;

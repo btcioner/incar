@@ -1,0 +1,163 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>我的活动</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script  src="../mscripts/jquery-1.7.1.min.js"></script>
+    <script  src="../mscripts/car.js"></script>
+
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
+    <script>
+        var  user;
+        var s4_id;
+        var s4_openid;
+        var obd_code;
+        var acc_id;
+        function init(){
+            user=getQueryString("user");
+            searchUser();
+            searchActivity();
+        }
+    </script>
+</head>
+
+<body onload="init()">
+<div id="wrap">
+    <!--pagename start--><div id="pagename"></div><!--pagename end-->
+    <!--containe_100 start--><div id="containe_100">
+    <!---表头 start--><div class="tablehead02">
+    <ul>
+        <li><span>活&nbsp;动&nbsp;名&nbsp;称</span></li>
+        <li><span>发&nbsp;布&nbsp;时&nbsp;间</span></li>
+        <li><span>活&nbsp;动&nbsp;状&nbsp;态</span></li>
+        <li><span>我&nbsp;的&nbsp;状&nbsp;态</span></li>
+    </ul><strong><strong></strong></strong>
+    <div class="clear"></div>
+</div><!---表头 end-->
+    <!--我的活动表体 start--><div>
+    <ul class="tablebox02" id="activityContent">
+        <!--我的活动表行 start--><li>
+        <ul class="rows01">
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span class="text_04">14/05/29&nbsp;&nbsp;10:30</span></li>
+            <li><span class="text_04">14/05/30&nbsp;&nbsp;10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+        </ul>
+    </li><!--我的活动表行 end-->
+        <!--我的活动表行 start--><li>
+        <ul class="rows02">
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span class="text_04">14/05/29&nbsp;&nbsp;10:30</span></li>
+            <li><span class="text_04">14/05/30&nbsp;&nbsp;10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+        </ul>
+    </li><!--我的活动表行 end-->
+        <!--我的活动表行 start--><li>
+        <ul class="rows01">
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span class="text_04">14/05/29&nbsp;&nbsp;10:30</span></li>
+            <li><span class="text_04">14/05/30&nbsp;&nbsp;10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+        </ul>
+    </li><!--我的活动表行 end-->
+        <!--我的活动表行 start--><li>
+        <ul class="rows02">
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span class="text_04">14/05/29&nbsp;&nbsp;10:30</span></li>
+            <li><span class="text_04">14/05/30&nbsp;&nbsp;10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+        </ul>
+    </li><!--我的活动表行 end-->
+        <!--我的活动表行 start--><li>
+        <ul class="rows01">
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span class="text_04">14/05/29&nbsp;&nbsp;0:30</span></li>
+            <li><span class="text_04">14/05/30&nbsp;&nbsp;10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+        </ul>
+    </li><!--我的活动表行 end-->
+        <!--我的活动表行 start--><li>
+        <ul class="rows02">
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span class="text_04">14/05/29&nbsp;&nbsp;10:30</span></li>
+            <li><span class="text_04">14/05/30&nbsp;&nbsp;10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+        </ul>
+    </li><!--我的活动表行 end-->
+    </ul>
+    <div class="clear"></div>
+</div><!--我的活动表体 end-->
+</div><!--containe_100 end-->
+</div>
+<script>
+    function searchUser(){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/infoConfig",
+            data: {'user':user},
+            dataType: "json",
+            success: function (result,status) {
+                //alert("success");
+                acc_id=result.id;
+                obd_code=result.obd_code;
+                s4_openid=result.s4_openid;
+                s4_id=result.s4id;
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                alert("您还未注册或未绑定OBD信息\n请先注册账号！");
+                window.location="/msite/enroll.html?user="+user;
+            }
+        });
+    }
+    function searchActivity(){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/myActivity",
+            data: {'user':user,'s4_id':s4_id,"acc_id":acc_id},
+            dataType: "json",
+            success: function (result,status) {
+                var strTemp="";
+                for(var i=0;i<result.length;i++){
+                    var rowLabel;
+                    if(i%2==0) rowLabel="rows02";  else rowLabel="rows01"; //判断奇偶行
+                    //判断活动状态
+                    var status="";
+                    if(result[i].status==2) status="已公告";
+                    else if(result[i].status==3) status="进行中";
+                    else if(result[i].status==4) status="已结束";
+                    else if(result[i].status==5) status="结果已发布";
+                    else status="无效";
+                    //判断我的活动参加状态
+                    var myStatus="";
+                    if(result[i].myStatus==1) status="已报名";
+                    else if(result[i].status==2) status="已参加";
+                    else if(result[i].status==3) status="已退出";
+                    else if(result[i].status==4) status="被拒绝";
+                    //活动发布时间
+                    var tsDate=result[i].tm_announce.getYear()+"/"+
+                            ((result[i].tm_announce.getMonth()+1)>9)?(result[i].tm_announce.getMonth()+1):"0"+(result[i].tm_announce.getMonth()+1) +"/"+
+                            (result[i].tm_announce.getDate()>9)?result[i].tm_announce.getDate():"0"+result[i].tm_announce.getDate();
+                    var tsTime=(result[i].tm_announce.getHours()>9)?result[i].tm_announce.getHours():"0"+result[i].tm_announce.getHours()+":"+
+                            (result[i].tm_announce.getMinutes()>9)?result[i].tm_announce.getMinutes():"0"+result[i].tm_announce.getMinutes();
+                    strTemp+='<li>' +
+                                '<ul class='+rowLabel+'>' +
+                                  '<li><span class="text_04">'+result[i].title+'</span></li>' +
+                                  '<li><span class="text_04">'+tsDate+'&nbsp;&nbsp;'+tsTime+'</span></li>' +
+                                  '<li><span class="text_04">'+status+'</span></li>' +
+                                  '<li><span class="text_04">'+myStatus+'</span></li>' +
+                               '</ul>' +
+                            '</li>';
+                }
+                document.getElementById("activityContent").innerHTML=strTemp;
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                alert("未找到您参加的活动");
+            }
+        });
+    }
+</script>
+</body>
+</html>

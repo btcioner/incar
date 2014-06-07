@@ -8,11 +8,11 @@
 var mysql = require('mysql');
 
 exports = module.exports = function(service) {
-    service.post.myTrialrun = myTrialrun;
+    service.post.myBooking = myBooking;
 
 }
 
-function myTrialrun(req, res) {
+function myBooking(req, res) {
     var postData = req.body;
     console.log(postData);
     var db = this.db;
@@ -21,29 +21,29 @@ function myTrialrun(req, res) {
     search(db, user,s4id,function(err, data) {
         if (err) { res.send(200,err); }
         else {
-            res.send(400,data);
+            res.send(data);
         }
     });
 }
 
 function search(db, user,s4id,callback) {
     var pool = db();
-    pool.query('select  bookingtime,seriesName,bookingStatus,ts   from  t_trialrun where wx_oid like ?;',
-        ['%'+user+':'+s4id+'%'],function(err,rows){
+    pool.query('select  id,booking_time,bookingStatus,ts   from  t_slot_booking where channel_specific like ?;',
+        ['%'+user+'@'+s4id+'%'],function(err,rows){
             if(err){callback(err);}
             else{
                 if(rows){
-                    var trialrun=new Array();
+                    var booking=new Array();
                     for(var i=0;i<rows.length;i++){
                         var data={};
-                        data.bookingtime=rows[i].bookingtime;
-                        data.seriesName=rows[i].seriesName;
-                        data.bookingStatus=rows[i].bookingStatus;
+                        data.id=rows[i].id;
+                        data.bookingtime=rows[i].booking_time;
+                        data.bookingStatus=rows[i].booking_status;
                         data.ts=rows[i].ts;
-                        trialrun.push(data);
+                        booking.push(data);
                     }
-                    callback(null,trialrun);
-                }else callback(new Error("Trialrun data error."));
+                    callback(null,booking);
+                }else callback(new Error("Booking data error."));
             }
         });
 }

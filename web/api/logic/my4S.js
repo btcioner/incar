@@ -101,7 +101,7 @@ my4S.trialrun=function(userName,sopenid, session, callback){
     var tpl = [
         '本店提供【<%=brandName%>】各系列车试乘试驾：\n\n',
 
-        '请点击进入详情进行预约\n\n'
+        '请点击进入,进行预约\n\n'
         ].join('');
     var compiled = ejs.compile(tpl);
     booking.getBrand(sopenid,function(err,result){
@@ -116,7 +116,9 @@ my4S.trialrun=function(userName,sopenid, session, callback){
                callback(null,compiled(data));
            }
     });
+my4s.my4sInfo=function(userName,sopenid, session, callback){
 
+}
     //session.textMsgReplierIndex = 'my4S.onTrialrun';
     //callback(null,compiled({}));
 }
