@@ -1,0 +1,145 @@
+<!DOCTYPE >
+<html>
+<head>
+    <title>我的预约</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script  src="../mscripts/jquery-1.7.1.min.js"></script>
+    <script  src="../mscripts/car.js"></script>
+
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
+    <script>
+        var obd_code;
+        var license;//车牌号
+        var s4id;//4s店openid
+        function init(){
+            user=getQueryString("user");
+           searchUser();
+           searchTrialrun();
+           searchBook();
+        }
+    </script>
+</head>
+
+<body onload="init()">
+<div id="wrap">
+    <!--pagename start--><div id="pagename"></div><!--pagename end-->
+    <!--containe_100 start--><div id="containe_100">
+    <!---表头 start--><div class="tablehead01">
+    <ul>
+        <li class="icon"><span>预&nbsp;&nbsp;约<br />项&nbsp;&nbsp;目</span></li>
+        <li><span>预&nbsp;&nbsp;约<br />车&nbsp;&nbsp;辆</span></li>
+        <li><span>提&nbsp;&nbsp;交<br />时&nbsp;&nbsp;间</span></li>
+        <li><span>预&nbsp;&nbsp;约<br />时&nbsp;&nbsp;间</span></li>
+        <li><span>当&nbsp;&nbsp;前<br />状&nbsp;&nbsp;态</span></li>
+        <li><span>当&nbsp;&nbsp;前<br />操&nbsp;&nbsp;作</span></li>
+    </ul>
+    <div class="clear"></div>
+</div><!---表头 end-->
+    <!--我的预约表体 start--><div>
+    <ul class="tablebox01">
+        <!--我的预约表行 start-->
+        <li>
+        <ul class="rows01">
+            <li class="icon"><span class="icon_4a"></span></li>
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span>14/05/29<br />10:30</span></li>
+            <li><span>14/05/30<br />10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+            <li><span class="text_04"><a href="###">取消</a></span></li>
+        </ul>
+    </li><!--我的预约表行 end-->
+        <!--我的预约表行 start--><li>
+        <ul class="rows02">
+            <li class="icon"><span class="icon_4b"></span></li>
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span>14/05/29<br />10:30</span></li>
+            <li><span>14/05/30<br />10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+            <li><span class="text_04"><a href="###">取消</a></span></li>
+        </ul>
+    </li><!--我的预约表行 end-->
+        <!--我的预约表行 start--><li>
+        <ul class="rows01">
+            <li class="icon"><span class="icon_5a"></span></li>
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span>14/05/29<br />10:30</span></li>
+            <li><span>14/05/30<br />10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+            <li><span class="text_04"><a href="###">取消</a></span></li>
+        </ul>
+    </li><!--我的预约表行 end-->
+        <!--我的预约表行 start--><li>
+        <ul class="rows02">
+            <li class="icon"><span class="icon_5b"></span></li>
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span>14/05/29<br />10:30</span></li>
+            <li><span>14/05/30<br />10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+            <li><span class="text_04"><a href="###">取消</a></span></li>
+        </ul>
+    </li><!--我的预约表行 end-->
+        <!--我的预约表行 start--><li>
+        <ul class="rows01">
+            <li class="icon"><span class="icon_4a"></span></li>
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span>14/05/29<br />10:30</span></li>
+            <li><span>14/05/30<br />10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+            <li><span class="text_04"><a href="###">取消</a></span></li>
+        </ul>
+    </li><!--我的预约表行 end-->
+        <!--我的预约表行 start--><li>
+        <ul class="rows02">
+            <li class="icon"><span class="icon_4b"></span></li>
+            <li><span class="text_04">鄂A88888</span></li>
+            <li><span>14/05/29<br />10:30</span></li>
+            <li><span>14/05/30<br />10:30</span></li>
+            <li><span class="text_04">新申请</span></li>
+            <li><span class="text_04"><a href="###">取消</a></span></li>
+        </ul>
+    </li><!--我的预约表行 end-->
+    </ul>
+    <div class="clear"></div>
+</div><!--我的预约表体 end-->
+</div><!--containe_100 end-->
+</div>
+<script>
+    function searchUser(){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/infoConfig",
+            data: {'user':user},
+            dataType: "json",
+            success: function (result,status) {
+                //alert("success");
+                obd_code=result.obd_code;
+                license=result.license;
+                s4id=result.s4id;
+              },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                //alert("您还未注册或未绑定OBD信息\n请先注册账号！");
+                //window.location="/msite/enroll.html?user="+user;
+            }
+        });
+    }
+    function searchTrialrun(){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/myTrialrun",
+            data: {'user':user,'s4id':s4id},
+            dataType: "json",
+            success: function (result,status) {
+
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+
+            }
+        });
+    }
+    function searchBook(){}
+</script>
+</body>
+</html>

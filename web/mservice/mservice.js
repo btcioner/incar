@@ -21,6 +21,8 @@ var brandService= require('./brandService');
 var getOpenidService= require('./getOpenidService');
 var trialrunService= require('./trialrunService');
 var seriesService= require('./seriesService');
+var myTrialrunService= require('./myTrialrunService');
+var myBookingService= require('./myBookingService');
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
 
 userService(mservice);
@@ -35,6 +37,8 @@ brandService(mservice);
 getOpenidService(mservice);
 trialrunService(mservice);
 seriesService(mservice);
+myTrialrunService(mservice);
+myBookingService(mservice);
 (function(service) {
 
     function entrance(req, res) {

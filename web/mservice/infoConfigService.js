@@ -43,7 +43,7 @@ function getAccountInfo(db, userName, callback) {
     var serverName = temp[1];
     userName = temp[0];
 
-    pool.query('select id,s4_id,name,nick,phone from t_account where wx_oid like ?;',["%"+userName+"%"], function(err, rows){
+    pool.query('select id,s4_id,wx_oid,name,nick,phone from t_account where wx_oid like ?;',["%"+userName+"%"], function(err, rows){
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
@@ -52,6 +52,7 @@ function getAccountInfo(db, userName, callback) {
                   report.name=rows[0].name;
                   report.phone=rows[0].phone;
                   report.nick=rows[0].nick;
+                  report.s4id=rows[0].wx_oid.split(':')[1];
                   callback(null,1);
               } else { callback(new Error('zero of multiple rows returned for one wx user from account-channel map.')); }
                     }

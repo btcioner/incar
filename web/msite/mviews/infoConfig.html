@@ -151,6 +151,7 @@
               else document.getElementById('seleEngine').innerHTML='自然吸气';
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
+                alert("您还未注册或未绑定OBD信息\n请先注册账号！");
                 window.location="/msite/enroll.html?user="+user;
             }
         });
