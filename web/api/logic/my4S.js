@@ -116,8 +116,15 @@ my4S.trialrun=function(userName,sopenid, session, callback){
                callback(null,compiled(data));
            }
     });
-my4s.my4sInfo=function(userName,sopenid, session, callback){
+my4S.my4sInfo=function(userName,sopenid, session, callback){
+    var tpl = [
+        '活动多多，优惠多多：\n\n',
 
+        '请点击进入查看详情\n\n'
+    ].join('');
+    var compiled = ejs.compile(tpl);
+    session.textMsgReplierIndex = 'my4S.on4sInfo';
+    callback(null, compiled({}));
 }
     //session.textMsgReplierIndex = 'my4S.onTrialrun';
     //callback(null,compiled({}));

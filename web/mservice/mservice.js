@@ -25,6 +25,7 @@ var myTrialrunService= require('./myTrialrunService');
 var myBookingService= require('./myBookingService');
 var cancelTrialrunService= require('./cancelTrialrunService');
 var myActivityService= require('./myActivityService');
+var my4sInfoService= require('./my4sInfoService');
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
 
 userService(mservice);
@@ -43,6 +44,7 @@ myTrialrunService(mservice);
 myBookingService(mservice);
 cancelTrialrunService(mservice);
 myActivityService(mservice);
+my4sInfoService(mservice);
 (function(service) {
 
     function entrance(req, res) {

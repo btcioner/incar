@@ -1,0 +1,99 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>活动列表页面</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script  src="../mscripts/jquery-1.7.1.min.js"></script>
+    <script  src="../mscripts/car.js"></script>
+
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
+    <script>
+        var user;
+        function init(){
+            user=getQueryString("user");
+            searchActivity();
+        }
+    </script>
+</head>
+
+<body onload="init()">
+<div id="wrap">
+    <!--main_wrap start-->
+    <div id="main_wrap">
+        <!--containe_100 start--><div id="containe_100">
+        <ul>
+            <!--活动项box01 start--><a href="###"><li>
+            <div class="listbox01">
+                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
+                <div class="icon_6a float"></div>
+                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开始啦。为期一个月的优惠活动开始啦......</p></div>
+                <div class="clear"></div>
+            </div>
+        </li></a><!--活动项box01 end-->
+            <!--活动项box02 start--><a href="###"><li>
+            <div class="listbox01">
+                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开始啦。为期一个月的优惠活动开始啦......</p></div>
+                <div class="icon_6b float"></div>
+                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
+                <div class="clear"></div>
+            </div>
+        </li></a><!--活动项box02 end-->
+            <!--活动项box01 start--><a href="###"><li>
+            <div class="listbox01">
+                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
+                <div class="icon_6a float"></div>
+                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开始啦。为期一个月的优惠活动开始啦......</p></div>
+                <div class="clear"></div>
+            </div>
+        </li></a><!--活动项box01 end-->
+            <!--活动项box02 start--><a href="###"><li>
+            <div class="listbox01">
+                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开始啦。为期一个月的优惠活动开始啦......</p></div>
+                <div class="icon_6b float"></div>
+                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
+                <div class="clear"></div>
+            </div>
+        </li></a><!--活动项box02 end-->
+            <!--活动项box01 start--><a href="###"><li>
+            <div class="listbox01">
+                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
+                <div class="icon_6a float"></div>
+                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开始啦。为期一个月的优惠活动开始啦......</p></div>
+                <div class="clear"></div>
+            </div>
+        </li></a><!--活动项box01 end-->
+            <!--活动项box02 start--><a href="###"><li>
+            <div class="listbox01">
+                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开.为期一个月的优惠活动开始啦始啦......</p></div>
+                <div class="icon_6b float"></div>
+                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
+                <div class="clear"></div>
+            </div>
+        </li></a><!--活动项box02 end-->
+        </ul>
+    </div><!--containe_100 end-->
+        <div class="w10"></div>
+    </div><!--main_wrap end-->
+</div>
+<script>
+    function searchActivity(){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/my4sInfo",
+            data: {'user':user},
+            dataType: "json",
+            success: function (result,status) {
+
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                //alert("您还未注册或未绑定OBD信息\n请先注册账号！");
+                //window.location="/msite/enroll.html?user="+user;
+            }
+        });
+    }
+</script>
+</body>
+</html>
