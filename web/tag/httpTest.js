@@ -14,7 +14,7 @@ var opt = {
     method: "GET",
     host: "localhost",
     port: 80,
-    path: "/tag/tagListCustom/",
+    path: "/tag/searchForUsers/1",
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)

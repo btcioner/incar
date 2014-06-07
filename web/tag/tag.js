@@ -230,12 +230,15 @@ exports.buildTags=function(req,res){
  */
 exports.tagList= function(req,res){
     var brand=req.params.brand;
+    var s4Id=req.params.s4Id;
     var sql="select g.id as groupId,g.name as groupName,g.type," +
         "t.id as tagId,t.name as tagName " +
         "from t_tag_group g " +
         "left join t_tag t on t.groupId=g.id " +
-        "where g.id>1 or g.id=1 and subStr(t.code,4,instr(t.code,'-')-4)=?";
-    dao.findBySql(sql,[brand],function(rows){
+        "where g.id in (2,3,4,5,6,7) " +
+        "or g.id=1 and subStr(t.code,4,instr(t.code,'-')-4)=? " +
+        "or g.id=8 and t.s4Id=? ";
+    dao.findBySql(sql,[brand,s4Id],function(rows){
         var list={};
         for(var i=0;i<rows.length;i++){
             var groupId=rows[i].groupId;
@@ -296,13 +299,14 @@ exports.tagListSystem= function(req,res){
  * 获得当前4S店所有标签大类及其标签的相关信息(自定义标签)
  */
 exports.tagListCustom= function(req,res){
+    var s4Id=req.params.s4Id;
     var sql="select g.id as groupId,g.name as groupName," +
         "t.id as tagId,t.name as tagName," +
         "t.createTime as createTime,t.creator as creator " +
         "from t_tag_group g " +
         "left join t_tag t on t.groupId=g.id " +
-        "where g.type>?";
-    dao.findBySql(sql,[0],function(rows){
+        "where g.type>? and t.s4Id=?";
+    dao.findBySql(sql,[0,s4Id],function(rows){
         var list={};
         for(var i=0;i<rows.length;i++){
             var groupId=rows[i].groupId;
@@ -331,6 +335,7 @@ exports.tagListCustom= function(req,res){
  * 通过标签及用户信息查询
  */
 exports.searchForUsers= function(req,res){
+    var s4Id=req.params.s4Id;
     var body=req.body;
     var tagId=body.tagId;
     var nickName=body.nickName;
@@ -341,14 +346,16 @@ exports.searchForUsers= function(req,res){
     var pageSize=parseInt(body['pageSize']);
     var sql="select distinct c.id as carId,c.obd_code as obdCode," +
         "c.series as series,c.brand as brand," +
+        "d.series as seriesName,d.brand as brandName," +
         "c.license as license,u.id as accountId," +
         "u.nick as nickName,u.phone as phone " +
         "from t_car c " +
         "left join t_car_user cu on cu.car_id=c.id " +
         "left join t_account u on cu.acc_id=u.id " +
         "left join t_car_tag ct on ct.car_id=c.id " +
-        "where 1=1";
-    var args=[];
+        "left join t_car_dictionary d on d.brandCode=c.brand and d.seriesCode=c.series " +
+        "where c.s4_id=?";
+    var args=[s4Id];
     if(tagId){
         sql+=" and ct.tag_id=?";
         args.push(tagId);
@@ -438,11 +445,13 @@ exports.markTags= function(req,res){
  * 添加自定义标签
  */
 exports.addTag= function(req,res){
-    var groupId=req.params['groupId'];
-    var tagName=req.params['tagName'];
-    var description=req.params['description'];
-    var code=req.params['code'];
-    var active=req.params['active'];
+    var body=req.body;
+    var s4Id=body['s4Id'];
+    var groupId=body['groupId'];
+    var tagName=body['tagName'];
+    var description=body['description'];
+    var code=body['code'];
+    var active=body['active'];
     if(!groupId)groupId=8;
     if(!description)description='';
     if(!code)code='';
