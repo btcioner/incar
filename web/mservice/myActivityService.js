@@ -17,12 +17,11 @@ function myActivity(req, res) {
     var user=postData.user;
     var acc_id=postData.acc_id;
     var s4id=postData.s4_id;
-    console.log(user+"---"+acc_id+"----"+s4id);
-    search(db,acc_id,s4id,function(err, data) {
+    search(db,acc_id,s4id,function(err, result) {
         if (err) { res.send(200,err); }
         else {
-            console.log(data);
-            res.send(data);
+            console.log(result);
+            res.send(result);
         }
     });
 }
@@ -37,9 +36,7 @@ function search(db,acc_id,s4id,callback) {
                     var myActData=new Array();
                     for(var i=0;i<rows.length;i++){
                         ActivityInfo(db,rows[i].act_id,s4id,rows[i].status,function(err,data){
-                            //console.log(data);
                             myActData.push(data);
-                            console.log(myActData);
                         });
                     }
                    callback(null,myActData);
