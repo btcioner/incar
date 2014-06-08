@@ -178,6 +178,7 @@ var menuObject={
             }]
 };
 wxMenu.defineTasks = function(tickTasks, callback) {
+    console.log("menu begins");
     menuBuilder(tickTasks, menuObject, callback);
 };
 wxMenu.textMsgRepliers = [];
