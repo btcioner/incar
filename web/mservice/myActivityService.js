@@ -10,7 +10,7 @@ exports = module.exports = function(service) {
     service.post.myActivity = myActivity;
 
 }
-var myActData=new Array();
+
 function myActivity(req, res) {
     var postData = req.body;
     var db = this.db;
@@ -26,13 +26,14 @@ function myActivity(req, res) {
 }
 
 function search(db,acc_id,s4id,res,callback) {
+    var myActData=new Array();
     var pool = db();
     pool.query('select act_id,status  from  t_activity_member where cust_id = ?;',
         [acc_id],function(err,rows){
             if(err){callback(err);}
             else{
                 if(rows){
-                    for(var i=0;i<rows.length;i++){
+                   for(var i=0;i<rows.length;i++){
                         ActivityInfo(db,rows[i].act_id,s4id,rows[i].status,function(err,data){
                             myActData.push(data);
                             });
