@@ -38,10 +38,11 @@ function search(db,acc_id,s4id,callback) {
                     for(var i=0;i<rows.length;i++){
                         ActivityInfo(db,rows[i].act_id,s4id,rows[i].status,function(err,data){
                             //console.log(data);
-                            myActData[i]=data;
+                            myActData.push(data);
+                            console.log(myActData);
                         });
                     }
-                    callback(null,myActData);
+                   callback(null,myActData);
                 }else callback(new Error("t_activity_member data error."));
             }
         });
