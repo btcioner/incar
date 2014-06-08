@@ -13,7 +13,7 @@ exports = module.exports = function(service) {
 
 function myActivity(req, res) {
     var postData = req.body;
-    console.log(postData);
+    console.log("postdata:"+postData);
     var db = this.db;
     var user=postData.user;
     var acc_id=postData.acc_id;
