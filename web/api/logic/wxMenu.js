@@ -100,7 +100,7 @@ wxMenu.defineWXMenu = function(appid, appsecret){
         });
     };
 };
-var menuObject={
+/*var menuObject={
     "button":
         [
             {
@@ -176,7 +176,7 @@ var menuObject={
                         }
                     ]
             }]
-};
+};*/
 wxMenu.defineTasks = function(tickTasks, callback) {
     console.log("menu begins");
     menuBuilder(tickTasks, menuObject, callback);
