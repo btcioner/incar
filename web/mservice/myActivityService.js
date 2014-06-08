@@ -17,7 +17,7 @@ function myActivity(req, res) {
     var user=postData.user;
     var acc_id=postData.acc_id;
     var s4id=postData.s4_id;
-    search(db,acc_id,s4id,res,function(err, result) {
+    search(db,acc_id,s4id,function(err, result) {
         if (err) { res.send(200,err); }
         else {
             res.send(result);
@@ -25,8 +25,8 @@ function myActivity(req, res) {
     });
 }
 
-function search(db,acc_id,s4id,res,callback) {
-    var myActData=new Array();
+function search(db,acc_id,s4id,callback) {
+    var myActData=new Array(10);
     var pool = db();
     pool.query('select act_id,status  from  t_activity_member where cust_id = ?;',
         [acc_id],function(err,rows){
