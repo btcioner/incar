@@ -13,11 +13,11 @@ exports = module.exports = function(service) {
 
 function myActivity(req, res) {
     var postData = req.body;
-    console.log("postdata:"+postData);
     var db = this.db;
     var user=postData.user;
     var acc_id=postData.acc_id;
     var s4id=postData.s4_id;
+    console.log(user+"---"+acc_id+"----"+s4id);
     search(db,acc_id,function(err, data) {
         if (err) { res.send(200,err); }
         else {
