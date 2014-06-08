@@ -100,7 +100,7 @@
             data: {'user':user},
             dataType: "json",
             success: function (result,status) {
-                alert(result.id);
+                //alert(result.id);
                 acc_id=result.id;
                 obd_code=result.obd_code;
                 s4_openid=result.s4_openid;
@@ -113,6 +113,7 @@
         });
     }
     function searchActivity(){
+        alert(s4_id+":"+acc_id);
         $.ajax({
             type: "POST",
             url: "/mservice/myActivity",
