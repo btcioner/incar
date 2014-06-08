@@ -37,6 +37,7 @@ function search(db,acc_id,s4id,callback) {
                     var myActData=new Array();
                     for(var i=0;i<rows.length;i++){
                         ActivityInfo(db,rows[i].act_id,s4id,rows[i].status,function(err,data){
+                            console.log(data);
                             myActData.push(data);
                         });
                     }
@@ -58,6 +59,7 @@ function ActivityInfo(db,act_id,s4id,status,callback){
                     act_data.status=rows[0].status;
                     act_data.tm_announce=rows[0].tm_announce;
                     act_data.myStatus=status;
+                    console.log(act_data.title);
                    callback(null,act_data);
                 }else callback(new Error("t_activity data error."));
             }
