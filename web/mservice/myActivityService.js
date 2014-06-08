@@ -10,7 +10,7 @@ exports = module.exports = function(service) {
     service.post.myActivity = myActivity;
 
 }
-
+var myActData=new Array();
 function myActivity(req, res) {
     var postData = req.body;
     var db = this.db;
@@ -32,13 +32,12 @@ function search(db,acc_id,s4id,res,callback) {
             if(err){callback(err);}
             else{
                 if(rows){
-                    var myActData=new Array();
                     for(var i=0;i<rows.length;i++){
                         ActivityInfo(db,rows[i].act_id,s4id,rows[i].status,function(err,data){
                             myActData.push(data);
-                            if(i==rows.length-1) callback(null,myActData);
-                        });
+                            });
                     }
+                    callback(null,myActData);
                 }else callback(new Error("t_activity_member data error."));
             }
         });
