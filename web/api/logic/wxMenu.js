@@ -75,12 +75,12 @@ wxMenu.defineWXMenu = function(appid, appsecret){
                                 {
                                     "type":"view",
                                     "name":"我的活动",
-                                    "url":"http://linuxsrv.winphone.us/shopping"
+                                    "url":"http://linuxsrv.winphone.us/msite/getCodeForActivity.html"
                                 },
                                 {
                                     "type":"view",
                                     "name":"我的预约",
-                                    "url":"http://linuxsrv.winphone.us/promotions"
+                                    "url":"http://linuxsrv.winphone.us/msite/getCodeForBook.html"
                                 },
                                 {
                                     "type":"view",
