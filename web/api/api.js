@@ -95,7 +95,6 @@ api.onEventMsg = function(message, req, res, next) {
                 res.send(' ');
             }
             break;
-        default : console.log("undefind menu click !!!!!!!!!!");
     }
 
 };
