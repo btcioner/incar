@@ -99,8 +99,8 @@
             url: "/mservice/infoConfig",
             data: {'user':user},
             dataType: "json",
-            success: function (status,result) {
-                alert(result);
+            success: function (result,status) {
+                alert(result.id);
                 acc_id=result.id;
                 obd_code=result.obd_code;
                 s4_openid=result.s4_openid;
