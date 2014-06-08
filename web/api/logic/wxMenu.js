@@ -190,7 +190,6 @@ wxMenu.onClick = [];
 wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, session, next) {
     myCar.myDriveReport(message.FromUserName, message.ToUserName, function(err, reportContent){
         if (err) {
-            // error handling ...
             next(err);
         }
         else {
