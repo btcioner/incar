@@ -39,7 +39,7 @@ function search(db,acc_id,s4id,res,callback) {
                             console.log(myActData);
                         });
                     }
-                    console.log("final data:"+myActData[0]);
+                    console.log("final data:"+myActData);
                    callback(null,myActData);
                 }else callback(new Error("t_activity_member data error."));
             }
