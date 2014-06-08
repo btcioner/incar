@@ -21,6 +21,7 @@ function myActivity(req, res) {
     search(db,acc_id,function(err, data) {
         if (err) { res.send(200,err); }
         else {
+            console.log(data);
             res.send(data);
         }
     });

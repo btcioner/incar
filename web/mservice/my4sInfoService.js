@@ -30,7 +30,7 @@ function search(db,sopenid,callback) {
     get4s_id(db,sopenid,function(err,result){
         if(err) callback(err);
         else{
-            pool.query('select id,title,status,tm_start,tm_end  from t_activity where s4_id=? and (status=2 or status=3 or status=4 or status=5 order by tm_announce desc);',[result],function(err,rows){
+            pool.query('select id,title,brief,status,tm_start,tm_end  from t_activity where s4_id=? and (status=2 or status=3 or status=4 or status=5 order by tm_announce desc);',[result],function(err,rows){
                 if(err)callback(err);
                 else{
                     if(rows){
@@ -39,6 +39,7 @@ function search(db,sopenid,callback) {
                             var actData={};
                             actData.id=rows[i].id;
                             actData.title=rows[i].title;
+                            actData.brief=rows[i].brief;
                             actData.status=rows[i].status;
                             actData.tm_start=rows[i].tm_start;
                             actData.tm_end=rows[i].tm_end;
