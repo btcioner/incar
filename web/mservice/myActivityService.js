@@ -36,10 +36,10 @@ function search(db,acc_id,s4id,res,callback) {
                     for(var i=0;i<rows.length;i++){
                         ActivityInfo(db,rows[i].act_id,s4id,rows[i].status,function(err,data){
                             myActData.push(data);
+                            console.log(myActData);
                         });
                     }
-                    console.log(myActData);
-                    res.send(myActData);
+                    console.log("final data:"+myActData[0]);
                    callback(null,myActData);
                 }else callback(new Error("t_activity_member data error."));
             }
