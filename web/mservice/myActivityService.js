@@ -20,7 +20,7 @@ function myActivity(req, res) {
     search(db,acc_id,s4id,function(err, result) {
         if (err) { res.send(200,err); }
         else {
-            console.log(result);
+            console.log("data:"+result);
             res.send(result);
         }
     });
