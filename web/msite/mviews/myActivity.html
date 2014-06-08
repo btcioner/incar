@@ -104,7 +104,7 @@
                 acc_id=result.id;
                 obd_code=result.obd_code;
                 s4_openid=result.s4_openid;
-                s4_id=result.s4id;
+                s4_id=result.s4_id;
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 alert("您还未注册或未绑定OBD信息\n请先注册账号！");
@@ -116,7 +116,7 @@
         $.ajax({
             type: "POST",
             url: "/mservice/myActivity",
-            data: {'user':user,'s4_id':s4_id,"acc_id":acc_id},
+            data: {'user':user,'s4_id':s4_id,'acc_id':acc_id},
             dataType: "json",
             success: function (result,status) {
                 var strTemp="";
