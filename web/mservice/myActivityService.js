@@ -18,7 +18,7 @@ function myActivity(req, res) {
     var acc_id=postData.acc_id;
     var s4id=postData.s4_id;
     console.log(user+"---"+acc_id+"----"+s4id);
-    search(db,acc_id,function(err, data) {
+    search(db,acc_id,s4id,function(err, data) {
         if (err) { res.send(200,err); }
         else {
             console.log(data);
@@ -27,7 +27,7 @@ function myActivity(req, res) {
     });
 }
 
-function search(db,acc_id,callback) {
+function search(db,acc_id,s4id,callback) {
     var pool = db();
     pool.query('select act_id,status  from  t_activity_member where cust_id = ?;',
         [acc_id],function(err,rows){
@@ -36,7 +36,7 @@ function search(db,acc_id,callback) {
                 if(rows){
                     var myActData=new Array();
                     for(var i=0;i<rows.length;i++){
-                        ActivityInfo(db,rows[i].act_id,rows[i].status,function(err,data){
+                        ActivityInfo(db,rows[i].act_id,s4id,rows[i].status,function(err,data){
                             myActData.push(data);
                         });
                     }
@@ -45,7 +45,7 @@ function search(db,acc_id,callback) {
             }
         });
 }
-function ActivityInfo(db,act_id,status,callback){
+function ActivityInfo(db,act_id,s4id,status,callback){
     var pool = db();
     pool.query('select id,title,status,tm_announce  from  t_activity where id = ? and s4_id=? order by tm_announce desc;',
         [act_id,s4id],function(err,rows){
