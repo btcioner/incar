@@ -427,18 +427,20 @@ exports.getTagsByCarId= function(req,res){
  * 给车打标签
  */
 exports.markTags= function(req,res){
-    var carId=req.params['carId'];
-    var tags=req.params['tags'].split(",");
+    var carId=req.body['carId'];
+    var tagStr=req.body['tags'];
+    var tags=tagStr?tagStr.split(","):[];
     var sqlList=["delete from t_car_tag where car_id=? and tag_id in(" +
-        "select t.id from t_tag t inner join t_tag_group tg on tg.id=t.groupId " +
-        "where tg.type>1)"];
+        "select t.id from t_tag t inner join t_tag_group tg on tg.id=t.groupId and tg.type>0)"];
     var args=[[carId]];
     for(var i=0;i<tags.length;i++){
         sqlList.push("insert into t_car_tag set ?");
         args.push({car_id:carId,tag_id:tags[i]});
     }
+    console.log(sqlList);
+    console.log(args);
     dao.executeBySql(sqlList,args,function(){
-        console.log("OK");
+        res.json({status:'success'});
     });
 }
 /**
