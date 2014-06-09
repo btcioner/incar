@@ -24,25 +24,35 @@ function s_customerCtrl($scope, $http,$routeParams){
     $scope.queryPhone = "";
     $scope.car_license = "";
     $scope.obd_code="";
-
-
-
+    $scope.label_name="";
+    //按照传过来的参数
     if($routeParams.id!=null)
     {
-//        changeView(2);
-//        GetFirstPageInfo();//get fist driveData for first page；
-        if($routeParams.id == "add")
+        if($routeParams.id == "X")
         {
+            getCustomTagList();
             changeView(3);
         }
         else{
-           // searchForUsers($routeParams.id);
             $scope.queryString = "&tagId="+$routeParams.id;
         }
     }
     else{
          //  $scope.queryString = "&org_id="+ $.cookie("s4_id");
     }
+
+    //获取自定义标签列表
+    function getCustomTagList()
+    {
+        $scope.tips="";
+        $http.get('/tag/tagListCustom/').success(function(data){
+            $scope.customTags = data[0].tags;
+            PagingInfo( $scope.customTags.length);
+        }).error(function(data){
+                alert("请求无响应");
+         })
+    }
+
 
     //筛选框初始值 todo--要从数据库读出来
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
@@ -68,13 +78,11 @@ function s_customerCtrl($scope, $http,$routeParams){
             }
         }).error(function(data){
                 alert("请求无响应");
-            })
+        })
         $http.get(baseurl+'brand').success(function(data){
             $scope.carBrand = data.brands;
         });
     }
-
-
 
     //查找品牌
     $scope.changeBrand = function(brand_id)
@@ -267,10 +275,41 @@ function s_customerCtrl($scope, $http,$routeParams){
                 getDriveList();
                 break;
             case 6:
-
+                getCustomTagList();
+                $http.get('/tag/getTagsByCarId/'+$scope.cusDetail.carId).success(function(data){
+                   $scope.systemTag = data.systemTag;
+                   $scope.customTag = data.customTag;
+                    for(var i=0;i<$scope.customTags.length;i++)
+                    {
+                        var flag = false;
+                        for(var j=0;j<$scope.customTag.length;j++)
+                        {
+                            if($scope.customTags[i].tagId = $scope.customTag[j].tagId)
+                             flag=true;
+                        }
+                        if(flag) $scope.customTags[i].tagFlag = true;
+                        else  $scope.customTags[i].tagFlag = "";
+                    }
+                }).error(function(data){
+                        alert("请求无响应");
+                    })
                 break;
         }
     }
+   //给车打标签
+    $scope.markTags = function(tagId)
+    {
+        $scope.postData={"carId":$scope.cusDetail.carId,"tags":tagId};
+        $http.put('/tag/markTags/',$scope.postData).success(function(data){
+             if(data.status =="success")
+             {
+
+             }
+        }).error(function(data){
+                alert("请求无响应");
+            })
+    }
+
    //查询行车数据
     function getDriveList()
     {
@@ -433,6 +472,43 @@ function s_customerCtrl($scope, $http,$routeParams){
     }
     $scope.confirmAddCustomLabel = function()
     {
+        $scope.postData = {"tagName":$scope.label_name};
+        $http.post('/tag/addTag/',$scope.postData).success(function(data){
+               if(data.status == "success")
+               {
+                   alert("添加成功!");
+               }
+                else
+                {
+                   alert("添加失败！");
+                }
+               getCustomTagList();
+        }).error(function(data){
+                alert("请求无响应");
+        })
        changeView(3);
     }
+
+    //删除自定义标签
+    $scope.delCustomerTag = function(id,index)
+    {
+        if(confirm("确定要删除吗？")){
+            $http.delete("/tag/delTag/"+id).success(function(data){
+                if(data.status == "success")
+                {
+                    alert("删除成功！");
+                    $scope.customTags.splice(index, 1);
+                    PagingInfo( $scope.customTags.length);
+                }
+                else{
+                    alert(data.status);
+                }
+            }).error(function(data){
+                    alert("请求没响应");
+                });
+        }
+    }
+
+
+
 }
