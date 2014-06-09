@@ -467,7 +467,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     }
     $scope.confirmAddCustomLabel = function()
     {
-        $scope.postData = {"tagName":$scope.label_name,"s4Id": $.cookie("s4_id")};
+        $scope.postData = {"tagName":$scope.label_name,"s4Id": $.cookie("s4_id"),creator: $.cookie("nick")};
         $http.post('/tag/addTag/',$scope.postData).success(function(data){
                if(data.status == "success")
                {

@@ -37,7 +37,7 @@ app.controller("loginCtrl", function($scope, $http){
                     $.cookie("nick",data.staff.nick);
                     $.cookie("s4_id",data.staff.s4_id);
                     $.cookie("brand_id",data.staff.brand_id);
-               //     window.location.href='/4sStore/index.html';
+                    window.location.href='/4sStore/index.html';
                 }
                 else{
                   $.cookie("nick",data.staff.nick);
