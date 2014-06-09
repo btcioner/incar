@@ -62,10 +62,11 @@ angular.module("SCustomerApp", [
 }).controller("customerCtrl",function($scope,$http){
         $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
         //获取所有客户标签接口
+        $scope.randomTime = new Date();
         getAllTags();
         function getAllTags()
         {
-            $http.get("/tag/tagListSystem/8").success(function(data){
+            $http.get("/tag/tagListSystem/"+ $.cookie("brand_id")).success(function(data){
                 $scope.tagsGroup = data;
                 for(var i=0;i<$scope.tagsGroup.length;i++)
                 {
@@ -80,7 +81,7 @@ angular.module("SCustomerApp", [
                     alert("请求无响应");
                 });
                //获取自定义标签
-                $http.get('/tag/tagListCustom/').success(function(data){
+                $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")).success(function(data){
                     $scope.customTags = data[0].tags;
                 }).error(function(data){
                         alert("请求无响应");

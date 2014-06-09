@@ -45,7 +45,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     function getCustomTagList()
     {
         $scope.tips="";
-        $http.get('/tag/tagListCustom/').success(function(data){
+        $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")).success(function(data){
             $scope.customTags = data[0].tags;
             PagingInfo( $scope.customTags.length);
         }).error(function(data){
@@ -61,7 +61,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get('/tag/searchForUsers?page='+$scope.currentPage+'&pageSize='+$scope.pageRecord+$scope.queryString).success(function(data){
+        $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+'?page='+$scope.currentPage+'&pageSize='+$scope.pageRecord+$scope.queryString).success(function(data){
             if(data.status == "success")
             {
                 if(data.data.length == 0)
@@ -79,25 +79,20 @@ function s_customerCtrl($scope, $http,$routeParams){
         }).error(function(data){
                 alert("请求无响应");
         })
-        $http.get(baseurl+'brand').success(function(data){
-            $scope.carBrand = data.brands;
-        });
-    }
 
-    //查找品牌
-    $scope.changeBrand = function(brand_id)
-    {
-        $http.get(baseurl+'brand/'+brand_id+'/series').success(function(data){
+        $http.get(baseurl+'brand/'+ $.cookie("brand_id")+'/series').success(function(data){
             $scope.carSeries = data.series;
         });
     }
 
+
+
     //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
-        $scope.queryString = "&org_id="+ $.cookie("s4_id");
         if($scope.city_name=="请选择")$scope.city_name = "";
-        $scope.queryString = $scope.queryString + "&org_city="+$scope.city_name+"&brand_id="+$scope.brandCode+"&series_id="+$scope.seriesCode+"&acc_nick="+$scope.queryNick+"&acc_phone="+$scope.queryPhone+"&license="+$scope.car_license;
+        //"&series_id="+$scope.seriesCode+
+        $scope.queryString = "nickName="+$scope.queryNick+"&userPhone="+$scope.queryPhone+"&license="+$scope.car_license;
         GetFirstPageInfo();
     }
 
@@ -472,7 +467,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     }
     $scope.confirmAddCustomLabel = function()
     {
-        $scope.postData = {"tagName":$scope.label_name};
+        $scope.postData = {"tagName":$scope.label_name,"s4Id": $.cookie("s4_id")};
         $http.post('/tag/addTag/',$scope.postData).success(function(data){
                if(data.status == "success")
                {

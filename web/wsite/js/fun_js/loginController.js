@@ -26,13 +26,23 @@ app.controller("loginCtrl", function($scope, $http){
         }
         //在web service进行验证
         var sha1_password =hex_sha1($scope.password);//SHA1进行加密
+
         $scope.postData = {name:$scope.username1,pwd:sha1_password,agent:"web"};
         $http.post(baseurl+'Login', $scope.postData)
             .success(function(data){
             if(data.status == "ok" && data.staff != null)
             {
-                $.cookie("nick",data.staff.nick);
-                window.location.href='/admin/index.html';
+                //根据登录名判断是否是4s还是英卡
+                if($scope.username1.indexOf("@")>0){
+                    $.cookie("nick",data.staff.nick);
+                    $.cookie("s4_id",data.staff.s4_id);
+                    $.cookie("brand_id",data.staff.brand_id);
+               //     window.location.href='/4sStore/index.html';
+                }
+                else{
+                  $.cookie("nick",data.staff.nick);
+                  window.location.href='/admin/index.html';
+                }
             }
             else
             {
