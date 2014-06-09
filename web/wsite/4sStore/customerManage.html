@@ -71,9 +71,10 @@
                     </div>
                     <div class="collapse accordion-body" id="collapseG_X">
                         <div class="widget-content" style="text-align: right;padding: 0">
-                            <a class="btn btn-info" style="width: 100%;" href="#collapseG_X/add">标签管理</a>
-                            <button class="btn btn-info" style="width: 100%;">自定义标签1</button>
-                            <button class="btn btn-info" style="width: 100%;">自定义标签2</button>
+                            <a class="btn btn-info" style="width: 100%;" href="#collapseG_X/X">标签管理</a>
+                        </div>
+                        <div class="widget-content" style="text-align: right;padding: 0" ng-repeat="ctt in customTags">
+                            <a class="btn btn-info" style="width: 100%;" href="#collapseG_X/{{ctt.tagId}}">{{ctt.tagName}}</a>
                         </div>
                     </div>
                 </div>

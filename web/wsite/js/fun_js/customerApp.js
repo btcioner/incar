@@ -65,7 +65,7 @@ angular.module("SCustomerApp", [
         getAllTags();
         function getAllTags()
         {
-            $http.get("/tag/tagList/8").success(function(data){
+            $http.get("/tag/tagListSystem/8").success(function(data){
                 $scope.tagsGroup = data;
                 for(var i=0;i<$scope.tagsGroup.length;i++)
                 {
@@ -79,6 +79,12 @@ angular.module("SCustomerApp", [
             }).error(function(data){
                     alert("请求无响应");
                 });
+               //获取自定义标签
+                $http.get('/tag/tagListCustom/').success(function(data){
+                    $scope.customTags = data[0].tags;
+                }).error(function(data){
+                        alert("请求无响应");
+                })
         }
     });
 

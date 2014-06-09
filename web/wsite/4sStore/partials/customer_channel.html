@@ -347,25 +347,21 @@
                     </div>
                     </div>
                     <div id="tab6" class="tab-pane">
+
                            <div class="controls">
                                系统标签：
+                               <span  ng-repeat="st in systemTag">
                                 <input type="checkbox" name="radios" checked disabled />
-                                微信用户
-                                <input type="checkbox" name="radios" checked disabled/>
-                                家用
-                                <input type="checkbox" name="radios" checked disabled />
-                                上班时
-                               <input type="checkbox" name="radios" checked disabled />
-                                频率高
-                               <input type="checkbox" name="radios" checked disabled />
-                                稳健型
+                                {{st.tagName}}
+                               </span>
                            </div>
-                            <div class="controls" style="margin-top:20px;">
+
+                            <div class="controls" style="margin-top:20px;" >
                                 自定义标签：
-                                <input type="checkbox" name="radios" checked />
-                                自定义标签1
-                                <input type="checkbox" name="radios" />
-                                自定义标签2
+                                <span ng-repeat ="ct in customTags">
+                                 <input type="checkbox" name="radios" checked ng-model="ct.tagFlag" ng-change="markTags(ct.tagId);"/>
+                                 {{ct.tagName}}
+                                </span>
                             </div>
                      </div>
                    </div>
@@ -466,20 +462,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="gradeX" >
-                            <td style="text-align: center">自定义标签1</td>
-                            <td style="text-align: center">2014-05-23 14:36</td>
-                            <td style="text-align: center">李雷</td>
+                        <tr class="gradeX" ng-repeat="ctT in customTags">
+                            <td style="text-align: center">{{ctT.tagName}}</td>
+                            <td style="text-align: center">{{ctT.createTime}}</td>
+                            <td style="text-align: center">{{ctT.creator}}</td>
                             <td style="text-align: center">
-                                <a class="btn btn-danger btn-mini" >删除</a>
-                            </td>
-                        </tr>
-                        <tr class="gradeX">
-                            <td style="text-align: center">自定义标签2</td>
-                            <td style="text-align: center">2014-05-23 14:36</td>
-                            <td style="text-align: center">李雷</td>
-                            <td style="text-align: center">
-                                <a class="btn btn-danger btn-mini" >删除</a>
+                                <button class="btn btn-danger btn-mini" ng-click="delCustomerTag(ctT.tagId,$index)" >删除</button>
                             </td>
                         </tr>
                         </tbody>
@@ -494,7 +482,7 @@
                 </div>
             </div>
             <!--自定义标签管理 end-->
-            <!--添加节油大赛 start-->
+            <!--添加自定义标签 start-->
             <div class="widget-box" ng-show="labelAddDiv">
                 <div class="widget-title">
                     <span class="icon"><i class="icon-th"></i></span>
@@ -515,7 +503,7 @@
                     </form>
                 </div>
             </div>
-            <!--添加节油大赛 end-->
+            <!--添加自定义标签 end-->
         <!--</div>-->
     <!--</div>-->
 <!--</div>-->
