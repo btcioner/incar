@@ -3,11 +3,27 @@
 var http = require("http");
 var dataSet = JSON.stringify({obdInfo:{
     0xFE05:'lahmyyc2014.vicp.cc',
-    0xFE06:48928
+    0xFE06:48928,
+    0xFE07:'lahmyyc2014.vicp.cc',
+    0xFE08:48928,
+    0xFE09:'lahmyyc2014.vicp.cc',
+    0xFE0A:48928,
+    0xFE0B:'lahmyyc2014.vicp.cc',
+    0xFE0C:48928,
+    0xFE1C:'lahmyyc2014.vicp.cc',
+    0xFE1D:48928
 }});
 var dataGet = JSON.stringify({obdInfo:{
     0xFE05:'lahmyyc2014.vicp.cc',
-    0xFE06:48928
+    0xFE06:48928,
+    0xFE07:'lahmyyc2014.vicp.cc',
+    0xFE08:48928,
+    0xFE09:'lahmyyc2014.vicp.cc',
+    0xFE0A:48928,
+    0xFE0B:'lahmyyc2014.vicp.cc',
+    0xFE0C:48928,
+    0xFE1C:'lahmyyc2014.vicp.cc',
+    0xFE1D:48928
 }});
 var data=dataSet;
 var opt = {

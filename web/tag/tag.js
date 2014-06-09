@@ -454,12 +454,24 @@ exports.addTag= function(req,res){
     var description=body['description'];
     var code=body['code'];
     var active=body['active'];
+    var createTime=new Date();
+    var creator=body['creator'];
     if(!groupId)groupId=8;
     if(!description)description='';
     if(!code)code='';
     if(!active)active=1;
+    if(!creator)creator='';
     var sql="insert into t_tag set ?";
-    var args={groupId:groupId,name:tagName,description:description,code:code,active:active};
+    var args={
+        s4Id:s4Id,
+        groupId:groupId,
+        name:tagName,
+        description:description,
+        code:code,
+        active:active,
+        createTime:createTime,
+        creator:creator
+    };
     dao.insertBySql(sql,args,function(info,tag){
         tag.id=info.insertId;
         console.log("成功添加标签:"+JSON.stringify(tag));

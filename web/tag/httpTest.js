@@ -5,14 +5,21 @@
 
 var http = require("http");
 var dataSet = JSON.stringify({
-    carId:7
+    s4Id:1,
+    groupId:8,
+    tagName:'店长亲戚',
+    description:'你懂的',
+    code:'cus2',
+    active:1,
+    createTime:new Date(),
+    creator:'僵梨'
 });
 var data=dataSet;
 var opt = {
-    method: "PUT",
+    method: "POST",
     host: "localhost",
     port: 80,
-    path: "/tag/markTags",
+    path: "/tag/addTag",
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)
