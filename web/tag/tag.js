@@ -386,12 +386,17 @@ exports.searchForUsers= function(req,res){
         var sqlCount="select count(t.carId) as rowCount from ("+sql+") as t";
         var sqlPage="select * from ("+sql+") as t limit ?,?";
         dao.findBySql(sqlCount,args,function(rows){
-            var rowCount=rows[0]['rowCount'];
-            args.push((page-1)*pageSize);
-            args.push(pageSize);
-            dao.findBySql(sqlPage,args,function(rows){
-                res.json({status:'success',rowCount:rowCount,data:rows});
-            });
+            if(rows.length){
+                var rowCount=rows[0]['rowCount'];
+                args.push((page-1)*pageSize);
+                args.push(pageSize);
+                dao.findBySql(sqlPage,args,function(rows){
+                    res.json({status:'success',rowCount:rowCount,data:rows});
+                });
+            }
+            else{
+                res.json({status:'success',rowCount:0,data:[]});
+            }
         });
     }
     else{
