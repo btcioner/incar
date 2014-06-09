@@ -336,14 +336,16 @@ exports.tagListCustom= function(req,res){
  */
 exports.searchForUsers= function(req,res){
     var s4Id=req.params.s4Id;
-    var body=req.body;
-    var tagId=body.tagId;
-    var nickName=body.nickName;
-    var userPhone=body.userPhone;
-    var license=body.license;
-    var brand=body.brand;
-    var page=parseInt(body.page);
-    var pageSize=parseInt(body['pageSize']);
+    var query=req.query;
+    var tagId=query.tagId;
+    var nickName=query.nickName;
+    var userPhone=query.userPhone;
+    var license=query.license;
+    var brand=query.brand;
+    var series=query.series;
+    var page=parseInt(query.page);
+    var pageSize=parseInt(query['pageSize']);
+
     var sql="select distinct c.id as carId,c.obd_code as obdCode," +
         "c.series as series,c.brand as brand," +
         "d.series as seriesName,d.brand as brandName," +
@@ -375,6 +377,10 @@ exports.searchForUsers= function(req,res){
     if(brand){
         sql+=" and c.brand=?";
         args.push(brand);
+    }
+    if(series){
+        sql+=" and c.series=?";
+        args.push(series);
     }
     if(page&&pageSize){
         var sqlCount="select count(t.carId) as rowCount from ("+sql+") as t";

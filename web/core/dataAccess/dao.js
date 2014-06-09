@@ -25,6 +25,7 @@ exports.get1603Default=function(){
     };
 };
 exports.findBySql=function(sql,args,callback){
+    console.log("开始查询："+sql);
     var connection=db().getConnection(function(err,connection){
         if(err){
             console.log("获得connection出现错误:"+err);
