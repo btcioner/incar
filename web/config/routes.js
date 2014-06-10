@@ -106,6 +106,8 @@ module.exports = function(app) {
     app.get('/wservice/organization/:org_id/care', wservice.GetCareInOrg);
     app.get('/wservice/organization/:org_id/care_tel_rec', wservice.GetCareTeleRecordInOrg);
 
+    app.get('/wservice/4s/:s4_id/drivetry', wservice.GetTryIn4S);
+
     app.get('/wservice/manual', wservice.GetManualAll);
     app.post('/wservice/manual', wservice.AddManual);
     app.get('/wservice/manual/:id', wservice.GetManual);

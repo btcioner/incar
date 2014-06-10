@@ -13,6 +13,7 @@
 /// <reference path="Work.ts" />
 /// <reference path="CarBrand.ts" />
 /// <reference path="CarCare.ts" />
+/// <reference path="CarTry.ts" />
 /// <reference path="Activity.ts" />
 /// <reference path="ActSaveGas.ts" />
 /// <reference path="Complex.ts" />

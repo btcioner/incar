@@ -61,13 +61,6 @@ module Service{
             args[0] = name2[0];
             args.push(name2[1]);
         }
-        /*if(req.params.s4_id){
-            sql = util.format(sql, "s4_id = ?");
-            args.push(req.params.s4_id);
-        }
-        else{
-            sql = util.format(sql, "s4_id is null");
-        }*/
         dac.query(sql, args,
             (err, result)=>{
                 if(!err){
