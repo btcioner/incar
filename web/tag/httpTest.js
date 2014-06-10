@@ -5,16 +5,14 @@
 
 var http = require("http");
 var dataSet = JSON.stringify({
-    page:1,
-    pageSize:3,
-    tagId:'546'
+    tags:'545,546'
 });
 var data=dataSet;
 var opt = {
     method: "GET",
     host: "localhost",
     port: 80,
-    path: "/tag/searchForUsers/1?page=1&pageSize=3",
+    path: "/tag/searchByTags/aqweqweqw",
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)

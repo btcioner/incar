@@ -439,7 +439,7 @@ exports.getTagsByCarId= function(req,res){
  */
 exports.markTags= function(req,res){
     var carId=req.body['carId'];
-    var tagStr=req.body['tags'];
+    var tagStr=req.body['tags'].toString();
     var tags=tagStr?tagStr.split(","):[];
     var sqlList=["delete from t_car_tag where car_id=? and tag_id in(" +
         "select t.id from t_tag t inner join t_tag_group tg on tg.id=t.groupId and tg.type>0)"];
@@ -522,23 +522,29 @@ exports.searchByTags= function(req,res){
             for(i=0;i<tags.length;i++){
                 var tagId=tags[i];
                 var tagInfo=tagMap[tagId];
+                if(!tagInfo)continue;
                 var groupId=tagInfo.groupId;
                 var type=tagInfo.type;
-                var tagInfo=tagList[groupId];
 
-                if(!tagInfo){
-                    tagInfo={type:type,tags:[]};
-                    tagList[groupId]=tagInfo;
+                var t=tagList[groupId];
+
+                if(!t){
+                    t={type:type,tags:[]};
+                    tagList[groupId]=t;
                 }
-                tagInfo.tags.push(tagId);
+                t.tags.push(tagId);
             }
             var sqlBuild=buildSearchSql(tagList);
             sql=sqlBuild.sql;
             var args=sqlBuild.args;
-            dao.findBySql(sql,args,function(rows){
-                res.json(rows);
-            });
-
+            if(args.length>0){
+                dao.findBySql(sql,args,function(rows){
+                    res.json(rows);
+                });
+            }
+            else{
+                res.json({status:'failure'});
+            }
         });
     }
     else{
@@ -547,7 +553,7 @@ exports.searchByTags= function(req,res){
 }
 
 function buildSearchSql(tagList){
-    tagList={1:{type:0,tags:[2,3,4]},2:{type:null,tags:[]},3:{type:0,tags:[5,6,0]},4:{type:1,tags:[8]}};
+    //tagList={1:{type:0,tags:[2,3,4]},2:{type:null,tags:[]},3:{type:0,tags:[5,6,0]},4:{type:1,tags:[8]}};
     var sqlStart="select distinct c.id as carId,c.obd_code as obdCode,u.id as accountId from t_car c " +
         "left join t_car_user cu on cu.car_id=c.id " +
         "left join t_account u on cu.acc_id=u.id ";
@@ -580,7 +586,6 @@ function buildSearchSql(tagList){
         }
     }
     var sql=sqlStart+sqlJoin+sqlWhere+sqlCustomerTag;
-    console.log(sql);
     return {sql:sql,args:args};
 }
 

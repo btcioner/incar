@@ -224,28 +224,38 @@ function packetProcess_1601(dataBuffer,cb) {
     var dataType=dataManager.nextByte();                //数据包类型
     //2、如果是发动机启动则创建一条新的行驶信息
     if(dataType===0x01){
-        var obd={};
-        obd.obdCode=obdCode;
-        obd.tripId=tripId;
-        obd.vid=vid;
-        obd.vin=vin;
-        obd.carStatus=1;
-        obd.fireTime=receiveTime;
-        obd.firingVoltage=dataManager.nextString(); //点火电压
-        obd.fireSpeed=dataManager.nextString();     //点火车速
-        obd.fireDistance=dataManager.nextString();//当前行驶距离
-        var other=dataManager.nextString().split(',');
-        obd.fireLongitude=other[0];                 //经度
-        obd.fireLatitude=other[1];                  //纬度
-        obd.fireDirection=other[2];                 //方向
-        obd.fireLocationTime=other[3];              //定位时间
-        obd.fireLocationType=other[4];              //定位方式(1-基站定位,2-GPS定位)
-        obd.lastUpdateTime=lastUpdateTime;
-        var sql="insert into t_obd_drive set ?";
-        dao.executeBySql([sql],[obd],function(){
-            console.log("成功创建行驶信息(点火):"+JSON.stringify(obd));
-            cb();
+        var sql="select t.tripId,t.obdCode,t.id,t.carStatus from t_obd_drive t where t.tripId=? and t.obdCode=?";
+        dao.findBySql(sql,[tripId,obdCode],function(rows){
+            if(rows.length===0){
+                var obd={};
+                obd.obdCode=obdCode;
+                obd.tripId=tripId;
+                obd.vid=vid;
+                obd.vin=vin;
+                obd.carStatus=1;
+                obd.fireTime=receiveTime;
+                obd.firingVoltage=dataManager.nextString(); //点火电压
+                obd.fireSpeed=dataManager.nextString();     //点火车速
+                obd.fireDistance=dataManager.nextString();//当前行驶距离
+                var other=dataManager.nextString().split(',');
+                obd.fireLongitude=other[0];                 //经度
+                obd.fireLatitude=other[1];                  //纬度
+                obd.fireDirection=other[2];                 //方向
+                obd.fireLocationTime=other[3];              //定位时间
+                obd.fireLocationType=other[4];              //定位方式(1-基站定位,2-GPS定位)
+                obd.lastUpdateTime=lastUpdateTime;
+                var sql="insert into t_obd_drive set ?";
+                dao.executeBySql([sql],[obd],function(){
+                    console.log("成功创建行驶信息(点火):"+JSON.stringify(obd));
+                    cb();
+                });
+            }
+            else{
+                console.log("行程信息已经存在:"+JSON.stringify(obd));
+                cb();
+            }
         });
+
     }
     //3、其他情况则更新行驶信息，需要先获取行驶信息的id
     else{
@@ -379,7 +389,7 @@ function packetProcess_1601(dataBuffer,cb) {
         });
     }
 }
-function packetProcess_1602(dataBuffer) {
+function packetProcess_1602(dataBuffer,cb) {
     dataManager.init(dataBuffer,2);
     //1、获得报文内容
     var obdCode=dataManager.nextString();           //OBD编号
@@ -427,6 +437,7 @@ function packetProcess_1602(dataBuffer) {
     var sql="insert into t_obd_alarm set ?";
     dao.executeBySql([sql],[obdAlarm],function(){
         console.log("成功创建报警信息:"+JSON.stringify(obdAlarm));
+        cb();
     });
 }
 
