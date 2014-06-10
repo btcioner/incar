@@ -77,7 +77,7 @@ module Work{
             Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
-                    this.json_args = JSON.stringify({oper:userLogin.dto.nick});
+                    this.json_args = JSON.stringify({oper:userLogin.dto.nick, brand: this.json_args['brand'], series: this.json_args['series']});
                     var sql = "UPDATE t_work SET step = 'approved', json_args = ? WHERE id = ? and step = 'applied'";
                     var dac = Service.MySqlAccess.RetrievePool();
                     dac.query(sql, [this.json_args, this.id], (ex, result)=>{
@@ -106,7 +106,7 @@ module Work{
             Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) { res.json(ex); return; }
                 else{
-                    this.json_args = JSON.stringify({reason:req.body.reason, oper:userLogin.dto.nick});
+                    this.json_args = JSON.stringify({reason:req.body.reason, oper:userLogin.dto.nick, brand: this.json_args['brand'], series: this.json_args['series']});
 
                     var sql = "UPDATE t_work SET step = 'rejected', json_args = ? WHERE id = ? and step = 'applied'";
                     var dac = Service.MySqlAccess.RetrievePool();
@@ -142,7 +142,9 @@ module Work{
                         this.json_args = JSON.stringify({
                             oper: userLogin.dto.nick,
                             begin_time: data.begin_time,
-                            end_time: data.end_time
+                            end_time: data.end_time,
+                            brand: this.json_args['brand'],
+                            series: this.json_args['series']
                         });
 
                         var sql = "UPDATE t_work SET step = 'done', json_args = ? WHERE id = ? and step = 'approved'";
