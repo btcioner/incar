@@ -357,6 +357,7 @@ exports.searchForUsers= function(req,res){
         "left join t_account u on cu.acc_id=u.id " +
         "left join t_car_tag ct on ct.car_id=c.id " +
         "left join t_car_dictionary d on d.brandCode=c.brand and d.seriesCode=c.series " +
+        //"left join (select l.car_id from t_work_log l ) l on l.car_id=c.id " +
         "where c.s4_id=?";
     var args=[s4Id];
     if(tagId){
@@ -506,8 +507,9 @@ exports.delTag= function(req,res){
  * 通过复合标签查询
  */
 exports.searchByTags= function(req,res){
-    var tags=req.params.tags.split(",");
-    if(tags.length>0){
+    var tags=req.params.tags;
+    if(tags){
+        var tagArray=tags.toString().split(",");
         var sql="select g.id as groupId,g.type as groupType,t.id as tagId " +
             "from t_tag_group g " +
             "left join t_tag t on t.groupId=g.id"
@@ -520,8 +522,8 @@ exports.searchByTags= function(req,res){
                 tagMap[tagId]={groupId:groupId,type:type};
             }
             var tagList={};
-            for(i=0;i<tags.length;i++){
-                var tagId=tags[i];
+            for(i=0;i<tagArray.length;i++){
+                var tagId=tagArray[i];
                 var tagInfo=tagMap[tagId];
                 if(!tagInfo)continue;
                 var groupId=tagInfo.groupId;
