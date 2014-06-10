@@ -26,25 +26,41 @@ angular.module("SCustomerApp", [
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用车频率
         })
+        .when('/collapseG_3/:id',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//用途
+        })
         .when('/collapseG_4',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//驾驶偏好
+        })
+        .when('/collapseG_4/:id',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
         .when('/collapseG_5',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//车龄
         })
+        .when('/collapseG_5/:id',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//用途
+        })
         .when('/collapseG_6',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//渠道
+        })
+        .when('/collapseG_6/:id',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
         .when('/collapseG_7',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用车时段
         })
-        .when('/collapseG_8',{
+        .when('/collapseG_7/:id',{
             controller:'s_customerCtrl',
-            templateUrl:'/4sStore/partials/customer_channel.html'//自定义标签
+            templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
         .when('/collapseG_X',{
             controller:'s_customerCtrl',
@@ -66,7 +82,7 @@ angular.module("SCustomerApp", [
         getAllTags();
         function getAllTags()
         {
-            $http.get("/tag/tagListSystem/"+ $.cookie("brand_id")).success(function(data){
+            $http.get("/tag/tagListSystem/8").success(function(data){
                 $scope.tagsGroup = data;
                 for(var i=0;i<$scope.tagsGroup.length;i++)
                 {
@@ -79,13 +95,13 @@ angular.module("SCustomerApp", [
                 }
             }).error(function(data){
                     alert("请求无响应");
-                });
-               //获取自定义标签
-                $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")).success(function(data){
-                    $scope.customTags = data[0].tags;
-                }).error(function(data){
-                        alert("请求无响应");
-                })
+            });
+           //获取自定义标签
+            $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")).success(function(data){
+                $scope.customTags = data.data;
+            }).error(function(data){
+                    alert("请求无响应");
+            })
         }
     });
 

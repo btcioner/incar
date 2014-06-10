@@ -50,20 +50,19 @@
     <div class="row-fluid">
         <div class="span1" style="width: 10%;float: left;margin: 2px">
             <div class="accordion" id="collapse-group" >
-                <div class="accordion-group widget-box"  ng-repeat="group in tagsGroup">
+                <div class="accordion-group widget-box"  ng-repeat="group in tagsGroup" style="margin-top: 2px">
                     <div class="accordion-heading">
                         <div class="widget-title"> <a data-parent="#collapse-group" href="{{group.link}}" data-toggle="collapse"> <span class="icon"><i class="icon-list"></i></span>
                             <h5>{{group.groupName}}</h5>
                         </a> </div>
                     </div>
-                    <div class="collapse accordion-body" id="{{group.fid}}">
+                    <div class="collapse accordion-body" id="{{group.fid}}" >
                         <div class="widget-content" style="text-align: right;padding: 0" ng-repeat ="tag in group.tags">
                             <a class="btn btn-info" style="width: 100%;" href="{{group.link}}/{{tag.tagId}}">{{tag.tagName}}</a>
                         </div>
                     </div>
                 </div>
-
-                <div class="accordion-group widget-box">
+                <div class="accordion-group widget-box" style="margin-top: 2px">
                     <div class="accordion-heading">
                         <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseG_X" data-toggle="collapse"> <span class="icon"><i class="icon-magnet"></i></span>
                             <h5>自定义标签</h5>

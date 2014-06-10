@@ -51,16 +51,12 @@ function s_fuelMatchCtrl($scope,$http)
                     {
                         if(data.activities[i].status == "1")
                         {
-                           data.activities[i].text1="预览";
-                           data.activities[i].text2="修改";
-                           data.activities[i].text3="删除";
-                           data.activities[i].operation="modify";
+                            data.activities[i].tdStyle1 = "display:block";
+                            data.activities[i].tdStyle2 = "display:none";
                         }
                         else{
-                            data.activities[i].text1="查看";
-                            data.activities[i].text2="管理";
-                            data.activities[i].text3="";
-                            data.activities[i].operation="manager";
+                            data.activities[i].tdStyle1 = "display:none";
+                            data.activities[i].tdStyle2 = "display:block";
                         }
                     }
                 }
@@ -100,7 +96,7 @@ function s_fuelMatchCtrl($scope,$http)
     }
 
     //get paging param info
-    function PagingInfo(totalCount,statusId)
+    function PagingInfo(totalCount)
     {
         $scope.totalCount = totalCount;
         $scope.totalPage = Math.ceil( $scope.totalCount /  $scope.pageRecord)
@@ -169,7 +165,7 @@ function s_fuelMatchCtrl($scope,$http)
     function getAllTags(tags)
     {
         var tagArr = tags.split(",");
-        $http.get("/tag/tagList/8").success(function(data){
+        $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/8").success(function(data){
 
             $scope.tagsGroup = data;
             for(var i=0;i<$scope.tagsGroup.length;i++)
@@ -280,10 +276,12 @@ function s_fuelMatchCtrl($scope,$http)
                        ]
                    });
                });
+
+
                $scope.matchListDiv = false;
                $scope.matchModifyDiv = true;
                getAllTags( $scope.fuleMatchDetail.tags);
-              // alert(editor.html());
+
                editor.insertHtml($scope.fuleMatchDetail.brief);
 
                break;
@@ -344,7 +342,6 @@ function s_fuelMatchCtrl($scope,$http)
         $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+ $scope.fuleMatchDetail.id+"/cust?page="+$scope.currentPage_var+"&pagesize="+$scope.pageRecord+queryString+$scope.queryString).success(function(data){
             if(data.status == "ok")
             {
-
                 if(data.members.length == 0)
                 {
                     $scope.tips = "暂无数据";
@@ -416,29 +413,7 @@ function s_fuelMatchCtrl($scope,$http)
             })
         }
     }
-    //查看
-//    $scope.InfoView = function(sta)
-//    {
-//        switch(sta)
-//        {
-//            case "已发布":
-//                $scope.matchPublishedDiv = true;
-//                $scope.matchListDiv = false;
-//                break;
-//            case "已开始":
-//                $scope.matchStartedDiv = true;
-//                $scope.matchListDiv = false;
-//                break;
-//            case "已结束":
-//                $scope.matchFinishedDiv = true;
-//                $scope.matchListDiv = false;
-//                break;
-//            case "已公布":
-//                $scope.matchPrizedDiv = true;
-//                $scope.matchListDiv = false;
-//                break;
-//        }
-//    }
+
     //发布结果按钮
     $scope.publishResult = function(id)
     {
@@ -477,9 +452,11 @@ function s_fuelMatchCtrl($scope,$http)
     }
 
     //点击姓名获取客户详情
-    $scope.getCustDetail = function(id)
+    $scope.getCustDetail = function(index,id)
     {
         $scope.flagid = id;
+        $scope.cusDetail = $scope.members[index];
+        getReservationRecord();
         $scope.cusDetailDiv = true;
         $scope.cusTabDiv = true;
         switch(id)
@@ -516,13 +493,13 @@ function s_fuelMatchCtrl($scope,$http)
         switch(id)
         {
             case 1:
-
+                getReservationRecord();
                 break;
             case 2:
 
                 break;
             case 3:
-
+                getCareRecord();
                 break;
             case 4:
 
@@ -534,12 +511,215 @@ function s_fuelMatchCtrl($scope,$http)
                 $scope.oneDetailDiv = false;
                 $scope.detailInfoDiv = false;
                 $scope.oneMinuteDetailDiv = false;
-
+                getDriveList();
                 break;
             case 6:
-
+                getCustomTagList();
+                $http.get('/tag/getTagsByCarId/'+$scope.cusDetail.carId).success(function(data){
+                    $scope.systemTag = data.systemTag;
+                    $scope.customTag = data.customTag;
+                    for(var i=0;i<$scope.customTags.length;i++)
+                    {
+                        var flag = false;
+                        for(var j=0;j<$scope.customTag.length;j++)
+                        {
+                            if($scope.customTags[i].tagId = $scope.customTag[j].tagId)
+                                flag=true;
+                        }
+                        if(flag) $scope.customTags[i].tagFlag = true;
+                        else  $scope.customTags[i].tagFlag = "";
+                    }
+                }).error(function(data){
+                        alert("请求无响应");
+                    })
                 break;
         }
+    }
+
+    //查询行车数据
+    function getDriveList()
+    {
+        $scope.tips="";
+        $scope.queryString="&org_id="+ $.cookie("s4_id")+"&obd_code="+$scope.cusDetail.obd_code;
+        $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+            if(data.status == "ok")
+            {
+                if(data.drvInfos.length == 0)
+                {
+                    $scope.tips="暂无数据！";
+                }
+
+                $scope.drvInfos = data.drvInfos;
+                for(var i=0;i<data.drvInfos.length;i++)
+                {
+                    $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
+                    $scope.drvInfos[i].fireTime = $.changeDate($scope.drvInfos[i].fireTime);
+                    $scope.drvInfos[i].flameOutTime = $.changeDate($scope.drvInfos[i].flameOutTime);
+                }
+                PagingInfo(data.totalCount);
+            }
+            else
+            {
+                alert(data.status);
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            })
+    }
+
+    //get owner and car info  缺少所属4s店
+    function GetOwnerInfo(obd_code)
+    {
+        $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car?obd_code='+obd_code).success(function(data){
+            if(data.status == "ok")
+            {
+                $scope.carInfo = data.cars[0];
+                $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car/'+$scope.carInfo.id+'/cust?obd_code='+obd_code).success(function(data){
+                    if(data.status=="ok")
+                    {
+                        $scope.custInfo = data.custs[0];
+                    }else{
+                        alert(data.status);
+                    }
+                }).error(function(data){
+                        alert("请求无响应");
+                    });
+            }
+            else{
+                alert(data.status);
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            });
+    }
+    //查看一个OBD一次行程的数据
+    $scope.GetDriveDetail = function(obd_code,drive_id,id)
+    {
+        $scope.chooseOC = obd_code;
+        $scope.drive_id = drive_id;
+        $scope.index = id;
+        GetOwnerInfo(obd_code);
+        $scope.driveDetail = $scope.drvInfos[id];
+        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+            if(data.status == "ok")
+            {
+                if(data.details.length== 0)
+                {
+                    alert("暂无行程数据");
+                }
+                else{
+                    for(var i=0;i<data.details.length;i++)
+                    {
+                        data.details[i].createTime = $.changeDate(data.details[i].createTime);
+                    }
+                    $scope.driveDiv = false;
+                    $scope.detailInfoDiv = true;
+                    $scope.oneDetailDiv = true;
+                    $scope.paging2 = true;
+                    $scope.paging1 = false;
+                    $scope.details = data.details;
+                    PagingInfo(data.totalCount);
+                }
+            }
+            else
+            {
+                alert(data.status);
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            });
+    }
+
+
+    //一分钟内的行车数据流记录
+    $scope.GetOneMinuteDetail = function(index)
+    {
+        if($scope.details[index].detail == null || $scope.details[index].detail.length == 0)
+        {
+            alert("暂无详细数据");
+        }
+        else
+        {
+            $scope.omdds = $scope.details[index].detail;
+            $scope.oneDetailDiv = false;
+            $scope.detailInfoDiv = false;
+            $scope.paging1 = false;
+            $scope.paging2 = false;
+            $scope.oneMinuteDetailDiv = true;
+        }
+    }
+
+    //获取该车主的保养记录
+    function getReservationRecord()
+    {
+        $scope.tips="";
+        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.carId).success(function(data){
+            $scope.careList = data.works;
+            PagingInfo(data.totalCount);
+            if(data.works.length > 0)
+            {
+                for(var i=0;i< $scope.careList.length;i++)
+                {
+                    $scope.careList[i].working_time =  $.changeDate($scope.careList[i].working_time);
+                    $scope.careList[i].created_time =  $.changeDate($scope.careList[i].created_time);
+                    $scope.careList[i].updated_time =  $.changeDate($scope.careList[i].updated_time);
+                    $scope.careList[i].step = $.changeWorkStatus($scope.careList[i].step);
+                }
+            }
+            else{
+                $scope.tips="暂无数据";
+            }
+
+        }).error(function(data){
+                alert("请求无响应");
+            });
+    }
+    //获取该车主的关怀记录
+    function getCareRecord()
+    {
+        $scope.tips="";
+        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.carId).success(function(data){
+            $scope.recordList = data.records;
+            PagingInfo(data.totalCount);
+            if(data.records.length > 0)
+            {
+                for(var i=0;i<data.records.length;i++)
+                {
+                    $scope.recordList[i].log_time = $.changeDate($scope.recordList[i].log_time);
+                }
+            }
+            else{
+                $scope.tips = "暂无数据";
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            });
+    }
+
+    //给车打标签
+    $scope.markTags = function(tagId)
+    {
+        $scope.postData={"carId":$scope.cusDetail.carId,"tags":tagId};
+        $http.put('/tag/markTags/',$scope.postData).success(function(data){
+            if(data.status =="success")
+            {
+
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            })
+    }
+
+    //获取自定义标签列表
+    function getCustomTagList()
+    {
+        $scope.tips="";
+        $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")).success(function(data){
+            $scope.customTags = data[0].tags;
+            PagingInfo( $scope.customTags.length);
+        }).error(function(data){
+                alert("请求无响应");
+            })
     }
 
     //取消和返回

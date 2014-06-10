@@ -46,11 +46,11 @@ function s_customerCtrl($scope, $http,$routeParams){
     {
         $scope.tips="";
         $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")).success(function(data){
-            $scope.customTags = data[0].tags;
-            PagingInfo( $scope.customTags.length);
+            $scope.customTags = data.data;
+            PagingInfo( data.rowCount);
         }).error(function(data){
                 alert("请求无响应");
-         })
+        })
     }
 
 
@@ -80,9 +80,10 @@ function s_customerCtrl($scope, $http,$routeParams){
                 alert("请求无响应");
         })
 
-        $http.get(baseurl+'brand/'+ $.cookie("brand_id")+'/series').success(function(data){
+        $http.get(baseurl+'brand/8/series').success(function(data){
             $scope.carSeries = data.series;
         });
+        $scope.queryString = "";
     }
 
 
@@ -90,9 +91,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
-        if($scope.city_name=="请选择")$scope.city_name = "";
-        //"&series_id="+$scope.seriesCode+
-        $scope.queryString = "nickName="+$scope.queryNick+"&userPhone="+$scope.queryPhone+"&license="+$scope.car_license;
+        $scope.queryString = $scope.queryString +"&series="+$scope.seriesCode+"&brand=8&nickName="+$scope.queryNick+"&userPhone="+$scope.queryPhone+"&license="+$scope.car_license;
         GetFirstPageInfo();
     }
 
@@ -279,7 +278,7 @@ function s_customerCtrl($scope, $http,$routeParams){
                         var flag = false;
                         for(var j=0;j<$scope.customTag.length;j++)
                         {
-                            if($scope.customTags[i].tagId = $scope.customTag[j].tagId)
+                            if($scope.customTags[i].tagId == $scope.customTag[j].tagId)
                              flag=true;
                         }
                         if(flag) $scope.customTags[i].tagFlag = true;
@@ -292,14 +291,19 @@ function s_customerCtrl($scope, $http,$routeParams){
         }
     }
    //给车打标签
-    $scope.markTags = function(tagId)
+    $scope.markTags = function()
     {
-        $scope.postData={"carId":$scope.cusDetail.carId,"tags":tagId};
+        $scope.tags = "";
+        for(var i=0;i<$scope.customTags.length;i++)
+        {
+            if($scope.customTags[i].tagFlag == true)
+            {
+                $scope.tags = $scope.tags + $scope.customTags[i].tagId +",";
+            }
+        }
+        $scope.postData={"carId":$scope.cusDetail.carId,"tags":$scope.tags};
         $http.put('/tag/markTags/',$scope.postData).success(function(data){
-             if(data.status =="success")
-             {
 
-             }
         }).error(function(data){
                 alert("请求无响应");
             })
@@ -317,7 +321,6 @@ function s_customerCtrl($scope, $http,$routeParams){
                 {
                     $scope.tips="暂无数据！";
                 }
-
                 $scope.drvInfos = data.drvInfos;
                 for(var i=0;i<data.drvInfos.length;i++)
                 {
@@ -443,10 +446,12 @@ function s_customerCtrl($scope, $http,$routeParams){
                 break;
             case 3:
                 changeView(2);
+                GetFirstPageInfo();
                 break;
             case 4:
                 changeView(3)
                 break;
+
 
         }
     }
@@ -493,7 +498,7 @@ function s_customerCtrl($scope, $http,$routeParams){
                 {
                     alert("删除成功！");
                     $scope.customTags.splice(index, 1);
-                    PagingInfo( $scope.customTags.length);
+                    PagingInfo( $scope.totalCount -1);
                 }
                 else{
                     alert(data.status);

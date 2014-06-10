@@ -11,24 +11,9 @@
             <thead>
             <tr>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态： &nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;padding-left:15px;" >
-                        <option>请选择</option>
-                        <option>已创建</option>
-                        <option>已发布</option>
-                        <option>已开始</option>
-                        <option>已结束</option>
-                        <option>已公布</option>
+                    <select style="width:150px;padding-left:15px;" ng-model="ser_status" ng-options="ss.id as ss.name for ss in statusSelect" >
                     </select></th>
-                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;活动月份： &nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;padding-left:15px;" >
-                        <option>请选择</option>
-                        <option>5月</option>
-                        <option>6月</option>
-                        <option>7月</option>
-                        <option>8月</option>
-                        <option>9月</option>
-                    </select></th>
-                <th style="vertical-align: middle;">活动关键字：<input type="text" style="width:150px;"/></th>
+                <th style="vertical-align: middle;">活动关键字：<input type="text" ng-model="ser_title" style="width:150px;"/></th>
                 <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo();">搜索</button></th>
             </tr>
             </thead>
@@ -40,7 +25,6 @@
             <thead>
             <tr>
                 <th>活动标题</th>
-                <th>活动月份</th>
                 <th>创建时间</th>
                 <th>发布时间</th>
                 <th>状态</th>
@@ -48,44 +32,31 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="gradeX">
-                <td id="tdc">六月优惠活动</td>
-                <td id="tdc">6月</td>
-                <td id="tdc">2014/03/06 12:09</td>
-                <td id="tdc">2014/03/06 14:23</td>
-                <td id="tdc">已创建</td>
-                <td id="tdc">
-                    <a class="btn btn-primary btn-mini" ng-click="preview(1);">预览</a>
-                    <a class="btn btn-info btn-mini" ng-click="modify(1);">修改</a>
-                    <a class="btn btn-success btn-mini" ng-click="publishConfirm(1);">发布</a>
-                    <a class="btn btn-danger btn-mini" ng-click="cancelNews(1);">删除</a>
+            <tr class="gradeX" ng-repeat="al in activityList">
+                <td id="tdc">{{al.title}}</td>
+                <td id="tdc">{{al.tm_created}}</td>
+                <td id="tdc">{{al.tm_announce}}</td>
+                <td id="tdc">{{al.status_name}}</td>
+                <td id="tdc" style="{{al.tdStyle1}}">
+                    <a class="btn btn-primary btn-mini" ng-click="preview($index);">预览</a>
+                    <a class="btn btn-info btn-mini" ng-click="modify($index);">修改</a>
+                    <a class="btn btn-success btn-mini" ng-click="publishConfirm(al.id);">发布</a>
+                    <a class="btn btn-danger btn-mini" ng-click="cancelNews(al.id,$index);">删除</a>
                 </td>
-            </tr>
-            <tr class="gradeX">
-                <td id="tdc">六月优惠活动</td>
-                <td id="tdc">6月</td>
-                <td id="tdc">2014/03/06 12:09</td>
-                <td id="tdc">2014/03/06 14:23</td>
-                <td id="tdc">已创建</td>
-                <td id="tdc">
-                    <a class="btn btn-primary btn-mini" ng-click="preview(1);">预览</a>
-                    <a class="btn btn-info btn-mini" ng-click="modify(1);">修改</a>
-                    <a class="btn btn-success btn-mini" ng-click="publishConfirm(1);">发布</a>
-                    <a class="btn btn-danger btn-mini" ng-click="cancelNews(1);">删除</a>
-                </td>
-            </tr>
-            <tr class="gradeX">
-                <td id="tdc">六月优惠活动</td>
-                <td id="tdc">6月</td>
-                <td id="tdc">2014/03/06 12:09</td>
-                <td id="tdc">2014/03/06 14:23</td>
-                <td id="tdc">已发布</td>
-                <td id="tdc">
+                <td id="tdc" style="{{al.tdStyle2}}">
                     <a class="btn btn-primary btn-mini" ng-click="preview(1);">查看</a>
                 </td>
             </tr>
+
             </tbody>
         </table>
+    </div>
+    <div><font color="red">{{tips}}</font></div>
+    <div class="pagination alternate" style="float:right;">
+        共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
+        跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId,'index');">
+        <option>1</option>
+    </select>页
     </div>
 </div>
 <!--活动信息列表 end-->
@@ -96,29 +67,31 @@
         <h5>添加资讯信息</h5>
     </div>
     <div class="widget-content nopadding">
-        <form action="#" method="get" class="form-horizontal">
+        <form action="/wservice/upload" id="formId_edit2"  method="post"  class="form-horizontal" enctype="multipart/form-data">
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">封面图片：</label>
                 <div class="controls">
-                  <input type="file" id="edit_pro_img" name="post_img" />
+                    <input type="file" id="edit_pro_img_3" name="edit_pro_img_3"  ng-model="logo_url"  onchange="changeImg(this,'edit_pro_img_3','formId_edit2','preview_3','imghead_3')"/>
                 </div>
-                <div style="margin-left:280px;">{{titleMove}}</div>
-                <img src="../../data/200x200.jpg" style="width:200px;height:100px;margin-left:280px;" />
+                <div style="margin-left:280px;"> </div>
+                <div style="margin-left:280px;" style="float: left;" id="preview_3">
+                    <img src="../../data/200x200.jpg" id="imghead_3" style="width:150px;height:150px;" />
+                </div>
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">标题：</label>
                 <div class="controls">
-                    <input type="text" class="span11" style="width:380px;"   ng-model="news_name"  ng-change="tileChange()" />
+                    <input type="text" class="span11" style="width:380px;"   ng-model="title"  ng-change="tileChange()" />
                 </div>
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">标题图片：</label>
                 <div class="controls">
-                    <input type="file" id="edit_pro_img" name="title_img" />
+                    <input type="file" id="edit_pro_img" name="edit_pro_img"  ng-model="logo_url"  onchange="changeImg(this,'edit_pro_img','formId_edit2','preview','imghead')"/>
                 </div>
-                <div style="margin-left:280px;" style="float: left;">
-                <img src="../../data/200x200.jpg" style="width:100px;height:100px;" />
-                    {{titleMove}}
+                <div style="margin-left:280px;"> </div>
+                <div style="margin-left:280px;" style="float: left;" id="preview">
+                    <img src="../../data/200x200.jpg" id="imghead" style="width:150px;height:150px;" />
                 </div>
             </div>
             <div class="control-group" >
@@ -129,90 +102,15 @@
             </div>
 
             <div class="control-group" >
-                <div class="widget-content notify-ui" style="text-align: center">
-                    <ul id="gritter-notify0" >
-                        <li style="text-align: left;padding-left: 200px;">
-                            <font style="margin-left:-40px;">发布至如下车主：</font>
-                            <br/>
-                            <input type="checkbox" name="radios" style="margin-left:73px;"/>
-                            <font >全选</font>
-                            <br/>
-                            <font >渠&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道：</font>
-                            <input type="checkbox" name="radios" />
-                            微信用户&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            客户端
-                            <br/>
-                            <font >车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：</font>
-                            <input type="checkbox" name="radios" />
-                            S系
-                            <br/>
-                            <font >用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;途：</font>
-                            <input type="checkbox" name="radios" />
-                            商用&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            家用
-                            <br/>
-                            <font>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</font>
-                            <input type="checkbox" name="radios" />
-                            小于1年车龄&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            1-2年车龄&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            2-3年车龄&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            3-4年车龄&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            4-5年车龄&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            大于5年车龄
-                            <br/>
-                            <font >用车时段：</font>
-                            <input type="checkbox" name="radios" />
-                            上下班&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            工作时&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            非工作时
-                            <br/>
-                            <font>用车频率：</font>
-                            <input type="checkbox" name="radios" />
-                            极低&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            低&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            中&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            高
-                            <br/>
-                            <font>驾驶行为：</font>
-                            <input type="checkbox" name="radios" />
-                            稳健&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            中庸&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            狂野
-                            <br/>
-                        </li>
-                    </ul>
-                </div>
-                <div class="widget-content notify-ui" style="text-align: center">
-                    <ul id="gritter-notify0" >
-                        <li style="text-align: left;padding-left: 200px;">
-                            <font style="margin-left:-40px;">发布至如下车主：</font>
-                            <br/>
-                            <input type="checkbox" name="radios" style="margin-left:73px;"/>
-                            <font >全选</font>
-                            <br/>
-                            <font style="margin-left: -13px;">自定义标签：</font>
-                            <input type="checkbox" name="radios" />
-                            自定义标签1&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            自定义标签2&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            自定义标签3
-                        </li>
-                    </ul>
+                <label class="control-label" style="margin-left:100px;">发布至如下车主：</label>
+            </div>
+            <div class="control-group" ng-repeat="group in tagsGroup">
+                <label class="control-label" style="margin-left:100px;">{{group.groupName}}：</label>
+                <div class="controls" >
+                   <span  ng-repeat="tag in group.tags">
+                       <input type="checkbox"  ng-model="tag.tagFlag"  />
+                       {{tag.tagName}}&nbsp;&nbsp;
+                   </span>
                 </div>
             </div>
             <div class="form-actions">
@@ -230,11 +128,11 @@
         <h5>修改资讯信息</h5>
     </div>
     <div class="widget-content nopadding">
-        <form action="#" method="get" class="form-horizontal">
+        <form action="/wservice/upload" id="formId_edit3"  method="post"  class="form-horizontal" enctype="multipart/form-data">
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">封面图片：</label>
                 <div class="controls">
-                    <input type="file" id="edit_pro_img" name="post_img" />
+                    <input type="file" id="edit_pro_img_2" name="post_img" />
                 </div>
                 <div style="margin-left:280px;">{{titleMove}}</div>
                 <img src="../../data/200x200.jpg" style="width:200px;height:100px;margin-left:280px;" />
@@ -242,112 +140,35 @@
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">标题：</label>
                 <div class="controls">
-                    <input type="text" class="span11" style="width:380px;"   ng-model="news_name"  ng-change="tileChange()" />
+                    <input type="text" class="span11" style="width:380px;"   ng-model="activityDetail.title"  ng-change="tileChange()" />
                 </div>
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">标题图片：</label>
                 <div class="controls">
-                    <input type="file" id="edit_pro_img" name="title_img" />
+                    <input type="file" id="edit_pro_img_1" name="title_img" onchange="changeImg(this,'edit_pro_img_1','formId_edit3','preview1','imghead1')" />
                 </div>
-                <div style="margin-left:280px;" style="float: left;">
-                    <img src="../../data/200x200.jpg" style="width:100px;height:100px;" />
-                    {{titleMove}}
+                <div style="margin-left:280px;"> {{titleMove}}</div>
+                <div style="margin-left:280px;" style="float: left;" id="preview1">
+                    <img src="../../{{fuleMatchDetail.logo_url}}" id="imghead1" style="width:150px;height:150px;" />
                 </div>
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">正文：</label>
                 <div class="controls">
-                    <textarea id="content" name="content" style="visibility:hidden;" >请编写正文内容...</textarea>
+                    <textarea id="content_1" name="content" style="visibility:hidden;" ></textarea>
                 </div>
             </div>
-
             <div class="control-group" >
-                <div class="widget-content notify-ui" style="text-align: center">
-                    <ul id="gritter-notify0" >
-                        <li style="text-align: left;padding-left: 200px;">
-                            <font style="margin-left:-40px;">发布至如下车主：</font>
-                            <br/>
-                            <input type="checkbox" name="radios" style="margin-left:73px;"/>
-                            <font >全选</font>
-                            <br/>
-                            <font >渠&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道：</font>
-                            <input type="checkbox" name="radios" />
-                            微信用户&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            客户端
-                            <br/>
-                            <font >车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：</font>
-                            <input type="checkbox" name="radios" />
-                            S系
-                            <br/>
-                            <font >用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;途：</font>
-                            <input type="checkbox" name="radios" />
-                            商用&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            家用
-                            <br/>
-                            <font>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</font>
-                            <input type="checkbox" name="radios" />
-                            小于1年车龄&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            1-2年车龄&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            2-3年车龄&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            3-4年车龄&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            4-5年车龄&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            大于5年车龄
-                            <br/>
-                            <font >用车时段：</font>
-                            <input type="checkbox" name="radios" />
-                            上下班&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            工作时&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            非工作时
-                            <br/>
-                            <font>用车频率：</font>
-                            <input type="checkbox" name="radios" />
-                            极低&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            低&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            中&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            高
-                            <br/>
-                            <font>驾驶行为：</font>
-                            <input type="checkbox" name="radios" />
-                            稳健&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            中庸&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            狂野
-                        </li>
-                    </ul>
-                </div>
-                <div class="widget-content notify-ui" style="text-align: center">
-                    <ul id="gritter-notify0" >
-                        <li style="text-align: left;padding-left: 200px;">
-                            <font style="margin-left:-40px;">发布至如下车主：</font>
-                            <br/>
-                            <input type="checkbox" name="radios" style="margin-left:73px;"/>
-                            <font >全选</font>
-                            <br/>
-                            <font style="margin-left: -13px;">自定义标签：</font>
-                            <input type="checkbox" name="radios" />
-                            自定义标签1&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            自定义标签2&nbsp;&nbsp;
-                            <input type="checkbox" name="radios" />
-                            自定义标签3
-                            <!--<br/>
-                            <input type="button" value="删除" class="btn btn-danger btn-mini">-->
-                        </li>
-                    </ul>
+                <label class="control-label" style="margin-left:100px;">发布至如下车主：</label>
+            </div>
+            <div class="control-group" ng-repeat="group in tagsGroup">
+                <label class="control-label" style="margin-left:100px;">{{group.groupName}}：</label>
+                <div class="controls" >
+                   <span  ng-repeat="tag in group.tags">
+                       <input type="checkbox"  ng-model="tag.tagFlag"  />
+                       {{tag.tagName}}&nbsp;&nbsp;
+                   </span>
                 </div>
             </div>
             <div class="form-actions">
