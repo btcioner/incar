@@ -9,7 +9,10 @@ module Service {
 
         var task:any = { finished: 0 };
         task.begin = ()=>{
-            var sql = "SELECT %s FROM t_work W WHERE W.work='drivetry' and W.org_id=? ORDER BY W.id DESC";
+            var sql = "SELECT %s\n" +
+                "FROM t_work W\n" +
+                "\tLEFT OUTER JOIN t_account U ON W.cust_id = U.id\n" +
+                "WHERE W.work='drivetry' and W.org_id=? ORDER BY W.id DESC";
             var args = [req.params.s4_id];
 
             var sqlA = util.format(sql, "count(*) count");
@@ -19,21 +22,36 @@ module Service {
                 task.end();
             });
 
-            var sqlB = util.format(sql, "W.*");
+            var sqlB = util.format(sql, "W.*, U.nick, U.phone");
             if(page.IsValid()) sqlB += page.sql;
             dac.query(sqlB, args, (ex, result)=>{
                 task.B = {ex:ex, result:result};
                 task.finished++;
                 task.end();
             });
+
+            var sqlC = "SELECT * FROM t_car_dictionary";
+            dac.query(sqlC, null, (ex, result)=>{
+                task.C = { ex:ex, result:result };
+                task.finished++;
+                task.end();
+            });
         };
 
         task.end = ()=>{
-            if(task.finished < 2) return;
+            if(task.finished < 3) return;
             if(task.B.ex) { res.json(new TaskException(-1, "查询试乘信息失败", task.B.ex)); return; }
 
             task.B.result.forEach((obj:any)=>{
-                try { obj.json_args = JSON.parse(obj.json_args); }
+                try {
+                    obj.json_args = JSON.parse(obj.json_args);
+                    task.C.result.forEach((d:any)=>{
+                        if(obj.json_args.brand == d.brandCode && obj.json_args.series == d.seriesCode){
+                            obj.json_args.brand_name = d.brand;
+                            obj.json_args.series_name = d.series;
+                        }
+                    });
+                }
                 catch(e){ /*ignore any exception*/ }
             });
 
