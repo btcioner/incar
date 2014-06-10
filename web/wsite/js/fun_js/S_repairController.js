@@ -9,11 +9,59 @@ function s_repairCtrl($scope, $http,$routeParams){
     $scope.repairDiv = true;
     $scope.reserStatus = $routeParams;
 
-    $http.get('../js/fun_js/maintainInfo.json').success(function(data){
-        $scope.reservationList = data;
-        //  getCurrentRecord(data);
-    });
+    $scope.currentPage = 1;
+    $scope.pageRecord = 10;
 
+    GetFirstPageInfo();//get fist driveData for first page；
+    function GetFirstPageInfo()
+    {
+        $scope.tips="";
+        $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/promotionslot?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+            if(data.status == "ok")
+            {
+                $scope.slots = data.slots;
+                if(data.slots.length == 0)
+                {
+                    $scope.tips="暂无数据！";
+                }
+                else
+                {
+                    for(var i =0;i<data.slots.length;i++)
+                    {
+                        $scope.slots[i].slot_time = $.changeDate($scope.slots[i].slot_time);
+                        $scope.slots[i].promotion_time = $.changeDate($scope.slots[i].promotion_time);
+                        $scope.slots[i].promotion_status = $.changeSlotStatus($scope.slots[i].promotion_status);
+                    }
+                }
+                PagingInfo(data.totalCount);
+            }
+            else
+            {
+                alert(data.status);
+            }
+        }).error(function(data){
+                alert("请求无响应");
+            })
+    }
+
+    //get paging param info
+    function PagingInfo(totalCount)
+    {
+        $scope.totalCount = totalCount;
+        $scope.totalPage = Math.ceil( $scope.totalCount /  $scope.pageRecord)
+        $scope.totalOption=[{}];
+        for(var i = 0 ;i< $scope.totalPage;i++)
+        {
+            $scope.totalOption[i]={size:i+1};
+        }
+    }
+
+    //分页跳转页面
+    $scope.changePage=function(changeId)
+    {
+        $scope.currentPage = changeId ;
+        GetFirstPageInfo()
+    }
 
     //查看保养预约详情
     $scope.Operation = function(index,type)
