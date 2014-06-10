@@ -277,7 +277,7 @@
                         alert("请求无响应");
                     }
                 }).error(function(data){
-                    alert("请求无相应");
+                    alert("请求无响应");
                 })
                 break;
             case 2:
@@ -290,10 +290,10 @@
                         changeView(2);
                     }
                     else{
-                        alert("请求无相应");
+                        alert("请求无响应");
                     }
                 }).error(function(data){
-                    alert("请求无相应");
+                    alert("请求无响应");
                 })
                 break;
         }

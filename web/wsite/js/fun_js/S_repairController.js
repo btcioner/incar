@@ -7,7 +7,8 @@ function s_repairCtrl($scope, $http,$routeParams){
 
 //    $scope.reserStatus = $routeParams;
     $scope.driveTryDiv = true;
-
+    $scope.applyOperDiv = false;
+    $scope.previewDiv = false;
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
 
@@ -70,13 +71,94 @@ function s_repairCtrl($scope, $http,$routeParams){
     //查看和管理切换
     $scope.manager = function(index,status)
     {
+        $scope.triesDetail = $scope.tries[index];
+        $scope.id = $scope.tries[index].id;
         switch(status)
         {
             case "applied":
-                alert("123");
+                $scope.driveTryDiv = false;
+                $scope.applyOperDiv = true;
+                $scope.previewDiv = false;
                 break;
             case "approved":
+                $scope.driveTryDiv = false;
+                $scope.applyOperDiv = false;
+                $scope.previewDiv = true;
+                $scope.reasonTr =false;
+                break;
+            case "rejected":
+                $scope.driveTryDiv = false;
+                $scope.applyOperDiv = false;
+                $scope.previewDiv = true;
+                $scope.reasonTr =true;
+                break;
+        }
+    }
 
+    //详情子操作
+    $scope.OperationChild = function(oper)
+    {
+        switch(oper)
+        {
+            case "approve":
+                $scope.postData = {op:"approve"};
+                $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
+                    if(data.status=="ok")
+                    {
+                        GetFirstPageInfo();
+                        alert("操作成功");
+                        $scope.driveTryDiv = true;
+                        $scope.applyOperDiv = false;
+                        $scope.previewDiv = false;
+                    }else{
+                        alert("请求无响应");
+                    }
+                }).error(function(data){
+                        alert("请求无响应");
+                    })
+                break;
+
+            case "reject":
+                $scope.rejectReason = true;
+                break;
+
+        }
+    }
+    //确定
+    $scope.confirm = function()
+    {
+
+            $scope.postData={op: "reject", reason:$scope.jj_reason};
+            $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
+                if(data.status == "ok")
+                {
+                    GetFirstPageInfo();
+                    alert("操作成功");
+                    $scope.driveTryDiv = true;
+                    $scope.applyOperDiv = false;
+                    $scope.previewDiv = false;
+                }
+                else{
+                    alert("请求无响应");
+                }
+            }).error(function(data){
+                    alert("请求无响应");
+                })
+
+     }
+
+    //取消
+    $scope.cancel = function(id)
+    {
+        switch(id)
+        {
+            case 2:
+                $scope.rejectReason = false;
+                break;
+            case 3:
+                $scope.driveTryDiv = true;
+                $scope.applyOperDiv = false;
+                $scope.previewDiv = false;
                 break;
         }
     }
