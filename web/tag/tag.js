@@ -300,36 +300,37 @@ exports.tagListSystem= function(req,res){
  */
 exports.tagListCustom= function(req,res){
     var s4Id=req.params.s4Id;
-    var sql="select g.id as groupId,g.name as groupName," +
-        "t.id as tagId,t.name as tagName," +
+    var query=req.query;
+    var page=parseInt(query['page']);
+    var pageSize=parseInt(query['pageSize']);
+    var sql="select t.id as tagId,t.name as tagName," +
         "t.createTime as createTime,t.creator as creator " +
-        "from t_tag_group g " +
-        "left join t_tag t on t.groupId=g.id " +
+        "from t_tag t " +
+        "left join t_tag_group g on t.groupId=g.id " +
         "where g.type>? and t.s4Id=?";
-    dao.findBySql(sql,[0,s4Id],function(rows){
-        var list={};
-        for(var i=0;i<rows.length;i++){
-            var groupId=rows[i].groupId;
-            var groupName=rows[i].groupName;
-            var tagId=rows[i].tagId;
-            var tagName=rows[i].tagName;
-            var createTime=rows[i].createTime;
-            var creator=rows[i].creator;
-            var group=list[groupId];
-            if(group){
-                group['tags'].push({tagId:tagId,tagName:tagName,createTime:createTime,creator:creator});
+    var args=[0,s4Id];
+    if(page&&pageSize){
+        var sqlCount="select count(t.tagId) as rowCount from ("+sql+") as t";
+        var sqlPage="select * from ("+sql+") as t limit ?,?";
+        dao.findBySql(sqlCount,args,function(rows){
+            if(rows.length){
+                var rowCount=rows[0]['rowCount'];
+                args.push((page-1)*pageSize);
+                args.push(pageSize);
+                dao.findBySql(sqlPage,args,function(rows){
+                    res.json({status:'success',rowCount:rowCount,data:rows});
+                });
             }
             else{
-                group={groupId:groupId,groupName:groupName,tags:[{tagId:tagId,tagName:tagName,createTime:createTime,creator:creator}]};
-                list[groupId]=group;
+                res.json({status:'success',rowCount:0,data:[]});
             }
-        }
-        var tagList=[];
-        for(var key in list){
-            tagList.push(list[key]);
-        }
-        res.json(tagList);
-    });
+        });
+    }
+    else{
+        dao.findBySql(sql,args,function(rows){
+            res.json({status:'success',rowCount:rows.length,data:rows});
+        });
+    }
 }
 /**
  * 通过标签及用户信息查询
