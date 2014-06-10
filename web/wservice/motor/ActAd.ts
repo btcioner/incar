@@ -16,7 +16,7 @@ module Service{
         public static LoadActivities(res:any, page:Pagination, filter:any, template:Template, s4_id:number, cb:(ex:TaskException, total:number, acts:ActSaveGas[])=>void){
             res.setHeader("Accept-Query", "page,pagesize,status,title");
             var sql = "SELECT %s\n" +
-                "FROM t_activity A JOIN t_activity_save_gas E ON A.id = E.id\n" +
+                "FROM t_activity A\n" +
                 "WHERE A.s4_id=? and A.template_id=?";
             var args:Array<Object> = [s4_id, template.dto.id];
 
@@ -28,7 +28,7 @@ module Service{
             var dac = MySqlAccess.RetrievePool();
             var task:any = { finished: 0 };
             task.begin = ()=>{
-                var sqlA = util.format(sql, "A.*, E.*");
+                var sqlA = util.format(sql, "A.*");
                 if(page.IsValid()) sqlA += page.sql;
                 dac.query(sqlA, args, (ex, result)=>{
                     task.A = { ex:ex, result:result };
