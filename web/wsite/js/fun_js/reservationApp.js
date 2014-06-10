@@ -24,7 +24,7 @@ angular.module("SReservationApp", [
             templateUrl:'/4sStore/partials/reservation_main.html'//显示全部保养信息
         })
         .when('/collapseGTwo',{
-            controller:'',
+            controller:'s_repairCtrl',
             templateUrl:'/4sStore/partials/repair_main.html'//显示全部维修信息
          })
         .otherwise({

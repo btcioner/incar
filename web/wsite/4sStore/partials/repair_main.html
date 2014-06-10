@@ -32,7 +32,57 @@
            </div>
        </div>
    </div>
-       <h2 style="text-align: center;">正在开发中...</h2>
+    <div class="container-fluid" style="width: 83%;float: left">
+        <div class="row-fluid" >
+        <!--试乘试驾列表 begin-->
+        <div class="widget-box" ng-show="driveTryDiv">
+            <div class="widget-title">
+                <span class="icon"><i class="icon-th"></i></span>
+                <h5>试乘试驾</h5>
+            </div>
+            <div class="widget-content nopadding">
+                <!--<table class="table table-bordered data-table">-->
+                <table class="table table-bordered data-table">
+                    <thead>
+                    <tr>
+                        <th>车主姓名</th>
+                        <th>电话</th>
+                        <th>预约品牌</th>
+                        <th>预约车系</th>
+                        <th>预约时间</th>
+                        <th>操作时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="gradeX" ng-repeat="tries in tries">
+                        <td id="tdc"></td>
+                        <td id="tdc"></td>
+                        <td id="tdc"></td>
+                        <td id="tdc"></td>
+                        <td id="tdc"></td>
+                        <td id="tdc"></td>
+                        <td id="tdc">{{tries.step}}</td>
+                        <td id="tdc" >
+                            <a class="btn btn-primary btn-mini" ng-click="manager($index,tries.step);"></a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div><font color="red">{{tips}}</font></div>
+            <div class="pagination alternate" style="float:right;">
+                共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
+                跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId,'index');">
+                <option>1</option>
+            </select>页
+            </div>
+        </div>
+        <!--试乘试驾列表 end-->
+        </div>
+    </div>
 </div>
 </div>
 </div>
