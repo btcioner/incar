@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS t_car(
     series int                  COMMENT '车型',
     modelYear   int             COMMENT '年款',
     engineType varchar(5)       COMMENT '发动机类型',
-    disp float                  COMMENT '发动机排量',
+    disp decimal(4,2)           COMMENT '发动机排量',
     mileage long                COMMENT '校准里程数',
     age date                    COMMENT '车龄',
 
