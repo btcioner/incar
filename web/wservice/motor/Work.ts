@@ -239,7 +239,7 @@ module Service{
                 }
 
                 try {
-                    objWork[req.body.op](req, res);
+                    objWork[req.body.op].call(objWork, req, res);
                 }
                 catch(ex){
                     res.json(new TaskException(-1, "创建工作失败", ex.toString()));
