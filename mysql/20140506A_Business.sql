@@ -105,6 +105,8 @@ CREATE TABLE IF NOT EXISTS t_tag(
     description varchar(300) COMMENT '标签说明',
     active tinyint COMMENT '0-不可用 1-可用',
     groupId int COMMENT '标签大类Id',
+    createTime timestamp COMMENT '创建时间',
+    creator varchar(30) COMMENT '创建人',
     index idx_tag_code(code)
 );
 -- 车标签关系
