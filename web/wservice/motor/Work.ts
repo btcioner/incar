@@ -247,4 +247,51 @@ module Service{
             }
         });
     }
+
+    export function Get4SSummary(req, res):void{
+        if(Object.keys(req.body).length == 0){
+            res.json({
+                postSample:{
+                    token:"This=is=a=fake=token===demo=onlyeJUAPmtjgU9e77pOULn1Z75oWFVh6Tm19iVrUVBxZkGg=="
+                },
+                remark:"必填:token"
+            });
+            return;
+        }
+        // 校验token
+        Staff.CreateFromToken(req.body.token, (ex, staff)=>{
+            if(ex){ res.json(new TaskException(-1, "校验token失败", ex)); return; }
+            // 查询4S店基本信息
+            var repo4S = new S4Repository();
+            repo4S.Get4SById(staff.dto.s4_id, (ex, s4)=>{
+                if(ex){ res.json(new TaskException(-2, util.format("无效4S店(%s)", staff.dto.s4_id), ex)); return; }
+                // 过滤掉一些不需要返回的字段
+                var dto4S:any = s4.DTO();
+                dto4S.openid = undefined;
+                dto4S.wx_login = undefined;
+                dto4S.wx_pwd = undefined;
+                dto4S.wx_app_name = undefined;
+                dto4S.wx_app_id = undefined;
+                dto4S.wx_app_secret = undefined;
+                dto4S.wx_status = undefined;
+
+                // 查询待保养和待试乘的数目
+                var dac = MySqlAccess.RetrievePool();
+                var sql = "SELECT W.work,count(*) AS count FROM t_work W\n" +
+                    "WHERE W.org_id = ? and W.work in ('care','drivetry') and step = 'applied'\n" +
+                    "GROUP BY W.work";
+                var args = [dto4S.id];
+                dac.query(sql, args, (ex, result)=>{
+                    if(ex) { res.json(new TaskException(-3, "查询待保养和待试乘信息失败", ex)); return;}
+                    var countCare = 0;
+                    var countDriveTry = 0;
+                    result.forEach((entry:any)=>{
+                        if(entry.work === 'care') countCare = entry.count;
+                        else if(entry.work === 'drivetry') countDriveTry = entry.count;
+                    });
+                    res.json({status:"ok", care:countCare, drivetry:countDriveTry, s4:dto4S });
+                });
+            });
+        });
+    }
 }
