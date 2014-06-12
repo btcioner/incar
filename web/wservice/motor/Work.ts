@@ -252,9 +252,13 @@ module Service{
         if(Object.keys(req.body).length == 0){
             res.json({
                 postSample:{
-                    token:"This=is=a=fake=token===demo=onlyeJUAPmtjgU9e77pOULn1Z75oWFVh6Tm19iVrUVBxZkGg=="
+                    token:"This=is=a=fake=token===demo=onlyeJUAPmtjgU9e77pOULn1Z75oWFVh6Tm19iVrUVBxZkGg==",
+                    care_list:true,
+                    drivetry_list:true,
+                    page:1,
+                    pagesize:20
                 },
-                remark:"必填:token"
+                remark:"必填:token.| care_list,drivetry_list默认为false,代表不返回详细列表"
             });
             return;
         }
@@ -289,7 +293,42 @@ module Service{
                         if(entry.work === 'care') countCare = entry.count;
                         else if(entry.work === 'drivetry') countDriveTry = entry.count;
                     });
-                    res.json({status:"ok", care:countCare, drivetry:countDriveTry, s4:dto4S });
+
+                    var task:any = { finished:0 };
+                    task.begin = ()=>{
+                        if(req.body.care_list){
+                            Get4SCare(req, {json:(data)=>{
+                                task.finished++;
+                                task.A = data;
+                                task.end();
+                            }});
+                        }
+                        else{
+                            task.finished++;
+                            task.end();
+                        }
+
+                        if(req.body.drivetry_list){
+                            Get4SDriveTry(req, {json:(data)=>{
+                                task.finished++;
+                                task.B = data;
+                                task.end();
+                            }});
+                        }
+                        else{
+                            task.finished++;
+                            task.end();
+                        }
+                    };
+
+                    task.end = ()=>{
+                        if(task.finished < 2) return;
+                        var ret:any = {status:"ok", care:countCare, drivetry:countDriveTry};
+                        if(req.body.care_list) ret.care_list = task.A;
+                        if(req.body.drivetry_list) ret.drivetry_list = task.B;
+                        res.json(ret);
+                    };
+                    task.begin();
                 });
             });
         });
@@ -300,8 +339,8 @@ module Service{
             res.json({
                 postSample:{
                     token:"This=is=a=fake=token===demo=onlyeJUAPmtjgU9e77pOULn1Z75oWFVh6Tm19iVrUVBxZkGg==",
-                    page:3,
-                    pagesize:8
+                    page:1,
+                    pagesize:20
                 },
                 remark:"必填:token"
             });
@@ -336,8 +375,8 @@ module Service{
             res.json({
                 postSample:{
                     token:"This=is=a=fake=token===demo=onlyeJUAPmtjgU9e77pOULn1Z75oWFVh6Tm19iVrUVBxZkGg==",
-                    page:3,
-                    pagesize:8
+                    page:1,
+                    pagesize:20
                 },
                 remark:"必填:token"
             });
