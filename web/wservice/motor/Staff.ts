@@ -81,7 +81,7 @@ module Service{
                         res.cookie("token", token);
                         // 密码不应返回,仅供内部使用
                         staff.dto.pwd = undefined;
-                        res.json({status:"ok", staff:staff.DTO()});
+                        res.json({status:"ok", staff:staff.DTO(), token:token});
                     }
                 }
                 else{
