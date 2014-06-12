@@ -220,6 +220,11 @@
     //预览
     $scope.preview = function(id)
     {
+        alert(id);
+        $scope.fuleMatchDetail = $scope.activityList[id];
+        alert($scope.fuleMatchDetail.brief);
+        $("#brief").text('');
+        $("#brief").append($scope.fuleMatchDetail.brief);
         $scope.newsListDiv = false;
         $scope.newsPreviewDiv = true;
     }

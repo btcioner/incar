@@ -4,6 +4,7 @@
  *  for public js function
  */
 var baseurl="/wservice/";
+
 (function($){
 
     $.getUrlParam = function(name)
@@ -132,8 +133,5 @@ var baseurl="/wservice/";
                 break;
         }
     }
-
-
-
 })(jQuery);
 

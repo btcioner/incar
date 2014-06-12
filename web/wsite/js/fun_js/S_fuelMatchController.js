@@ -34,6 +34,7 @@ function s_fuelMatchCtrl($scope,$http)
     $scope.ser_title = "";
     $scope.queryString = "";
     $scope.seriesCode = "";
+    $scope.disp = "";
 
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
@@ -81,15 +82,15 @@ function s_fuelMatchCtrl($scope,$http)
                GetFirstPageInfo();
                break;
            case 2://开始
-               $scope.queryString = "&series="+$scope.seriesCode;
+               $scope.queryString = "&series="+$scope.seriesCode+"&disp="+$scope.disp;
                getSignUpList("",2);
                break;
            case 3://结束
-               $scope.queryString = "&series="+$scope.seriesCode;
+               $scope.queryString = "&series="+$scope.seriesCode+"&disp="+$scope.disp;
                getSignUpList("",3);
                break;
            case 4://公布
-               $scope.queryString = "&series="+$scope.seriesCode;
+               $scope.queryString = "&series="+$scope.seriesCode+"&disp="+$scope.disp;
                getSignUpList("&enough_mileage=true",4);
                break;
        }
@@ -99,7 +100,7 @@ function s_fuelMatchCtrl($scope,$http)
     function PagingInfo(totalCount)
     {
         $scope.totalCount = totalCount;
-        $scope.totalPage = Math.ceil( $scope.totalCount /  $scope.pageRecord)
+        $scope.totalPage = Math.ceil( $scope.totalCount /  $scope.pageRecord);
         $scope.totalOption=[{}];
         for(var i = 0 ;i< $scope.totalPage;i++)
         {
@@ -242,8 +243,11 @@ function s_fuelMatchCtrl($scope,$http)
         })
     }
    //预览
-    $scope.preview = function(id)
+    $scope.preview = function(id,index)
     {
+        $scope.fuleMatchDetail = $scope.fuelMatch[index];
+        $("#brief").text('');
+        $("#brief").append($scope.fuleMatchDetail.brief);
         $scope.matchListDiv = false;
         $scope.matchPreviewDiv = true;
     }
@@ -281,7 +285,7 @@ function s_fuelMatchCtrl($scope,$http)
                $scope.matchListDiv = false;
                $scope.matchModifyDiv = true;
                getAllTags( $scope.fuleMatchDetail.tags);
-
+               editor.html('');
                editor.insertHtml($scope.fuleMatchDetail.brief);
 
                break;
@@ -293,6 +297,7 @@ function s_fuelMatchCtrl($scope,$http)
            case 3://已开始
                getSignUpList("",2);
                getSeries();
+
                $scope.matchStartedDiv = true;
                $scope.matchListDiv = false;
                break;
@@ -314,8 +319,8 @@ function s_fuelMatchCtrl($scope,$http)
     //获取车系
     function getSeries()
     {
-        $http.get(baseurl+'brand/8/series').success(function(data){
-            $scope.carSeries = data.series;
+        $http.get(baseurl+'4s/'+ $.cookie("s4_id")+'/activity/'+$scope.fuleMatchDetail.id+'/s_p').success(function(data){
+            $scope.s_p = data.s_p;
         });
     }
 
@@ -386,6 +391,7 @@ function s_fuelMatchCtrl($scope,$http)
             {
                 alert("修改成功!");
                 GetFirstPageInfo();
+                editor.remove();
                 $scope.matchListDiv = true;
                 $scope.matchModifyDiv = false;
             }
@@ -738,6 +744,7 @@ function s_fuelMatchCtrl($scope,$http)
                 $scope.matchPreviewDiv = false;
                 break;
             case 3://修改-首页
+                editor.remove();
                 GetFirstPageInfo();
                 $scope.matchListDiv = true;
                 $scope.matchModifyDiv = false;

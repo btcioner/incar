@@ -27,7 +27,7 @@ angular.module("SActivityApp", [
             templateUrl:'/4sStore/partials/activity_lotteryTicket.html'//彩票
         })
         .otherwise({
-             controller: '',
+             controller: 'test',
              templateUrl: '/4sStore/partials/test.html'//首页
         });
   //  $locationProvider.html5Mode(true);
@@ -39,3 +39,4 @@ angular.module("SActivityApp", [
             $scope.randomTime = new Date();
         }
   });
+
