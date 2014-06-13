@@ -29,6 +29,7 @@ module.exports = function(app) {
 
     // Routes for wsite service
     var authCheck = [wservice.CheckAuthority];
+
    // app.get('/wservice/hello', wservice.HelloAPI);
     app.post('/wservice/upload', wservice.UploadFile);
     app.post('/wservice/login', wservice.Login);
@@ -70,6 +71,10 @@ module.exports = function(app) {
     app.put('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.ModifyCar);
     app.delete('/wservice/4s/:s4_id/car/:car_id', authCheck, wservice.DeleteCar);
     app.get('/wservice/4s/:s4_id/car/:car_id/cust', authCheck, wservice.GetCustomerByCarId);
+
+    app.post('/wservice/mobi/summary', wservice.Get4SSummary);
+    app.post('/wservice/mobi/care', wservice.Get4SCare);
+    app.post('/wservice/mobi/drivetry', wservice.Get4SDriveTry);
 
     app.get('/tag/tagList/:s4Id/:brand',tagService.tagList);     //获取所有标签信息(通过系列过滤)
     app.get('/tag/tagListSystem/:brand',tagService.tagListSystem);//获取所有系统标签信息(通过系列过滤)

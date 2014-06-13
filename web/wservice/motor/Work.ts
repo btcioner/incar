@@ -247,4 +247,188 @@ module Service{
             }
         });
     }
+
+    export function Get4SSummary(req, res):void{
+        if(Object.keys(req.body).length == 0){
+            res.json({
+                postSample:{
+                    token:"This=is=a=fake=token===demo=onlyeJUAPmtjgU9e77pOULn1Z75oWFVh6Tm19iVrUVBxZkGg==",
+                    care_list:true,
+                    drivetry_list:true,
+                    page:1,
+                    pagesize:20
+                },
+                remark:"必填:token.| care_list,drivetry_list默认为false,代表不返回详细列表"
+            });
+            return;
+        }
+        // 校验token
+        Staff.CreateFromToken(req.body.token, (ex, staff)=>{
+            if(ex){ res.json(new TaskException(-1, "校验token失败", ex)); return; }
+            // 查询4S店基本信息
+            var repo4S = new S4Repository();
+            repo4S.Get4SById(staff.dto.s4_id, (ex, s4)=>{
+                if(ex){ res.json(new TaskException(-2, util.format("无效4S店(%s)", staff.dto.s4_id), ex)); return; }
+                // 过滤掉一些不需要返回的字段
+                var dto4S:any = s4.DTO();
+                dto4S.openid = undefined;
+                dto4S.wx_login = undefined;
+                dto4S.wx_pwd = undefined;
+                dto4S.wx_app_name = undefined;
+                dto4S.wx_app_id = undefined;
+                dto4S.wx_app_secret = undefined;
+                dto4S.wx_status = undefined;
+
+                // 查询待保养和待试乘的数目
+                var dac = MySqlAccess.RetrievePool();
+                var sql = "SELECT W.work,count(*) AS count FROM t_work W\n" +
+                    "WHERE W.org_id = ? and W.work in ('care','drivetry') and step = 'applied'\n" +
+                    "GROUP BY W.work";
+                var args = [dto4S.id];
+                dac.query(sql, args, (ex, result)=>{
+                    if(ex) { res.json(new TaskException(-3, "查询待保养和待试乘信息失败", ex)); return;}
+                    var countCare = 0;
+                    var countDriveTry = 0;
+                    result.forEach((entry:any)=>{
+                        if(entry.work === 'care') countCare = entry.count;
+                        else if(entry.work === 'drivetry') countDriveTry = entry.count;
+                    });
+
+                    var task:any = { finished:0 };
+                    task.begin = ()=>{
+                        if(req.body.care_list){
+                            Get4SCare(req, {json:(data)=>{
+                                task.finished++;
+                                task.A = data;
+                                task.end();
+                            }});
+                        }
+                        else{
+                            task.finished++;
+                            task.end();
+                        }
+
+                        if(req.body.drivetry_list){
+                            Get4SDriveTry(req, {json:(data)=>{
+                                task.finished++;
+                                task.B = data;
+                                task.end();
+                            }});
+                        }
+                        else{
+                            task.finished++;
+                            task.end();
+                        }
+                    };
+
+                    task.end = ()=>{
+                        if(task.finished < 2) return;
+                        var ret:any = {status:"ok", care:countCare, drivetry:countDriveTry};
+                        if(req.body.care_list) ret.care_list = task.A;
+                        if(req.body.drivetry_list) ret.drivetry_list = task.B;
+                        res.json(ret);
+                    };
+                    task.begin();
+                });
+            });
+        });
+    }
+
+    export function Get4SCare(req, res):void{
+        if(Object.keys(req.body).length == 0){
+            res.json({
+                postSample:{
+                    token:"This=is=a=fake=token===demo=onlyeJUAPmtjgU9e77pOULn1Z75oWFVh6Tm19iVrUVBxZkGg==",
+                    page:1,
+                    pagesize:20
+                },
+                remark:"必填:token"
+            });
+            return;
+        }
+        // 校验token
+        Staff.CreateFromToken(req.body.token, (ex, staff)=>{
+            if(ex){ res.json(new TaskException(-1, "校验token失败", ex)); return; }
+            // 查询4S店基本信息
+            var repo4S = new S4Repository();
+            repo4S.Get4SById(staff.dto.s4_id, (ex, s4)=>{
+                if(ex){ res.json(new TaskException(-2, util.format("无效4S店(%s)", staff.dto.s4_id), ex)); return; }
+                var filter = { work:"care", step:"applied" };
+                var page = new Pagination(req.body.page, req.body.pagesize);
+                s4.GetWork(filter, page, (ex, total, works)=>{
+                    if(ex) { res.json(new TaskException(-3, "查询待保养信息失败", ex)); return; }
+                    // 去掉一些不需要的信息
+                    works.forEach((work:any)=>{
+                        work.work = undefined;
+                        work.step = undefined;
+                        work.work_ref_id = undefined;
+                        work.json_args = undefined;
+                    });
+                    res.json({status:"ok", total:total, list:works});
+                });
+            });
+        });
+    }
+
+    export function Get4SDriveTry(req, res):void{
+        if(Object.keys(req.body).length == 0){
+            res.json({
+                postSample:{
+                    token:"This=is=a=fake=token===demo=onlyeJUAPmtjgU9e77pOULn1Z75oWFVh6Tm19iVrUVBxZkGg==",
+                    page:1,
+                    pagesize:20
+                },
+                remark:"必填:token"
+            });
+            return;
+        }
+        // 校验token
+        Staff.CreateFromToken(req.body.token, (ex, staff)=>{
+            if(ex){ res.json(new TaskException(-1, "校验token失败", ex)); return; }
+            // 查询4S店基本信息
+            var repo4S = new S4Repository();
+            repo4S.Get4SById(staff.dto.s4_id, (ex, s4)=>{
+                if(ex){ res.json(new TaskException(-2, util.format("无效4S店(%s)", staff.dto.s4_id), ex)); return; }
+                var filter = { work:"drivetry", step:"applied" };
+                var page = new Pagination(req.body.page, req.body.pagesize);
+                s4.GetWork(filter, page, (ex, total, works)=>{
+                    if(ex) { res.json(new TaskException(-3, "查询试驾信息失败", ex)); return; }
+                    var brandCodes:Array<number> = [];
+                    // 去掉一些不需要的信息
+                    works.forEach((work:any)=>{
+                        work.work = undefined;
+                        work.step = undefined;
+                        work.work_ref_id = undefined;
+                        try{
+                            var args:any = JSON.parse(work.json_args);
+                            work.brand = args.brand;
+                            work.series = args.series;
+                            if(!isNaN(args.brand)) brandCodes.push(args.brand);
+                        }
+                        catch(ex){}
+                        work.json_args = undefined;
+                        work.license = undefined;
+                    });
+                    // 查询车型车款
+                    var dac = MySqlAccess.RetrievePool();
+                    var sql = "SELECT * FROM t_car_dictionary WHERE brandCode in (%s)";
+                    sql = util.format(sql, brandCodes.join(','));
+                    dac.query(sql, null, (ex, result)=>{
+                        if(result.length > 0){
+                            works.forEach((work:any)=>{
+                                result.forEach((dict:any)=>{
+                                    if(work.brand == dict.brandCode && work.series == dict.seriesCode){
+                                        work.brand_name = dict.brand;
+                                        work.series_name = dict.series;
+                                    }
+                                });
+                            });
+                        }
+                        res.json({status:"ok", total:total, list:works});
+                    });
+
+                });
+            });
+        });
+    }
 }

@@ -642,5 +642,47 @@ module Service{
                 cb(null, template);
             });
         }
+
+        public GetWork(filter:any, page:Pagination, cb:(ex, total:number, works:Array<any>)=>void){
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "SELECT %s\n" +
+                "FROM t_work W\n" +
+                "\tLEFT OUTER JOIN t_account U ON W.cust_id = U.id\n" +
+                "\tLEFT OUTER JOIN t_car C ON W.car_id = C.id\n" +
+                "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand = D.brandCode and C.series = D.seriesCode\n" +
+                "WHERE W.org_id = ?";
+            var args = [this.dto.id];
+
+            if(isStringNotEmpty(filter.work)){ sql += " and W.work = ?"; args.push(filter.work); }
+            if(isStringNotEmpty(filter.step)){ sql += " and W.step = ?"; args.push(filter.step); }
+
+            var task:any = { finished:0 };
+            task.begin = ()=>{
+                var sqlA = util.format(sql, "COUNT(*) count");
+                dac.query(sqlA, args, (ex, result)=>{
+                    task.A = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+
+                var sqlB = util.format(sql, "W.*, U.nick, U.phone, C.license, D.brand AS brand_name, D.series AS series_name");
+                if(page.IsValid()) sqlB += page.sql;
+                dac.query(sqlB, args, (ex, result)=>{
+                    task.B = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+            };
+
+            task.end = ()=>{
+                if(task.finished < 2) return;
+                if(task.B.ex) { cb(new TaskException(-1, "查询工作失败", task.B.ex), 0, null); return; }
+                var total = 0;
+                if(!task.A.ex) total = task.A.result[0].count;
+                cb(null, total, task.B.result);
+            };
+
+            task.begin();
+        }
     }
 }
