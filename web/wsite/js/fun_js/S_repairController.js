@@ -11,7 +11,7 @@ function s_repairCtrl($scope, $http,$routeParams){
     $scope.previewDiv = false;
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
-
+    $scope.randomTime = new Date();
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {
@@ -105,8 +105,8 @@ function s_repairCtrl($scope, $http,$routeParams){
                 $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
                     if(data.status=="ok")
                     {
+                        alert("操作成功!");
                         GetFirstPageInfo();
-                        alert("操作成功");
                         $scope.driveTryDiv = true;
                         $scope.applyOperDiv = false;
                         $scope.previewDiv = false;

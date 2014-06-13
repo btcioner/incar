@@ -2,7 +2,7 @@
  * Created by Liz on 14-04-08.
  */
 
-
+//资讯活动
  function s_activityCtrl($scope, $http){
     $scope.newsListDiv = true;
     $scope.newsAddDiv = false;
@@ -81,8 +81,9 @@
         $("#formId_edit2").ajaxForm(function(data){
             $scope.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
+
         KindEditor.ready(function(K) {
-            editor = K.create('textarea[name="content"]', {
+            editor = K.create('#content_0', {
                 width : 380,
                 height : 350,
                 minWidth : 380,
@@ -94,7 +95,7 @@
                 ]
             });
         });
-
+        editor.html("");
         getAllTags("");
         $scope.newsListDiv = false;
         $scope.newsAddDiv = true;
@@ -104,7 +105,7 @@
         function getAllTags(tags)
         {
             var tagArr = tags.split(",");
-            $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/8").success(function(data){
+            $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/"+ $.cookie("brand_id")).success(function(data){
 
                 $scope.tagsGroup = data;
                 for(var i=0;i<$scope.tagsGroup.length;i++)
@@ -140,6 +141,7 @@
     {
         getAllChooseTag();
         $scope.postData={title:$scope.title,brief:editor.html(),logo_url:$scope.logo_url,tags:$scope.tags};
+
         $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/2/activity",$scope.postData).success(function(data){
             if(data.status == "ok")
             {
@@ -173,9 +175,10 @@
    //修改按钮
     $scope.modify = function(id)
     {
+        $scope.logo_url = "";
         $scope.activityDetail = $scope.activityList[id];
         $("#formId_edit3").ajaxForm(function(data){
-            $scope.fuleMatchDetail.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
+            $scope.activityDetail.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
         KindEditor.ready(function(K) {
             editor = K.create('#content_1', {
@@ -195,6 +198,7 @@
         $scope.newsModifyDiv = true;
 
         getAllTags( $scope.activityDetail.tags);
+        editor.html('');
         editor.insertHtml($scope.activityDetail.brief);
 
     }
@@ -210,6 +214,7 @@
             {
                 alert("修改成功!");
                 GetFirstPageInfo();
+                editor.remove();
                 $scope.newsListDiv = true;
                 $scope.newsModifyDiv = false;
             }
@@ -220,9 +225,8 @@
     //预览
     $scope.preview = function(id)
     {
-        alert(id);
         $scope.fuleMatchDetail = $scope.activityList[id];
-        alert($scope.fuleMatchDetail.brief);
+
         $("#brief").text('');
         $("#brief").append($scope.fuleMatchDetail.brief);
         $scope.newsListDiv = false;
@@ -300,6 +304,7 @@
                 $scope.newsAddDiv = false;
                 break;
             case 2:
+                editor.remove();
                 $scope.newsListDiv = true;
                 $scope.newsModifyDiv = false;
                 break;
@@ -318,7 +323,7 @@ function changeImg(file,plugId,formId,preId,imgId)
     var ext=filepath.substring(extStart,filepath.length).toUpperCase();
     if(ext!=".BMP"&&ext!=".PNG"&&ext!=".JPG"&&ext!=".JPEG"){
         alert("图片限于bmp,png,jpeg,jpg格式");
-        $("#edit_pro_img").val("");
+        $("#"+plugId).val("");
     }
     else{
         var MAXWIDTH  = 260;

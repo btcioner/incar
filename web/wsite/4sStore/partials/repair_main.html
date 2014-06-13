@@ -8,11 +8,11 @@
         <div class="accordion" id="collapse-group">
             <div class="accordion-group widget-box">
                 <div class="accordion-heading">
-                    <div class="widget-title"> <a data-parent="#collapse-group" href="#/collapseGOne/0" data-toggle="collapse" class="collapsed"> <span class="icon"><i class="icon-magnet"></i></span>
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#/collapseGOne/{{randomTime}}" data-toggle="collapse" class="collapsed"> <span class="icon"><i class="icon-magnet"></i></span>
                         <h5>保养预约</h5>
                     </a></div>
                 </div>
-                <div class="accordion-body collapse" id="collapseGOne" style="height: 0px;">
+                <div class="accordion-body collapse" id="collapseGOne/{{randomTime}}" style="height: 0px;">
                     <div class="widget-content" style="text-align: right;padding:0">
                         <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(1)">新申请</a>
                         <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(2)">已拒绝</a>
@@ -25,7 +25,7 @@
             </div>
             <div class="accordion-group widget-box" style="margin-top: 2px">
                 <div class="accordion-heading">
-                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo" data-toggle="collapse" ng-click="RepairTab(0)"> <span class="icon"><i class="icon-wrench"></i></span>
+                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo/{{randomTime}}" data-toggle="collapse" ng-click="RepairTab(0)"> <span class="icon"><i class="icon-wrench"></i></span>
                         <h5 >试乘试驾</h5>
                     </a> </div>
                 </div>

@@ -79,7 +79,12 @@
 
     //修改
     $scope.modify = function(index){
-
+        $('#datetimepicker2').datetimepicker({
+            format: 'yyyy-MM-dd hh:mm:ss'
+        });
+        $('#datetimepicker3').datetimepicker({
+            format: 'yyyy-MM-dd hh:mm:ss'
+        });
         $scope.slotListDiv = false;
         $scope.slotModifyDiv = true;
         $scope.slotDetail = $scope.slots[index];
@@ -91,17 +96,17 @@
         $scope.slotDetail.promotion_status = $.changeSlotStatusToNum($scope.slotDetail.promotion_status);
         $scope.postData ={
             "slot_location":$scope.slotDetail.slot_location,
-            "slot_time":$scope.slotDetail.slot_time,
+            "slot_time":$("#slot_time_edit").val(),
             "benefit":$scope.slotDetail.benefit,
             "description":$scope.slotDetail.description,
-            "promotion_time":$scope.slotDetail.promotion_time,
+            "promotion_time":$("#promotion_time_edit").val(),
             "promotion_status": $scope.slotDetail.promotion_status
         };
         $http.put(baseurl + 'organization/'+$scope.slotDetail.storeId+'/promotionslot/'+$scope.slotDetail.id, $scope.postData).success(function(data){
             if(data.status == "ok")
             {
                 alert("修改成功");
-                $scope.slotDetail.promotion_status = $.changeSlotStatus($scope.slotDetail.promotion_status);
+                GetFirstPageInfo();
                 $scope.slotListDiv = true;
                 $scope.slotModifyDiv = false;
             }
@@ -115,7 +120,12 @@
 
     //添加按钮
     $scope.add = function(){
-
+        $('#datetimepicker').datetimepicker({
+            format: 'yyyy-MM-dd hh:mm:ss'
+        });
+        $('#datetimepicker1').datetimepicker({
+            format: 'yyyy-MM-dd hh:mm:ss'
+        });
         $scope.slotListDiv = false;
         $scope.slotAddDiv = true;
     }
@@ -125,10 +135,10 @@
     {
        $scope.postData ={
             "slot_location":$scope.slot_location,
-            "slot_time":$scope.slot_time,
+            "slot_time":$("#slot_time").val(),
             "benefit":$scope.benefit,
             "description":$scope.description,
-            "promotion_time":$scope.promotion_time,
+            "promotion_time":$("#promotion_time").val(),
             "promotion_status":1,
             "tc":"",
             "ts":new Date()
@@ -147,7 +157,7 @@
             }
         }).error(function(data){
                 alert("请求没响应");
-            })
+        })
     }
 
     //返回按钮

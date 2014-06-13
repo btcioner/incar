@@ -97,7 +97,7 @@
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">活动介绍：</label>
                 <div class="controls">
-                    <textarea id="content" name="content" style="visibility:hidden;" >请编写正文内容...</textarea>
+                    <textarea id="content_0" name="content" style="visibility:hidden;" >请编写正文内容...</textarea>
                 </div>
             </div>
             <div class="control-group" >
@@ -187,7 +187,7 @@
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">活动图片：</label>
                 <div class="controls">
-                    <input type="file" id="edit_pro_img_1" name="title_img" onchange="changeImg(this,'edit_pro_img_1','formId_edit3','preview1','imghead1')" />
+                    <input type="file" id="edit_pro_img_1" name="title_img"   onchange="changeImg(this,'edit_pro_img_1','formId_edit3','preview1','imghead1')" />
                 </div>
                 <div style="margin-left:280px;"> {{titleMove}}</div>
                 <div style="margin-left:280px;" style="float: left;" id="preview1">
@@ -236,7 +236,6 @@
                    </span>
                 </div>
             </div>
-
             <div class="form-actions">
                 <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="modifyConfirm();">修改</button>
                 <button type="button" class="btn btn-danger"   ng-click="gotoBack(3)">取消</button>
