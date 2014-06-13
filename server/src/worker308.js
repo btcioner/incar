@@ -102,6 +102,18 @@ function packetProcess(packetInput,tag,cb) {
     if(commandWord===0x1605){
         packetProcess_1605(dataBuffer,saveAndReturn);
     }
+    if(commandWord===0x1606){
+        packetProcess_1606(dataBuffer,saveAndReturn);
+    }
+    if(commandWord===0x1607){
+        packetProcess_1607(dataBuffer,saveAndReturn);
+    }
+    if(commandWord===0x1608){
+        packetProcess_1608(dataBuffer,saveAndReturn);
+    }
+    if(commandWord===0x160A){
+        packetProcess_160A(dataBuffer,saveAndReturn);
+    }
     if(commandWord>=0x1621&&commandWord<=0x16E0){
         sendToMessageServer(dataBuffer,commandWord);
         saveAndReturn();
@@ -251,7 +263,7 @@ function packetProcess_1601(dataBuffer,cb) {
                 });
             }
             else{
-                console.log("行程信息已经存在:"+JSON.stringify(obd));
+                console.log("行程信息已经存在");
                 cb();
             }
         });
@@ -268,6 +280,7 @@ function packetProcess_1601(dataBuffer,cb) {
                     //2、获取当前行驶详细信息
                     var driveDetail=[];
                     var detailCount=dataManager.nextWord();            //车况信息个数
+
                     for(var i=0;i<detailCount;i++){
                         var id=dataManager.nextWord();;             //ID
                         var value=get401ValueByID(id);
@@ -281,8 +294,9 @@ function packetProcess_1601(dataBuffer,cb) {
                         createTime:new Date()
                     };
                     if(carStatus>1){
-                        dao.insertBySql(sql,args,function(info){
-                            console.log("车辆行驶详情保存成功:"+JSON.stringify(args));
+                        dao.insertBySql(sql,args,function(info,detail){
+                            detail.id=info.insertId;
+                            console.log("车辆行驶详情保存成功:"+JSON.stringify(detail));
                             cb();
                         });
                     }
@@ -290,7 +304,7 @@ function packetProcess_1601(dataBuffer,cb) {
                         var sqlDrive="update t_obd_drive set ? where id=?";
                         var argsDrive=[{carStatus:2,lastUpdateTime:lastUpdateTime},id];
                         dao.executeBySql([sql,sqlDrive],[args,argsDrive],function(){
-                            console.log("成功更新行驶信息(行驶中):"+JSON.stringify(obd));
+                            console.log("成功更新行驶信息(行驶中):"+JSON.stringify(argsDrive));
                             console.log("车辆行驶详情保存成功:"+JSON.stringify(args));
                             cb();
                         });
@@ -632,16 +646,26 @@ function packetProcess_1603(dataBuffer,cb) {
     });
 }
 
-function packetProcess_1605(dataBuffer) {
-
+function packetProcess_1605(dataBuffer,cb) {
+    console.log('接收到1605数据');
+    cb();
 }
-function packetProcess_1606(dataBuffer) {
-
+function packetProcess_1606(dataBuffer,cb) {
+    console.log('接收到1606数据');
+    cb();
 }
-function packetProcess_1607(dataBuffer) {
-
+function packetProcess_1607(dataBuffer,cb) {
+    console.log('接收到1607数据');
+    cb();
 }
-
+function packetProcess_1608(dataBuffer,cb) {
+    console.log('接收到1608数据');
+    cb();
+}
+function packetProcess_160A(dataBuffer,cb) {
+    console.log('接收到160A数据');
+    cb();
+}
 function getDateTimeStamp(time) {
     var date = time?time:new Date();
     var hour = date.getHours();

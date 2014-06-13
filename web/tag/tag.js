@@ -615,7 +615,8 @@ var tagGroup=[
     {name:"用途",description:"标识车是商用还是家用",type:0},
     {name:"用车时段",description:"用来描述车主的用车时段",type:0},
     {name:"用车频率",description:"用来描述车主的用车频率",type:0},
-    {name:"驾驶偏好",description:"用来描述车主的驾驶偏好",type:0}
+    {name:"驾驶偏好",description:"用来描述车主的驾驶偏好",type:0},
+    {name:"自定义标签",description:"暗箱操作专用",type:1}
 ];
 function initTagGroup(){
     var sql="insert into t_tag_group set ?";
@@ -639,7 +640,9 @@ function initCarBrandForTag(){
                 name:name,
                 description:name,
                 active:1,
-                groupId:1
+                groupId:1,
+                createTime:new Date(),
+                creator:'柳明'
             };
             sql="insert into t_tag set ?";
             dao.insertBySql(sql,tag,function(info,args){
@@ -651,32 +654,32 @@ function initCarBrandForTag(){
 }
 function initOtherTag(){
     var tags=[
-        {code:'chl1',name:"APP",description:"手机客户端",active:1,groupId:6},
-        {code:'chl2',name:"微信",description:"微信端",active:1,groupId:6},
-        {code:'chl3',name:"电话",description:"电话营销",active:1,groupId:6},
+        {code:'chl1',name:"APP",description:"手机客户端",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'chl2',name:"微信",description:"微信端",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'chl3',name:"电话",description:"电话营销",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0},
 
-        {code:'age0',name:"不到一年",description:"不到一年",active:1,groupId:5},
-        {code:'age1',name:"一到两年",description:"一到两年",active:1,groupId:5},
-        {code:'age2',name:"两到三年",description:"两到三年",active:1,groupId:5},
-        {code:'age3',name:"三到四年",description:"三到四年",active:1,groupId:5},
-        {code:'age4',name:"四到五年",description:"四到五年",active:1,groupId:5},
-        {code:'age5',name:"五年以上",description:"五年以上",active:1,groupId:5},
+        {code:'age0',name:"不到一年",description:"不到一年",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'age1',name:"一到两年",description:"一到两年",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'age2',name:"两到三年",description:"两到三年",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'age3',name:"三到四年",description:"三到四年",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'age4',name:"四到五年",description:"四到五年",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'age5',name:"五年以上",description:"五年以上",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
 
-        {code:'useTo1',name:"商用",description:"商业用车",active:1,groupId:2},
-        {code:'useTo2',name:"家用",description:"家庭用车",active:1,groupId:2},
+        {code:'useTo1',name:"商用",description:"商业用车",active:1,groupId:4,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'useTo2',name:"家用",description:"家庭用车",active:1,groupId:4,createTime:new Date(),creator:'柳明',s4Id:0},
 
-        {code:'time1',name:"上下班",description:"6:00-10:00,17:00-20:00使用",active:1,groupId:7},
-        {code:'time2',name:"工作时",description:"10:00-17:00使用",active:1,groupId:7},
-        {code:'time3',name:"非工作时段",description:"20:00-6:00使用",active:1,groupId:7},
+        {code:'time1',name:"上下班",description:"6:00-10:00,17:00-20:00使用",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'time2',name:"工作时",description:"10:00-17:00使用",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'time3',name:"非工作时段",description:"20:00-6:00使用",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
 
-        {code:'rate1',name:"极低",description:"很少很少",active:1,groupId:3},
-        {code:'rate2',name:"低",description:"很少",active:1,groupId:3},
-        {code:'rate3',name:"一般",description:"一般",active:1,groupId:3},
-        {code:'rate4',name:"高",description:"很多",active:1,groupId:3},
+        {code:'rate1',name:"极低",description:"很少很少",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'rate2',name:"低",description:"很少",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'rate3',name:"一般",description:"一般",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'rate4',name:"高",description:"很多",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
 
-        {code:'pre1',name:"保守",description:"保守",active:1,groupId:4},
-        {code:'pre2',name:"普通",description:"普通",active:1,groupId:4},
-        {code:'pre3',name:"豪放",description:"豪放",active:1,groupId:4}
+        {code:'pre1',name:"保守",description:"保守",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'pre2',name:"普通",description:"普通",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'pre3',name:"豪放",description:"豪放",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0}
     ];
     var sql="insert into t_tag set ?";
     for(var i=0;i<tags.length;i++){
@@ -688,4 +691,4 @@ function initOtherTag(){
 }
 //initTagGroup();
 //initCarBrandForTag();
-//initOtherTag();
+initOtherTag();
