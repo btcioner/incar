@@ -410,23 +410,27 @@ module Service{
                         work.license = undefined;
                     });
                     // 查询车型车款
-                    var dac = MySqlAccess.RetrievePool();
-                    var sql = "SELECT * FROM t_car_dictionary WHERE brandCode in (%s)";
-                    sql = util.format(sql, brandCodes.join(','));
-                    dac.query(sql, null, (ex, result)=>{
-                        if(result.length > 0){
-                            works.forEach((work:any)=>{
-                                result.forEach((dict:any)=>{
-                                    if(work.brand == dict.brandCode && work.series == dict.seriesCode){
-                                        work.brand_name = dict.brand;
-                                        work.series_name = dict.series;
-                                    }
+                    if(brandCodes.length > 0) {
+                        var dac = MySqlAccess.RetrievePool();
+                        var sql = "SELECT * FROM t_car_dictionary WHERE brandCode in (%s)";
+                        sql = util.format(sql, brandCodes.join(','));
+                        dac.query(sql, null, (ex, result)=> {
+                            if (!ex && result.length > 0) {
+                                works.forEach((work:any)=> {
+                                    result.forEach((dict:any)=> {
+                                        if (work.brand == dict.brandCode && work.series == dict.seriesCode) {
+                                            work.brand_name = dict.brand;
+                                            work.series_name = dict.series;
+                                        }
+                                    });
                                 });
-                            });
-                        }
-                        res.json({status:"ok", total:total, list:works});
-                    });
-
+                            }
+                            res.json({status: "ok", total: total, list: works});
+                        });
+                    }
+                    else{ // 不必查询车型车款
+                        res.json({status: "ok", total: total, list: works});
+                    }
                 });
             });
         });
