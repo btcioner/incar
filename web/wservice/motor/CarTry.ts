@@ -128,6 +128,55 @@ module Service {
             });
         });
     }
+
+    export function Action4SDriveTry(req, res):void{
+        if(Object.keys(req.body).length == 0){
+            res.json({
+                postSample:{
+                    token:"This=is=a=fake=token===demo=onlyeJUAPmtjgU9e77pOULn1Z75oWFVh6Tm19iVrUVBxZkGg==",
+                    reason:"Why do you reject it?"
+                },
+                remark:"必填:token"
+            });
+            return;
+        }
+        // 校验token
+        Staff.CreateFromToken(req.body.token, (ex, staff)=>{
+            if(ex){ res.json(new TaskException(-1, "校验token失败", ex)); return; }
+            // 查询4S店基本信息
+            var repo4S = new S4Repository();
+            repo4S.Get4SById(staff.dto.s4_id, (ex, s4)=>{
+                if(ex){ res.json(new TaskException(-2, util.format("无效4S店(%s)", staff.dto.s4_id), ex)); return; }
+                // 查询试驾工作
+                var workTry = new Work.drivetry();
+                var actionOP = workTry[req.params.action];
+                if(!actionOP){
+                    res.json(new TaskException(-3, util.format("无效请求:%s", req.params.action), null));
+                    return;
+                }
+                // 查询保养工作
+                var sql = "SELECT * FROM t_work WHERE id = ? and work = ? and org_id = ?";
+                var dac = MySqlAccess.RetrievePool();
+                dac.query(sql, [req.params.id, 'drivetry', staff.dto.s4_id], (ex, result)=>{
+                    if(ex){ res.json(new TaskException(-4, "查询试驾工作失败", ex)); return; }
+                    else if(result.length === 0){ res.json(new TaskException(-5, util.format("指定的工作无效(id=%s)", req.params.id), null)); return; }
+
+                    for(var x in result[0]){
+                        workTry[x] = result[0][x];
+                    }
+
+                    try {
+                        req.cookies.token = req.body.token;
+                        actionOP.call(workTry, req, res);
+                    }
+                    catch(ex){
+                        res.json(new TaskException(-6, "执行请求失败", ex.toString()));
+                    }
+
+                });
+            });
+        });
+    }
 }
 
 module Work{

@@ -76,6 +76,7 @@ module.exports = function(app) {
     app.post('/wservice/mobi/care', wservice.Get4SCare);
     app.post('/wservice/mobi/care/:id/:action', wservice.Action4SCare);
     app.post('/wservice/mobi/drivetry', wservice.Get4SDriveTry);
+    app.post('/wservice/mobi/drivetry/:id/:action', wservice.Action4SDriveTry);
 
     app.get('/tag/tagList/:s4Id/:brand',tagService.tagList);     //获取所有标签信息(通过系列过滤)
     app.get('/tag/tagListSystem/:brand',tagService.tagListSystem);//获取所有系统标签信息(通过系列过滤)
