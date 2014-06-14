@@ -1,4 +1,3 @@
-
 * {
 	outline:none !important;
 	-moz-outline: none !important;
@@ -13,7 +12,12 @@ a:hover {
 }
 
 /*bootstrap-overwrite*/
-select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input, .label, .dropdown-menu, .btn, .well, .progress, .table-bordered, .btn-group > .btn:first-child, .btn-group > .btn:last-child, .btn-group > .btn:last-child, .btn-group > .dropdown-toggle, .alert{ border-radius:0px;}
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input, .label, .dropdown-menu, .btn, .well, .progress, .table-bordered, .btn-group > .btn:first-child, .btn-group > .btn:last-child, .btn-group > .btn:last-child, .btn-group > .dropdown-toggle, .alert{
+	border-radius:0px;
+	height: 20px;
+	line-height: 20px;
+	/* [disabled]margin-top: 5px; */
+}
 .btn, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input{ box-shadow:none;}
 .progress, .progress-success .bar, .progress .bar-success, .progress-warning .bar, .progress .bar-warning, .progress-danger .bar, .progress .bar-danger, .progress-info .bar, .progress .bar-info, .btn, .btn-primary{background-image:none;}
 
@@ -27,21 +31,13 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 }
 
 #header h1 {
-    /*background: url("../img/logo.png") no-repeat scroll 0 0 transparent;*/
-    /*height: 31px;*/
-    /*left: 15px;*/
-    /*line-height: 600px;*/
-    /*overflow: hidden;*/
-    /*position: relative;*/
-    /*top:20px; */
-    /*width: 191px;*/
-    height: 62px;
-    line-height: 62px;
-    overflow: hidden;
-    color: #FFF;
-    font-family: "微软雅黑", "黑体";
-    /* [disabled]background-color: #FC0; */
-    padding-left: 30px;
+	height: 62px;
+	line-height: 62px;
+	overflow: hidden;
+	color: #FFF;
+	font-family: "微软雅黑", "黑体";
+	/* [disabled]background-color: #FC0; */
+	padding-left: 30px;
 }
 
 #header h1 a {
@@ -76,12 +72,31 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	opacity: 0.9;
 }
 /* Top user navigation */
-#sidebar{ width:100%; background:#49cced;  position:absolute; clear:both; top:62px;}
+#sidebar{
+	width:100%;
+	position:absolute;
+	clear:both;
+	top:62px;
+	background-color: #86bb42;
+}
 #sidebar > ul{ margin:0px; padding:0px; width:100%; display:block; z-index:999;} 
-#sidebar > ul > li { list-style-type:none; float:left; display:block; margin:0px; border-right:1px solid #41bedd; position:relative; padding:10px; cursor:pointer} 
+#sidebar > ul > li {
+	list-style-type:none;
+	float:left;
+	display:block;
+	margin:0px;
+	position:relative;
+	padding:10px;
+	cursor:pointer;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #76b22a;
+} 
 #sidebar > ul > li a{ padding:12px 0;}
 #sidebar > ul > li:hover ul { display:block;} 
-#sidebar > ul > li:hover { background-color:#41bedd;} 
+#sidebar > ul > li:hover {
+	background-color:#6da920;
+} 
 #sidebar > ul > li:hover a{ background:none;}
 #sidebar > ul li ul { margin:0px; padding:0px; display:none; z-index:999;  position:absolute; left:0px; top:40px;  background:#41bedd; min-width:200px;} 
 #sidebar > ul li ul li { list-style-type:none; margin:0px; font-size:12px;line-height:30px;  } 
@@ -104,15 +119,15 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 }
 
 #user-nav > ul > li {
-    float: left;
-    list-style-type: none;
-    margin: 0;
-    position: relative;
-    padding:6px 0;
-	background:#2e363f;
-	border-left:1px solid #363e48;
+	float: left;
+	list-style-type: none;
+	margin: 0;
+	position: relative;
+	padding:6px 0;
 }
-#user-nav > ul > li:hover{ background:#232a32;}
+#user-nav > ul > li:hover{
+
+}
 #user-nav > ul > li > a {
 	padding: 15px 10px; 
 	display: block;
@@ -151,14 +166,13 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 
 /* Content */
 #content {
-    background:url(../images/backgrounds/bodyBg.png) repeat #fff;
-    margin-left:0px;
-    margin-right: 0;
+	margin-left:0px;
+	margin-right: 0px;
 	margin-top:80px;
-    padding-bottom: 25px;
-    position: relative;
-    min-height: 500px;
-    width: auto;
+	padding-bottom: 25px;
+	position: relative;
+	min-height: 500px;
+	width: auto;
 }
 
 #content-header {
@@ -200,8 +214,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 }
 /* Breadcrumb */
 #breadcrumb {
-	background-color: #fff;
-	border-bottom: 1px solid #e3ebed;
+
 
 }
 #breadcrumb a {
@@ -211,10 +224,11 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	background-position: center right;
 	background-repeat: no-repeat;
 	font-size: 11px;
-	color: #666666;
+	color: #FFF;
 }
 #breadcrumb a:hover {
-	color: #333333;
+	color: #FFF;
+	text-decoration: underline;
 }
 #breadcrumb a:last-child {
 	background-image:none;
@@ -554,20 +568,14 @@ ul.stat-boxes2 li:hover{  background:#f6f6f6}
 
 /* Widgets */
 .widget-box {
-    background: none repeat scroll 0 0 #F9F9F9;
-    border-top: 1px solid #CDCDCD;
-    border-left: 1px solid #CDCDCD;
-    border-right: 1px solid #CDCDCD;
-    clear: both;
-    margin-top: 16px;
-    margin-bottom: 16px;
-    position: relative;
+	clear: both;
+	position: relative;
 }
 .widget-box.widget-calendar, .widget-box.widget-chat {
     overflow:hidden !important;
 }
 .accordion .widget-box {
-	margin-top: -2px;
+	margin-top: 0px;
 	margin-bottom: 0;
 	border-radius: 0;
 }
@@ -579,10 +587,7 @@ ul.stat-boxes2 li:hover{  background:#f6f6f6}
 }
 
 .widget-title, .modal-header, .table th, div.dataTables_wrapper .ui-widget-header {
-	background-color: #efefef;
-	
-    border-bottom: 1px solid #CDCDCD;
-    height: 36px;
+	height: 45px;
 }
 .widget-title .nav-tabs {
     border-bottom: 0 none;
@@ -614,20 +619,19 @@ ul.stat-boxes2 li:hover{  background:#f6f6f6}
     color: #444444;
 }
 .widget-title span.icon {
-	border-right: 1px solid #cdcdcd;
+	/* [disabled]border-right: 1px solid #cdcdcd; */
 	padding: 9px 10px 7px 11px;
 	float: left;
 	opacity: .7;
 }
 .widget-title h5 {
-    color: #666666;
 	text-shadow: 0 1px 0 #ffffff;
-    float: left;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 12px;
-    line-height: 12px;
-    margin: 0;
+	float: left;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px;
+	line-height: 12px;
+	margin: 0;
 }
 .widget-title .buttons {
 	float: right;
@@ -644,8 +648,8 @@ ul.stat-boxes2 li:hover{  background:#f6f6f6}
 }
 
 .widget-content {
-	padding: 12px 15px;
-    border-bottom: 1px solid #cdcdcd;
+	/* [disabled]padding: 12px 15px; */
+	border: 1px solid #cdcdcd;
 }
 .widget-box.widget-plain .widget-content {
 	padding: 12px 0 0;
@@ -1125,11 +1129,14 @@ div.dataTables_wrapper .ui-widget-header {
 
 .table th {
 	height: auto;
-	font-size: 10px;
-	padding: 5px 10px 2px;
+	font-size: 12px;
 	border-bottom: 0;
 	text-align: center;
 	color: #666666;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 2px;
 }
 .table.with-check tr th:first-child, .table.with-check tr td:first-child {
 	width: 10px;
@@ -1256,7 +1263,9 @@ form {
 .btn-icon-pg ul{ margin:0px; padding:0px;}
 .btn-icon-pg ul li{ margin:5px; padding:5px; list-style:none; display:inline-block; border:1px solid #dadada; min-width:157px; cursor:pointer }
 .btn-icon-pg ul li:hover i{ transition:0.3s; -moz-transition:0.3s; -webkit-transition:0.3s; -o-transition:0.3s; transform:rotate(360deg); margin-left:8px; }
-.accordion{ margin-top:16px;}
+.accordion{
+
+}
 .fix_hgt{ height:115px; overflow-x:auto;}
 .input-append .add-on:last-child, .input-append .btn:last-child{ border-radius:0px; padding:6px 5px 2px;}
 .input-prepend input, .input-append input, .input-prepend input[class*="span"], .input-append input[class*="span"]{ width:none;}
