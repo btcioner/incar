@@ -323,7 +323,7 @@ module Service{
 
                     task.end = ()=>{
                         if(task.finished < 2) return;
-                        var ret:any = {status:"ok", care:countCare, drivetry:countDriveTry};
+                        var ret:any = {status:"ok", s4:dto4S, care:countCare, drivetry:countDriveTry};
                         if(req.body.care_list) ret.care_list = task.A;
                         if(req.body.drivetry_list) ret.drivetry_list = task.B;
                         res.json(ret);
