@@ -24,7 +24,7 @@
     <!--main_wrap start-->
     <div id="main_wrap">
         <!--containe_100 start--><div id="containe_100">
-        <ul>
+        <ul id="actContent">
             <!--活动项box01 start--><a href="###"><li>
             <div class="listbox01">
                 <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
@@ -86,7 +86,24 @@
             data: {'user':user},
             dataType: "json",
             success: function (result,status) {
-
+               var str="";
+               for(var i=0;i<result.length;i++){
+                   var actStart=result[i].tm_announce.getYear()+"/"+
+                           ((result[i].tm_announce.getMonth()+1)>9)?(result[i].tm_announce.getMonth()+1):"0"+(result[i].tm_announce.getMonth()+1) +"/"+
+                           (result[i].tm_announce.getDate()>9)?result[i].tm_announce.getDate():"0"+result[i].tm_announce.getDate();
+                   var content=result[i].brief.substring(0,20);
+                   str+='<a href="activityDetail.html?user='+user+'&id='+result[i].id+'"><li>' +
+                           '<div class="listbox01">' +
+                              '<div class="imgbox02a float"><img src="'+result[i].logo_url+'" width="80" height="70" /></div>' +
+                              '<div class="icon_6a float"></div>' +
+                              '<div class="mainbox01 float">' +
+                                      '<h1>'+result[i].title+'</h1>' +
+                                      '<p class="text_05">活动发布时间：'+actStart+'<br />'+content+'......</p></div>' +
+                                      '<div class="clear"></div>' +
+                              '</div>' +
+                          '</li></a>';
+               }
+                document.getElementById("actContent").innerHTML=str;
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("您还未注册或未绑定OBD信息\n请先注册账号！");

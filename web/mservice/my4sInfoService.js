@@ -41,8 +41,10 @@ function search(db,sopenid,callback) {
                             actData.title=rows[i].title;
                             actData.brief=rows[i].brief;
                             actData.status=rows[i].status;
+                            actData.tm_announce=rows[i].tm_announce;
                             actData.tm_start=rows[i].tm_start;
                             actData.tm_end=rows[i].tm_end;
+                            actData.logo_url=rows[i].logo_url;
                             data.push(actData);
                         }
                         callback(null,data);
