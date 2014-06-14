@@ -16,23 +16,30 @@ function slotBooking(req, res) {
     var postData = req.body;
     //console.log(postData);
     postData.bookingDate = new Date(Date.parse(postData.bookingDate));
-    //postData.bookingTime = new Date(Date.parse(postData.bookingTime));
-   // postData.timeSlot = new Date(postData.bookingDate.getFullYear(),postData.bookingDate.getMonth(),postData.bookingDate.getDate(),postData.bookingTime.getHours(), postData.bookingTime.getMinutes(), postData.bookingTime.getSeconds());
     postData.timeSlot=new Date( postData.bookingDate);
-    //console.log(postData.timeSlot);
     postData.timeSlot.setHours(postData.bookingTime.split(":")[0],postData.bookingTime.split(":")[1]);
-    //console.log(postData.timeSlot);
     delete postData.bookingDate;
     delete postData.bookingTime;
     console.log(postData);
 
     getOrgId(self.db, postData.user.split('@')[0], function(err, orgId) {
         if (err) { console.log(err); return res.send(400, err); }
-        return self.db().query('insert into t_slot_booking(storeId, slot_location, slot_time, channel, channel_specific, booking_time, booking_status, tc, ts) values (?,?,?,?,?, now(), 1,?,now());',
+        self.db().query('insert into t_slot_booking(storeId, slot_location, slot_time, channel, channel_specific, booking_time, booking_status, tc, ts) values (?,?,?,?,?, now(), 1,?,now());',
             [orgId, '未指定', postData.timeSlot, 'weixin', postData.user, postData.user+'@weixin'], function(err, result) {
             if (err) { console.log(err); return res.send(400, err); }
-            return res.send(200, result);
-        });
+            else{
+                self.db.query('select top 1 id where channel_specific like ? order by ts desc',["%"+postData.user+'%'],function(err,rows){
+                    if(err){ console.log(err); return res.send(400, err);}
+                    else if(rows){
+                        self.db.query('insert into t_work (work,step,work_ref_id,org_id,cust_id,working_time,created_time) value(?,?,?,?,?,?,now())',
+                            ['care','applied',rows[0].id,orgId,postData.acc_id,postData.timeSlot],function(err,result){
+                              if(err){ console.log(err); return res.send(400, err);}
+                                return res.send(200, result);
+                        });
+                    }
+                });
+            }
+           });
     });
 }
 
