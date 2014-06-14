@@ -159,6 +159,91 @@ module Service{
 
         task.begin();
     }
+
+    export function Get4SCare(req, res):void{
+        if(Object.keys(req.body).length == 0){
+            res.json({
+                postSample:{
+                    token:"This=is=a=fake=token===demo=onlyeJUAPmtjgU9e77pOULn1Z75oWFVh6Tm19iVrUVBxZkGg==",
+                    page:1,
+                    pagesize:20
+                },
+                remark:"必填:token"
+            });
+            return;
+        }
+        // 校验token
+        Staff.CreateFromToken(req.body.token, (ex, staff)=>{
+            if(ex){ res.json(new TaskException(-1, "校验token失败", ex)); return; }
+            // 查询4S店基本信息
+            var repo4S = new S4Repository();
+            repo4S.Get4SById(staff.dto.s4_id, (ex, s4)=>{
+                if(ex){ res.json(new TaskException(-2, util.format("无效4S店(%s)", staff.dto.s4_id), ex)); return; }
+                var filter = { work:"care", step:"applied" };
+                var page = new Pagination(req.body.page, req.body.pagesize);
+                s4.GetWork(filter, page, (ex, total, works)=>{
+                    if(ex) { res.json(new TaskException(-3, "查询待保养信息失败", ex)); return; }
+                    // 去掉一些不需要的信息
+                    works.forEach((work:any)=>{
+                        work.work = undefined;
+                        work.step = undefined;
+                        work.work_ref_id = undefined;
+                        work.json_args = undefined;
+                    });
+                    res.json({status:"ok", total:total, list:works});
+                });
+            });
+        });
+    }
+
+    export function Action4SCare(req, res):void{
+        if(Object.keys(req.body).length == 0){
+            res.json({
+                postSample:{
+                    token:"This=is=a=fake=token===demo=onlyeJUAPmtjgU9e77pOULn1Z75oWFVh6Tm19iVrUVBxZkGg==",
+                    reason:"Why do you reject it?"
+                },
+                remark:"必填:token"
+            });
+            return;
+        }
+        // 校验token
+        Staff.CreateFromToken(req.body.token, (ex, staff)=>{
+            if(ex){ res.json(new TaskException(-1, "校验token失败", ex)); return; }
+            // 查询4S店基本信息
+            var repo4S = new S4Repository();
+            repo4S.Get4SById(staff.dto.s4_id, (ex, s4)=>{
+                if(ex){ res.json(new TaskException(-2, util.format("无效4S店(%s)", staff.dto.s4_id), ex)); return; }
+                // 查询保养工作
+                var workCare = new Work.care();
+                var actionOP = workCare[req.params.action];
+                if(!actionOP){
+                    res.json(new TaskException(-3, util.format("无效请求:%s", req.params.action), null));
+                    return;
+                }
+                // 查询保养工作
+                var sql = "SELECT * FROM t_work WHERE id = ? and work = ? and org_id = ?";
+                var dac = MySqlAccess.RetrievePool();
+                dac.query(sql, [req.params.id, 'care', staff.dto.s4_id], (ex, result)=>{
+                    if(ex){ res.json(new TaskException(-4, "查询保养工作失败", ex)); return; }
+                    else if(result.length === 0){ res.json(new TaskException(-5, util.format("指定的工作无效(id=%s)", req.params.id), null)); return; }
+
+                    for(var x in result[0]){
+                        workCare[x] = result[0][x];
+                    }
+
+                    try {
+                        req.cookies.token = req.body.token;
+                        actionOP.call(workCare, req, res);
+                    }
+                    catch(ex){
+                        res.json(new TaskException(-6, "执行请求失败", ex.toString()));
+                    }
+
+                });
+            });
+        });
+    }
 }
 
 module Work{
