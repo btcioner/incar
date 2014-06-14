@@ -40,7 +40,7 @@ function searchSeriesName(db, postData,callback){
                             }else callback(new Error('Can not find series.'));
                         }
                     });
-                }
+                }else callback(new Error('Can not find series.'));
             }
         });
 }
