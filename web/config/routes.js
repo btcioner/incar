@@ -74,6 +74,7 @@ module.exports = function(app) {
 
     app.post('/wservice/mobi/summary', wservice.Get4SSummary);
     app.post('/wservice/mobi/care', wservice.Get4SCare);
+    app.post('/wservice/mobi/care/:id/:action', wservice.Action4SCare);
     app.post('/wservice/mobi/drivetry', wservice.Get4SDriveTry);
 
     app.get('/tag/tagList/:s4Id/:brand',tagService.tagList);     //获取所有标签信息(通过系列过滤)
@@ -110,7 +111,6 @@ module.exports = function(app) {
 
     app.get('/wservice/organization/:org_id/care', wservice.GetCareInOrg);
     app.get('/wservice/organization/:org_id/care_tel_rec', wservice.GetCareTeleRecordInOrg);
-
     app.get('/wservice/4s/:s4_id/drivetry', wservice.GetTryIn4S);
 
     app.get('/wservice/manual', wservice.GetManualAll);
