@@ -3,10 +3,10 @@ CREATE TABLE IF NOT EXISTS t_promotion_slot(
     storeId INT UNSIGNED NOT NULL COMMENT '组织ID、4S店ID',
     slot_location VARCHAR(64) NOT NULL COMMENT '工位信息',
     slot_time timestamp COMMENT '工位时间',
-    benefit  VARCHAR(64) NOT NULL COMMENT '优惠',
-    description  VARCHAR(512) COMMENT '优惠条例描述',
+    benefit  VARCHAR(512) NOT NULL COMMENT '优惠',
+    description  VARCHAR(512) COMMENT '此字段已被停用',
     promotion_time timestamp COMMENT '营销开始时间',
-    promotion_status TINYINT NOT NULL DEFAULT '0' COMMENT '有效性标志 0-无效 1-有效',
+    promotion_status TINYINT NOT NULL DEFAULT '0' COMMENT '有效性标志 0-无效 1-已创建 2-已发布 3-已申请 4-已结束',
     tc VARCHAR(512) COMMENT '记录操作用户名',
     ts timestamp COMMENT '记录操作时间戳',
 
@@ -50,4 +50,4 @@ create table IF NOT EXISTS `t_trialrun`(
    tc VARCHAR(32) COMMENT '记录操作用户名',
    ts timestamp COMMENT '记录操作时间戳',
    PRIMARY KEY (`id`)
- )
+ );
