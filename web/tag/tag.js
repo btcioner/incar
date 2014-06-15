@@ -110,7 +110,7 @@ function getMonthStartAndEnd(){
 /**
  * 重算并更新所有车辆标签
  */
-exports.buildTags=function(req,res){
+exports._buildTag=function(cb){
     //车系、渠道、车龄
     var sql="select c.id as carId," +
         "concat(c.brand,'-',c.series) as serTag," +
@@ -136,7 +136,7 @@ exports.buildTags=function(req,res){
             var ageTag=tagInfo.ageTag;
             var milTag=tagInfo.milTag;
             var preTag=tagInfo.preTag;
-            var timeTag=tagInfo.timeTag;
+            var timeTaeg=tagInfo.timeTag;
             var fireWeek=tagInfo.fireWeek;
             var carInfo=cars[carId];
             if(!carInfo){
@@ -216,13 +216,21 @@ exports.buildTags=function(req,res){
                     args.push({tag_id:tagMap[tag],car_id:key});
                 }
             }
-            dao.executeBySql(sqls,args,function(){
-                console.log("OK");
-                res.json({status:'success'});
+            dao.executeBySql(sqls,args,function(err){
+                cb(err);
             });
         });
     });
-
+}
+exports.buildTags=function(req,res){
+    _buildTags(function(err){
+        if(err){
+            res.json({status:'failure'});
+        }
+        else{
+            res.json({status:'success'});
+        }
+    });
 }
 //updateTagForUser();
 /**
@@ -654,32 +662,32 @@ function initCarBrandForTag(){
 }
 function initOtherTag(){
     var tags=[
-        {code:'chl1',name:"APP",description:"手机客户端",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'chl2',name:"微信",description:"微信端",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'chl3',name:"电话",description:"电话营销",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'chl1',name:"APP",description:"手机客户端",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'chl2',name:"微信",description:"微信端",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'chl3',name:"电话",description:"电话营销",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
 
-        {code:'age0',name:"不到一年",description:"不到一年",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'age1',name:"一到两年",description:"一到两年",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'age2',name:"两到三年",description:"两到三年",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'age3',name:"三到四年",description:"三到四年",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'age4',name:"四到五年",description:"四到五年",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'age5',name:"五年以上",description:"五年以上",active:1,groupId:8,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'age0',name:"不到一年",description:"不到一年",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'age1',name:"一到两年",description:"一到两年",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'age2',name:"两到三年",description:"两到三年",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'age3',name:"三到四年",description:"三到四年",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'age4',name:"四到五年",description:"四到五年",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'age5',name:"五年以上",description:"五年以上",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
 
-        {code:'useTo1',name:"商用",description:"商业用车",active:1,groupId:4,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'useTo2',name:"家用",description:"家庭用车",active:1,groupId:4,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'useTo1',name:"商用",description:"商业用车",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'useTo2',name:"家用",description:"家庭用车",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0},
 
-        {code:'time1',name:"上下班",description:"6:00-10:00,17:00-20:00使用",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'time2',name:"工作时",description:"10:00-17:00使用",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'time3',name:"非工作时段",description:"20:00-6:00使用",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'time1',name:"上下班",description:"6:00-10:00,17:00-20:00使用",active:1,groupId:7,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'time2',name:"工作时",description:"10:00-17:00使用",active:1,groupId:7,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'time3',name:"非工作时段",description:"20:00-6:00使用",active:1,groupId:7,createTime:new Date(),creator:'柳明',s4Id:0},
 
-        {code:'rate1',name:"极低",description:"很少很少",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'rate2',name:"低",description:"很少",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'rate3',name:"一般",description:"一般",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'rate4',name:"高",description:"很多",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'rate1',name:"极低",description:"很少很少",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'rate2',name:"低",description:"很少",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'rate3',name:"一般",description:"一般",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'rate4',name:"高",description:"很多",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
 
-        {code:'pre1',name:"保守",description:"保守",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'pre2',name:"普通",description:"普通",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
-        {code:'pre3',name:"豪放",description:"豪放",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0}
+        {code:'pre1',name:"保守",description:"保守",active:1,groupId:4,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'pre2',name:"普通",description:"普通",active:1,groupId:4,createTime:new Date(),creator:'柳明',s4Id:0},
+        {code:'pre3',name:"豪放",description:"豪放",active:1,groupId:4,createTime:new Date(),creator:'柳明',s4Id:0}
     ];
     var sql="insert into t_tag set ?";
     for(var i=0;i<tags.length;i++){
@@ -691,4 +699,4 @@ function initOtherTag(){
 }
 //initTagGroup();
 //initCarBrandForTag();
-initOtherTag();
+//initOtherTag();
