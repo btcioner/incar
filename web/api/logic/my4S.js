@@ -54,7 +54,7 @@ my4S.book = function(userName,sopenid, session, callback){
         '<% var idx = 1; %>',
         '<% slots.forEach(function(slot){ %>',
 //        '<%=idx%>:  <%=slot.location %>:  <%=slot.benefit %>\n',
-        '<%=idx%>: <%=slot.location%>— <%= slot.time %>\n\n',
+        '<%=idx%>: <%=slot.location%>—<%=slot.benifit%>&nbsp;&nbsp;<%= slot.time %>\n\n',
         '<% idx++; %>',
         '<% }); %>',
         '\n',
