@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         textarea {
-               display: block;
+            display: block;
            }
         .text_05 {
             color: #999;
@@ -85,6 +85,15 @@
                         </a> </div>
                     </div>
                 </div>
+                <div class="collapse accordion-body" id="collapseGOne" >
+                    <div class="widget-content" style="text-align: right; /* [disabled]padding: 2px; */" >
+                        <a class="btn btn-menu" style="width: 100%;" href="">展开1</a>
+                        <a class="btn btn-menu" style="width: 100%;" href="">展开2</a>
+                        <a class="btn btn-menu" style="width: 100%;" href="">展开3</a>
+                        <a class="btn btn-menu" style="width: 100%;" href="">展开4</a>
+                        <a class="btn btn-menu" style="width: 100%;" href="">展开5</a>
+                    </div>
+                </div>
                 <div class="accordion-group widget-box" style="margin-top: 2px">
                     <div class="accordion-heading">
                         <div class="widget-title"><a data-parent="#collapse-group" href="#collapseGTwo/{{randomTime}}" data-toggle="collapse"> <span class="icon"><i class="icon-magnet"></i></span>
@@ -147,8 +156,6 @@
 <script src="../js/fun_js/S_fuelMatchController.js"></script>
 <script type="text/javascript">
     var editor;
-    var editor1;
-    var editor2;
     KindEditor.ready(function(K) {
         editor = K.create('textarea[name="content"]', {
             allowFileManager : true

@@ -126,10 +126,15 @@
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">发布至如下车主：</label>
+                <div class="controls" >
+                    <input type="checkbox" style="margin-left:20px;"  ng-model="checkboxId_1"  ng-click="getAllSelect();" />全选
+                </div>
             </div>
             <div class="control-group" ng-repeat="group in tagsGroup">
+
                 <label class="control-label" style="margin-left:100px;">{{group.groupName}}：</label>
                 <div class="controls" >
+
                    <span  ng-repeat="tag in group.tags">
                        <input type="checkbox"  ng-model="tag.tagFlag"  />
                        {{tag.tagName}}&nbsp;&nbsp;
@@ -226,6 +231,9 @@
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">发布至如下车主：</label>
+                <div class="controls" >
+                    <input type="checkbox" style="margin-left:20px;"  ng-model="checkboxId_1"  ng-click="getAllSelect();" />全选
+                </div>
             </div>
             <div class="control-group" ng-repeat="group in tagsGroup">
                 <label class="control-label" style="margin-left:100px;">{{group.groupName}}：</label>

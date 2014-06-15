@@ -70,8 +70,21 @@ var baseurl="/wservice/";
     //改变工位状态
     $.changeSlotStatus = function(status)
     {
-        if(status == "1") return "有效";
-        else if(status == "0" || status == null) return "失效";
+        switch(status)
+        {
+            case 1:
+                return "已创建";
+                break;
+            case 2:
+                return "已发布";
+                break;
+            case 3:
+                return "已申请";
+                break;
+            case 4:
+                return "已结束";
+                break;
+        }
     }
     //把工位的状态从文字改成数字
     $.changeSlotStatusToNum = function(status)

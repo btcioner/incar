@@ -141,6 +141,7 @@ function s_fuelMatchCtrl($scope,$http)
     //点击添加按钮
     $scope.add = function()
     {
+        $scope.checkboxId_1 = false;
         $("#formId_edit2").ajaxForm(function(data){
             $scope.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
@@ -264,6 +265,7 @@ function s_fuelMatchCtrl($scope,$http)
     $scope.manager = function(fm_id,index,fm_status)
     {
         $scope.fuleMatchDetail = $scope.fuelMatch[index];
+        $scope.checkboxId_1 = false;
        switch(fm_status)
        {
            case 1:
@@ -795,11 +797,29 @@ function s_fuelMatchCtrl($scope,$http)
             case 4:
                 $scope.matchStartedDiv = true;
                 break;
+        }
+    }
+    //全选
+    $scope.getAllSelect = function(id)
+    {
 
+        for(var i=0;i<$scope.tagsGroup.length;i++)
+        {
+            for(var j=0;j<$scope.tagsGroup[i].tags.length;j++)
+            {
+                if(!$scope.checkboxId_1)
+                {
+                    $scope.tagsGroup[i].tags[j].tagFlag = true;
+                }
+               else{
+                    $scope.tagsGroup[i].tags[j].tagFlag = false;
+                }
+            }
         }
     }
 }
 
+//预览图片
 function changeImg(file,plugId,formId,preId,imgId)
 {
     var filepath = $("#"+plugId).val();

@@ -1,7 +1,9 @@
 @charset "utf-8";
 body{
-    background-image: url(../images/backgrounds/body_bg.png);
-    margin: 0
+    /*background-image: url(../images/backgrounds/body_bg.png);*/
+    background-color: #2E363F;
+
+
 }
 .sidebar_a {
 	background-image: url(../img/sidebar_bg.png);
@@ -33,4 +35,20 @@ body{
 	float: left;
 	padding-top: 3px;
 	height: 20px;
+}
+.row-fluid .right_bxo {
+    background-image: url(../images/backgrounds/bodyBg.png);
+    float: left;
+    width: 88%;
+    min-height:434px;
+    _height:434px;
+}
+.row-fluid .left_box {
+    /* [disabled]background-color: #FF0; */
+    float: left;
+    width: 12%;
+}
+#warp {
+    background-image: url(../images/backgrounds/body_bg.png);
+    margin: 0;
 }
