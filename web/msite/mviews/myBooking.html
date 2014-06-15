@@ -99,7 +99,7 @@
               for(var i=0;i<result.length;i++){
                   alert("roop index:"+i);
                   var rowLabel;
-                  if(i%2==0) rowLabel="rows02";  else rowLabel="rows01"; //判断奇偶行
+                  if(i%2==0) rowLabel="rows01";  else rowLabel="rows02"; //判断奇偶行
                   //判断申请状态
                   alert(rowLabel);
                   var status="";
@@ -111,6 +111,9 @@
                   alert(status);
                   //申请提交时间
                   var tsTemp=new Date(result[i].ts);
+                  alert(tsTemp.getYear());
+                  alert(((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1));
+                  alert((tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate());
                   var tsDate=tsTemp.getYear()+"/"+
                             ((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1) +"/"+
                             (tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
