@@ -99,10 +99,10 @@
                     alert(status);
                     //判断我的活动参加状态
                     var myStatus="";
-                    if(result[i].myStatus==1) status="已报名";
-                    else if(result[i].myStatus==2) status="已参加";
-                    else if(result[i].myStatus==3) status="已退出";
-                    else if(result[i].myStatus==4) status="被拒绝";
+                    if(result[i].myStatus==1) myStatus="已报名";
+                    else if(result[i].myStatus==2) myStatus="已参加";
+                    else if(result[i].myStatus==3) myStatus="已退出";
+                    else if(result[i].myStatus==4) myStatus="被拒绝";
                     alert(myStatus);
                     //活动发布时间
                     var tsTemp=new Date(result[i].tm_announce);
