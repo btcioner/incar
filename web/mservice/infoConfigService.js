@@ -85,7 +85,7 @@ function getCarInfo(db, callback){
                             report.disp=rows[0].disp;
                             report.mileage=rows[0].mileage;
                             report.age=rows[0].age;
-                            report.engine_type=rows[0].engine_type;
+                            report.engine_type=rows[0].engineType;
                             callback(null, 1);
                         } else { callback(new Error('zero of multiple rows returned for obd_code from car_info table.')); }
                     }
