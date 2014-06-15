@@ -35,6 +35,7 @@ function search(db,acc_id,s4id,callback) {
             else{
                 if(rows){
                    for(var i=0;i<rows.length;i++){
+                        console.log("value:"+rows[i].act_id+"_"+s4id);
                         ActivityInfo(db,rows[i].act_id,s4id,rows[i].status,function(err,data){
                             myActData.push(data);
                             });
