@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS t_4s(
     logo_url VARCHAR(256) COMMENT '标志图片URL建议为200x200',
     address VARCHAR(256) COMMENT '地址',
     phone VARCHAR(32) COMMENT '联系电话',
+    hotline VARCHAR(32) COMMENT '客服热线电话',
     wx_login VARCHAR(256) COMMENT '服务账号的微信公众平台登录名称',
     wx_pwd VARCHAR(64) COMMENT '服务账号的微信公众平台登录密码',
     wx_app_name VARCHAR(64) COMMENT '微信公众平台接口用户标识',
