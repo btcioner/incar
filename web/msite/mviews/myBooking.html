@@ -70,7 +70,7 @@
             dataType: "json",
             success: function (result,status) {
                 //alert("success");
-                searchTrialrun(result.wx_oid);
+                searchTrialrun(result.wx_oid,result.license);
               },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("您还未注册或未绑定OBD信息\n请先注册账号！");
@@ -79,7 +79,7 @@
         });
     }
     //获取试驾预约数据
-    function searchTrialrun(wx_oid){
+    function searchTrialrun(wx_oid,license){
         $.ajax({
             type: "POST",
             url: "/mservice/myTrialrun",
@@ -151,7 +151,7 @@
          });
         }else {return;}
     }
-    function searchBook(wx_oid){
+    function searchBook(wx_oid,license){
         var sid=wx_oid.split(":");
         $.ajax({
             type: "POST",
