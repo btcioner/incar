@@ -17,10 +17,8 @@ function myBooking(req, res) {
     console.log(postData);
     var db = this.db;
     var user=postData.user;
-    var temp=postData.wx_oid.split(':')
-    var uid=temp[0];
-    var sid=temp[1];
-    search(db, uid,sid,function(err, data) {
+    var sid=postData.sid;
+    search(db, user,sid,function(err, data) {
         if (err) { res.send(200,err); }
         else {
             console.log(data);

@@ -152,15 +152,17 @@
         }else {return;}
     }
     function searchBook(wx_oid){
+        var sid=wx_oid.split(":");
         $.ajax({
             type: "POST",
             url: "/mservice/myBooking",
-            data: {'user':user,'wx_oid':wx_oid},
+            data: {'user':user,'sid':sid[1]},
             dataType: "json",
             success: function (result,status) {
                 alert(result.length);
                 var strTemp="";
                 for(var i=0;i<result.length;i++){
+                    alert("index:"+i);
                     var rowLabel;
                     if(i%2==0) rowLabel="rows02";  else rowLabel="rows01"; //判断奇偶行
                     //判断申请状态
