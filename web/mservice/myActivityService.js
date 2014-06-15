@@ -28,7 +28,7 @@ function myActivity(req, res) {
 }
 
 function search(db,acc_id,s4id,callback) {
-    var myActData=new Array(10);
+    var myActData=new Array();
     var pool = db();
     pool.query('select act_id,status  from  t_activity_member where cust_id = ?;',
         [acc_id],function(err,rows){
