@@ -21,7 +21,7 @@ function myBooking(req, res) {
     search(db, user,s4id,function(err, data) {
         if (err) { res.send(200,err); }
         else {
-            console(data);
+            console.log(data);
             res.send(data);
         }
     });
