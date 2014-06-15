@@ -86,17 +86,14 @@
             data: {'user':user,'wx_oid':wx_oid},
             dataType: "json",
             success: function (result,status) {
-                alert("trial:"+result.length);
               var strTemp="";
               for(var i=0;i<result.length;i++){
-                  alert("roop index:"+i);
                   var rowLabel;
                   var rowColor;
                   //判断奇偶行
                   if(i%2==0) {rowLabel="rows01";rowColor="icon_5a";}
                   else {rowLabel="rows02";rowColor="icon_5b";}
                   //判断申请状态
-                  alert(rowLabel);
                   var status="";
                   if(result[i].bookingStatus==1) status="待确认";
                   else if(result[i].bookingStatus==2) status="被拒绝";
@@ -130,9 +127,8 @@
                              '</ul>' +
                           '</li>';
               }
-                alert(strTemp);
                 document.getElementById("bookContent").innerHTML=strTemp;
-                alert(document.getElementById("bookContent").innerHTML);
+                searchBook(wx_oid);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
 
@@ -155,11 +151,11 @@
          });
         }else {return;}
     }
-    function searchBook(){
+    function searchBook(wx_oid){
         $.ajax({
             type: "POST",
             url: "/mservice/myBooking",
-            data: {'user':user,'s4id':s4id},
+            data: {'user':user,'wx_oid':wx_oid},
             dataType: "json",
             success: function (result,status) {
                 var strTemp="";

@@ -17,8 +17,9 @@ function myBooking(req, res) {
     console.log(postData);
     var db = this.db;
     var user=postData.user;
-    var s4id=postData.s4id;
-    search(db, user,s4id,function(err, data) {
+    var uid=postData.wx_oid.split(':')[0];
+    var sid=postData.wx_oid.split(':')[1];
+    search(db, uid,sid,function(err, data) {
         if (err) { res.send(200,err); }
         else {
             console.log(data);
@@ -27,10 +28,10 @@ function myBooking(req, res) {
     });
 }
 
-function search(db, user,s4id,callback) {
+function search(db, uid,sid,callback) {
     var pool = db();
-    pool.query('select  id,booking_time,bookingStatus,ts   from  t_slot_booking where channel_specific like ?;',
-        ['%'+user+'@'+s4id+'%'],function(err,rows){
+    pool.query('select  id,booking_time,booking_status,ts   from  t_slot_booking where channel_specific like ?;',
+        ['%'+uid+'@'+sid+'%'],function(err,rows){
             if(err){callback(err);}
             else{
                 if(rows){
