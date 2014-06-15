@@ -16,7 +16,6 @@
         function init(){
             user=getQueryString("user");
            searchUser();
-           searchTrialrun();
             alert("cccc");
            searchBook();
         }
@@ -71,10 +70,7 @@
             dataType: "json",
             success: function (result,status) {
                 //alert("success");
-                obd_code=result.obd_code;
-                license=result.license;
-                alert("oid:"+result.wx_oid);
-                document.getElementById("wx_oid").value=result.wx_oid;
+                searchTrialrun(result.wx_oid);
               },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("您还未注册或未绑定OBD信息\n请先注册账号！");
@@ -83,11 +79,11 @@
         });
     }
     //获取试驾预约数据
-    function searchTrialrun(){
+    function searchTrialrun(wx_oid){
         $.ajax({
             type: "POST",
             url: "/mservice/myTrialrun",
-            data: {'user':user,'wx_oid':document.getElementById("wx_oid").value},
+            data: {'user':user,'wx_oid':wx_oid},
             dataType: "json",
             success: function (result,status) {
                 alert("trial:"+result.length);
