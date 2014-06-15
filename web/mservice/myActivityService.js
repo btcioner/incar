@@ -39,6 +39,7 @@ function search(db,acc_id,s4id,callback) {
                             myActData.push(data);
                             });
                     }
+                    console.log("before callback:"+myActData);
                     callback(null,myActData);
                 }else callback(new Error("t_activity_member data error."));
             }
