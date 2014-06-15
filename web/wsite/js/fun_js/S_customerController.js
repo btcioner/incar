@@ -80,7 +80,7 @@ function s_customerCtrl($scope, $http,$routeParams){
                 alert("请求无响应");
         })
 
-        $http.get(baseurl+'brand/8/series').success(function(data){
+        $http.get(baseurl+'brand/'+ $.cookie("brand_id")+'/series').success(function(data){
             $scope.carSeries = data.series;
         });
         $scope.queryString = "";

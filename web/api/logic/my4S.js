@@ -46,7 +46,7 @@ my4S.onManualMessages = function(message, session, callback) {
     });
 };
 
-my4S.book = function(userName, session, callback){
+my4S.book = function(userName,sopenid, session, callback){
     console.log("begin book");
     // 模板将来要从数据库来读取
     var tpl = [
@@ -54,7 +54,7 @@ my4S.book = function(userName, session, callback){
         '<% var idx = 1; %>',
         '<% slots.forEach(function(slot){ %>',
 //        '<%=idx%>:  <%=slot.location %>:  <%=slot.benefit %>\n',
-        '<%=idx%>:  <%= slot.time.Format("yyyy-MM-dd hh:mm:ss") %>\n\n',
+        '<%=idx%>: <%=slot.location%>—<%=slot.benefit%>\n  时间：<%= slot.time %>\n\n',
         '<% idx++; %>',
         '<% }); %>',
         '\n',
@@ -81,7 +81,7 @@ my4S.book = function(userName, session, callback){
 
     var compiled = ejs.compile(tpl);
 
-    booking.getPromotionSlots(userName, function(err, result) {
+    booking.getPromotionSlots(userName,sopenid, function(err, result) {
         if (err) {
             session.textMsgReplierIndex = null;
             if (session.slotData) delete session.slotData;
@@ -116,6 +116,10 @@ my4S.trialrun=function(userName,sopenid, session, callback){
                callback(null,compiled(data));
            }
     });
+
+    //session.textMsgReplierIndex = 'my4S.onTrialrun';
+    //callback(null,compiled({}));
+}
 my4S.my4sInfo=function(userName,sopenid, session, callback){
     var tpl = [
         '活动多多，优惠多多：\n\n',
@@ -125,9 +129,6 @@ my4S.my4sInfo=function(userName,sopenid, session, callback){
     var compiled = ejs.compile(tpl);
     session.textMsgReplierIndex = 'my4S.on4sInfo';
     callback(null, compiled({}));
-}
-    //session.textMsgReplierIndex = 'my4S.onTrialrun';
-    //callback(null,compiled({}));
 }
 my4S.manual = function(userName, session, callback){
     // 模板将来要从数据库来读取

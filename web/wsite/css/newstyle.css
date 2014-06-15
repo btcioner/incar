@@ -1,0 +1,54 @@
+@charset "utf-8";
+body{
+    /*background-image: url(../images/backgrounds/body_bg.png);*/
+    background-color: #2E363F;
+
+
+}
+.sidebar_a {
+	background-image: url(../img/sidebar_bg.png);
+	background-repeat: repeat-x;
+	background-position: bottom;
+	height: 45px;
+}
+.add_button{
+    float:right;margin:12px 30px 0 0;
+}
+.sidebar_b {
+	color: #666;
+	height: 45px;
+}
+.margin_16 {
+	margin-top: 0px;
+	margin-right: 16px;
+	margin-bottom: 16px;
+	margin-left: 16px;
+}
+.bgcolor01 {
+	background-color: #EEE;
+}
+.textbox01 {
+	float: left;
+	padding-left: 150px;
+}
+.formbox_01 {
+	float: left;
+	padding-top: 3px;
+	height: 20px;
+}
+.row-fluid .right_bxo {
+    background-image: url(../images/backgrounds/bodyBg.png);
+    float: left;
+    width: 88%;
+    min-height:434px;
+    _height:434px;
+}
+.row-fluid .left_box {
+    /* [disabled]background-color: #FF0; */
+    float: left;
+    width: 12%;
+}
+#warp {
+    background-image: url(../images/backgrounds/body_bg.png);
+    margin: 0;
+}

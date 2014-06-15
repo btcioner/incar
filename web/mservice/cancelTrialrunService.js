@@ -19,16 +19,17 @@ function cancelTrialrun(req, res) {
     cancel(db,id,function(err, data) {
         if (err) { res.send(200,err); }
         else {
-            res.send(data);
+            console.log("cancel success");
+            res.send(200,data);
         }
     });
 }
 
 function cancel(db,id,callback) {
     var pool = db();
-    pool.query('update t_trialrun set bookingStatus=4 where id=?;',
+    pool.query('update t_trialrun set bookStatus=4 where id=?;',
         [id],function(err,rows){
-            if(err){callback(err);}
+            if(err){console.log(err);callback(err);}
             else{
                callback(null,1);
           }

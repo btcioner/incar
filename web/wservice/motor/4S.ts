@@ -69,6 +69,11 @@ module Service{
         if(isStringNotEmpty(data.wx_pwd)) dto.wx_pwd = data.wx_pwd;
         if(isStringNotEmpty(data.wx_en_name)) dto.wx_en_name = data.wx_en_name;
         if(!isNaN(data.wx_status)) dto.wx_status = data.wx_status;
+        if(!isNaN(data.brand)) dto.brand = data.brand;
+        if(isStringNotEmpty(data.address)) dto.address = data.address;
+        if(isStringNotEmpty(data.phone)) dto.phone = data.phone;
+        if(isStringNotEmpty(data.hotline)) dto.hotline = data.hotline;
+        if(isStringNotEmpty(data.logo_url)) dto.openid = data.logo_url;
         var s4 = new S4(dto);
 
         var repo = S4Repository.GetRepo();
@@ -92,7 +97,12 @@ module Service{
                     wx_login:"incar",
                     wx_pwd:"4rS&mta",
                     wx_en_name:"InCarTech",
-                    wx_status:1
+                    wx_status:1,
+                    brand:8,
+                    logo_url:"/data/upload/34p.jpg",
+                    address:"海淀区黄庄35号",
+                    phone:"13912345678",
+                    hotline:"400-1234-6789"
                 },
                 remark:"必填:无"
             });
@@ -118,6 +128,12 @@ module Service{
         if(isStringNotEmpty(data.wx_pwd)) dto.wx_pwd = data.wx_pwd;
         if(isStringNotEmpty(data.wx_en_name)) dto.wx_en_name = data.wx_en_name;
         if(!isNaN(data.wx_status)) dto.wx_status = data.wx_status;
+        if(!isNaN(data.brand)) dto.brand = data.brand;
+        if(isStringNotEmpty(data.logo_url)) dto.logo_url = data.logo_url;
+        if(isStringNotEmpty(data.address)) dto.address = data.address;
+        if(isStringNotEmpty(data.phone)) dto.phone = data.phone;
+        if(isStringNotEmpty(data.hotline)) dto.hotline = data.hotline;
+
         var s4 = new S4(dto);
 
         var repo = S4Repository.GetRepo();

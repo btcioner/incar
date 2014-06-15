@@ -233,7 +233,7 @@ wxMenu.onClick['MY4S.INFO'] = function(message, session, next) {
 };
 wxMenu.onClick['MY4S.BOOKING'] = function(message, session, next) {
 
-    my4S.book(message.FromUserName, session, function(err, result){
+    my4S.book(message.FromUserName,message.ToUserName, session, function(err, result){
         if (err) {
             return next(err);
         }

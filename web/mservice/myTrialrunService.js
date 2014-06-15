@@ -17,21 +17,23 @@ function myTrialrun(req, res) {
     console.log(postData);
     var db = this.db;
     var user=postData.user;
-    var s4id=postData.s4id;
-    search(db, user,s4id,function(err, data) {
+    var wx_oid=postData.wx_oid;
+    search(db, user,wx_oid,function(err, data) {
         if (err) { res.send(200,err); }
         else {
-            res.send(data);
+            console.log(data);
+            res.send(200,data);
         }
     });
 }
 
-function search(db, user,s4id,callback) {
+function search(db, user,wx_oid,callback) {
     var pool = db();
-   pool.query('select id,bookingtime,seriesName,bookingStatus,ts   from  t_trialrun where wx_oid like ? order by bookingtime desc;',
-        ['%'+user+':'+s4id+'%'],function(err,rows){
-            if(err){callback(err);}
+   pool.query('select id,bookingtime,seriesName,bookStatus,ts  from  t_trialrun where wx_oid like ? order by ts desc;',
+        ['%'+wx_oid+'%'],function(err,rows){
+            if(err){console.log("search:"+err);callback(err);}
             else{
+                console.log("trial records:"+rows.length);
                 if(rows){
                     var trialrun=new Array();
                     for(var i=0;i<rows.length;i++){
@@ -39,10 +41,12 @@ function search(db, user,s4id,callback) {
                         data.id=rows[i].id;
                         data.bookingtime=rows[i].bookingtime;
                         data.seriesName=rows[i].seriesName;
-                        data.bookingStatus=rows[i].bookingStatus;
+                        data.bookingStatus=rows[i].bookStatus;
                         data.ts=rows[i].ts;
                         trialrun.push(data);
+                        console.log(data);
                     }
+                    console.log(trialrun);
                     callback(null,trialrun);
                 }else callback(new Error("Trialrun data error."));
             }

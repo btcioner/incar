@@ -23,7 +23,7 @@ angular.module("SReservationApp", [
             controller:'s_reservationCtrl',
             templateUrl:'/4sStore/partials/reservation_main.html'//显示全部保养信息
         })
-        .when('/collapseGTwo',{
+        .when('/collapseGTwo/:id',{
             controller:'s_repairCtrl',
             templateUrl:'/4sStore/partials/repair_main.html'//显示全部维修信息
          })
@@ -37,7 +37,8 @@ angular.module("SReservationApp", [
 
 function s_statisticsCtrl($scope,$http)
 {
-    $http.get(baseurl+'organization/'+$.cookie("org_id")+'/work/care?page=1&pagesize=1&step=applied').success(function(data){
+    $scope.randomTime = new Date();
+     $http.get(baseurl+'organization/'+$.cookie("org_id")+'/work/care?page=1&pagesize=1&step=applied').success(function(data){
         $scope.applyCount = data.totalCount;
 
     })

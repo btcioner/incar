@@ -3,12 +3,11 @@
  */
 
 // use ng-view for redirct load different page
-var app = angular.module("AdminApp", [
+angular.module("AdminApp", [
     'ngResource',
     'ngSanitize',
     'ngRoute'
-])
-app.config(function ($routeProvider, $locationProvider, $httpProvider) {
+    ]).config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.
         when('/main/:id', {
             controller: 'deviceCtrl',
@@ -43,8 +42,8 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
         });
       //  $locationProvider.html5Mode(true);
 
-})
-app.controller("adminCtrl",function($scope){
+}).controller("adminCtrl",function($scope){
+
      $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
      $scope.randomTime  = new Date();
      $scope.changeTime = function()

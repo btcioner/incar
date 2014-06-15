@@ -24,6 +24,7 @@ var seriesService= require('./seriesService');
 var myTrialrunService= require('./myTrialrunService');
 var myBookingService= require('./myBookingService');
 var cancelTrialrunService= require('./cancelTrialrunService');
+var cancelSlotBookingService= require('./cancelSlotBookingService');
 var myActivityService= require('./myActivityService');
 var my4sInfoService= require('./my4sInfoService');
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
@@ -43,6 +44,7 @@ seriesService(mservice);
 myTrialrunService(mservice);
 myBookingService(mservice);
 cancelTrialrunService(mservice);
+cancelSlotBookingService(mservice);
 myActivityService(mservice);
 my4sInfoService(mservice);
 (function(service) {

@@ -13,17 +13,15 @@
     <script>
         var obd_code;
         var license;//车牌号
-        var s4id;//4s店openid
         function init(){
             user=getQueryString("user");
            searchUser();
-           searchTrialrun();
-           searchBook();
         }
     </script>
 </head>
 
 <body onload="init()">
+<input id="wx_oid" type="hidden" value="123">
 <div id="wrap">
     <!--pagename start--><div id="pagename"></div><!--pagename end-->
     <!--containe_100 start--><div id="containe_100">
@@ -70,9 +68,7 @@
             dataType: "json",
             success: function (result,status) {
                 //alert("success");
-                obd_code=result.obd_code;
-                license=result.license;
-                s4id=result.s4_openid;
+                searchTrialrun(result.wx_oid,result.license);
               },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("您还未注册或未绑定OBD信息\n请先注册账号！");
@@ -81,48 +77,56 @@
         });
     }
     //获取试驾预约数据
-    function searchTrialrun(){
+    function searchTrialrun(wx_oid,license){
         $.ajax({
             type: "POST",
             url: "/mservice/myTrialrun",
-            data: {'user':user,'s4id':s4id},
+            data: {'user':user,'wx_oid':wx_oid},
             dataType: "json",
             success: function (result,status) {
               var strTemp="";
               for(var i=0;i<result.length;i++){
                   var rowLabel;
-                  if(i%2==0) rowLabel="rows02";  else rowLabel="rows01"; //判断奇偶行
+                  var rowColor;
+                  //判断奇偶行
+                  if(i%2==0) {rowLabel="rows01";rowColor="icon_5a";}
+                  else {rowLabel="rows02";rowColor="icon_5b";}
                   //判断申请状态
                   var status="";
                   if(result[i].bookingStatus==1) status="待确认";
                   else if(result[i].bookingStatus==2) status="被拒绝";
                   else if(result[i].bookingStatus==3) status="已批准";
-                  else if(result[i].bookingStatus==2) status="已取消";
+                  else if(result[i].bookingStatus==4) status="已取消";
                   else status="无效";
                   //申请提交时间
-                  var tsDate=result[i].ts.getYear()+"/"+
-                            ((result[i].ts.getMonth()+1)>9)?(result[i].ts.getMonth()+1):"0"+(result[i].ts.getMonth()+1) +"/"+
-                            (result[i].ts.getDate()>9)?result[i].ts.getDate():"0"+result[i].ts.getDate();
-                  var tsTime=(result[i].ts.getHours()>9)?result[i].ts.getHours():"0"+result[i].ts.getHours()+":"+
-                              (result[i].ts.getMinutes()>9)?result[i].ts.getMinutes():"0"+result[i].ts.getMinutes();
+                  var tsTemp=new Date(result[i].ts);
+                  var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
+                  var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
+                  var tsDate=tsMonth +"/"+tsDay;
+                  var tsHour=(tsTemp.getHours()>9)?tsTemp.getHours():"0"+tsTemp.getHours();
+                  var tsMin= (tsTemp.getMinutes()>9)?tsTemp.getMinutes():"0"+tsTemp.getMinutes();
+                  var tsTime=tsHour+":"+tsMin;
                   //申请试驾时间
-                  var trialrunDate=result[i].bookingtime.getYear()+"/"+
-                          ((result[i].bookingtime.getMonth()+1)>9)?(result[i].bookingtime.getMonth()+1):"0"+(result[i].bookingtime.getMonth()+1) +"/"+
-                          (result[i].bookingtime.getDate()>9)?result[i].bookingtime.getDate():"0"+result[i].bookingtime.getDate();
-                  var trialrunTime=(result[i].bookingtime.getHours()>9)?result[i].bookingtime.getHours():"0"+result[i].bookingtime.getHours()+":"+
-                          (result[i].bookingtime.getMinutes()>9)?result[i].bookingtime.getMinutes():"0"+result[i].bookingtime.getMinutes();
+                  var trTemp=new Date(result[i].bookingtime);
+                  var trMonth= ((trTemp.getMonth()+1)>9)?(trTemp.getMonth()+1):"0"+(trTemp.getMonth()+1);
+                  var trDay=(trTemp.getDate()>9)?trTemp.getDate():"0"+trTemp.getDate();
+                  var trialrunDate=trMonth +"/"+trDay;
+                  var trHour=(trTemp.getHours()>9)?trTemp.getHours():"0"+trTemp.getHours();
+                  var trMin=(trTemp.getMinutes()>9)?trTemp.getMinutes():"0"+trTemp.getMinutes();
+                  var trialrunTime=trHour+":"+trMin;
                   strTemp+='<li>' +
                              '<ul class='+rowLabel+'>' +
-                                '<li class="icon"><span class="icon_4b"></span></li>' +
+                                '<li class="icon"><span class='+rowColor+'></span></li>' +
                                 '<li><span class="text_04">'+result[i].seriesName+'</span></li>' +
                                 '<li><span>'+tsDate+'<br />'+tsTime+'</span></li>' +
                                 '<li><span>'+trialrunDate+'<br />'+trialrunTime+'</span></li>' +
-                                '<li><span class="text_04">'+status+'</span></li>' +
-                                '<li><span class="text_04"><a href="###" onclick="cancelTrialrun('+result[i].id+')">取消</a></span></li>' +
+                                '<li><span class="text_04" id=tState'+i+'>'+status+'</span></li>' +
+                                '<li><span class="text_04"><a href="###" onclick="cancelTrialrun('+result[i].id+',tState'+i+')">取消</a></span></li>' +
                              '</ul>' +
                           '</li>';
               }
                 document.getElementById("bookContent").innerHTML=strTemp;
+                searchBook(wx_oid,license);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
 
@@ -130,7 +134,7 @@
         });
     }
     //取消试驾预约
-    function cancelTrialrun(id){
+    function cancelTrialrun(id,sid){
         var con=confirm("您确定要取消这个试驾预约吗？");
         if(con){
         $.ajax({
@@ -138,62 +142,73 @@
             url: "/mservice/cancelTrialrun",
             data: {'id':id},
             dataType: "json",
-            success:function(){
-              alert("预约已取消\n页面将重新加载");
-              window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
+            success:function(result,status){
+              alert("预约已取消！");
+              //window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
+              document.getElementById(sid).innerHTML="已取消";
             }
          });
         }else {return;}
     }
-    function searchBook(){
+    function searchBook(wx_oid,license){
+        var sid=wx_oid.split(":");
         $.ajax({
             type: "POST",
             url: "/mservice/myBooking",
-            data: {'user':user,'s4id':s4id},
+            data: {'user':user,'sid':sid[1]},
             dataType: "json",
             success: function (result,status) {
+                //alert(result.length);
                 var strTemp="";
                 for(var i=0;i<result.length;i++){
                     var rowLabel;
-                    if(i%2==0) rowLabel="rows02";  else rowLabel="rows01"; //判断奇偶行
+                    var rowColor;
+                    //判断奇偶行
+                    if(i%2==0) {rowLabel="rows01";rowColor="icon_4a";}
+                    else {rowLabel="rows02";rowColor="icon_4b";}
                     //判断申请状态
                     var status="";
                     if(result[i].bookingStatus==1) status="待确认";
                     else if(result[i].bookingStatus==2) status="被拒绝";
                     else if(result[i].bookingStatus==3) status="已批准";
-                    else if(result[i].bookingStatus==2) status="已取消";
+                    else if(result[i].bookingStatus==4) status="已取消";
                     else status="无效";
                     //申请提交时间
-                    var tsDate=result[i].ts.getYear()+"/"+
-                            ((result[i].ts.getMonth()+1)>9)?(result[i].ts.getMonth()+1):"0"+(result[i].ts.getMonth()+1) +"/"+
-                            (result[i].ts.getDate()>9)?result[i].ts.getDate():"0"+result[i].ts.getDate();
-                    var tsTime=(result[i].ts.getHours()>9)?result[i].ts.getHours():"0"+result[i].ts.getHours()+":"+
-                            (result[i].ts.getMinutes()>9)?result[i].ts.getMinutes():"0"+result[i].ts.getMinutes();
+                    var tsTemp=new Date(result[i].ts);
+                    var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
+                    var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
+                    var tsDate=tsMonth +"/"+tsDay;
+                    var tsHour=(tsTemp.getHours()>9)?tsTemp.getHours():"0"+tsTemp.getHours();
+                    var tsMin= (tsTemp.getMinutes()>9)?tsTemp.getMinutes():"0"+tsTemp.getMinutes();
+                    var tsTime=tsHour+":"+tsMin;
                     //申请试驾时间
-                    var trialrunDate=result[i].bookingtime.getYear()+"/"+
-                            ((result[i].bookingtime.getMonth()+1)>9)?(result[i].bookingtime.getMonth()+1):"0"+(result[i].bookingtime.getMonth()+1) +"/"+
-                            (result[i].bookingtime.getDate()>9)?result[i].bookingtime.getDate():"0"+result[i].bookingtime.getDate();
-                    var trialrunTime=(result[i].bookingtime.getHours()>9)?result[i].bookingtime.getHours():"0"+result[i].bookingtime.getHours()+":"+
-                            (result[i].bookingtime.getMinutes()>9)?result[i].bookingtime.getMinutes():"0"+result[i].bookingtime.getMinutes();
+                    var trTemp=new Date(result[i].bookingtime);
+                    var trMonth= ((trTemp.getMonth()+1)>9)?(trTemp.getMonth()+1):"0"+(trTemp.getMonth()+1);
+                    var trDay=(trTemp.getDate()>9)?trTemp.getDate():"0"+trTemp.getDate();
+                    var trialrunDate=trMonth +"/"+trDay;
+                    var trHour=(trTemp.getHours()>9)?trTemp.getHours():"0"+trTemp.getHours();
+                    var trMin=(trTemp.getMinutes()>9)?trTemp.getMinutes():"0"+trTemp.getMinutes();
+                    var trialrunTime=trHour+":"+trMin;
                     strTemp+='<li>' +
                             '<ul class='+rowLabel+'>' +
-                            '<li class="icon"><span class="icon_4a"></span></li>' +
+                            '<li class="icon"><span class='+rowColor+'></span></li>' +
                             '<li><span class="text_04">'+license+'</span></li>' +
                             '<li><span>'+tsDate+'<br />'+tsTime+'</span></li>' +
                             '<li><span>'+trialrunDate+'<br />'+trialrunTime+'</span></li>' +
-                            '<li><span class="text_04">'+status+'</span></li>' +
-                            '<li><span class="text_04"><a href="###" onclick="cancelBook('+result[i].id+')">取消</a></span></li>' +
+                            '<li><span class="text_04" id=bState'+i+'>'+status+'</span></li>' +
+                            '<li><span class="text_04"><a href="###" onclick="cancelBook('+result[i].id+',bState'+i+')">取消</a></span></li>' +
                             '</ul>' +
                             '</li>';
                 }
                 document.getElementById("bookContent").innerHTML+=strTemp;
+
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
 
             }
         });
     }
-    function cancelBook(id){
+    function cancelBook(id,sid){
         var con=confirm("您确定要取消这个保养预约吗？");
         if(con){
             $.ajax({
@@ -201,9 +216,10 @@
                 url: "/mservice/cancelSlotBooking",
                 data: {'id':id},
                 dataType: "json",
-                success:function(){
-                    alert("预约已取消\n页面将重新加载");
-                    window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
+                success:function(result,status){
+                    alert("预约已取消!");
+                    //window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
+                    document.getElementById(sid).innerHTML="已取消";
                 }
             });
         }else {return;}

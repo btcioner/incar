@@ -5,14 +5,14 @@
 
 var mysql = require('mysql');
 
-function getOrgId(db, userName, callback) {
+function getOrgId(db, userName,sopenid, callback) {
+    console.log("username:"+userName+":"+sopenid);
     var pool = db();
-    pool.query('select s4_id from t_account where wx_oid like ?;',["%"+userName+"%"], function(err, rows){
+    pool.query('select s4_id from t_account where wx_oid like ?;',["%"+userName+":"+sopenid+"%"], function(err, rows){
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
-
-                            callback(null, rows[0].s4_id);
+                         callback(null, rows[0].s4_id);
                         } else { callback(new Error('zero or multiple rows () returned for one wx user id.')); }
                     }
             });
@@ -21,11 +21,11 @@ function getOrgId(db, userName, callback) {
 
 var booking = {};
 
-booking.getPromotionSlots = function(userName, callback) {
+booking.getPromotionSlots = function(userName,sopenid, callback) {
     var pool = this.db();
-    getOrgId(this.db, userName, function(err, result) {
+    getOrgId(this.db, userName,sopenid, function(err, result) {
         if (err) { return callback(err); }
-        pool.query('select id, slot_location location, slot_time time, benefit, description from t_promotion_slot where promotion_status = 1 and promotion_time < now() and storeId = ?;', [result], function(err, rows) {
+        pool.query('select id, slot_location location, slot_time time, benefit, description from t_promotion_slot where promotion_status = 1 and promotion_time > now() and storeId = ?;', [result], function(err, rows) {
             if (err) { return callback(err); }
             return callback(null, rows);
         });

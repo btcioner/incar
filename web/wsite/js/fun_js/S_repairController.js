@@ -11,12 +11,14 @@ function s_repairCtrl($scope, $http,$routeParams){
     $scope.previewDiv = false;
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
-
-    GetFirstPageInfo();//get fist driveData for first page；
-    function GetFirstPageInfo()
+    $scope.randomTime = new Date();
+    GetFirstPageInfo("");//get fist driveData for first page；
+    function GetFirstPageInfo(str)
     {
+        var queryStr = "";
         $scope.tips="";
-        $http.get(baseurl+'4s/'+$.cookie("s4_id")+'/drivetry?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        if(str!="") queryStr="&step="+str;
+        $http.get(baseurl+'4s/'+$.cookie("s4_id")+'/drivetry?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+queryStr).success(function(data){
             if(data.status == "ok")
             {
                 if(data.tries.length == 0)
@@ -35,8 +37,8 @@ function s_repairCtrl($scope, $http,$routeParams){
                         }
                         data.tries[i].status = $.changeWorkStatus(data.tries[i].step);
                     }
-                    $scope.tries = data.tries;
                 }
+                $scope.tries = data.tries;
                 PagingInfo(data.totalCount);
             }
             else
@@ -46,6 +48,29 @@ function s_repairCtrl($scope, $http,$routeParams){
         }).error(function(data){
                 alert("请求无响应");
             })
+    }
+
+   //下拉框选择
+    $scope.ReservationTab = function(id)
+    {
+        $scope.driveTryDiv = true;
+        $scope.applyOperDiv = false;
+        $scope.previewDiv = false;
+        switch(id)
+        {
+            case 0:
+                GetFirstPageInfo("");
+                break;
+            case 1://新申请
+                GetFirstPageInfo("applied");
+                break;
+            case 2://已拒绝
+                GetFirstPageInfo("rejected");
+                break;
+            case 3://已确认
+                GetFirstPageInfo("approved");
+                break;
+        }
     }
 
     //get paging param info
@@ -64,7 +89,7 @@ function s_repairCtrl($scope, $http,$routeParams){
     $scope.changePage=function(changeId)
     {
         $scope.currentPage = changeId ;
-        GetFirstPageInfo()
+        GetFirstPageInfo("");
     }
 
 
@@ -105,8 +130,8 @@ function s_repairCtrl($scope, $http,$routeParams){
                 $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
                     if(data.status=="ok")
                     {
-                        GetFirstPageInfo();
-                        alert("操作成功");
+                        alert("操作成功!");
+                        GetFirstPageInfo("");
                         $scope.driveTryDiv = true;
                         $scope.applyOperDiv = false;
                         $scope.previewDiv = false;
@@ -132,7 +157,7 @@ function s_repairCtrl($scope, $http,$routeParams){
             $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
                 if(data.status == "ok")
                 {
-                    GetFirstPageInfo();
+                    GetFirstPageInfo("");
                     alert("操作成功");
                     $scope.driveTryDiv = true;
                     $scope.applyOperDiv = false;
