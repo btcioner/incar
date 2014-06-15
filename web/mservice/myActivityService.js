@@ -38,6 +38,7 @@ function search(db,acc_id,s4id,callback) {
                     console.log("my activity account:"+rows.length);
                    for(var i=0;i<rows.length;i++){
                         //console.log("value:"+rows[i].act_id+"_"+s4id);
+                       var st=rows[i].status;
                          pool.query('select id,title,status,tm_announce  from  t_activity where id = ? and s4_id=? order by tm_announce desc;',
                            [rows[i].act_id,s4id],function(err,result){
                                if(err){callback(err);}
@@ -48,7 +49,7 @@ function search(db,acc_id,s4id,callback) {
                                        act_data.title=result[0].title;
                                        act_data.status=result[0].status;
                                        act_data.tm_announce=result[0].tm_announce;
-                                       act_data.myStatus=rows[i].status;
+                                       act_data.myStatus=st;
                                        myActData.push(act_data);
                                    }else callback(new Error("t_activity data error."));
                                }
