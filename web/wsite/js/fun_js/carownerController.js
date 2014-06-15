@@ -27,6 +27,7 @@ function carOwnersCtrl($scope, $http){
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
 
     GetFirstPageInfo();//get fist driveData for first page；
+    getPrepareFun();
     function GetFirstPageInfo()
     {
         $scope.tips="";
@@ -48,6 +49,11 @@ function carOwnersCtrl($scope, $http){
         }).error(function(data){
         alert("请求无响应");
         })
+
+    }
+    //预备函数
+    function getPrepareFun()
+    {
         $http.get(baseurl+'brand').success(function(data){
             $scope.carBrand = data.brands;
         });

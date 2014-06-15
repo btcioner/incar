@@ -7,6 +7,30 @@ var baseurl="/wservice/";
 
 (function($){
 
+    $.getAjaxLink = function(url,query,type)
+    {
+        var tempData = {};
+        if($.cookie("nick") != "")
+        {
+            $.ajax({
+                url: url,
+                type: type,
+                dataType: 'json',
+                data:query,
+                success: function(data){
+//                  return data;
+                },
+                error: function(data){
+                    alert("请求无响应");
+                }
+           });
+        }
+        else{
+            alert("登录已超时！");
+            window.location="../login.html";
+        }
+    }
+
     $.getUrlParam = function(name)
     {
         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");

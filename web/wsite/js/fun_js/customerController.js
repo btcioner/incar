@@ -19,18 +19,28 @@ function customerCtrl($scope, $http){
     $scope.password="";
     $scope.city="";
     $scope.s4_name="";
-
+    $scope.brand_id="";
+    $scope.admin_phone="";
+    $scope.admin_nick="";
 
     //筛选框初始值 todo--要从数据库读出来
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}];
 
     GetFirstPageInfo();//get fist driveData for first page；
+    getPrepareFun();//获取预备函数
     function GetFirstPageInfo()
     {
         $scope.tips="";
         $scope.randomTime = "&t="+new Date();
-        $http.get(baseurl + 'cmpx/4s?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+$scope.randomTime).success(function(data){
-            if(data.status == "ok")
+       getAjaxLink(baseurl + 'cmpx/4s',$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+$scope.randomTime,"get",1);
+    }
+
+    function getIndexData(id,data)
+    {
+      switch(id)
+      {
+          case id: //获取4s店首页
+          if(data.status == "ok")
             {
                 if(data.s4s.length == 0)
                 {
@@ -43,11 +53,61 @@ function customerCtrl($scope, $http){
             {
                 alert(data.status);
             }
-        }).error(function(data){
-                alert("请求无响应");
-        })
+            break;
+        case 2: //确认修改
+            if(data.status == "ok")
+            {
+                getAjaxLink(baseurl + '4s/'+$scope.id+'/staff/'+$scope.admin_id,$scope.postData1,"put",3)
+            }
+            else{
+                alert(data.status);
+            }
+            break;
+          case 3: //确认修改2
+              if(data.status == "ok")
+              {
+                  alert("修改成功");
+                  GetFirstPageInfo();//get fist driveData for first page；
+                  $scope.customerListDiv = true;
+                  $scope.customerModifyDiv = false;
+              }
+              break;
+      }
+    }
+    //利用Ajax访问，并解决防盗链问题。
+    function getAjaxLink(url,query,type,id)
+    {
+        if($.cookie("nick") != "")
+        {
+            $.ajax({
+                url: url,
+                type: type,
+                dataType: 'json',
+                data:query,
+                success: function(data){
+                    $scope.$apply(function () {
+                    getIndexData(id,data);
+                    });
+                },
+                error: function(data){
+                    alert("请求无响应");
+                }
+            });
+        }
+        else{
+            alert("登录已超时！");
+            window.location="../login.html";
+        }
+    }
+
+    //预备函数
+    function getPrepareFun()
+    {
         $http.get(baseurl+'4s').success(function(data){
             $scope.s4s_all = data.s4s;
+        });
+        $http.get(baseurl+'brand').success(function(data){
+            $scope.carBrand = data.brands;
         });
     }
 
@@ -94,21 +154,23 @@ function customerCtrl($scope, $http){
 
    //新增确定
     $scope.addConfirm = function(){
+
         var sha1_password =hex_sha1($scope.password);//SHA1进行加密
         $scope.postData={"name":$scope.comName,"class":"4S","status":1,"city":$scope.city,"admin_pwd":sha1_password,
-                           "admin_name":$scope.account,"admin_nick":$scope.admin_nick,"admin_phone":$scope.admin_phone,"openid":$scope.openid};
-        $http.post(baseurl + 'cmpx/4s').success(function(data){
-//            if(data.status == "ok")
-//            {
-//                alert("添加成功");
-//                GetFirstPageInfo();
-//                $scope.customerListDiv = true;
-//                $scope.customerAddDiv = false;
-//            }
-//            else
-//            {
-//                alert(data.status);
-//            }
+                           "admin_name":$scope.account,"admin_nick":$scope.admin_nick,"admin_phone":$scope.admin_phone,"openid":$scope.openid,
+                           brand:$scope.brand_id};
+        $http.post(baseurl + 'cmpx/4s',$scope.postData).success(function(data){
+            if(data.status == "ok")
+            {
+                alert("添加成功");
+                GetFirstPageInfo();
+                $scope.customerListDiv = true;
+                $scope.customerAddDiv = false;
+            }
+            else
+            {
+                alert(data.status);
+            }
         }).error(function(data){
            alert("请求没响应");
           })
@@ -143,29 +205,9 @@ function customerCtrl($scope, $http){
     //修改确认
     $scope.modifyConfirm = function(oneCustomerInfo){
        $scope.oneCustomerInfo = oneCustomerInfo;
-       $scope.postData={"name":$scope.oneCustomerInfo.name,"class":"4S","status":1,"openid":"","city":$scope.oneCustomerInfo.city};
+       $scope.postData={"name":$scope.oneCustomerInfo.name,"class":"4S","status":1,"openid":"","city":$scope.oneCustomerInfo.city,short_name:$scope.oneCustomerInfo.short_name};
        $scope.postData1={"nick":$scope.oneCustomerInfo.admin_nick,"phone":$scope.oneCustomerInfo.admin_phone};
-       $http.put(baseurl + '4s/'+$scope.id, $scope.postData).success(function(data){
-              if(data.status == "ok")
-              {
-                  $http.put(baseurl + '4s/'+$scope.id+'/staff/'+$scope.admin_id,$scope.postData1).success(function(data){
-                      if(data.status == "ok")
-                      {
-                          alert("修改成功");
-                          GetFirstPageInfo();//get fist driveData for first page；
-                          $scope.customerListDiv = true;
-                          $scope.customerModifyDiv = false;
-                      }
-                  }).error(function(data){
-                          alert("请求没响应");
-                  })
-              }
-           else{
-                  alert(data.status);
-              }
-        }).error(function(data){
-                  alert("请求没响应");
-            })
+       getAjaxLink(baseurl + '4s/'+$scope.id,$scope.postData,"put",2);
     }
 
     //查看详情
