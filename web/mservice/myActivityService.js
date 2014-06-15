@@ -39,9 +39,12 @@ function search(db,acc_id,s4id,callback) {
                    for(var i=0;i<rows.length;i++){
                         console.log("value:"+rows[i].act_id+"_"+s4id);
                         ActivityInfo(db,rows[i].act_id,s4id,rows[i].status,function(err,data){
-                            console.log("data:"+data);
-                            myActData.push(data);
-                            });
+                            if(err){console.log(err);callback(err);}
+                            else{
+                                console.log("data:"+data);
+                                myActData.push(data);
+                            }
+                         });
                     }
                     //console.log("before callback:"+myActData);
                     callback(null,myActData);
