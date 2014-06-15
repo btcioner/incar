@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS t_slot_booking(
     booking_time timestamp NOT NULL COMMENT '预约申请时间',
     booking_status TINYINT NOT NULL DEFAULT '0' COMMENT '预约申请状态 0-无效 1-已申请待确认 2-被拒 3-成功批准 4-被取消',
 
-    tc VARCHAR(32) COMMENT '记录操作用户名',
+    tc VARCHAR(256) COMMENT '记录操作用户名',
     ts timestamp COMMENT '记录操作时间戳',
 
 	INDEX IX_PROMOTION_SLOT_1(id)
