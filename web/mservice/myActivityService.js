@@ -17,7 +17,7 @@ function myActivity(req, res) {
     var user=postData.user;
     var acc_id=postData.acc_id;
     var s4id=postData.s4_id;
-    console.log("postData:"+postData);
+    console.log("postData:"+postData.user+","+postData.acc_id+","+postData.s4_id);
     search(db,acc_id,s4id,function(err, result) {
         if (err) { res.send(200,err); }
         else {
