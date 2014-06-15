@@ -135,8 +135,6 @@ module.exports = function(app) {
     app.get('/wservice/4s/:s4_id/activity/:act_id/cust/:acc_id', authCheck, wservice.GetActivityMember);
     app.get('/wservice/4s/:s4_id/activity/:act_id/:exfn', authCheck, wservice.ActivityExFn);
 
-    app.get('/wservice', wservice.html);
-
     // Routes for msite service
     app.get('/mservice/html', siteCommon.staticFile('mservice/html/mservice.html'));
     app.get('/mservice/html/*', siteCommon.staticFolder('mservice/html'));
