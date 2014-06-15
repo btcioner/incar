@@ -116,6 +116,10 @@ my4S.trialrun=function(userName,sopenid, session, callback){
                callback(null,compiled(data));
            }
     });
+
+    //session.textMsgReplierIndex = 'my4S.onTrialrun';
+    //callback(null,compiled({}));
+}
 my4S.my4sInfo=function(userName,sopenid, session, callback){
     var tpl = [
         '活动多多，优惠多多：\n\n',
@@ -125,9 +129,6 @@ my4S.my4sInfo=function(userName,sopenid, session, callback){
     var compiled = ejs.compile(tpl);
     session.textMsgReplierIndex = 'my4S.on4sInfo';
     callback(null, compiled({}));
-}
-    //session.textMsgReplierIndex = 'my4S.onTrialrun';
-    //callback(null,compiled({}));
 }
 my4S.manual = function(userName, session, callback){
     // 模板将来要从数据库来读取
