@@ -89,13 +89,9 @@ module.exports = function(app) {
     app.post('/tag/addTag',tagService.addTag);                  //添加自定义标签
     app.delete('/tag/delTag/:tagId',tagService.delTag);            //删除自定义标签
 
-    app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin); // app.get('/wservice/organization', wservice.GetOrganization);
-    app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin); // app.post('/wservice/organization', wservice.AddOrganization);
-    // app.put('/wservice/organization/:org_id', wservice.ModifyOrganization);
-    app.get('/wservice/cmpx/carowner',wservice.GetCarwithOwner); // app.get('/wservice/carowner', wservice.GetCarOwnerAll);
-    // app.get('/wservice/carowner/:acc_id', wservice.GetCarOwner);
-    // app.put('/wservice/carowner/:acc_id', wservice.ModifyCarOwner);
-    // app.delete('/wservice/carowner/:acc_id', wservice.DeleteCarOwner);
+    app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin);
+    app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin);
+    app.get('/wservice/cmpx/carowner',wservice.GetCarwithOwner);
     app.get('/wservice/cmpx/drive_info', wservice.GetDriveInfoAll);
     app.get('/wservice/cmpx/drive_detail/:obd_code/:drive_id', wservice.GetDriveDetail);
 

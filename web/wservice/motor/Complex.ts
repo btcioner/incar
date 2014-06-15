@@ -87,6 +87,11 @@ module Service{
         if(isStringNotEmpty(data.wx_pwd)) dto.wx_pwd = data.wx_pwd;
         if(isStringNotEmpty(data.wx_en_name)) dto.wx_en_name = data.wx_en_name;
         if(!isNaN(data.wx_status)) dto.wx_status = data.wx_status;
+        if(!isNaN(data.brand)) dto.brand = data.brand;
+        if(isStringNotEmpty(data.short_name)) dto.short_name = data.short_name;
+        if(isStringNotEmpty(data.phone)) dto.phone = data.phone;
+        if(isStringNotEmpty(data.address)) dto.address = data.address;
+        if(isStringNotEmpty(data.hotline)) dto.hotline = data.hotline;
         var s4 = new S4(dto);
 
         var repo = S4Repository.GetRepo();
