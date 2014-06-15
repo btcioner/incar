@@ -158,6 +158,7 @@
             data: {'user':user,'wx_oid':wx_oid},
             dataType: "json",
             success: function (result,status) {
+                alert(result.length);
                 var strTemp="";
                 for(var i=0;i<result.length;i++){
                     var rowLabel;
@@ -193,6 +194,7 @@
                             '</li>';
                 }
                 document.getElementById("bookContent").innerHTML+=strTemp;
+
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
 
