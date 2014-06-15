@@ -100,16 +100,18 @@
                     //判断我的活动参加状态
                     var myStatus="";
                     if(result[i].myStatus==1) status="已报名";
-                    else if(result[i].status==2) status="已参加";
-                    else if(result[i].status==3) status="已退出";
-                    else if(result[i].status==4) status="被拒绝";
+                    else if(result[i].myStatus==2) status="已参加";
+                    else if(result[i].myStatus==3) status="已退出";
+                    else if(result[i].myStatus==4) status="被拒绝";
                     alert(myStatus);
                     //活动发布时间
-                    var tsDate=result[i].tm_announce.getYear()+"/"+
-                            ((result[i].tm_announce.getMonth()+1)>9)?(result[i].tm_announce.getMonth()+1):"0"+(result[i].tm_announce.getMonth()+1) +"/"+
-                            (result[i].tm_announce.getDate()>9)?result[i].tm_announce.getDate():"0"+result[i].tm_announce.getDate();
-                    var tsTime=(result[i].tm_announce.getHours()>9)?result[i].tm_announce.getHours():"0"+result[i].tm_announce.getHours()+":"+
-                            (result[i].tm_announce.getMinutes()>9)?result[i].tm_announce.getMinutes():"0"+result[i].tm_announce.getMinutes();
+                    var tsTemp=new Date(result[i].tm_announce);
+                    var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
+                    var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
+                    var tsDate=tsMonth +"/"+tsDay;
+                    var tsHour=(tsTemp.getHours()>9)?tsTemp.getHours():"0"+tsTemp.getHours();
+                    var tsMin= (tsTemp.getMinutes()>9)?tsTemp.getMinutes():"0"+tsTemp.getMinutes();
+                    var tsTime=tsHour+":"+tsMin;
                     strTemp+='<li>' +
                                 '<ul class='+rowLabel+'>' +
                                   '<li><span class="text_04">'+result[i].title+'</span></li>' +
