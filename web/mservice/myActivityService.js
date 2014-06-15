@@ -59,11 +59,11 @@ function ActivityInfo(db,act_id,s4id,status,callback){
             if(err){callback(err);}
             else{console.log("rows:"+rows[0].title);
                 if(rows&&rows.length==1){
-                    console.log(rows[0].id);
-                    console.log(rows[0].title);
-                    console.log(rows[0].status);
-                    console.log(rows[0].tm_announce);
-                    console.log(rows[0].status);
+                    console.log("aa"+rows[0].id);
+                    console.log("aa"+rows[0].title);
+                    console.log("aa"+rows[0].status);
+                    console.log("aa"+rows[0].tm_announce);
+                    console.log("aa"+rows[0].status);
                     var act_data={};
                     act_data.id=rows[0].id;
                     act_data.title=rows[0].title;
