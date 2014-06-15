@@ -29,7 +29,7 @@ function myTrialrun(req, res) {
 
 function search(db, user,s4id,callback) {
     var pool = db();
-   pool.query('select id,bookingtime,seriesName,bookingStatus,ts   from  t_trialrun where wx_oid like ? order by bookingtime desc;',
+   pool.query('select id,bookingtime,seriesName,bookingStatus,ts  from  t_trialrun where wx_oid like ? order by bookingtime desc;',
         ['%'+user+':'+s4id+'%'],function(err,rows){
             if(err){callback(err);}
             else{

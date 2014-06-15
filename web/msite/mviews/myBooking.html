@@ -92,6 +92,7 @@
             data: {'user':user,'s4id':s4id},
             dataType: "json",
             success: function (result,status) {
+                alert("trial:"+result.length);
               var strTemp="";
               for(var i=0;i<result.length;i++){
                   var rowLabel;
