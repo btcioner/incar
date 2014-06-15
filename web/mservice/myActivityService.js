@@ -57,7 +57,7 @@ function ActivityInfo(db,act_id,s4id,status,callback){
                     act_data.status=rows[0].status;
                     act_data.tm_announce=rows[0].tm_announce;
                     act_data.myStatus=status;
-                    //console.log(act_data.title);
+                    console.log(act_data.title+":"+act_data.tm_announce);
                    callback(null,act_data);
                 }else callback(new Error("t_activity data error."));
             }
