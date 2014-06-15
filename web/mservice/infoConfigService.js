@@ -66,7 +66,7 @@ function getCarInfo(db, callback){
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
-                pool.query('select license,obd_code,brand,series,modelYear,disp,mileage,age,engine_type from t_car where id = ?', [rows[0].car_id], function(err, rows) {
+                pool.query('select license,obd_code,brand,series,modelYear,disp,mileage,age,engineType from t_car where id = ?', [rows[0].car_id], function(err, rows) {
                     if (err) { callback(err); }
                     else {
                         if (rows && rows.length === 1) {
