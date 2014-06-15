@@ -98,8 +98,8 @@ module Service{
         repo.Add4S(s4, (ex:TaskException, s4:S4)=>{
             if(ex) { res.json(ex); return; }
             var dto2:any = { name: data.admin_name, pwd: data.admin_pwd, last_login_time:"0000-00-00" };
-            if(isStringNotEmpty(data.admin_email)) dto2.nick = data.admin_email;
-            if(isStringNotEmpty(data.admin_phone)) dto2.nick = data.admin_phone;
+            if(isStringNotEmpty(data.admin_email)) dto2.email = data.admin_email;
+            if(isStringNotEmpty(data.admin_phone)) dto2.phone = data.admin_phone;
             if(isStringNotEmpty(data.admin_nick)) dto2.nick = data.admin_nick;
             else dto2.nick = data.admin_name;
             var staff = new Staff(dto2);
