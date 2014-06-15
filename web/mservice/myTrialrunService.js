@@ -22,7 +22,7 @@ function myTrialrun(req, res) {
         if (err) { res.send(200,err); }
         else {
             console.log(data);
-            res.send(data);
+            res.send(200,data);
         }
     });
 }
