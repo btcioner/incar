@@ -17,9 +17,10 @@ module Service{
                     poolInCar.query = (sql, args, cb)=>{
                         var snSQL = (poolInCar.TraceCount++);
                         var tmA = new Date();
+                        TraceSQL(sql, args, snSQL, tmA);
                         poolInCar.queryRawFn(sql, args, (ex, result)=>{
                             var tmB = new Date();
-                            TraceSQL(sql, args, snSQL, tmB.getTime() - tmA.getTime());
+                            TraceTime(snSQL, tmB.getTime() - tmA.getTime(), result);
                             if(ex) console.info(">>>>> SQL#%d \033[31m%s\033[0m", snSQL, ex.message);
                             cb(ex, result);
                         });
@@ -31,10 +32,21 @@ module Service{
         }
 
         // 调试用
-        export function TraceSQL(sql:string, args:any, sn:number, tmSpan:number):string{
+        export function TraceSQL(sql:string, args:any, sn:number, tmStart:Date):string{
             var sqlfull = mysql.format(sql, args);
-            console.info(">>>>> SQL#%d \033[32m%d\033[0mms > \033[33m%s\033[0m", sn, tmSpan, sqlfull);
+            var strTM = util.format("%s-%s-%s %s:%s:%s",
+                tmStart.getFullYear(), tmStart.getMonth(), tmStart.getDate(),
+                tmStart.getHours(), tmStart.getMinutes(), tmStart.getSeconds());
+            console.info(">>>>> SQL#%d \033[32m%s\033[0m > \033[33m%s\033[0m", sn, strTM, sqlfull);
             return sqlfull;
+        }
+
+        // 调试用
+        export function TraceTime(sn:number, tmSpan:number, result:any):void{
+            var count = result.affectedRows;
+            if(!count) count = result.length;
+            if(!count) count = 0;
+            console.info(">>>>> SQL#%d \033[32m%d\033[0mms > \033[33m%d rows affected\033[0m", sn, tmSpan, count);
         }
 
         // 存储一系列id到一个临时表中
