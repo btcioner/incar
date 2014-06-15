@@ -195,7 +195,7 @@ module Work{
                 if(ex) {res.json(ex); return; }
                 else{
                     var rawArgs:any = {};
-                    try { rawArgs = JSON.parse(this.json_args); } catch(e){}
+                    try { rawArgs = JSON.parse(this.json_args); } catch(e){ rawArgs = {}; }
                     this.json_args = JSON.stringify({oper:userLogin.dto.nick, brand: rawArgs.brand, series: rawArgs.series});
                     var sql = "UPDATE t_work SET step = 'approved', json_args = ? WHERE id = ? and step = 'applied'";
                     var dac = Service.MySqlAccess.RetrievePool();
@@ -226,7 +226,7 @@ module Work{
                 if(ex) { res.json(ex); return; }
                 else{
                     var rawArgs:any = {};
-                    try { rawArgs = JSON.parse(this.json_args); } catch(e){}
+                    try { rawArgs = JSON.parse(this.json_args); } catch(e){ rawArgs = {}; }
 
                     this.json_args = JSON.stringify({reason:req.body.reason, oper:userLogin.dto.nick, brand: rawArgs.brand, series: rawArgs.series});
 
