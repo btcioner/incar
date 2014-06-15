@@ -43,7 +43,7 @@ function search(db,acc_id,s4id,callback) {
                            [rows[i].act_id,s4id],function(err,result){
                                if(err){callback(err);}
                                else{
-                                   if(rows&&rows.length==1){
+                                   if(result&&result.length==1){
                                        var act_data={};
                                        act_data.id=result[0].id;
                                        act_data.title=result[0].title;
