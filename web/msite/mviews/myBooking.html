@@ -106,17 +106,15 @@
                   if(result[i].bookingStatus==1) status="待确认";
                   else if(result[i].bookingStatus==2) status="被拒绝";
                   else if(result[i].bookingStatus==3) status="已批准";
-                  else if(result[i].bookingStatus==2) status="已取消";
+                  else if(result[i].bookingStatus==4) status="已取消";
                   else status="无效";
                   alert(status);
                   //申请提交时间
                   var tsTemp=new Date(result[i].ts);
-                  alert(tsTemp.getYear());
-                  alert(((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1));
-                  alert((tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate());
-                  var tsDate=tsTemp.getYear()+"/"+
-                            ((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1) +"/"+
-                            (tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
+                  var tsYear=tsTemp.getYear();
+                  var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
+                  var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
+                  var tsDate=tsYear+"/"+tsMonth +"/"+tsDay;
                   var tsTime=(tsTemp.getHours()>9)?tsTemp.getHours():"0"+tsTemp.getHours()+":"+
                               (tsTemp.getMinutes()>9)?tsTemp.getMinutes():"0"+tsTemp.getMinutes();
                   alert(tsDate);
