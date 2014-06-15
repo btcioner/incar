@@ -19,7 +19,8 @@ function cancelTrialrun(req, res) {
     cancel(db,id,function(err, data) {
         if (err) { res.send(200,err); }
         else {
-            res.send(data);
+            console.log("cancel success");
+            res.send(200,data);
         }
     });
 }

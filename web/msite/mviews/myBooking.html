@@ -120,8 +120,8 @@
                                 '<li><span class="text_04">'+result[i].seriesName+'</span></li>' +
                                 '<li><span>'+tsDate+'<br />'+tsTime+'</span></li>' +
                                 '<li><span>'+trialrunDate+'<br />'+trialrunTime+'</span></li>' +
-                                '<li><span class="text_04">'+status+'</span></li>' +
-                                '<li><span class="text_04"><a href="###" onclick="cancelTrialrun('+result[i].id+')">取消</a></span></li>' +
+                                '<li><span class="text_04" id=tState'+i+'>'+status+'</span></li>' +
+                                '<li><span class="text_04"><a href="###" onclick="cancelTrialrun('+result[i].id+',tState'+i+')">取消</a></span></li>' +
                              '</ul>' +
                           '</li>';
               }
@@ -134,7 +134,7 @@
         });
     }
     //取消试驾预约
-    function cancelTrialrun(id){
+    function cancelTrialrun(id,sid){
         var con=confirm("您确定要取消这个试驾预约吗？");
         if(con){
         $.ajax({
@@ -143,8 +143,9 @@
             data: {'id':id},
             dataType: "json",
             success:function(result,status){
-              alert("预约已取消\n页面将重新加载");
-              window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
+              alert("预约已取消！");
+              //window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
+              document.getElementById(sid).innerHTML="已取消";
             }
          });
         }else {return;}
@@ -194,8 +195,8 @@
                             '<li><span class="text_04">'+license+'</span></li>' +
                             '<li><span>'+tsDate+'<br />'+tsTime+'</span></li>' +
                             '<li><span>'+trialrunDate+'<br />'+trialrunTime+'</span></li>' +
-                            '<li><span class="text_04">'+status+'</span></li>' +
-                            '<li><span class="text_04"><a href="###" onclick="cancelBook('+result[i].id+')">取消</a></span></li>' +
+                            '<li><span class="text_04" id=bState'+i+'>'+status+'</span></li>' +
+                            '<li><span class="text_04"><a href="###" onclick="cancelBook('+result[i].id+',bState'+i+')">取消</a></span></li>' +
                             '</ul>' +
                             '</li>';
                 }
@@ -207,7 +208,7 @@
             }
         });
     }
-    function cancelBook(id){
+    function cancelBook(id,sid){
         var con=confirm("您确定要取消这个保养预约吗？");
         if(con){
             $.ajax({
@@ -216,8 +217,9 @@
                 data: {'id':id},
                 dataType: "json",
                 success:function(result,status){
-                    alert("预约已取消\n页面将重新加载");
-                    window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
+                    alert("预约已取消!");
+                    //window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
+                    document.getElementById(sid).innerHTML="已取消";
                 }
             });
         }else {return;}
