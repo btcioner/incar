@@ -2,7 +2,7 @@
 
 module Service {
     export function GetTryIn4S(req, res){
-        res.setHeader("Accept-Query", "page,pagesize");
+        res.setHeader("Accept-Query", "page,pagesize,step");
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var dac = MySqlAccess.RetrievePool();
@@ -12,8 +12,10 @@ module Service {
             var sql = "SELECT %s\n" +
                 "FROM t_work W\n" +
                 "\tLEFT OUTER JOIN t_account U ON W.cust_id = U.id\n" +
-                "WHERE W.work='drivetry' and W.org_id=? ORDER BY W.id DESC";
+                "WHERE W.work = 'drivetry' and W.org_id = ?";
             var args = [req.params.s4_id];
+            if(req.query.step){ sql += " and W.step = ?"; args.push(req.query.step); }
+            sql += " ORDER BY W.id DESC";
 
             var sqlA = util.format(sql, "count(*) count");
             dac.query(sqlA, args, (ex, result)=>{
@@ -193,7 +195,7 @@ module Work{
                 if(ex) {res.json(ex); return; }
                 else{
                     var rawArgs:any = {};
-                    try { rawArgs = JSON.parse(this.json_args); } catch(e){}
+                    try { rawArgs = JSON.parse(this.json_args); } catch(e){ rawArgs = {}; }
                     this.json_args = JSON.stringify({oper:userLogin.dto.nick, brand: rawArgs.brand, series: rawArgs.series});
                     var sql = "UPDATE t_work SET step = 'approved', json_args = ? WHERE id = ? and step = 'applied'";
                     var dac = Service.MySqlAccess.RetrievePool();
@@ -224,7 +226,7 @@ module Work{
                 if(ex) { res.json(ex); return; }
                 else{
                     var rawArgs:any = {};
-                    try { rawArgs = JSON.parse(this.json_args); } catch(e){}
+                    try { rawArgs = JSON.parse(this.json_args); } catch(e){ rawArgs = {}; }
 
                     this.json_args = JSON.stringify({reason:req.body.reason, oper:userLogin.dto.nick, brand: rawArgs.brand, series: rawArgs.series});
 
