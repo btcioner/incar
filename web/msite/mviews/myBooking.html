@@ -142,7 +142,7 @@
             url: "/mservice/cancelTrialrun",
             data: {'id':id},
             dataType: "json",
-            success:function(){
+            success:function(result,status){
               alert("预约已取消\n页面将重新加载");
               window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
             }
@@ -215,7 +215,7 @@
                 url: "/mservice/cancelSlotBooking",
                 data: {'id':id},
                 dataType: "json",
-                success:function(){
+                success:function(result,status){
                     alert("预约已取消\n页面将重新加载");
                     window.location="http://linuxsrv.winphone.us/msite/getCodeForBook.html";
                 }
