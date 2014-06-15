@@ -41,7 +41,7 @@ function search(db, user,s4id,callback) {
                         data.id=rows[i].id;
                         data.bookingtime=rows[i].bookingtime;
                         data.seriesName=rows[i].seriesName;
-                        data.bookingStatus=rows[i].bookingStatus;
+                        data.bookingStatus=rows[i].bookStatus;
                         data.ts=rows[i].ts;
                         trialrun.push(data);
                         console.log(data);

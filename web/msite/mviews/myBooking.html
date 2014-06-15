@@ -110,18 +110,20 @@
                   else status="无效";
                   alert(status);
                   //申请提交时间
-                  var tsDate=result[i].ts.getYear()+"/"+
-                            ((result[i].ts.getMonth()+1)>9)?(result[i].ts.getMonth()+1):"0"+(result[i].ts.getMonth()+1) +"/"+
-                            (result[i].ts.getDate()>9)?result[i].ts.getDate():"0"+result[i].ts.getDate();
-                  var tsTime=(result[i].ts.getHours()>9)?result[i].ts.getHours():"0"+result[i].ts.getHours()+":"+
-                              (result[i].ts.getMinutes()>9)?result[i].ts.getMinutes():"0"+result[i].ts.getMinutes();
+                  var tsTemp=new Date(result[i].ts);
+                  var tsDate=tsTemp.getYear()+"/"+
+                            ((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1) +"/"+
+                            (tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
+                  var tsTime=(tsTemp.getHours()>9)?tsTemp.getHours():"0"+tsTemp.getHours()+":"+
+                              (tsTemp.getMinutes()>9)?tsTemp.getMinutes():"0"+tsTemp.getMinutes();
                   alert(tsDate);
                   //申请试驾时间
-                  var trialrunDate=result[i].bookingtime.getYear()+"/"+
-                          ((result[i].bookingtime.getMonth()+1)>9)?(result[i].bookingtime.getMonth()+1):"0"+(result[i].bookingtime.getMonth()+1) +"/"+
-                          (result[i].bookingtime.getDate()>9)?result[i].bookingtime.getDate():"0"+result[i].bookingtime.getDate();
-                  var trialrunTime=(result[i].bookingtime.getHours()>9)?result[i].bookingtime.getHours():"0"+result[i].bookingtime.getHours()+":"+
-                          (result[i].bookingtime.getMinutes()>9)?result[i].bookingtime.getMinutes():"0"+result[i].bookingtime.getMinutes();
+                  var trTemp=new Date(result[i].bookingtime);
+                  var trialrunDate=trTemp.getYear()+"/"+
+                          ((trTemp.getMonth()+1)>9)?(trTemp.getMonth()+1):"0"+(trTemp.getMonth()+1) +"/"+
+                          (trTemp.getDate()>9)?trTemp.getDate():"0"+trTemp.getDate();
+                  var trialrunTime=(trTemp.getHours()>9)?trTemp.getHours():"0"+trTemp.getHours()+":"+
+                          (trTemp.getMinutes()>9)?trTemp.getMinutes():"0"+trTemp.getMinutes();
                   alert(trialrunDate);
                   strTemp+='<li>' +
                              '<ul class='+rowLabel+'>' +
