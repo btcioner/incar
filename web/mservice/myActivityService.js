@@ -39,7 +39,7 @@ function search(db,acc_id,s4id,callback) {
                     var act_detail={
                         n:0,
                         end:function(){
-                            if(n==rows.length-1){
+                            if(act_detail.n==rows.length-1){
                                 callback(null,myActData);
                             }
                         }
