@@ -25,7 +25,7 @@
     $scope.carBrand=[{id:"zero",name:"请选择"},{id:0,name:"丰田/TOYOTA"},{id:1,name:"本田/Honda"},{id:2,name:"日产/NISSAN"},{id:3,name:"三菱/MITSUBISHIMOTORS"}];
     $scope.carSeries=[{id:0,name:"请选择"}];
 
-
+    $scope.randomTime = new Date();
     if($routeParams.id!=null)
     {
         if($routeParams.id==1) GetFirstPageInfo("applied");

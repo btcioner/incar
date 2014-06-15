@@ -27,15 +27,21 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 }
 
 #header h1 {
-    /*background: url("../img/logo.png") no-repeat scroll 0 0 transparent;
-    height: 31px;
-    left: 15px;
-    line-height: 600px;
-    overflow: hidden;*/
-    position: relative;
-    top:10px; 
-    width: 191px;
-	color:white;
+    /*background: url("../img/logo.png") no-repeat scroll 0 0 transparent;*/
+    /*height: 31px;*/
+    /*left: 15px;*/
+    /*line-height: 600px;*/
+    /*overflow: hidden;*/
+    /*position: relative;*/
+    /*top:20px; */
+    /*width: 191px;*/
+    height: 62px;
+    line-height: 62px;
+    overflow: hidden;
+    color: #FFF;
+    font-family: "微软雅黑", "黑体";
+    /* [disabled]background-color: #FC0; */
+    padding-left: 30px;
 }
 
 #header h1 a {
@@ -70,7 +76,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	opacity: 0.9;
 }
 /* Top user navigation */
-#sidebar{ width:100%; background:/*#36A803*/#49cced;  position:absolute; clear:both; top:62px;}
+#sidebar{ width:100%; background:#49cced;  position:absolute; clear:both; top:62px;}
 #sidebar > ul{ margin:0px; padding:0px; width:100%; display:block; z-index:999;} 
 #sidebar > ul > li { list-style-type:none; float:left; display:block; margin:0px; border-right:1px solid #41bedd; position:relative; padding:10px; cursor:pointer} 
 #sidebar > ul > li a{ padding:12px 0;}
@@ -189,9 +195,9 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	top: -7px;
 }
 
-/*.container-fluid .row-fluid:first-child {
+.container-fluid .row-fluid:first-child {
 	margin-top: 20px;
-}*/
+}
 /* Breadcrumb */
 #breadcrumb {
 	background-color: #fff;

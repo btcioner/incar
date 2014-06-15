@@ -14,7 +14,7 @@ angular.module("SActivityApp", [
             controller: 's_specialStationCtrl',
             templateUrl: '/4sStore/partials/activity_main.html'//特价工位
         })
-        .when('/collapseGTwo',{
+        .when('/collapseGTwo/:id',{
             controller:'s_activityCtrl',
             templateUrl:'/4sStore/partials/activity_promoteInfo.html'//活动资讯
         })
@@ -27,8 +27,8 @@ angular.module("SActivityApp", [
             templateUrl:'/4sStore/partials/activity_lotteryTicket.html'//彩票
         })
         .otherwise({
-             controller: '',
-             templateUrl: '/4sStore/partials/test.html'//首页
+             controller: 'test',
+             templateUrl: '/4sStore/partials/activity_index.html'//首页
         });
   //  $locationProvider.html5Mode(true);
 }).controller("mainCtrl",function($scope){
@@ -39,3 +39,4 @@ angular.module("SActivityApp", [
             $scope.randomTime = new Date();
         }
   });
+

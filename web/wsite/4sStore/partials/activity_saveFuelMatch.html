@@ -97,7 +97,7 @@
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">活动介绍：</label>
                 <div class="controls">
-                    <textarea id="content" name="content" style="visibility:hidden;" >请编写正文内容...</textarea>
+                    <textarea id="content_0" name="content" style="visibility:hidden;" >请编写正文内容...</textarea>
                 </div>
             </div>
             <div class="control-group" >
@@ -126,10 +126,15 @@
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">发布至如下车主：</label>
+                <div class="controls" >
+                    <input type="checkbox" style="margin-left:20px;"  ng-model="checkboxId_1"  ng-click="getAllSelect();" />全选
+                </div>
             </div>
             <div class="control-group" ng-repeat="group in tagsGroup">
+
                 <label class="control-label" style="margin-left:100px;">{{group.groupName}}：</label>
                 <div class="controls" >
+
                    <span  ng-repeat="tag in group.tags">
                        <input type="checkbox"  ng-model="tag.tagFlag"  />
                        {{tag.tagName}}&nbsp;&nbsp;
@@ -149,52 +154,24 @@
     <div class="widget-title">
         <span class="icon"><i class="icon-th"></i></span>
         <h5>活动预览</h5>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="gotoBack(2)">返回</a>
     </div>
     <div class="widget-content nopadding">
-        <form action="#" method="get" class="form-horizontal">
-            <div class="control-group" >
-                <label class="control-label" style="margin-left:300px;">活动名称：</label>
-                <div class="controls">
-                    绿色出行，节油我看行
-                </div>
-            </div>
-            <div class="control-group" >
-                <label class="control-label" style="margin-left:300px;">活动介绍：</label>
-                <div class="controls">
-                    活动介绍
-                </div>
-            </div>
-            <div class="control-group" >
-                <label class="control-label" style="margin-left:300px;">发布时间：</label>
-                <div class="controls">
-                  2014-05-16 10:44
-                </div>
-            </div>
-            <div class="control-group" >
-                <label class="control-label" style="margin-left:300px;">开始时间：</label>
-                <div class="controls">
-                    2014-05-16 10:44
-                </div>
-            </div>
-            <div class="control-group" >
-                <label class="control-label" style="margin-left:300px;">结束时间：</label>
-                <div class="controls">
-                    2014-05-16 10:44
-                </div>
-            </div>
-            <div class="control-group" >
-                <div class="control-group" >
-                    <label class="control-label" style="margin-left:300px;">标签：</label>
-                    <div class="controls">
-                        微信用户、S系、稳健型 or 客户端、S系、稳健型
-                    </div>
-                </div>
-            </div>
-            <div class="form-actions">
-               <!-- <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="publish();">发布</button>-->
-                <button type="button" class="btn btn-success"    style="margin-left:300px;" ng-click="gotoBack(2)">确定</button>
-            </div>
-        </form>
+        <div style="width:100%;height:100%;float:left;border:1 solid;border-color:black;text-align:center;background-color:#efefef;">
+
+            <div ><h1>{{fuleMatchDetail.title}}</h1><h6 class="text_05">发布时间：{{fuleMatchDetail.tm_announce}}</h6></div>
+
+            <div style="width:30%;float:left;">&nbsp;</div>
+            <div style="width:40%;float:left;" id="brief" >&nbsp;</div>
+            <div style="width:30%;float:left;">&nbsp;</div>
+            <div style="margin-top:5px;width:48%;float:left;text-align:right;"><h6 >最小里程：</h6></div>
+            <div style="margin-top:5px;width:52%;float:right;text-align:left;"><h6>{{fuleMatchDetail.min_milage}}(公里)</h6></div>
+            <div style="margin-top:5px;width:48%;float:left;text-align:right;"><h6 >开始时间：</h6></div>
+            <div style="margin-top:5px;width:52%;float:right;text-align:left;"><h6>{{fuleMatchDetail.tm_start}}</h6></div>
+            <div style="margin-top:5px;width:48%;float:left;text-align:right;"><h6 >结束时间：</h6></div>
+            <div style="margin-top:5px;width:52%;float:right;text-align:left;"><h6>{{fuleMatchDetail.tm_end}}</h6></div>
+
+        </div>
     </div>
 </div>
 <!--活动预览 end-->
@@ -215,7 +192,7 @@
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">活动图片：</label>
                 <div class="controls">
-                    <input type="file" id="edit_pro_img_1" name="title_img" onchange="changeImg(this,'edit_pro_img_1','formId_edit3','preview1','imghead1')" />
+                    <input type="file" id="edit_pro_img_1" name="title_img"   onchange="changeImg(this,'edit_pro_img_1','formId_edit3','preview1','imghead1')" />
                 </div>
                 <div style="margin-left:280px;"> {{titleMove}}</div>
                 <div style="margin-left:280px;" style="float: left;" id="preview1">
@@ -254,6 +231,9 @@
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:100px;">发布至如下车主：</label>
+                <div class="controls" >
+                    <input type="checkbox" style="margin-left:20px;"  ng-model="checkboxId_1"  ng-click="getAllSelect();" />全选
+                </div>
             </div>
             <div class="control-group" ng-repeat="group in tagsGroup">
                 <label class="control-label" style="margin-left:100px;">{{group.groupName}}：</label>
@@ -264,7 +244,6 @@
                    </span>
                 </div>
             </div>
-
             <div class="form-actions">
                 <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="modifyConfirm();">修改</button>
                 <button type="button" class="btn btn-danger"   ng-click="gotoBack(3)">取消</button>
@@ -385,11 +364,11 @@
             <thead>
             <tr>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车系： &nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.seriesCode as cs.series for cs in carSeries">
+                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in s_p">
                         <option>请选择</option>
                     </select></th>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排量：&nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;" >
+                    <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in s_p">
                         <option>请选择</option>
                     </select></th>
                 <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo(2);">搜索</button></th>
@@ -479,11 +458,11 @@
             <thead>
             <tr>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车系： &nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.seriesCode as cs.series for cs in carSeries">
+                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in s_p">
                         <option>请选择</option>
                     </select></th>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排量：&nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;" >
+                    <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in s_p">
                         <option>请选择</option>
                     </select></th>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否符合要求：&nbsp;&nbsp;&nbsp;
@@ -596,11 +575,11 @@
                 <thead>
                 <tr>
                     <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车系： &nbsp;&nbsp;&nbsp;
-                        <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.seriesCode as cs.series for cs in carSeries">
+                        <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in s_p">
                             <option>请选择</option>
                         </select></th>
                     <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排量：&nbsp;&nbsp;&nbsp;
-                        <select style="width:150px;" >
+                        <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in s_p">
                             <option>请选择</option>
                         </select></th>
                     <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo(4);">搜索</button></th>

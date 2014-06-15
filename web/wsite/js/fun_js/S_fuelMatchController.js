@@ -34,6 +34,7 @@ function s_fuelMatchCtrl($scope,$http)
     $scope.ser_title = "";
     $scope.queryString = "";
     $scope.seriesCode = "";
+    $scope.disp = "";
 
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
@@ -81,15 +82,15 @@ function s_fuelMatchCtrl($scope,$http)
                GetFirstPageInfo();
                break;
            case 2://开始
-               $scope.queryString = "&series="+$scope.seriesCode;
+               $scope.queryString = "&series="+$scope.seriesCode+"&disp="+$scope.disp;
                getSignUpList("",2);
                break;
            case 3://结束
-               $scope.queryString = "&series="+$scope.seriesCode;
+               $scope.queryString = "&series="+$scope.seriesCode+"&disp="+$scope.disp;
                getSignUpList("",3);
                break;
            case 4://公布
-               $scope.queryString = "&series="+$scope.seriesCode;
+               $scope.queryString = "&series="+$scope.seriesCode+"&disp="+$scope.disp;
                getSignUpList("&enough_mileage=true",4);
                break;
        }
@@ -99,7 +100,7 @@ function s_fuelMatchCtrl($scope,$http)
     function PagingInfo(totalCount)
     {
         $scope.totalCount = totalCount;
-        $scope.totalPage = Math.ceil( $scope.totalCount /  $scope.pageRecord)
+        $scope.totalPage = Math.ceil( $scope.totalCount /  $scope.pageRecord);
         $scope.totalOption=[{}];
         for(var i = 0 ;i< $scope.totalPage;i++)
         {
@@ -140,11 +141,13 @@ function s_fuelMatchCtrl($scope,$http)
     //点击添加按钮
     $scope.add = function()
     {
+        $scope.checkboxId_1 = false;
         $("#formId_edit2").ajaxForm(function(data){
             $scope.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
+
         KindEditor.ready(function(K) {
-            editor = K.create('textarea[name="content"]', {
+            editor = K.create('#content_0', {
                 width : 380,
                 height : 350,
                 minWidth : 380,
@@ -165,7 +168,7 @@ function s_fuelMatchCtrl($scope,$http)
     function getAllTags(tags)
     {
         var tagArr = tags.split(",");
-        $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/8").success(function(data){
+        $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/"+ $.cookie("brand_id")).success(function(data){
 
             $scope.tagsGroup = data;
             for(var i=0;i<$scope.tagsGroup.length;i++)
@@ -227,6 +230,7 @@ function s_fuelMatchCtrl($scope,$http)
     {
 //      获取编辑器里面的内容 alert(editor.html());
         getAllChooseTag();
+
         $scope.postData={title:$scope.title,brief:editor.html(),tm_announce:$scope.tm_announce,tm_start:$scope.tm_start,
         tm_end:$scope.tm_end,min_milage:$scope.min_milage,logo_url:$scope.logo_url,tags:$scope.tags};
         $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity",$scope.postData).success(function(data){
@@ -242,8 +246,12 @@ function s_fuelMatchCtrl($scope,$http)
         })
     }
    //预览
-    $scope.preview = function(id)
+    $scope.preview = function(id,index)
     {
+        $scope.fuleMatchDetail = $scope.fuelMatch[index];
+        $("#brief").text('');
+
+        $("#brief").append($scope.fuleMatchDetail.brief);
         $scope.matchListDiv = false;
         $scope.matchPreviewDiv = true;
     }
@@ -257,6 +265,7 @@ function s_fuelMatchCtrl($scope,$http)
     $scope.manager = function(fm_id,index,fm_status)
     {
         $scope.fuleMatchDetail = $scope.fuelMatch[index];
+        $scope.checkboxId_1 = false;
        switch(fm_status)
        {
            case 1:
@@ -277,13 +286,11 @@ function s_fuelMatchCtrl($scope,$http)
                    });
                });
 
-
                $scope.matchListDiv = false;
                $scope.matchModifyDiv = true;
                getAllTags( $scope.fuleMatchDetail.tags);
-
+               editor.html('');
                editor.insertHtml($scope.fuleMatchDetail.brief);
-
                break;
            case 2: //已发布
                getSignUpList("",1);
@@ -293,6 +300,7 @@ function s_fuelMatchCtrl($scope,$http)
            case 3://已开始
                getSignUpList("",2);
                getSeries();
+
                $scope.matchStartedDiv = true;
                $scope.matchListDiv = false;
                break;
@@ -314,8 +322,8 @@ function s_fuelMatchCtrl($scope,$http)
     //获取车系
     function getSeries()
     {
-        $http.get(baseurl+'brand/8/series').success(function(data){
-            $scope.carSeries = data.series;
+        $http.get(baseurl+'4s/'+ $.cookie("s4_id")+'/activity/'+$scope.fuleMatchDetail.id+'/s_p').success(function(data){
+            $scope.s_p = data.s_p;
         });
     }
 
@@ -386,6 +394,7 @@ function s_fuelMatchCtrl($scope,$http)
             {
                 alert("修改成功!");
                 GetFirstPageInfo();
+                editor.remove();
                 $scope.matchListDiv = true;
                 $scope.matchModifyDiv = false;
             }
@@ -738,6 +747,7 @@ function s_fuelMatchCtrl($scope,$http)
                 $scope.matchPreviewDiv = false;
                 break;
             case 3://修改-首页
+                editor.remove();
                 GetFirstPageInfo();
                 $scope.matchListDiv = true;
                 $scope.matchModifyDiv = false;
@@ -787,11 +797,29 @@ function s_fuelMatchCtrl($scope,$http)
             case 4:
                 $scope.matchStartedDiv = true;
                 break;
+        }
+    }
+    //全选
+    $scope.getAllSelect = function(id)
+    {
 
+        for(var i=0;i<$scope.tagsGroup.length;i++)
+        {
+            for(var j=0;j<$scope.tagsGroup[i].tags.length;j++)
+            {
+                if(!$scope.checkboxId_1)
+                {
+                    $scope.tagsGroup[i].tags[j].tagFlag = true;
+                }
+               else{
+                    $scope.tagsGroup[i].tags[j].tagFlag = false;
+                }
+            }
         }
     }
 }
 
+//预览图片
 function changeImg(file,plugId,formId,preId,imgId)
 {
     var filepath = $("#"+plugId).val();
@@ -799,59 +827,59 @@ function changeImg(file,plugId,formId,preId,imgId)
     var ext=filepath.substring(extStart,filepath.length).toUpperCase();
     if(ext!=".BMP"&&ext!=".PNG"&&ext!=".JPG"&&ext!=".JPEG"){
         alert("图片限于bmp,png,jpeg,jpg格式");
-        $("#edit_pro_img").val("");
+        $("#"+plugId).val("");
     }
     else{
-            var MAXWIDTH  = 260;
-            var MAXHEIGHT = 180;
-            var div = document.getElementById(preId);
-            if (file.files && file.files[0])
-            {
-                div.innerHTML ='<img id='+imgId+'>';
+        var MAXWIDTH  = 260;
+        var MAXHEIGHT = 180;
+        var div = document.getElementById(preId);
+        if (file.files && file.files[0])
+        {
+            div.innerHTML ='<img id='+imgId+'>';
 
-                var img = document.getElementById(imgId);
+            var img = document.getElementById(imgId);
 
-                img.onload = function(){
-                 var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            img.onload = function(){
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
 
-                    img.width  =  rect.width;
+                img.width  =  rect.width;
 
-                    img.height =  rect.height;
+                img.height =  rect.height;
 
 //                 img.style.marginLeft = rect.left+'px';
 
-                    img.style.marginTop = rect.top+'px';
-                }
-                var reader = new FileReader();
-
-                reader.onload = function(evt){img.src = evt.target.result;}
-
-                reader.readAsDataURL(file.files[0]);
+                img.style.marginTop = rect.top+'px';
             }
-            else //兼容IE
-            {
-                var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            var reader = new FileReader();
 
-                file.select();
+            reader.onload = function(evt){img.src = evt.target.result;}
 
-                var src = document.selection.createRange().text;
-
-                div.innerHTML = '<img id='+imgId+'>';
-
-                var img = document.getElementById(imgId);
-
-                img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
-
-                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
-
-                status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
-
-                div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
-
-            }
+            reader.readAsDataURL(file.files[0]);
         }
+        else //兼容IE
+        {
+            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
 
-      $("#"+formId).submit();
+            file.select();
+
+            var src = document.selection.createRange().text;
+
+            div.innerHTML = '<img id='+imgId+'>';
+
+            var img = document.getElementById(imgId);
+
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+
+            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+
+            div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+
+        }
+    }
+
+    $("#"+formId).submit();
 
 }
 function clacImgZoomParam( maxWidth, maxHeight, width, height ){
@@ -865,7 +893,6 @@ function clacImgZoomParam( maxWidth, maxHeight, width, height ){
         if( rateWidth > rateHeight )
         {
             param.width =  maxWidth;
-
             param.height = Math.round(height / rateWidth);
         }else
 
@@ -876,9 +903,9 @@ function clacImgZoomParam( maxWidth, maxHeight, width, height ){
     }
 
 
- //   param.left = Math.round((maxWidth - param.width) / 2);
+    //   param.left = Math.round((maxWidth - param.width) / 2);
 
-   // param.top = Math.round((maxHeight - param.height) / 2);
+    // param.top = Math.round((maxHeight - param.height) / 2);
     param.width = 150;
     param.height = 150;
     param.left = 0;

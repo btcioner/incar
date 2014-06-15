@@ -38,6 +38,14 @@
                           </div>
                       </div>
                       <div class="control-group" >
+                          <label class="control-label" style="margin-left:300px;">品牌：</label>
+                          <div class="controls">
+                              <select style="width:150px;" ng-model="s4_name" ng-options="s4.name as s4.name for s4 in s4s_all">
+                                  <option>请选择</option>
+                              </select></th>
+                          </div>
+                      </div>
+                      <div class="control-group" >
                           <label class="control-label" style="margin-left:300px;">微信服务号：</label>
                           <div class="controls">
                               <input type="text" class="span11" ng-model="openid"  style="width:200px;" />

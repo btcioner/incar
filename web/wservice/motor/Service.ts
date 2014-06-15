@@ -29,7 +29,7 @@ module Service{
 
     // 临时用于测试目的
     export function html(req:any, res:any):void{
-        res.sendfile("./wservice/test.html");
+        res.sendfile("./wservice/test_1.html");
     }
 
     // 是一个非空字符串返回true

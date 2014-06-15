@@ -97,28 +97,18 @@ function customerCtrl($scope, $http){
         var sha1_password =hex_sha1($scope.password);//SHA1进行加密
         $scope.postData={"name":$scope.comName,"class":"4S","status":1,"city":$scope.city,"admin_pwd":sha1_password,
                            "admin_name":$scope.account,"admin_nick":$scope.admin_nick,"admin_phone":$scope.admin_phone,"openid":$scope.openid};
-        $http.post(baseurl + 'cmpx/4s',$scope.postData).success(function(data){
-            if(data.status == "ok")
-            {
-//                    $scope.s4s[$scope.s4s.length]= {
-//                    id:$scope.s4s[$scope.s4s.length-1].id + 1,
-//                    name:$scope.comName,
-//                    status:"1",
-//                    openid:"",
-//                    city:$scope.city,
-//                    admin_name:$scope.account,
-//                    admin_nick:$scope.admin_nick,
-//                    admin_phone:$scope.admin_phone
-//                }
-                alert("添加成功");
-                GetFirstPageInfo();
-                $scope.customerListDiv = true;
-                $scope.customerAddDiv = false;
-            }
-            else
-            {
-                alert(data.status);
-            }
+        $http.post(baseurl + 'cmpx/4s').success(function(data){
+//            if(data.status == "ok")
+//            {
+//                alert("添加成功");
+//                GetFirstPageInfo();
+//                $scope.customerListDiv = true;
+//                $scope.customerAddDiv = false;
+//            }
+//            else
+//            {
+//                alert(data.status);
+//            }
         }).error(function(data){
            alert("请求没响应");
           })

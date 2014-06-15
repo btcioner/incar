@@ -14,6 +14,10 @@ angular.module("SCustomerApp", [
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//车系
         })
+        .when('/collapseG_1/:id',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//用途
+        })
         .when('/collapseG_2',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用途
@@ -82,7 +86,7 @@ angular.module("SCustomerApp", [
         getAllTags();
         function getAllTags()
         {
-            $http.get("/tag/tagListSystem/8").success(function(data){
+            $http.get("/tag/tagListSystem/"+ $.cookie("brand_id")).success(function(data){
                 $scope.tagsGroup = data;
                 for(var i=0;i<$scope.tagsGroup.length;i++)
                 {

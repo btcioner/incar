@@ -34,10 +34,17 @@ app.controller("loginCtrl", function($scope, $http){
             {
                 //根据登录名判断是否是4s还是英卡
                 if($scope.username1.indexOf("@")>0){
-                    $.cookie("nick",data.staff.nick);
-                    $.cookie("s4_id",data.staff.s4_id);
-                    $.cookie("brand_id",data.staff.brand_id);
-                    window.location.href='/4sStore/index.html';
+                    $http.get(baseurl+"4s/"+data.staff.s4_id).success(function(data1){
+                       if(data1.status == "ok")
+                       {
+                           $.cookie("nick",data.staff.nick);
+                           $.cookie("s4_id",data.staff.s4_id);
+                           $.cookie("brand_id",data1.s4.brand);
+                           window.location.href='/4sStore/index.html';
+                       }
+                    }).error(function(data1){
+                            alert("请求无响应");
+                     })
                 }
                 else{
                   $.cookie("nick",data.staff.nick);
