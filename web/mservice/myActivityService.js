@@ -50,7 +50,7 @@ function search(db,acc_id,s4id,callback) {
                                        act_data.status=result[0].status;
                                        act_data.tm_announce=result[0].tm_announce;
                                        act_data.myStatus=st;
-                                       myActData.push(act_data);
+                                       myActData[i]=act_data;
                                        console.log("in roop:"+myActData);
                                    }else callback(new Error("t_activity data error."));
                                }
