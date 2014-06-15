@@ -43,7 +43,9 @@ function search(db, user,s4id,callback) {
                         data.bookingStatus=rows[i].bookingStatus;
                         data.ts=rows[i].ts;
                         trialrun.push(data);
+                        console.log(data);
                     }
+                    console.log(trialrun);
                     callback(null,trialrun);
                 }else callback(new Error("Trialrun data error."));
             }
