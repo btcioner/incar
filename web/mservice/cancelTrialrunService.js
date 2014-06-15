@@ -28,7 +28,7 @@ function cancel(db,id,callback) {
     var pool = db();
     pool.query('update t_trialrun set bookStatus=4 where id=?;',
         [id],function(err,rows){
-            if(err){callback(err);}
+            if(err){console.log(err);callback(err);}
             else{
                callback(null,1);
           }
