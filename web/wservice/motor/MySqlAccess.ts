@@ -43,9 +43,12 @@ module Service{
 
         // 调试用
         export function TraceTime(sn:number, tmSpan:number, result:any):void{
-            var count = result.affectedRows;
-            if(!count) count = result.length;
-            if(!count) count = 0;
+            var count = 0
+            if(result) {
+                count = result.affectedRows;
+                if (!count) count = result.length;
+                if (!count) count = 0;
+            }
             console.info(">>>>> SQL#%d \033[32m%d\033[0mms > \033[33m%d rows affected\033[0m", sn, tmSpan, count);
         }
 
