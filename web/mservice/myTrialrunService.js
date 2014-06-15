@@ -33,6 +33,7 @@ function search(db, user,s4id,callback) {
         ['%'+user+':'+s4id+'%'],function(err,rows){
             if(err){callback(err);}
             else{
+                console.log("trial records:"+rows.length);
                 if(rows){
                     var trialrun=new Array();
                     for(var i=0;i<rows.length;i++){
