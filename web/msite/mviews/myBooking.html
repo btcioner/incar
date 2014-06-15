@@ -126,7 +126,7 @@
                           '</li>';
               }
                 document.getElementById("bookContent").innerHTML=strTemp;
-                searchBook(wx_oid);
+                searchBook(wx_oid,license);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
 
@@ -160,7 +160,6 @@
                 alert(result.length);
                 var strTemp="";
                 for(var i=0;i<result.length;i++){
-                    alert("index:"+i);
                     var rowLabel;
                     var rowColor;
                     //判断奇偶行
@@ -171,9 +170,8 @@
                     if(result[i].bookingStatus==1) status="待确认";
                     else if(result[i].bookingStatus==2) status="被拒绝";
                     else if(result[i].bookingStatus==3) status="已批准";
-                    else if(result[i].bookingStatus==2) status="已取消";
+                    else if(result[i].bookingStatus==4) status="已取消";
                     else status="无效";
-                    alert(status);
                     //申请提交时间
                     var tsTemp=new Date(result[i].ts);
                     var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);

@@ -29,7 +29,7 @@ function myBooking(req, res) {
 
 function search(db, uid,sid,callback) {
     var pool = db();
-    pool.query('select  id,booking_time,booking_status,ts   from  t_slot_booking where channel_specific like ?;',
+    pool.query('select  id,slot_time,booking_status,ts   from  t_slot_booking where channel_specific like ?;',
         ['%'+uid+'@'+sid+'%'],function(err,rows){
             if(err){callback(err);}
             else{
@@ -38,7 +38,7 @@ function search(db, uid,sid,callback) {
                     for(var i=0;i<rows.length;i++){
                         var data={};
                         data.id=rows[i].id;
-                        data.bookingtime=rows[i].booking_time;
+                        data.bookingtime=rows[i].slot_time;
                         data.bookingStatus=rows[i].booking_status;
                         data.ts=rows[i].ts;
                         booking.push(data);
