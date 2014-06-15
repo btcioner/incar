@@ -6,7 +6,7 @@
 var mysql = require('mysql');
 
 function getOrgId(db, userName,sopenid, callback) {
-    console.log("username:"+userName);
+    console.log("username:"+userName+":"+sopenid);
     var pool = db();
     pool.query('select s4_id from t_account where wx_oid like ?;',["%"+userName+":"+sopenid+"%"], function(err, rows){
         if (err) { callback(err); }
