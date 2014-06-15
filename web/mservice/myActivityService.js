@@ -38,12 +38,10 @@ function search(db,acc_id,s4id,callback) {
                     console.log("my activity account:"+rows.length);
                     var act_detail={
                         n:0,
-                        end:function(myActData){
-                            if(act_detail.n==rows.length-1){
-                                console.log("myAct:"+myActData);
+                        end:function(){
+                            if(act_detail.n==rows.length){
                                 callback(null,myActData);
                             }
-                            act_detail.n++;
                         }
                     }
                    for(var i=0;i<rows.length;i++){
@@ -61,8 +59,8 @@ function search(db,acc_id,s4id,callback) {
                                        act_data.tm_announce=result[0].tm_announce;
                                        act_data.myStatus=st;
                                        myActData[i]=act_data;
-                                       console.log("in roop:"+myActData[i]);
-                                       act_detail.end(myActData);
+                                       act_detail.n++;
+                                       act_detail.end();
                                     }else callback(new Error("t_activity data error."));
                                }
                            });
