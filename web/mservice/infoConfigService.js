@@ -21,11 +21,13 @@ function infoConfig(req, res) {
 
     getAccountInfo(db, postData.user, function(err, data) {
         if (err) {
+            console.log("account err:"+err);
             res.send(400,err);
         }
         else {
             getCarInfo(db, function(err, data){
                 if (err) {
+                    console.log("car err:"+err);
                     res.send(400,err);
                 }
                 else{
