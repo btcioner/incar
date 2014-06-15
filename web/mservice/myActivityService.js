@@ -48,7 +48,7 @@ function search(db,acc_id,s4id,callback) {
                                        act_data.title=rows[0].title;
                                        act_data.status=rows[0].status;
                                        act_data.tm_announce=rows[0].tm_announce;
-                                       act_data.myStatus=status;
+                                       act_data.myStatus=rows[i].status;
                                        myActData.push(act_data);
                                    }else callback(new Error("t_activity data error."));
                                }
