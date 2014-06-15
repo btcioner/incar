@@ -164,7 +164,10 @@
                 for(var i=0;i<result.length;i++){
                     alert("index:"+i);
                     var rowLabel;
-                    if(i%2==0) rowLabel="rows02";  else rowLabel="rows01"; //判断奇偶行
+                    var rowColor;
+                    //判断奇偶行
+                    if(i%2==0) {rowLabel="rows01";rowColor="icon_4a";}
+                    else {rowLabel="rows02";rowColor="icon_4b";}
                     //判断申请状态
                     var status="";
                     if(result[i].bookingStatus==1) status="待确认";
@@ -172,21 +175,26 @@
                     else if(result[i].bookingStatus==3) status="已批准";
                     else if(result[i].bookingStatus==2) status="已取消";
                     else status="无效";
+                    alert(status);
                     //申请提交时间
-                    var tsDate=result[i].ts.getYear()+"/"+
-                            ((result[i].ts.getMonth()+1)>9)?(result[i].ts.getMonth()+1):"0"+(result[i].ts.getMonth()+1) +"/"+
-                            (result[i].ts.getDate()>9)?result[i].ts.getDate():"0"+result[i].ts.getDate();
-                    var tsTime=(result[i].ts.getHours()>9)?result[i].ts.getHours():"0"+result[i].ts.getHours()+":"+
-                            (result[i].ts.getMinutes()>9)?result[i].ts.getMinutes():"0"+result[i].ts.getMinutes();
+                    var tsTemp=new Date(result[i].ts);
+                    var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
+                    var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
+                    var tsDate=tsMonth +"/"+tsDay;
+                    var tsHour=(tsTemp.getHours()>9)?tsTemp.getHours():"0"+tsTemp.getHours();
+                    var tsMin= (tsTemp.getMinutes()>9)?tsTemp.getMinutes():"0"+tsTemp.getMinutes();
+                    var tsTime=tsHour+":"+tsMin;
                     //申请试驾时间
-                    var trialrunDate=result[i].bookingtime.getYear()+"/"+
-                            ((result[i].bookingtime.getMonth()+1)>9)?(result[i].bookingtime.getMonth()+1):"0"+(result[i].bookingtime.getMonth()+1) +"/"+
-                            (result[i].bookingtime.getDate()>9)?result[i].bookingtime.getDate():"0"+result[i].bookingtime.getDate();
-                    var trialrunTime=(result[i].bookingtime.getHours()>9)?result[i].bookingtime.getHours():"0"+result[i].bookingtime.getHours()+":"+
-                            (result[i].bookingtime.getMinutes()>9)?result[i].bookingtime.getMinutes():"0"+result[i].bookingtime.getMinutes();
+                    var trTemp=new Date(result[i].bookingtime);
+                    var trMonth= ((trTemp.getMonth()+1)>9)?(trTemp.getMonth()+1):"0"+(trTemp.getMonth()+1);
+                    var trDay=(trTemp.getDate()>9)?trTemp.getDate():"0"+trTemp.getDate();
+                    var trialrunDate=trMonth +"/"+trDay;
+                    var trHour=(trTemp.getHours()>9)?trTemp.getHours():"0"+trTemp.getHours();
+                    var trMin=(trTemp.getMinutes()>9)?trTemp.getMinutes():"0"+trTemp.getMinutes();
+                    var trialrunTime=trHour+":"+trMin;
                     strTemp+='<li>' +
                             '<ul class='+rowLabel+'>' +
-                            '<li class="icon"><span class="icon_4a"></span></li>' +
+                            '<li class="icon"><span class='+rowColor+'></span></li>' +
                             '<li><span class="text_04">'+license+'</span></li>' +
                             '<li><span>'+tsDate+'<br />'+tsTime+'</span></li>' +
                             '<li><span>'+trialrunDate+'<br />'+trialrunTime+'</span></li>' +
