@@ -2,7 +2,7 @@
 
 module Service {
     export function GetTryIn4S(req, res){
-        res.setHeader("Accept-Query", "page,pagesize");
+        res.setHeader("Accept-Query", "page,pagesize,step");
         var page = new Pagination(req.query.page, req.query.pagesize);
 
         var dac = MySqlAccess.RetrievePool();
@@ -12,8 +12,10 @@ module Service {
             var sql = "SELECT %s\n" +
                 "FROM t_work W\n" +
                 "\tLEFT OUTER JOIN t_account U ON W.cust_id = U.id\n" +
-                "WHERE W.work='drivetry' and W.org_id=? ORDER BY W.id DESC";
+                "WHERE W.work = 'drivetry' and W.org_id = ?";
             var args = [req.params.s4_id];
+            if(req.query.step){ sql += " and W.step = ?"; args.push(req.query.step); }
+            sql += " ORDER BY W.id DESC";
 
             var sqlA = util.format(sql, "count(*) count");
             dac.query(sqlA, args, (ex, result)=>{
