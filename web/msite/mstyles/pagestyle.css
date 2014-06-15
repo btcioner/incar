@@ -111,7 +111,8 @@ p {
 	display: block;
 }
 .text_04 {
-	line-height: 68px;
+	line-height: 48px;
+    width: 100px;
 }
 a.text_07 {
 	color: #FFF;
