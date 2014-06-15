@@ -50,7 +50,7 @@ function ActivityInfo(db,act_id,s4id,status,callback){
     pool.query('select id,title,status,tm_announce  from  t_activity where id = ? and s4_id=? order by tm_announce desc;',
         [act_id,s4id],function(err,rows){
             if(err){callback(err);}
-            else{
+            else{console.log("rows:"+rows[0].title);
                 if(rows&&rows.length==1){
                     var act_data={};
                     act_data.id=rows[0].id;
