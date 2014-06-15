@@ -37,16 +37,24 @@ function search(db,acc_id,s4id,callback) {
                 if(rows){
                     console.log("my activity account:"+rows.length);
                    for(var i=0;i<rows.length;i++){
-                        console.log("value:"+rows[i].act_id+"_"+s4id);
-                        ActivityInfo(db,rows[i].act_id,s4id,rows[i].status,function(err,data){
-                            if(err){console.log(err);callback(err);}
-                            else{
-                                console.log("data:"+data);
-                                myActData.push(data);
-                            }
-                         });
+                        //console.log("value:"+rows[i].act_id+"_"+s4id);
+                         pool.query('select id,title,status,tm_announce  from  t_activity where id = ? and s4_id=? order by tm_announce desc;',
+                           [rows[i].act_id,s4id],function(err,rows){
+                               if(err){callback(err);}
+                               else{
+                                   if(rows&&rows.length==1){
+                                       var act_data={};
+                                       act_data.id=rows[0].id;
+                                       act_data.title=rows[0].title;
+                                       act_data.status=rows[0].status;
+                                       act_data.tm_announce=rows[0].tm_announce;
+                                       act_data.myStatus=status;
+                                       myActData.push(act_data);
+                                   }else callback(new Error("t_activity data error."));
+                               }
+                           });
                     }
-                    //console.log("before callback:"+myActData);
+                    console.log("before callback:"+myActData);
                     callback(null,myActData);
                 }else callback(new Error("t_activity_member data error."));
             }
