@@ -17,6 +17,7 @@ function myActivity(req, res) {
     var user=postData.user;
     var acc_id=postData.acc_id;
     var s4id=postData.s4_id;
+    console.log("postData:"+postData);
     search(db,acc_id,s4id,function(err, result) {
         if (err) { res.send(200,err); }
         else {
@@ -37,7 +38,7 @@ function search(db,acc_id,s4id,callback) {
                    for(var i=0;i<rows.length;i++){
                         console.log("value:"+rows[i].act_id+"_"+s4id);
                         ActivityInfo(db,rows[i].act_id,s4id,rows[i].status,function(err,data){
-                            console.log(data);
+                            console.log("data:"+data);
                             myActData.push(data);
                             });
                     }
