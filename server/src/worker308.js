@@ -411,9 +411,9 @@ function packetProcess_1602(dataBuffer,cb) {
     var vid=dataManager.nextString();               //vid
     var vin=dataManager.nextString();               //VIN码
     var createTime=dataManager.nextString();        //当前时间
-    var alarmType=dataManager.nextByte();               //报警类型
-    var speed=dataManager.nextString();              //车速
-    var travelDistance=dataManager.nextString();     //行驶距离
+    var alarmType=dataManager.nextByte();           //报警类型
+    var speed=dataManager.nextString();             //车速
+    var travelDistance=dataManager.nextString();    //行驶距离
     var other=dataManager.nextString().split(',');
     var longitude=other[0];          //经度
     var latitude=other[1];           //纬度
@@ -426,6 +426,7 @@ function packetProcess_1602(dataBuffer,cb) {
     obdAlarm.vid=vid;
     obdAlarm.vin=vin;
     obdAlarm.createTime=createTime;
+    console.log(createTime+"-----------------------------------");
     obdAlarm.alarmType=alarmType;
     obdAlarm.speed=speed;
     obdAlarm.travelDistance=travelDistance;
@@ -449,8 +450,22 @@ function packetProcess_1602(dataBuffer,cb) {
         obdAlarm.faultInfo=dataManager.nextString();
     }
     var sql="insert into t_obd_alarm set ?";
-    dao.executeBySql([sql],[obdAlarm],function(){
-        console.log("成功创建报警信息:"+JSON.stringify(obdAlarm));
+    dao.insertBySql(sql,obdAlarm,function(info,alarm){
+        alarm.id=info.insertId;
+        console.log("成功创建报警信息:"+JSON.stringify(alarm));
+        if(alarm.alarmType===0x02){
+            sql="insert into t_remind set ?";
+            var remind={
+                obdCode:obdCode,
+                remindType:1,
+                remindStatus:1,
+                createTime:createTime
+            };
+            dao.insertBySql(sql,remind,function(info,remindInserted){
+                remindInserted.id=info.insertId;
+                console.log("成功创建碰撞提醒信息:"+JSON.stringify(remindInserted));
+            });
+        }
         cb();
     });
 }

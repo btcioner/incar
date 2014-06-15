@@ -26,11 +26,12 @@ var dataGet = JSON.stringify({obdInfo:{
     0xFE1D:48928
 }});
 var data=dataSet;
+//13871574583
 var opt = {
     method: "POST",
     host: "localhost",
     port: 1234,
-    path: "/message/send/13871574583/"+0x1623,
+    path: "/message/send/13007196492/"+0x1623,
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)

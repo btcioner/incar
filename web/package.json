@@ -24,7 +24,8 @@
     "xml2js": "latest",
     "bufferhelper": "latest",
     "mysql": "latest",
-    "iconv-lite": "latest"
+    "iconv-lite": "latest",
+    "later":"latest"
   },
   "devDependencies": {
     "grunt": "^0.4.2",
