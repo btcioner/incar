@@ -28,7 +28,7 @@ function slotBooking(req, res) {
             [orgId, '未指定', postData.timeSlot, 'weixin', postData.user, postData.user+'@weixin'], function(err, result) {
             if (err) { console.log(err); return res.send(400, err); }
             else{
-                self.db().query('select id from t_account where channel_specific like ? order by ts desc limit 1',["%"+postData.user+'%'],function(err,rows){
+                self.db().query('select id from t_slot_booking where channel_specific like ? order by ts desc limit 1',["%"+postData.user+'%'],function(err,rows){
                     if(err){ console.log(err); return res.send(400, err);}
                     else if(rows){
                         self.db.query('insert into t_work (work,step,work_ref_id,org_id,cust_id,working_time,created_time) value(?,?,?,?,?,?,now())',
