@@ -26,7 +26,7 @@ function cancelTrialrun(req, res) {
 
 function cancel(db,id,callback) {
     var pool = db();
-    pool.query('update t_trialrun set bookingStatus=4 where id=?;',
+    pool.query('update t_trialrun set bookStatus=4 where id=?;',
         [id],function(err,rows){
             if(err){callback(err);}
             else{
