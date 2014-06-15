@@ -37,8 +37,8 @@ function s_repairCtrl($scope, $http,$routeParams){
                         }
                         data.tries[i].status = $.changeWorkStatus(data.tries[i].step);
                     }
-                    $scope.tries = data.tries;
                 }
+                $scope.tries = data.tries;
                 PagingInfo(data.totalCount);
             }
             else
