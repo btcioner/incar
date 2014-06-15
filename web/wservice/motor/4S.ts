@@ -102,8 +102,7 @@ module Service{
                     logo_url:"/data/upload/34p.jpg",
                     address:"海淀区黄庄35号",
                     phone:"13912345678",
-                    hotline:"400-1234-6789",
-                    short_name:"test4s"
+                    hotline:"400-1234-6789"
                 },
                 remark:"必填:无"
             });
@@ -134,7 +133,6 @@ module Service{
         if(isStringNotEmpty(data.address)) dto.address = data.address;
         if(isStringNotEmpty(data.phone)) dto.phone = data.phone;
         if(isStringNotEmpty(data.hotline)) dto.hotline = data.hotline;
-        if(isStringNotEmpty(data.short_name)) dto.short_name = data.short_name;
 
         var s4 = new S4(dto);
 
