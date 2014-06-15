@@ -12,7 +12,7 @@ function getSeriesName(req,res){
     var postData = req.body;
     var db = this.db;
     searchSeriesName(db,postData,function(err,data){
-        if(err) res.send(err);
+        if(err) {console.log(err);res.send(err);}
         else{
             res.send(data);
         }
