@@ -99,7 +99,10 @@
               for(var i=0;i<result.length;i++){
                   alert("roop index:"+i);
                   var rowLabel;
-                  if(i%2==0) rowLabel="rows01";  else rowLabel="rows02"; //判断奇偶行
+                  var rowColor;
+                  //判断奇偶行
+                  if(i%2==0) {rowLabel="rows01";rowColor="icon_5a";}
+                  else {rowLabel="rows02";rowColor="icon_5b";}
                   //判断申请状态
                   alert(rowLabel);
                   var status="";
@@ -126,7 +129,7 @@
                   var trialrunTime=trHour+":"+trMin;
                   strTemp+='<li>' +
                              '<ul class='+rowLabel+'>' +
-                                '<li class="icon"><span class="icon_4b"></span></li>' +
+                                '<li class="icon"><span class="icon_5b"></span></li>' +
                                 '<li><span class="text_04">'+result[i].seriesName+'</span></li>' +
                                 '<li><span>'+tsDate+'<br />'+tsTime+'</span></li>' +
                                 '<li><span>'+trialrunDate+'<br />'+trialrunTime+'</span></li>' +
