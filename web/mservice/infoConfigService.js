@@ -54,7 +54,7 @@ function getAccountInfo(db, userName, callback) {
                   report.name=rows[0].name;
                   report.phone=rows[0].phone;
                   report.nick=rows[0].nick;
-                  report.s4_openid=rows[0].wx_oid.split(':')[1];
+                  report.wx_oid=rows[0].wx_oid;
                   callback(null,1);
               } else { callback(new Error('zero of multiple rows returned for one wx user from t_account map.')); }
                     }

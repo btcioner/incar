@@ -13,8 +13,6 @@
     <script>
         var obd_code;
         var license;//车牌号
-        var s4id;//4s店openid
-        var acc_id;//用户账号id
         function init(){
             user=getQueryString("user");
             alert("aaaa");
@@ -29,7 +27,7 @@
 </head>
 
 <body onload="init()">
-<input id="s4id" type="hidden">
+<input id="wx_oid" type="hidden">
 <div id="wrap">
     <!--pagename start--><div id="pagename"></div><!--pagename end-->
     <!--containe_100 start--><div id="containe_100">
@@ -78,7 +76,7 @@
                 //alert("success");
                 obd_code=result.obd_code;
                 license=result.license;
-                document.getElementById("s4id").value=result.s4_openid;
+                document.getElementById("wx_oid").value=result.wx_oid;
               },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("您还未注册或未绑定OBD信息\n请先注册账号！");
@@ -91,7 +89,7 @@
         $.ajax({
             type: "POST",
             url: "/mservice/myTrialrun",
-            data: {'user':user,'s4id':document.getElementById("s4id").value},
+            data: {'user':user,'wx_oid':document.getElementById("wx_oid").value},
             dataType: "json",
             success: function (result,status) {
                 alert("trial:"+result.length);
@@ -129,7 +127,7 @@
                   var trialrunTime=trHour+":"+trMin;
                   strTemp+='<li>' +
                              '<ul class='+rowLabel+'>' +
-                                '<li class="icon"><span class="icon_5b"></span></li>' +
+                                '<li class="icon"><span class='+rowColor+'></span></li>' +
                                 '<li><span class="text_04">'+result[i].seriesName+'</span></li>' +
                                 '<li><span>'+tsDate+'<br />'+tsTime+'</span></li>' +
                                 '<li><span>'+trialrunDate+'<br />'+trialrunTime+'</span></li>' +

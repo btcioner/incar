@@ -17,8 +17,8 @@ function myTrialrun(req, res) {
     console.log(postData);
     var db = this.db;
     var user=postData.user;
-    var s4id=postData.s4id;
-    search(db, user,s4id,function(err, data) {
+    var wx_oid=postData.wx_oid;
+    search(db, user,wx_oid,function(err, data) {
         if (err) { res.send(200,err); }
         else {
             console.log(data);
@@ -27,10 +27,10 @@ function myTrialrun(req, res) {
     });
 }
 
-function search(db, user,s4id,callback) {
+function search(db, user,wx_oid,callback) {
     var pool = db();
    pool.query('select id,bookingtime,seriesName,bookStatus,ts  from  t_trialrun where wx_oid like ? order by ts desc;',
-        ['%'+user+':'+s4id+'%'],function(err,rows){
+        ['%'+wx_oid+'%'],function(err,rows){
             if(err){console.log("search:"+err);callback(err);}
             else{
                 console.log("trial records:"+rows.length);
