@@ -21,6 +21,7 @@ function myTrialrun(req, res) {
     search(db, user,s4id,function(err, data) {
         if (err) { res.send(200,err); }
         else {
+            console(data);
             res.send(data);
         }
     });
