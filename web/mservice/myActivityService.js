@@ -40,6 +40,7 @@ function search(db,acc_id,s4id,callback) {
                         n:0,
                         end:function(myActData){
                             if(act_detail.n==rows.length-1){
+                                console.log("myAct:"+myActData);
                                 callback(null,myActData);
                             }
                         }
