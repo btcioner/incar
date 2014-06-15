@@ -15,13 +15,10 @@
         var license;//车牌号
         function init(){
             user=getQueryString("user");
-            alert("aaaa");
            searchUser();
-            alert("bbbb");
            searchTrialrun();
             alert("cccc");
            searchBook();
-            alert("dddd");
         }
     </script>
 </head>
@@ -76,6 +73,7 @@
                 //alert("success");
                 obd_code=result.obd_code;
                 license=result.license;
+                alert("oid:"+result.wx_oid);
                 document.getElementById("wx_oid").value=result.wx_oid;
               },
             error:function(XMLHttpRequest, textStatus, errorThrown){
