@@ -46,7 +46,7 @@ my4S.onManualMessages = function(message, session, callback) {
     });
 };
 
-my4S.book = function(userName, session, callback){
+my4S.book = function(userName,sopenid, session, callback){
     console.log("begin book");
     // 模板将来要从数据库来读取
     var tpl = [
@@ -81,7 +81,7 @@ my4S.book = function(userName, session, callback){
 
     var compiled = ejs.compile(tpl);
 
-    booking.getPromotionSlots(userName, function(err, result) {
+    booking.getPromotionSlots(userName,sopenid, function(err, result) {
         if (err) {
             session.textMsgReplierIndex = null;
             if (session.slotData) delete session.slotData;
