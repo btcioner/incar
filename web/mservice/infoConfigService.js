@@ -75,11 +75,17 @@ function getCarInfo(db, callback){
                             report.brand=rows[0].brand;
                             getBrandName(db,rows[0].brand,function(err,data){
                                 //console.log("-----"+data);
-                                report.brandName=data;
+                                if(err) callback(err);
+                                else if(data)
+                                    report.brandName=data;
+                                else callback(new Error('brandName is null'));
                             });
                             report.series=rows[0].series;
                             getSeriesName(db,rows[0].series,function(err,data){
-                                report.seriesName=data;
+                                if(err) callback(err);
+                                else if(data)
+                                    report.seriesName=data;
+                                else callback(new Error('seriesName is null'));
                             });
                             report.modelYear=rows[0].modelYear;
                             report.disp=rows[0].disp;
