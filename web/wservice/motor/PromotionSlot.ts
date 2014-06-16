@@ -256,12 +256,13 @@ module Service {
         // 保险
         private KeepWatch(){
             var cron:any = require('cron');
+            var tmNext = new Date((new Date()).getTime() + 10*60*1000);
             if(this._jobNext) this._jobNext.stop();
-            this._jobNext = new cron.CronJob("00 57 * * * *", ()=>{
+            this._jobNext = new cron.CronJob(tmNext, ()=>{
                 schedulerPS.start();
             });
             this._jobNext.start();
-            console.log("特价工位保护调度模式,每个小时的第57分整尝试扫描一次");
+            console.log(util.format("特价工位进入空闲扫描模式,下次扫描:%s", tmNext));
         }
     }
 
