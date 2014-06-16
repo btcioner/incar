@@ -20,6 +20,7 @@ function my4sInfo(req, res) {
     search(db,sopenid,function(err, data) {
         if (err) { res.send(200,err); }
         else {
+            console.log(data);
             res.send(data);
         }
     });
@@ -30,11 +31,20 @@ function search(db,sopenid,callback) {
     get4s_id(db,sopenid,function(err,result){
         if(err) callback(err);
         else{
-            pool.query('select id,title,brief,status,tm_start,tm_end  from t_activity where s4_id=? and (status=2 or status=3 or status=4 or status=5 order by tm_announce desc);',[result],function(err,rows){
+            pool.query('select id,title,brief,status,tm_start,tm_end  from t_activity where s4_id=? and (status=2 or status=3 or status=4 or status=5 order by tm_announce desc);',
+                [result],function(err,rows){
                 if(err)callback(err);
                 else{
                     if(rows){
                         var data=new Array();
+                        var act_info={
+                            n:0,
+                            end:function(){
+                                if(act_info.n==rows.length){
+                                    callback(null,data);
+                                }
+                            }
+                        };
                         for(var i=0;i<rows.length;i++){
                             var actData={};
                             actData.id=rows[i].id;
@@ -46,8 +56,9 @@ function search(db,sopenid,callback) {
                             actData.tm_end=rows[i].tm_end;
                             actData.logo_url=rows[i].logo_url;
                             data.push(actData);
+                            act_info.n++;
+                            act_info.end();
                         }
-                        callback(null,data);
                     }
                 }
             });
