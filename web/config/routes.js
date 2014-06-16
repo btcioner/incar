@@ -84,7 +84,7 @@ module.exports = function(app) {
     app.put('/tag/buildTags',tagService.buildTags);             //重算车辆信息并打上标签
     app.get('/tag/searchByTags/:tags',tagService.searchByTags); //通过标签查询车辆信息
     app.get('/tag/getTagsByCarId/:carId',tagService.getTagsByCarId); //通过车Id查询标签信息
-    app.get('/tag/searchForUsers/:s4Id',authCheck,tagService.searchForUsers);   //通过条件查询车辆信息
+    app.get('/tag/searchForUsers/:s4Id',tagService.searchForUsers);   //通过条件查询车辆信息
     app.put('/tag/markTags',tagService.markTags);               //给指定车辆打上自定义标签
     app.post('/tag/addTag',tagService.addTag);                  //添加自定义标签
     app.delete('/tag/delTag/:tagId',tagService.delTag);            //删除自定义标签
