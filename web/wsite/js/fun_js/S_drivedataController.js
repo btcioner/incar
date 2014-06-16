@@ -5,7 +5,13 @@
 angular.module("DriveDataApp", [])
     .controller("driveDataCtrl",function($scope, $http){
 
-    $scope.nickName = $.cookie("nick");
+   if($.cookie("nick") != "" && $.cookie("nick") != null)
+    {
+        $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+    }else{
+        alert("登录已超时！");
+        window.location="../login.html";
+    }
     $scope.driveDiv = true;
     $scope.oneDetailDiv = false;
     $scope.oneMinuteDetailDiv = false;

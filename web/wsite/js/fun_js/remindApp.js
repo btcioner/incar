@@ -35,7 +35,13 @@ angular.module("SMaintainApp", [
         });
        // $locationProvider.html5Mode(true);
 }).controller("mainCtrl",function($scope){
-        $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+        if($.cookie("nick") != "" && $.cookie("nick") != null)
+        {
+            $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+        }else{
+            alert("登录已超时！");
+            window.location="../login.html";
+        }
     });
 
 function s_statisticsCtrl($scope,$http)

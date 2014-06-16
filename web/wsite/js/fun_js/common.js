@@ -30,6 +30,28 @@ var baseurl="/wservice/";
             window.location="../login.html";
         }
     }
+    //通过Ajax异步访问。
+//            $.ajax({
+//                url: url,
+//                type: type,
+//                dataType: 'json',
+//                data:query,
+//                success: function(data){
+//                    if(data.status =="没有登录")
+//                    {
+//                        alert("登录已超时！");
+//                        window.location="../login.html";
+//                    }
+//                    else{
+//                        $scope.$apply(function () {
+//                         getIndexData(id,data);
+//                        });
+//                    }
+//                },
+//                error: function(data){
+//                    alert("请求无响应");
+//                }
+//            });
 
     $.getUrlParam = function(name)
     {

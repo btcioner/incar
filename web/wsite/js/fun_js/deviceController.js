@@ -54,29 +54,12 @@ function deviceCtrl($scope, $http)
          $scope.tips="";
          if(!flag) $scope.changeId = 1;
          $scope.randomTime = "&t="+new Date();
-         $http.get(baseurl+'obd?page='+$scope.currentPage+'&pagesize='+ $scope.pageRecord+$scope.queryString+$scope.randomTime).success(function(data){
-            if(data.status == "ok")
-            {
-                for(var i=0;i<data.cars.length;i++)
-                {
-                    data.cars[i].act_type = $.changeStatus(data.cars[i].act_type);
-                    data.cars[i].created_date = $.changeDate2(data.cars[i].created_date);
-                    data.cars[i].act_time = $.changeDate2(data.cars[i].act_time);
-                }
-                if(data.cars.length == 0)
-                {
-                    $scope.tips = "暂无数据";
-                }
-                  $scope.devices= data.cars;
-                  PagingInfo(data.totalCount);
-            }
-            else
-            {
-                 alert(data.status);
-            }
-          }).error(function(data){
-                alert("请求无响应");
-         })
+         getAjaxLink(baseurl+'obd?page='+$scope.currentPage+'&pagesize='+ $scope.pageRecord+$scope.queryString+$scope.randomTime,"","get",1);
+//         $http.get(baseurl+'obd?page='+$scope.currentPage+'&pagesize='+ $scope.pageRecord+$scope.queryString+$scope.randomTime).success(function(data){
+//
+//          }).error(function(data){
+//                alert("请求无响应");
+//         })
     }
 
     //筛选条件
@@ -132,42 +115,24 @@ function deviceCtrl($scope, $http)
         /*添加OBD设备 todo在填入设备好之后应该立即提示是否存在该设备号*/
         $scope.postData = {obd_code:$scope.obd_code};
     //  $scope.date = $.changeDate(new Date());
-        $http.post(baseurl + 'obd',$scope.postData).success(function(data){
-            if(data.status == "ok")
-            {
-                   $scope.obd_code = "";
-                   alert("添加成功！");
-                   $scope.addDiv=false;
-                   $scope.deviceList=true;
-                   GetFirstPageInfo(false);
-            }
-            else
-            {
-                  alert(data.status);
-            }
-        }).error(function(data){
-          alert("请求无响应");
-    });
+        getAjaxLink(baseurl + 'obd',$scope.postData,"post",2);
+//        $http.post(baseurl + 'obd',$scope.postData).success(function(data){
+//
+//        }).error(function(data){
+//          alert("请求无响应");
+//        });
     }
 
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
     {
         var randomTime = new Date();//防止浏览器缓存，加上随机时间。
-        $http.get(baseurl + 'obd/'+obd_code+"?t="+randomTime).success(function(data){
-            if(data.status == "ok")
-            {
-                $scope.deviceDetail = data.car;
-                $scope.deviceDetail.obdNum = obd_code;
-                $scope.deviceDetail.act_type = $.changeStatus($scope.deviceDetail.act_type);
-            }
-            else
-            {
-                alert(data.status);
-            }
-        }).error(function(data){
-                alert("请求无响应");
-            });
+        getAjaxLink(baseurl + 'obd/'+obd_code+"?t="+randomTime,"","get",3);
+//        $http.get(baseurl + 'obd/'+obd_code+"?t="+randomTime).success(function(data){
+//
+//        }).error(function(data){
+//                alert("请求无响应");
+//        });
     }
 
     //查看一个OBD的行车数据
@@ -177,37 +142,12 @@ function deviceCtrl($scope, $http)
         $scope.choosedOC = obd_code;
         $scope.postData = {code:obd_code};
         GetOwnerInfo(obd_code);
-        $http.get(baseurl + 'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord +'&obd_code='+obd_code,$scope.postData)
-          .success(function(data){
-            if(data.status == "ok")
-            {
-                if(data.drvInfos.length == 0)
-                {
-                    alert("暂无行车数据");
-                }
-                else
-                {
-                    $scope.drvInfos = data.drvInfos;
-
-                    for(var i=0;i<data.drvInfos.length;i++)
-                    {
-                        $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
-                        $scope.drvInfos[i].fireTime = $.changeDate($scope.drvInfos[i].fireTime);
-                        $scope.drvInfos[i].flameOutTime = $.changeDate($scope.drvInfos[i].flameOutTime);
-                    }
-                  $scope.detailDiv = true;
-                  $scope.deviceList = false;
-
-                  PagingInfo(data.totalCount);
-                }
-            }
-            else
-            {
-                alert(data.status);
-            }
-        }).error(function(data){
-                alert("请求无响应");
-            });
+        getAjaxLink(baseurl + 'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord +'&obd_code='+obd_code,$scope.postData,"get",4);
+//        $http.get(baseurl + 'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord +'&obd_code='+obd_code,$scope.postData)
+//          .success(function(data){
+//        }).error(function(data){
+//                alert("请求无响应");
+//        });
     }
     //查看一个OBD一次行程的数据
     $scope.GetDriveDetail = function(obd_code,drive_id,id)
@@ -219,32 +159,12 @@ function deviceCtrl($scope, $http)
         //$scope.postData = {code:obd_code,drive_id:drive_id};
         GetOwnerInfo(obd_code);
         $scope.driveDetail = $scope.drvInfos[id];
-        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
-            if(data.status == "ok")
-            {
-                if(data.details.length== 0)
-                {
-                  alert("暂无行程数据");
-                }
-                else
-                {
-                    for(var i=0;i<data.details.length;i++)
-                    {
-                        data.details[i].createTime = $.changeDate(data.details[i].createTime);
-                    }
-                    $scope.detailDiv = false;
-                    $scope.oneDetailDiv = true;
-                    $scope.details = data.details;
-                    PagingInfo(data.totalCount);
-                }
-            }
-            else
-            {
-                alert(data.status);
-            }
-        }).error(function(data){
-                alert("请求无响应");
-            });
+        getAjaxLink(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord,"","get",5);
+//        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+//
+//        }).error(function(data){
+//                alert("请求无响应");
+//        });
     }
 
     //一分钟内的行车数据流记录
@@ -276,22 +196,158 @@ function deviceCtrl($scope, $http)
     {
         $scope.changeId = 1;
         $scope.postData={sim_number:sim_number};
-        $http.put(baseurl + 'obd/'+obd_code,$scope.postData).success(function(data){
-            if(data.status == "ok")
-            {
-                alert("修改成功！");
-                GetFirstPageInfo(false);
-                $scope.modifySim = false;
-                $scope.deviceList = true;
-               // $scope.devices[$scope.index].sim_number = sim_number;
-            }
-            else
-            {
-                alert(data.status);
-            }
-        }).error(function(data){
-                alert("请求无响应");
-        });
+        getAjaxLink(baseurl + 'obd/'+obd_code,$scope.postData,"put",6);
+//        $http.put(baseurl + 'obd/'+obd_code,$scope.postData).success(function(data){
+//
+//        }).error(function(data){
+//                alert("请求无响应");
+//        });
+    }
+
+    //利用$http封装访问，并解决防盗链问题。
+    function getAjaxLink(url,query,type,id)
+    {
+        if($.cookie("nick") != "" && $.cookie("nick") != null)
+        {
+            //通过AngularJS自带的http访问。
+            $http({ method: type, url: url, data:query}).success(function(data){
+                if(data.status =="没有登录")
+                {
+                    alert("登录已超时！");
+                    window.location="../login.html";
+                }
+                else{
+                    getIndexData(id,data);
+                }
+            }). error(function(data){
+                    alert("请求无响应");
+                });
+        }
+        else{
+            alert("登录已超时！");
+            window.location="../login.html";
+        }
+    }
+
+    //在访问之后对数据进行处理
+    function getIndexData(id,data)
+    {
+        switch(id)
+        {
+            case 1: //查询所有设备列表
+                if(data.status == "ok")
+                {
+                    for(var i=0;i<data.cars.length;i++)
+                    {
+                        data.cars[i].act_type = $.changeStatus(data.cars[i].act_type);
+                        data.cars[i].created_date = $.changeDate2(data.cars[i].created_date);
+                        data.cars[i].act_time = $.changeDate2(data.cars[i].act_time);
+                    }
+                    if(data.cars.length == 0)
+                    {
+                        $scope.tips = "暂无数据";
+                    }
+                    $scope.devices= data.cars;
+                    PagingInfo(data.totalCount);
+                }
+                else
+                {
+                    alert(data.status);
+                }
+                break;
+            case 2: //确认添加
+                if(data.status == "ok")
+                {
+                    $scope.obd_code = "";
+                    alert("添加成功！");
+                    $scope.addDiv=false;
+                    $scope.deviceList=true;
+                    GetFirstPageInfo(false);
+                }
+                else
+                {
+                    alert(data.status);
+                }
+                break;
+            case 3:
+                if(data.status == "ok")
+                {
+                    $scope.deviceDetail = data.car;
+                    $scope.deviceDetail.obdNum = obd_code;
+                    $scope.deviceDetail.act_type = $.changeStatus($scope.deviceDetail.act_type);
+                }
+                else
+                {
+                    alert(data.status);
+                }
+                break;
+            case 4:
+                if(data.status == "ok")
+                {
+                    if(data.drvInfos.length == 0)
+                    {
+                        alert("暂无行车数据");
+                    }
+                    else
+                    {
+                        $scope.drvInfos = data.drvInfos;
+
+                        for(var i=0;i<data.drvInfos.length;i++)
+                        {
+                            $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
+                            $scope.drvInfos[i].fireTime = $.changeDate($scope.drvInfos[i].fireTime);
+                            $scope.drvInfos[i].flameOutTime = $.changeDate($scope.drvInfos[i].flameOutTime);
+                        }
+                        $scope.detailDiv = true;
+                        $scope.deviceList = false;
+
+                        PagingInfo(data.totalCount);
+                    }
+                }
+                else
+                {
+                    alert(data.status);
+                }
+                break;
+            case 5:
+                if(data.status == "ok")
+                {
+                    if(data.details.length== 0)
+                    {
+                        alert("暂无行程数据");
+                    }
+                    else
+                    {
+                        for(var i=0;i<data.details.length;i++)
+                        {
+                            data.details[i].createTime = $.changeDate(data.details[i].createTime);
+                        }
+                        $scope.detailDiv = false;
+                        $scope.oneDetailDiv = true;
+                        $scope.details = data.details;
+                        PagingInfo(data.totalCount);
+                    }
+                }
+                else
+                {
+                    alert(data.status);
+                }
+                break;
+            case 6:
+                if(data.status == "ok")
+                {
+                    alert("修改成功！");
+                    GetFirstPageInfo(false);
+                    $scope.modifySim = false;
+                    $scope.deviceList = true;
+                    // $scope.devices[$scope.index].sim_number = sim_number;
+                }
+                else
+                {
+                    alert(data.status);
+                }
+                break;
+        }
     }
 
     //返回操作

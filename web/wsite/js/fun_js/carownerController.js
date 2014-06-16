@@ -32,23 +32,12 @@ function carOwnersCtrl($scope, $http){
     {
         $scope.tips="";
         $scope.randomTime = "&t="+new Date();
-        $http.get(baseurl + 'cmpx/carowner?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+$scope.randomTime).success(function(data){
-            if(data.status == "ok")
-            {
-                if(data.carowners.length == 0)
-                {
-                    $scope.tips="暂无数据！";
-                }
-                $scope.carowners = data.carowners;
-                PagingInfo(data.totalCount);
-            }
-            else
-            {
-                alert(data.status);
-            }
-        }).error(function(data){
-        alert("请求无响应");
-        })
+        getAjaxLink(baseurl + 'cmpx/carowner?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+$scope.randomTime,"","get",1);
+//        $http.get(baseurl + 'cmpx/carowner?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+$scope.randomTime).success(function(data){
+//
+//        }).error(function(data){
+//        alert("请求无响应");
+//        })
 
     }
     //预备函数
@@ -276,6 +265,54 @@ function carOwnersCtrl($scope, $http){
         }).error(function(data){
                 alert("请求无响应");
             });
+    }
+
+    //利用$http封装访问，并解决防盗链问题。
+    function getAjaxLink(url,query,type,id)
+    {
+        if($.cookie("nick") != "" && $.cookie("nick") != null)
+        {
+            //通过AngularJS自带的http访问。
+            $http({ method: type, url: url, data:query}).success(function(data){
+                if(data.status =="没有登录")
+                {
+                    alert("登录已超时！");
+                    window.location="../login.html";
+                }
+                else{
+                    getIndexData(id,data);
+                }
+            }). error(function(data){
+                    alert("请求无响应");
+                });
+        }
+        else{
+            alert("登录已超时！");
+            window.location="../login.html";
+        }
+    }
+
+    //在访问之后对数据进行处理
+    function getIndexData(id,data)
+    {
+        switch(id)
+        {
+            case 1:
+                if(data.status == "ok")
+                {
+                    if(data.carowners.length == 0)
+                    {
+                        $scope.tips="暂无数据！";
+                    }
+                    $scope.carowners = data.carowners;
+                    PagingInfo(data.totalCount);
+                }
+                else
+                {
+                    alert(data.status);
+                }
+                break;
+        }
     }
 
     //一分钟内的行车数据流记录

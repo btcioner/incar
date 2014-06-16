@@ -16,6 +16,7 @@ function s_paramCtrl($scope, $http){
     GetFirstPageInfo($scope.initBid,$scope.intiSid);//get fist driveData for first page；
     function GetFirstPageInfo(bid,sid)
     {
+        $scope.sid = sid;
         $scope.tips="";
         $scope.queryStr="";
         if(sid != "")
@@ -26,34 +27,12 @@ function s_paramCtrl($scope, $http){
         {
             $scope.queryStr='?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord
         }
-
-        $http.get(baseurl+'brand/'+bid+'/series'+$scope.queryStr).success(function(data){
-            if(data.status == "ok")
-            {
-                if(sid == "")
-                {
-                    if(data.series.length > 0)
-                    {
-                      $scope.seriesList = data.series;
-                      PagingInfo(data.totalCount);
-                    }
-                    else{
-                       $scope.tips="暂无数据";
-                    }
-                }
-                else{
-                  $scope.seriesList[0] = data.series;
-                    $scope.seriesList.splice(1, $scope.seriesList.length);
-                    PagingInfo(0);
-                }
-            }
-            else
-            {
-                alert(data.status);
-            }
-        }).error(function(data){
-                alert("请求无响应");
-            })
+        getAjaxLink(baseurl+'brand/'+bid+'/series'+$scope.queryStr,"","get",1);
+//        $http.get(baseurl+'brand/'+bid+'/series'+$scope.queryStr).success(function(data){
+//
+//        }).error(function(data){
+//                alert("请求无响应");
+//        })
         $http.get(baseurl+'brand').success(function(data){
             $scope.carBrand = data.brands;
         });
@@ -96,7 +75,63 @@ function s_paramCtrl($scope, $http){
         GetFirstPageInfo($scope.initBid,series_id);
     }
 
+    //利用$http封装访问，并解决防盗链问题。
+    function getAjaxLink(url,query,type,id)
+    {
+        if($.cookie("nick") != "" && $.cookie("nick") != null)
+        {
+            //通过AngularJS自带的http访问。
+            $http({ method: type, url: url, data:query}).success(function(data){
+                if(data.status =="没有登录")
+                {
+                    alert("登录已超时！");
+                    window.location="../login.html";
+                }
+                else{
+                    getIndexData(id,data);
+                }
+            }). error(function(data){
+                    alert("请求无响应");
+                });
+        }
+        else{
+            alert("登录已超时！");
+            window.location="../login.html";
+        }
+    }
 
+    //在访问之后对数据进行处理
+    function getIndexData(id,data)
+    {
+        switch(id)
+        {
+            case 1:
+                if(data.status == "ok")
+                {
+                    if($scope.sid == "")
+                    {
+                        if(data.series.length > 0)
+                        {
+                            $scope.seriesList = data.series;
+                            PagingInfo(data.totalCount);
+                        }
+                        else{
+                            $scope.tips="暂无数据";
+                        }
+                    }
+                    else{
+                        $scope.seriesList[0] = data.series;
+                        $scope.seriesList.splice(1, $scope.seriesList.length);
+                        PagingInfo(0);
+                    }
+                }
+                else
+                {
+                    alert(data.status);
+                }
+                break;
+        }
+    }
 
     //点击添加按钮
     $scope.add = function()
