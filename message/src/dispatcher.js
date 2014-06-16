@@ -128,6 +128,14 @@ function receive1625(dataBuffer){
         softType:softType
     };
 }
+//1621取得车辆当前检测数据
+function send1621(sim){
+    dataManager.init(new Buffer(19),0);
+    dataManager.writeString("SMS"+sim+"#LD");
+    dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
+    dataManager.writeWord(0x1621);
+    message.send(dataManager.getBuffer());
+}
 //1622获得OBD相关信息，传入[id1,id2]返回{id1:val1,id2:val2},ID来源4.01以及4.02
 function send1622(sim,idArray){
     dataManager.init(new Buffer(1024),0);
@@ -197,6 +205,9 @@ exports.receiveMessageRequest=function(req,res){
     console.log(body);
     var back={status:'success'};
     switch(cmd){
+        case 0x1621:
+            send1621(sim);
+            break;
         case 0x1622:
             var idArray=body['idArray'];
             send1622(sim,idArray);

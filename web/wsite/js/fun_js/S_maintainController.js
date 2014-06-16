@@ -16,8 +16,9 @@ function  s_maintainCtrl($scope, $http,$routeParams){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord)
-            .success(function(data){
+        $http.get(
+            baseurl+'organization/'+$.cookie("s4_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord
+        ).success(function(data){
             if(data.status=="ok")
             {
                 $scope.carList = data.cars;
@@ -86,22 +87,20 @@ function  s_maintainCtrl($scope, $http,$routeParams){
                 break;
         }
     }
- //详情页面的子操作
-  $scope.operationChild = function(id)
-  {
-      changeView(1);
-      $scope.buttonTh = true;
-      $scope.show1 = true;
-      switch(id)
-      {
+    //详情页面的子操作
+    $scope.operationChild = function(id){
+        changeView(1);
+        $scope.buttonTh = true;
+        $scope.show1 = true;
+        switch(id){
           case 1:
               $scope.alreadyReserDiv = true;//已预约
               break;
           case 2:
               $scope.refuseReasonDiv = true;//未预约
               break;
-      }
-  }
+        }
+    }
 
     $scope.cancel = function(id)
     {
