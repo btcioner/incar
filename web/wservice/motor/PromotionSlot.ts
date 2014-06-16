@@ -82,6 +82,7 @@ module Service {
         dac.query("INSERT t_promotion_slot SET ?", [slot], (ex, result)=>{
             if(ex) { res.json(new TaskException(-1, "创建特价工位失败", ex)); return; }
             else {
+                schedulerPS.start();
                 res.json({ status:"ok", id:result.insertId});
                 return;
             };
@@ -118,6 +119,7 @@ module Service {
                 return;
             }
             else{
+                schedulerPS.start();
                 res.json({status:"ok"});
                 return;
             }
