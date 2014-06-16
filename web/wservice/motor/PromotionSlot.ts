@@ -139,4 +139,10 @@ module Service {
             }
         });
     }
+
+    // 直接启动运行的,监视特价工位
+    var cron:any = require('cron');
+    var jobTest = new cron.CronJob("* * * * * *", ()=>{
+        console.log("This is a crontab task.");
+    });
 }
