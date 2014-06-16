@@ -20,7 +20,7 @@ module Service{
                         TraceSQL(sql, args, snSQL, tmA);
                         poolInCar.queryRawFn(sql, args, (ex, result)=>{
                             var tmB = new Date();
-                            TraceTime(snSQL, tmB.getTime() - tmA.getTime(), result);
+                            TraceTime(snSQL, tmB.getTime() - tmA.getTime());
                             if(ex) console.info(">>>>> SQL#%d \033[31m%s\033[0m", snSQL, ex.message);
                             cb(ex, result);
                         });
@@ -42,11 +42,8 @@ module Service{
         }
 
         // 调试用
-        export function TraceTime(sn:number, tmSpan:number, result:any):void{
-            var count = result.affectedRows;
-            if(!count) count = result.length;
-            if(!count) count = 0;
-            console.info(">>>>> SQL#%d \033[32m%d\033[0mms > \033[33m%d rows affected\033[0m", sn, tmSpan, count);
+        export function TraceTime(sn:number, tmSpan:number):void{
+            console.info(">>>>> SQL#%d \033[32m%d\033[0mms", sn, tmSpan);
         }
 
         // 存储一系列id到一个临时表中

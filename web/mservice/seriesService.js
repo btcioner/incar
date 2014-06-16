@@ -12,7 +12,7 @@ function getSeriesName(req,res){
     var postData = req.body;
     var db = this.db;
     searchSeriesName(db,postData,function(err,data){
-        if(err)callback(err);
+        if(err) {console.log(err);res.send(err);}
         else{
             res.send(data);
         }
@@ -40,7 +40,7 @@ function searchSeriesName(db, postData,callback){
                             }else callback(new Error('Can not find series.'));
                         }
                     });
-                }else callback(new Error('Can not find series.'));
+                }else callback(new Error('Can not find brand.'));
             }
         });
 }

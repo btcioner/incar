@@ -108,14 +108,14 @@ module Service{
             });
             return;
         }
-
+        
+        var data = req.body;
         if(isStringNotEmpty(data.short_name)) {
             var regexName = new RegExp("^[a-z0-9_\\.]{3,32}$", "i");
             if (!regexName.test(req.body.short_name))
                 res.json(new TaskException(-1, "short_name只能由数字或字母组成,最少3字符,最多32字符", null));
         }
 
-        var data = req.body;
         var dto:any = { id: req.params.s4_id };
         if(isStringNotEmpty(data.name)) dto.name = data.name;
         if(isStringNotEmpty(data.short_name)) dto.short_name = data.short_name;
