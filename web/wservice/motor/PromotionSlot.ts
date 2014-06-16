@@ -140,9 +140,130 @@ module Service {
         });
     }
 
-    // 直接启动运行的,监视特价工位
-    var cron:any = require('cron');
-    var jobTest = new cron.CronJob("* * * * * *", ()=>{
-        console.log("This is a crontab task.");
-    });
+    // 特价工位定时调度器
+    export class PromotionSlotScheduler{
+        private _jobNext : any = null;
+
+        constructor(){
+        }
+
+        // 启动
+        public start(){
+            this.UpdatePromotionStatus((ex, cP, cS)=>{
+                if(ex) { console.error(ex); }
+                console.log(util.format("%s:发布%d个特价工位, 结束%d个特价工位", new Date(), cP, cS));
+                this.findNextPSTime((ex, tmA)=>{
+                    if(ex){
+                        this.KeepWatch();
+                        console.error(JSON.stringify(ex));
+                        return;
+                    }
+                    if(tmA === null){
+                        console.log("没有特价工位需要被调度");
+                        this.KeepWatch();
+                    }
+                    else{
+                        var tmNext5sec = new Date((new Date()).getTime() + 5 * 1000);
+                        if(tmA <= tmNext5sec){
+                            // 有一个微小的概率发生这种情况
+                            tmA = tmNext5sec;
+                        }
+
+                        console.log(util.format("特价工位下次调度时间:%s",tmA));
+                        var cron:any = require('cron');
+                        if(this._jobNext) this._jobNext.stop();
+                        this._jobNext = new cron.CronJob(tmA, ()=>{
+                            schedulerPS.start();
+                        });
+                        this._jobNext.start();
+                    }
+                });
+            });
+        }
+
+        // 查询所有没有结束的特价工位中最早一个需要被调度的
+        private findNextPSTime(cb:(ex:TaskException, tmA:Date)=>void):void{
+            var dac = MySqlAccess.RetrievePool();
+            var sql = "SELECT min(tm) AS tm FROM (\n" +
+                "SELECT min(slot_time) AS tm FROM t_promotion_slot WHERE promotion_status not in (0,4)\n" +
+                "UNION ALL SELECT min(promotion_time) AS tm FROM t_promotion_slot WHERE promotion_status = 1) T";
+            dac.query(sql, null, (ex, result)=>{
+                if(ex) { cb(new TaskException(-1, "查询特价工位时间出错", ex), null); return; }
+                if(result.length > 0 && result[0].tm !== null){
+                    var tm : Date = null;
+                    try{
+                        tm = new Date(Date.parse(result[0].tm));
+                        cb(null, tm);
+                    }
+                    catch(ex){
+                        cb(new TaskException(-2, "解析特价工位时间出错:" + result[0].tm, ex), null);
+                    }
+                }
+                else{
+                    cb(null, null);
+                }
+            });
+        }
+
+        // 修改状态
+        private UpdatePromotionStatus(cb:(ex:TaskException, countP:number, countS:number)=>void):void{
+            var dac = MySqlAccess.RetrievePool();
+            var task:any = { finished:0 };
+            task.begin = ()=>{
+                var sqlA = "UPDATE t_promotion_slot SET promotion_status = 2\n" +
+                    "WHERE promotion_time <= CURRENT_TIMESTAMP and slot_time > CURRENT_TIMESTAMP\n" +
+                    "\tand promotion_status = 1";
+                dac.query(sqlA, null, (ex, result)=>{
+                    task.A = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+
+                var sqlB = "UPDATE t_promotion_slot SET promotion_status = 4\n" +
+                    "WHERE slot_time <= CURRENT_TIMESTAMP and promotion_status not in (0,4)";
+                dac.query(sqlB, null, (ex, result)=>{
+                    task.B = { ex:ex, result:result };
+                    task.finished++;
+                    task.end();
+                });
+            };
+
+            task.end = ()=>{
+                if(task.finished < 2) return;
+                var countP = 0, countS = 0;
+                if(!task.A.ex){ countP = task.A.result.affectedRows; }
+                if(!task.B.ex){ countS = task.B.result.affectedRows; }
+
+                if(task.A.ex && task.B.ex){
+                    var err = task.A.ex.toString() + "\n" + task.B.ex.toString();
+                    cb(new TaskException(-1, "更新特价工位状态出错:\n"+ err, null), 0, 0);
+                }
+                else if(task.A.ex){
+                    cb(new TaskException(-2, "更新特价工位发布状态出错", task.A.ex), countP, countS);
+                }
+                else if(task.B.ex){
+                    cb(new TaskException(-3, "更新特价工位结束状态出错", task.A.ex), countP, countS);
+                }
+                else{
+                    cb(null, countP, countS);
+                }
+            };
+            task.begin();
+        }
+
+        // 保险
+        private KeepWatch(){
+            var cron:any = require('cron');
+            if(this._jobNext) this._jobNext.stop();
+            this._jobNext = new cron.CronJob("00 57 * * * *", ()=>{
+                schedulerPS.start();
+            });
+            this._jobNext.start();
+            console.log("特价工位保护调度模式,每个小时的第57分整尝试扫描一次");
+        }
+    }
+
+    // 启动特价工位定时调度
+    export var schedulerPS = new PromotionSlotScheduler();
+    schedulerPS.start();
 }
