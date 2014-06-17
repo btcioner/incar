@@ -56,6 +56,17 @@ module.exports = function (grunt) {
           comments: true,
           target: "ES5"
         }
+      },
+      msite_wxapp:{
+        src: ['msite/mscripts/wxapp/*.ts'],
+        dest: 'msite/mscripts/wxap.js',
+        options: {
+            module: 'commonjs',
+            sourceMap: true,
+            basePath: "wxapp/",
+            comments: true,
+            target: "ES5"
+        }
       }
     },
 
