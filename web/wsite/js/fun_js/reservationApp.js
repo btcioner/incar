@@ -28,7 +28,7 @@ angular.module("SReservationApp", [
             templateUrl:'/4sStore/partials/repair_main.html'//显示全部维修信息
          })
         .otherwise({
-           redirectTo:'/main'//跳转到预约服务的主界面
+            redirectTo:'/main'//跳转到预约服务的主界面
         });
        // $locationProvider.html5Mode(true);
 }).controller("mainCtrl",function($scope){
