@@ -59,7 +59,7 @@ module.exports = function (grunt) {
       },
       msite_wxapp:{
         src: ['msite/mscripts/wxapp/*.ts'],
-        dest: 'msite/mscripts/wxap.js',
+        dest: 'msite/mscripts/wxapp.js',
         options: {
             module: 'commonjs',
             sourceMap: true,
