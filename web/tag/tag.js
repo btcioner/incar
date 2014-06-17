@@ -616,6 +616,7 @@ function buildSearchSql(tagList){
 
 
 
+/*
 var tagGroup=[
     {name:"车系",description:"车系",type:0},
     {name:"渠道",description:"车主的来源",type:0},
@@ -696,7 +697,7 @@ function initOtherTag(){
             console.log(args);
         });
     }
-}
+}*/
 //initTagGroup();
 //initCarBrandForTag();
 //initOtherTag();
