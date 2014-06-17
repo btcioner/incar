@@ -13,3 +13,5 @@ web/wservice/test.*
 web/data/manual/
 web/data/upload/
 web/msite/mstyles/bootstrap.css
+web/msite/mscripts/wxapp.js
+web/msite/mscripts/wxapp.js.map

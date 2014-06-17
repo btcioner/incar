@@ -1,27 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="wxApp">
 <head lang="zh-cn">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="remark" content="此页面仅供微站测试">
     <title>微站测试接入点</title>
     <link href="/mstyles/bootstrap.css" rel="stylesheet"/>
+    <link href="/mstyles/angular-csp.css" rel="stylesheet"/>
+    <script src="/mscripts/angular.min.js"></script>
+    <script src="/mscripts/angular-resource.min.js"></script>
+    <script src="/mscripts/underscore.js"></script>
+    <script src="/mscripts/wxapp.js"></script>
 </head>
-<body>
+<body ng-controller="devAPCtrl">
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 text-center">
-            <h1>微站测试接入点</h1>
+            <h1>微站测试接入点{{name}}</h1>
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-md-6 text-center">
-            <!--http://dev.fcakes.cn:51234/msite/devAP.html-->
-            <img src="/mimages/devAP.png">
+        <div class="col-xs-12 col-md-4 text-center">
+            <!--http://devincar.winphone.us/msite/devAP.html?name=xgh-->
+            <img src="/mimages/devAP-{{name}}.png"><br>
+            <span ng-show="{{jump}}">正在重定向...</span><br>
+            <span class="label-danger">{{error}}</span>
         </div>
-        <div class="col-xs-12 col-md-6">
-            <ul>
-                <li><a href="/msite/page_xcsc.htlm">行车手册</a></li>
+        <div class="col-xs-12 col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="page in pages"><a href="{{page.url}}">{{page.title}}</a></li>
             </ul>
         </div>
     </div>

@@ -4,6 +4,14 @@ module Service{
 
     // 测试用途
     export function HelloAPI(req, res){ res.send({status:"ok", text:"Hello API!"}); }
+    export function wxAP(req, res){
+        var dac = MySqlAccess.RetrievePool();
+        var sql = "SELECT * FROM wx_ap_test";
+        dac.query(sql, null, (ex, result)=>{
+            if(ex) { res.json(new TaskException(-1, "查询数据出错", ex)); return; }
+            res.json({ status:"ok", links:result});
+        });
+    }
 
     // 上传文件
     export function UploadFile(req, res){

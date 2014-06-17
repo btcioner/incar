@@ -1,7 +1,7 @@
-target = motor
-puzzle = c5t9wu87
+target = wxapp
+puzzle = c5t9wx87
 
-$(target).js $(target).js.map : motor\*.ts
+$(target).js $(target).js.map : $(target)\*.ts
     @echo "Building typescript files : "
     @cd $(target)
     @dir /b *.ts > "%TEMP%\incar_ts_$(puzzle).tmp"
