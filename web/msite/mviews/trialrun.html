@@ -18,6 +18,8 @@
     <script>
         var user;
         var today
+        var brand;
+        var series;
         function init(){
              user=getQueryString("user");
              today=new Date();
@@ -80,6 +82,8 @@
              document.getElementById('name').value=result.nick;
              document.getElementById('acc_id').value=result.id;
              document.getElementById('s4_id').value=result.s4_id;
+             brand=result.brand;
+             series=result.series;
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("连接失败\n请检查网络连接是否正常");
@@ -117,6 +121,8 @@
         postData.seriesName=document.getElementById("seriesName").value;
         postData.bookDate=document.getElementById("start").value;
         postData.bookTime=document.getElementById("end").value;
+        var args=JSON.stringify({'brand':brand,'series':series});
+        postData.args=args;
         //alert("开始提交");
         $.ajax({
             type: "POST",

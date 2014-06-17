@@ -25,7 +25,7 @@ my4S.onBookingMessages = function(message, session, callback) {
 
     console.log(session.slotData);
 
-    return booking.applySlot(message.FromUserName, session.slotData.slots[(idx -1)], function(err, result){
+    return booking.applySlot(message.FromUserName,message.ToUserName, session.slotData.slots[(idx -1)], function(err, result){
         if (err) {
             session.textMsgReplierIndex = null;
             delete session.slotData;

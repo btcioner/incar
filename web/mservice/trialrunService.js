@@ -35,8 +35,8 @@ function submitTrialrun(db, postData,callback) {
             pool.query('select id from t_trialrun where wx_oid like ? order by ts desc limit 1',["%"+postData.wx_oid+'%'],function(err,rows){
                 if(err){ callback(err);}
                 else if(rows){
-                    pool.query('insert into t_work (work,step,work_ref_id,org_id,cust_id,working_time,created_time) value(?,?,?,?,?,?,now())',
-                        ['drivetry','applied',rows[0].id,postData.s4_id,postData.acc_id,postData.bookDate],function(err,result){
+                    pool.query('insert into t_work (work,step,work_ref_id,org_id,cust_id,json_args,working_time,created_time) value(?,?,?,?,?,?,?,now())',
+                        ['drivetry','applied',rows[0].id,postData.s4_id,postData.acc_id,postData.args,postData.bookDate],function(err,result){
                             if(err){  callback(err);}
                             else callback(null,1);
                         });

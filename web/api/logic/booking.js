@@ -32,10 +32,10 @@ booking.getPromotionSlots = function(userName,sopenid, callback) {
     });
 };
 
-booking.applySlot = function(userName, slot, callback) {
+booking.applySlot = function(userName,sopenid, slot, callback) {
     var pool = this.db();
     console.log(slot);
-    getOrgId(this.db, userName, function(err, orgId) {
+    getOrgId(this.db, userName,sopenid, function(err, orgId) {
         if (err) { return callback(err); }
         pool.query('insert into t_slot_booking(storeId, slot_location, slot_time, promotion_id, channel, channel_specific, booking_time, booking_status, tc, ts) values (?,?,?,?,?,?, now(), 1,?,now());',
             [orgId, slot.location, slot.time, slot.id, 'weixin', userName, userName+'@weixin'], function(err, result) {
