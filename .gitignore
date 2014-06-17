@@ -12,6 +12,9 @@ web/wservice/motor.js.map
 web/wservice/test.*
 web/data/manual/
 web/data/upload/
-web/msite/mstyles/bootstrap.css
+web/msite/mstyles/bootstrap-3.1.1.css
+web/wsite/css/bootstrap-3.1.1.css
 web/msite/mscripts/wxapp.js
 web/msite/mscripts/wxapp.js.map
+web/wsite/js/devAP.js
+web/wsite/js/devAP.js.map

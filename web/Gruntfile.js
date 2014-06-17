@@ -67,12 +67,23 @@ module.exports = function (grunt) {
             comments: true,
             target: "ES5"
         }
+      },
+      wsite_devAP:{
+          src: ['wsite/js/devAP/*.ts'],
+          dest: 'wsite/js/devAP.js',
+          options: {
+              module: 'commonjs',
+              sourceMap: true,
+              basePath: "devAP/",
+              comments: true,
+              target: "ES5"
+          }
       }
     },
 
     less:{
-        msite_bootstrap : {
-            files: { 'msite/mstyles/bootstrap.css': 'msite/mstyles/bootstrap.less' }
+        wsite_bootstrap311 : {
+            files: { 'wsite/css/bootstrap-3.1.1.css': 'wsite/css/bootstrap-3.1.1.less' }
         }
     },
 
@@ -180,9 +191,11 @@ module.exports = function (grunt) {
         'wservice/motor.js',
         'wservice/motor.js.map',
         'msite/mscripts/wxapp.js',
-        'msite/mscripts/wxapp.js.map'
+        'msite/mscripts/wxapp.js.map',
+        'wsite/js/devAP.js',
+        'wsite/js/devAP.js.map',
       ],
-      less: [ 'msite/mstyles/bootstrap.css']
+      less: [ 'msite/mstyles/bootstrap-3.1.1.css', 'wsite/css/bootstrap-3.1.1.css']
     },
 
     // Add vendor prefixed styles
@@ -469,6 +482,4 @@ module.exports = function (grunt) {
     'newer:jshint'
     ,'build'
   ]);
-
-  grunt.loadNpmTasks('grunt-contrib-less');
 };
