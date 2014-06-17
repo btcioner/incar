@@ -15,9 +15,8 @@ wxApp.controller('devAPCtrl',
             var linkRes = $resource("/wservice/wxap", null, {query: {isArray: false}});
             var result = linkRes.query(()=> {
                 if(result.status === "ok") {
-                    var link = _.find(result.links, (obj)=> {
-                        return obj.name === $scope.name;
-                    });
+                    var link = _.find(result.links, (obj)=> { return obj.name === $scope.name; });
+                    $scope.jump_url = link.url;
                     document.location.replace(link.url);
                 }
                 else{
