@@ -118,6 +118,9 @@ function packetProcess(packetInput,tag,cb) {
         sendToMessageServer(dataBuffer,commandWord);
         saveAndReturn();
     }
+    if(commandWord===0x9502){
+        saveAndReturn();
+    }
 }
 //所有OBD发送过来的数据都会保存进历史表
 function saveToHistory(dataBuffer,tag){
@@ -622,8 +625,8 @@ function packetProcess_1603(dataBuffer,cb) {
     //2、根据OBD编号查询OBD信息，一个JSON对象
 
 
-    var sql="select t.id,t.brand,t.series,t.modelYear,t.engine_type," +
-        "t.disp,t.init_code from t_car t where t.obd_code=?";
+    var sql="select t.id,t.brand,t.series,t.modelYear,t.engineType," +
+        "t.disp,t.initCode from t_car t where t.obd_code=?";
     dao.findBySql(sql,obdCode,function(rows) {
         //3、如果找到了则校验传入的OBD信息和数据库中的OBD信息，若不同则更新
         if(rows.length>0){
@@ -634,9 +637,9 @@ function packetProcess_1603(dataBuffer,cb) {
             obdInfo.brand=obd.brand;                //品牌
             obdInfo.series=obd.series;              //系列
             obdInfo.modelYear=obd.modelYear;        //年款
-            obdInfo.engineType=obd.engine_type;     //发动机类型
+            obdInfo.engineType=obd.engineType;     //发动机类型
             obdInfo.engineDisplacement=obd.disp;    //发动机排量
-            obdInfo.initCode=obd.init_code;         //恢复出厂序列号
+            obdInfo.initCode=obd.initCode;         //恢复出厂序列号
             cb(get1603Response(obdInfo));
         }
         //4、如果不存在则创建一个新的OBD，并写入默认数据

@@ -12,3 +12,4 @@ web/wservice/motor.js.map
 web/wservice/test.*
 web/data/manual/
 web/data/upload/
+web/msite/mstyles/bootstrap.css

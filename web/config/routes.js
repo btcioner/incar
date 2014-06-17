@@ -84,18 +84,14 @@ module.exports = function(app) {
     app.put('/tag/buildTags',tagService.buildTags);             //重算车辆信息并打上标签
     app.get('/tag/searchByTags/:tags',tagService.searchByTags); //通过标签查询车辆信息
     app.get('/tag/getTagsByCarId/:carId',tagService.getTagsByCarId); //通过车Id查询标签信息
-    app.get('/tag/searchForUsers/:s4Id',authCheck,tagService.searchForUsers);   //通过条件查询车辆信息
+    app.get('/tag/searchForUsers/:s4Id',tagService.searchForUsers);   //通过条件查询车辆信息
     app.put('/tag/markTags',tagService.markTags);               //给指定车辆打上自定义标签
     app.post('/tag/addTag',tagService.addTag);                  //添加自定义标签
     app.delete('/tag/delTag/:tagId',tagService.delTag);            //删除自定义标签
 
-    app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin); // app.get('/wservice/organization', wservice.GetOrganization);
-    app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin); // app.post('/wservice/organization', wservice.AddOrganization);
-    // app.put('/wservice/organization/:org_id', wservice.ModifyOrganization);
-    app.get('/wservice/cmpx/carowner',wservice.GetCarwithOwner); // app.get('/wservice/carowner', wservice.GetCarOwnerAll);
-    // app.get('/wservice/carowner/:acc_id', wservice.GetCarOwner);
-    // app.put('/wservice/carowner/:acc_id', wservice.ModifyCarOwner);
-    // app.delete('/wservice/carowner/:acc_id', wservice.DeleteCarOwner);
+    app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin);
+    app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin);
+    app.get('/wservice/cmpx/carowner',wservice.GetCarwithOwner);
     app.get('/wservice/cmpx/drive_info', wservice.GetDriveInfoAll);
     app.get('/wservice/cmpx/drive_detail/:obd_code/:drive_id', wservice.GetDriveDetail);
 

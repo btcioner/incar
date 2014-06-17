@@ -136,6 +136,7 @@
                       </tbody>
                   </table>
               </div>
+              <div><font color="red">{{tips}}</font></div>
               <div class="pagination alternate" style="float:right;">
                   共{{totalCount}}条&nbsp;当前{{currentPage}}/{{totalPage}} &nbsp;
                   跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId,2);">

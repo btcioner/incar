@@ -121,6 +121,7 @@ CREATE TABLE IF NOT EXISTS t_obd_drive(
 
     carStatus tinyint COMMENT '车辆当前状态(启动、行驶、熄火、完成、异常)12345',
     flameOutTime timestamp COMMENT '熄火时间',
+    lastUpdateTime timestamp COMMENT '最后更新时间',
     primary key (id));
 
  -- 创建车辆驾驶详情表

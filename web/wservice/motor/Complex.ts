@@ -87,14 +87,19 @@ module Service{
         if(isStringNotEmpty(data.wx_pwd)) dto.wx_pwd = data.wx_pwd;
         if(isStringNotEmpty(data.wx_en_name)) dto.wx_en_name = data.wx_en_name;
         if(!isNaN(data.wx_status)) dto.wx_status = data.wx_status;
+        if(!isNaN(data.brand)) dto.brand = data.brand;
+        if(isStringNotEmpty(data.short_name)) dto.short_name = data.short_name;
+        if(isStringNotEmpty(data.phone)) dto.phone = data.phone;
+        if(isStringNotEmpty(data.address)) dto.address = data.address;
+        if(isStringNotEmpty(data.hotline)) dto.hotline = data.hotline;
         var s4 = new S4(dto);
 
         var repo = S4Repository.GetRepo();
         repo.Add4S(s4, (ex:TaskException, s4:S4)=>{
             if(ex) { res.json(ex); return; }
             var dto2:any = { name: data.admin_name, pwd: data.admin_pwd, last_login_time:"0000-00-00" };
-            if(isStringNotEmpty(data.admin_email)) dto2.nick = data.admin_email;
-            if(isStringNotEmpty(data.admin_phone)) dto2.nick = data.admin_phone;
+            if(isStringNotEmpty(data.admin_email)) dto2.email = data.admin_email;
+            if(isStringNotEmpty(data.admin_phone)) dto2.phone = data.admin_phone;
             if(isStringNotEmpty(data.admin_nick)) dto2.nick = data.admin_nick;
             else dto2.nick = data.admin_name;
             var staff = new Staff(dto2);

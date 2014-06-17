@@ -5,7 +5,7 @@
 
 function s_customerCtrl($scope, $http,$routeParams){
 
-    $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+
     $scope.cusDetailDiv = false;
     $scope.cusListDiv = true;
     $scope.cusTabDiv = false;
@@ -45,7 +45,8 @@ function s_customerCtrl($scope, $http,$routeParams){
     function getCustomTagList()
     {
         $scope.tips="";
-        $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")+"?t="+$scope.randomTime).success(function(data){
             $scope.customTags = data.data;
             PagingInfo( data.rowCount);
         }).error(function(data){
@@ -61,7 +62,8 @@ function s_customerCtrl($scope, $http,$routeParams){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+'?page='+$scope.currentPage+'&pageSize='+$scope.pageRecord+$scope.queryString).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+'?page='+$scope.currentPage+'&pageSize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "success")
             {
                 if(data.data.length == 0)
@@ -181,7 +183,8 @@ function s_customerCtrl($scope, $http,$routeParams){
     function getReservationRecord()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.carId).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.carId+"&t="+$scope.randomTime).success(function(data){
             $scope.careList = data.works;
             PagingInfo(data.totalCount);
             if(data.works.length > 0)
@@ -206,7 +209,8 @@ function s_customerCtrl($scope, $http,$routeParams){
     function getCareRecord()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.carId).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.carId+"&t="+randomTime).success(function(data){
            $scope.recordList = data.records;
             PagingInfo(data.totalCount);
            if(data.records.length > 0)
@@ -270,7 +274,8 @@ function s_customerCtrl($scope, $http,$routeParams){
                 break;
             case 6:
                 getCustomTagList();
-                $http.get('/tag/getTagsByCarId/'+$scope.cusDetail.carId).success(function(data){
+                $scope.randomTime = new Date();
+                $http.get('/tag/getTagsByCarId/'+$scope.cusDetail.carId+"?t="+$scope.randomTime).success(function(data){
                    $scope.systemTag = data.systemTag;
                    $scope.customTag = data.customTag;
                     for(var i=0;i<$scope.customTags.length;i++)
@@ -314,7 +319,8 @@ function s_customerCtrl($scope, $http,$routeParams){
     {
         $scope.tips="";
         $scope.queryString="&org_id="+ $.cookie("s4_id")+"&obd_code="+$scope.cusDetail.obdCode;
-        $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.drvInfos.length == 0)
@@ -342,11 +348,12 @@ function s_customerCtrl($scope, $http,$routeParams){
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
     {
-        $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car?obd_code='+obd_code).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car?obd_code='+obd_code+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 $scope.carInfo = data.cars[0];
-                $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car/'+$scope.carInfo.id+'/cust?obd_code='+obd_code).success(function(data){
+                $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car/'+$scope.carInfo.id+'/cust?obd_code='+obd_code+"&t="+$scope.randomTime).success(function(data){
                     if(data.status=="ok")
                     {
                         $scope.custInfo = data.custs[0];
@@ -372,7 +379,8 @@ function s_customerCtrl($scope, $http,$routeParams){
         $scope.index = id;
         GetOwnerInfo(obd_code);
         $scope.driveDetail = $scope.drvInfos[id];
-        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.details.length== 0)

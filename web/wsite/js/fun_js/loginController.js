@@ -62,4 +62,8 @@ app.controller("loginCtrl", function($scope, $http){
             });
 
     }
+
+    $scope.loginEnter = function(e){
+        if(e.keyCode === 13) $scope.login();
+    }
 })

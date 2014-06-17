@@ -22,7 +22,7 @@ function customerCtrl($scope, $http){
     $scope.brand_id="";
     $scope.admin_phone="";
     $scope.admin_nick="";
-
+    $scope.short_name = "";
     //筛选框初始值 todo--要从数据库读出来
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}];
 
@@ -31,15 +31,15 @@ function customerCtrl($scope, $http){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $scope.randomTime = "&t="+new Date();
-       getAjaxLink(baseurl + 'cmpx/4s',$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+$scope.randomTime,"get",1);
+        $scope.randomTime = new Date();
+        getAjaxLink(baseurl + 'cmpx/4s?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime,"","get",1);
     }
-
+    //在访问之后对数据进行处理
     function getIndexData(id,data)
     {
       switch(id)
       {
-          case id: //获取4s店首页
+          case 1: //获取4s店首页
           if(data.status == "ok")
             {
                 if(data.s4s.length == 0)
@@ -57,13 +57,13 @@ function customerCtrl($scope, $http){
         case 2: //确认修改
             if(data.status == "ok")
             {
-                getAjaxLink(baseurl + '4s/'+$scope.id+'/staff/'+$scope.admin_id,$scope.postData1,"put",3)
+                getAjaxLink(baseurl + '4s/'+$scope.id+'/staff/'+$scope.admin_id,$scope.postData1,"put",3);
             }
             else{
                 alert(data.status);
             }
             break;
-          case 3: //确认修改2
+          case 3://确认修改2
               if(data.status == "ok")
               {
                   alert("修改成功");
@@ -72,26 +72,39 @@ function customerCtrl($scope, $http){
                   $scope.customerModifyDiv = false;
               }
               break;
+          case 4://确认添加
+              if(data.status == "ok")
+              {
+                  alert("添加成功");
+                  GetFirstPageInfo();
+                  $scope.customerListDiv = true;
+                  $scope.customerAddDiv = false;
+              }
+              else
+              {
+                  alert(data.status);
+              }
+              break;
       }
     }
-    //利用Ajax访问，并解决防盗链问题。
+
+    //利用$http封装访问，并解决防盗链问题。
     function getAjaxLink(url,query,type,id)
     {
-        if($.cookie("nick") != "")
+        if($.cookie("nick") != "" && $.cookie("nick") != null)
         {
-            $.ajax({
-                url: url,
-                type: type,
-                dataType: 'json',
-                data:query,
-                success: function(data){
-                    $scope.$apply(function () {
-                    getIndexData(id,data);
-                    });
-                },
-                error: function(data){
+            //通过AngularJS自带的http访问。
+            $http({ method: type, url: url, data:query}).success(function(data){
+                    if(data.status =="没有登录")
+                    {
+                        alert("登录已超时！");
+                        window.location="../login.html";
+                    }
+                    else{
+                         getIndexData(id,data);
+                    }
+            }). error(function(data){
                     alert("请求无响应");
-                }
             });
         }
         else{
@@ -109,6 +122,7 @@ function customerCtrl($scope, $http){
         $http.get(baseurl+'brand').success(function(data){
             $scope.carBrand = data.brands;
         });
+
     }
 
 
@@ -157,23 +171,10 @@ function customerCtrl($scope, $http){
 
         var sha1_password =hex_sha1($scope.password);//SHA1进行加密
         $scope.postData={"name":$scope.comName,"class":"4S","status":1,"city":$scope.city,"admin_pwd":sha1_password,
-                           "admin_name":$scope.account,"admin_nick":$scope.admin_nick,"admin_phone":$scope.admin_phone,"openid":$scope.openid,
-                           brand:$scope.brand_id};
-        $http.post(baseurl + 'cmpx/4s',$scope.postData).success(function(data){
-            if(data.status == "ok")
-            {
-                alert("添加成功");
-                GetFirstPageInfo();
-                $scope.customerListDiv = true;
-                $scope.customerAddDiv = false;
-            }
-            else
-            {
-                alert(data.status);
-            }
-        }).error(function(data){
-           alert("请求没响应");
-          })
+            "admin_name":$scope.account,"admin_nick":$scope.admin_nick,"admin_phone":$scope.admin_phone,"openid":$scope.openid,
+            brand:$scope.brand_id,short_name:$scope.short_name};
+        getAjaxLink(baseurl + 'cmpx/4s',$scope.postData,"post",4);
+
     }
 
     //返回按钮
@@ -195,41 +196,19 @@ function customerCtrl($scope, $http){
     //修改按钮
     $scope.modify = function(id){
         $scope.index = id;
-        $scope.customerListDiv = false;
-        $scope.customerModifyDiv = true;
         $scope.oneCustomerInfo = $scope.s4s[id];
         $scope.id = $scope.s4s[id].id;
         $scope.admin_id=$scope.s4s[id].admin_id;
+        $scope.customerListDiv = false;
+        $scope.customerModifyDiv = true;
     }
 
     //修改确认
     $scope.modifyConfirm = function(oneCustomerInfo){
        $scope.oneCustomerInfo = oneCustomerInfo;
-       $scope.postData={"name":$scope.oneCustomerInfo.name,"class":"4S","status":1,"openid":"","city":$scope.oneCustomerInfo.city,short_name:$scope.oneCustomerInfo.short_name};
+       $scope.postData={"name":$scope.oneCustomerInfo.name,"class":"4S","status":1,"openid":"","city":$scope.oneCustomerInfo.city,short_name:$scope.oneCustomerInfo.short_name,brand:$scope.oneCustomerInfo.brand};
        $scope.postData1={"nick":$scope.oneCustomerInfo.admin_nick,"phone":$scope.oneCustomerInfo.admin_phone};
        getAjaxLink(baseurl + '4s/'+$scope.id,$scope.postData,"put",2);
     }
 
-    //查看详情
-   $scope.findDetail = function(index)
-   {
-       $http.get(baseurl + 'organization/'+index+"/obd").success(function(data){
-           if(data.status == "ok")
-           {
-                if(data.devs.length == 0)
-                {
-                    alert("暂无行车数据");
-                }
-               else
-                {
-                   // alert(data.devs.length);
-                }
-           }
-           else{
-               alert(data.status);
-           }
-       }).error(function(data){
-             alert("请求没响应");
-       })
-   }
 }

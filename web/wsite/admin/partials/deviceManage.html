@@ -36,7 +36,7 @@
             <div class="control-group" >
                 <label class="control-label" style="margin-left:300px;">OBD编号：</label>
                 <div class="controls">
-                    <input type="text"  class="span11" disabled ng-model="deviceDetail.obdNum" style="width:200px;" />
+                    <input type="text"  class="span11" disabled ng-model="deviceDetail.obd_code" style="width:200px;" />
                 </div>
             </div>
             <div class="control-group" >
@@ -48,47 +48,47 @@
             <div class="control-group" >
                 <label class="control-label" style="margin-left:300px;">状态：</label>
                 <div class="controls">
-                    <input type="text" class="span11" disabled ng-model="deviceDetail.act_type" style="width:200px;" />
+                    <input type="text" class="span11" disabled ng-model="deviceDetail.act_type_name" style="width:200px;" />
                 </div>
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:300px;">车主：</label>
                 <div class="controls">
-                    <input type="text" class="span11" disabled ng-model="deviceDetail.nick"  style="width:200px;" />
+                    <input type="text" class="span11" disabled ng-model="deviceDetail.cust_name"  style="width:200px;" />
                 </div>
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:300px;">品牌：</label>
                 <div class="controls">
-                    <input type="text" class="span11" disabled ng-model="deviceDetail.brand"  style="width:200px;" />
+                    <input type="text" class="span11" disabled ng-model="deviceDetail.brand_name"  style="width:200px;" />
                 </div>
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:300px;">车款：</label>
                 <div class="controls">
-                    <input type="text" class="span11" disabled ng-model="deviceDetail.series" style="width:200px;"  />
+                    <input type="text" class="span11" disabled ng-model="deviceDetail.series_name" style="width:200px;"  />
                 </div>
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:300px;">所属4S店：</label>
                 <div class="controls">
-                    <input type="text" class="span11" disabled ng-model="deviceDetail.org_name" style="width:200px;"  />
+                    <input type="text" class="span11" disabled ng-model="deviceDetail.s4_name" style="width:200px;"  />
                 </div>
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:300px;">城市：</label>
                 <div class="controls">
-                    <input type="text" class="span11" disabled ng-model="deviceDetail.org_city" style="width:200px;" />
+                    <input type="text" class="span11" disabled ng-model="deviceDetail.s4_city" style="width:200px;" />
                 </div>
             </div>
             <div class="control-group" >
                 <label class="control-label" style="margin-left:300px;">联系电话：</label>
                 <div class="controls">
-                    <input type="text" class="span11" disabled ng-model="deviceDetail.phone" style="width:200px;"/>
+                    <input type="text" class="span11" disabled ng-model="deviceDetail.cust_phone" style="width:200px;"/>
                 </div>
             </div>
             <div class="form-actions">
-                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="ModifyConfrim(deviceDetail.sim_number,deviceDetail.obdNum);">确定</button>
+                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="ModifyConfrim(deviceDetail.sim_number,deviceDetail.obd_code);">确定</button>
                 <button type="button" class="btn btn-danger"   ng-click="gotoBack(2);">取消</button>
             </div>
         </form>

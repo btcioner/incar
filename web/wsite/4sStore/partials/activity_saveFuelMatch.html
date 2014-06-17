@@ -1,4 +1,4 @@
-<!--节油大赛列表 begin-->
+ <!--节油大赛列表 begin-->
 <div class="widget-box" ng-show="matchListDiv">
     <div class="widget-title">
         <span class="icon"><i class="icon-th"></i></span>
@@ -48,12 +48,12 @@
                 <td id="tdc">{{fm.tm_end}}</td>
                 <td id="tdc">{{fm.min_milage}}</td>
                 <td id="tdc">{{fm.status_name}}</td>
-                <td id="tdc" style="{{fm.tdStyle1}}">
+                <td id="tdc" ng-show="{{fm.tdStyle1}}">
                       <a class="btn btn-primary btn-mini" ng-click="preview(fm.id,$index);">预览</a>
                       <a class="btn btn-info btn-mini" ng-click="manager(fm.id,$index,fm.status);">修改</a>
                       <a class="btn btn-danger btn-mini"   ng-click="cancelMatch(fm.id,$index);">删除</a>
                 </td>
-                <td id="tdc" style="{{fm.tdStyle2}}">
+                <td id="tdc" ng-show="{{fm.tdStyle2}}">
                     <a class="btn btn-primary btn-mini" ng-click="preview(fm.id,$index);">查看</a>
                     <a class="btn btn-info btn-mini" ng-click="manager(fm.id,$index,fm.status);">管理</a>
                 </td>
