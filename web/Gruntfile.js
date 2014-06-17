@@ -71,6 +71,9 @@ module.exports = function (grunt) {
     },
 
     less:{
+        options:{
+            paths: ['msite/mstyles']
+        },
         msite_bootstrap : {
             files: { 'msite/mstyles/bootstrap.css': 'msite/mstyles/bootstrap.less' }
         }
