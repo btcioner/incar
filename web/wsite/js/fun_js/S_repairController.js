@@ -18,7 +18,8 @@ function s_repairCtrl($scope, $http,$routeParams){
         var queryStr = "";
         $scope.tips="";
         if(str!="") queryStr="&step="+str;
-        $http.get(baseurl+'4s/'+$.cookie("s4_id")+'/drivetry?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+queryStr).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl+'4s/'+$.cookie("s4_id")+'/drivetry?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+queryStr+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.tries.length == 0)

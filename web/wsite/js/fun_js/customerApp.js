@@ -92,7 +92,8 @@ angular.module("SCustomerApp", [
         getAllTags();
         function getAllTags()
         {
-            $http.get("/tag/tagListSystem/"+ $.cookie("brand_id")).success(function(data){
+            $scope.randomTime = new Date();
+            $http.get("/tag/tagListSystem/"+ $.cookie("brand_id")+"?t="+$scope.randomTime).success(function(data){
                 $scope.tagsGroup = data;
                 for(var i=0;i<$scope.tagsGroup.length;i++)
                 {
@@ -107,7 +108,7 @@ angular.module("SCustomerApp", [
                     alert("请求无响应");
             });
            //获取自定义标签
-            $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")).success(function(data){
+            $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")+"?t="+$scope.randomTime).success(function(data){
                 $scope.customTags = data.data;
             }).error(function(data){
                     alert("请求无响应");
@@ -118,7 +119,8 @@ angular.module("SCustomerApp", [
 function s_statisticsCtrl($scope,$http)
 {
     $scope.countDiv = true;
-    $http.get(baseurl+'cmpx/carowner?page=1&pagesize=1&org_id='+ $.cookie("s4_id")).success(function(data){
+    $scope.randomTime = new Date();
+    $http.get(baseurl+'cmpx/carowner?page=1&pagesize=1&org_id='+ $.cookie("s4_id")+"&t"+$scope.randomTime).success(function(data){
         $scope.carOwnerCount = data.totalCount;
     })
 }

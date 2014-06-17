@@ -37,13 +37,13 @@
                 <td id="tdc">{{al.tm_created}}</td>
                 <td id="tdc">{{al.tm_announce}}</td>
                 <td id="tdc">{{al.status_name}}</td>
-                <td id="tdc" style="{{al.tdStyle1}}">
+                <td id="tdc" ng-show="{{al.tdStyle1}}">
                     <a class="btn btn-primary btn-mini" ng-click="preview($index);">预览</a>
                     <a class="btn btn-info btn-mini" ng-click="modify($index);">修改</a>
                     <a class="btn btn-success btn-mini" ng-click="publishConfirm(al.id);">发布</a>
                     <a class="btn btn-danger btn-mini" ng-click="cancelNews(al.id,$index);">删除</a>
                 </td>
-                <td id="tdc" style="{{al.tdStyle2}}">
+                <td id="tdc" ng-show="{{al.tdStyle2}}">
                     <a class="btn btn-primary btn-mini" ng-click="preview(1);">查看</a>
                 </td>
             </tr>
@@ -80,9 +80,9 @@
                 <div class="controls">
                     <input type="file" id="edit_pro_img" name="edit_pro_img"  ng-model="logo_url"  onchange="changeImg(this,'edit_pro_img','formId_edit2','preview','imghead')"/>
                 </div>
-                <div style="margin-left:280px;"> </div>
+                <div style="margin-left:280px;"></div>
                 <div style="margin-left:280px;" style="float: left;" id="preview">
-                    <img src="../../data/200x200.jpg" id="imghead" style="width:100px;height:100px;" />
+                    <img src="../../data/200x200.jpg" id="imghead" style="width:150px;height:150px;" />
                 </div>
             </div>
             <div class="control-group" >

@@ -2,7 +2,7 @@
  * Created by 003383 on 14-2-27.
  */
 
-
+//保养提醒
 function  s_maintainCtrl($scope, $http,$routeParams){
     $scope.maintainListDiv = true;
     $scope.applyOperDiv = false;
@@ -16,8 +16,9 @@ function  s_maintainCtrl($scope, $http,$routeParams){
     function GetFirstPageInfo()
     {
         $scope.tips="";
+        $scope.randomTime = new Date();
         $http.get(
-            baseurl+'organization/'+$.cookie("s4_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord
+            baseurl+'organization/'+$.cookie("s4_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime
         ).success(function(data){
             if(data.status=="ok")
             {
@@ -202,7 +203,7 @@ function  s_maintainCtrl($scope, $http,$routeParams){
             case 2://已拒绝
                 changeView(3);
                 $scope.tips="";
-                $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord)
+                $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+randomTime)
                     .success(function(data){
                         if(data.status=="ok")
                         {

@@ -31,8 +31,8 @@ function customerCtrl($scope, $http){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $scope.randomTime = "&t="+new Date();
-        getAjaxLink(baseurl + 'cmpx/4s?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+$scope.randomTime,"","get",1);
+        $scope.randomTime = new Date();
+        getAjaxLink(baseurl + 'cmpx/4s?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime,"","get",1);
     }
     //在访问之后对数据进行处理
     function getIndexData(id,data)

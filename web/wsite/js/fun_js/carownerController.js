@@ -179,8 +179,8 @@ function carOwnersCtrl($scope, $http){
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
     {
-        var randomTime = new Date();//防止浏览器缓存，加上随机时间。
-        $http.get(baseurl + 'obd/'+obd_code+"?t="+randomTime).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl + 'obd/'+obd_code+"?t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 $scope.deviceDetail = data.car;
@@ -200,7 +200,8 @@ function carOwnersCtrl($scope, $http){
     {
         $scope.choosedOC = obd_code;
         GetOwnerInfo(obd_code);
-        $http.get(baseurl + 'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord +'&obd_code='+obd_code)
+        $scope.randomTime = new Date();
+        $http.get(baseurl + 'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord +'&obd_code='+obd_code+"&t="+$scope.randomTime)
             .success(function(data){
                 if(data.status == "ok")
                 {
@@ -239,7 +240,8 @@ function carOwnersCtrl($scope, $http){
         $scope.index = id;
         GetOwnerInfo(obd_code);
         $scope.driveDetail = $scope.drvInfos[id];
-        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.details.length== 0)

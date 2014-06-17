@@ -2,7 +2,7 @@
  * Created by Liz on 14-04-08.
  */
 
-//资讯活动
+//资讯信息
  function s_activityCtrl($scope, $http){
     $scope.newsListDiv = true;
     $scope.newsAddDiv = false;
@@ -25,7 +25,8 @@
         function GetFirstPageInfo()
         {
             $scope.tips="";
-            $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/2/activity?page="+$scope.currentPage+"&pagesize="+$scope.pageRecord+$scope.queryString).success(function(data){
+            $scope.randomTime = new Date();
+            $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/2/activity?page="+$scope.currentPage+"&pagesize="+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
                 if(data.status == "ok")
                 {
                     if(data.activities.length ==0)
@@ -37,12 +38,12 @@
                         {
                             if(data.activities[i].status == "1")
                             {
-                                data.activities[i].tdStyle1 = "display:block";
-                                data.activities[i].tdStyle2 = "display:none";
+                                data.activities[i].tdStyle1 = true;
+                                data.activities[i].tdStyle2 = false;
                             }
                             else{
-                                data.activities[i].tdStyle1 = "display:none";
-                                data.activities[i].tdStyle2 = "display:block";
+                                data.activities[i].tdStyle1 = false;
+                                data.activities[i].tdStyle2 = true;
                             }
                         }
                     }
@@ -105,7 +106,8 @@
         function getAllTags(tags)
         {
             var tagArr = tags.split(",");
-            $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/"+ $.cookie("brand_id")).success(function(data){
+            $scope.randomTime = new Date();
+            $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/"+ $.cookie("brand_id")+"?t="+$scope.randomTime).success(function(data){
 
                 $scope.tagsGroup = data;
                 for(var i=0;i<$scope.tagsGroup.length;i++)
@@ -316,97 +318,3 @@
     }
 }
 
-function changeImg(file,plugId,formId,preId,imgId)
-{
-    var filepath = $("#"+plugId).val();
-    var extStart=filepath.lastIndexOf(".");
-    var ext=filepath.substring(extStart,filepath.length).toUpperCase();
-    if(ext!=".BMP"&&ext!=".PNG"&&ext!=".JPG"&&ext!=".JPEG"){
-        alert("图片限于bmp,png,jpeg,jpg格式");
-        $("#"+plugId).val("");
-    }
-    else{
-        var MAXWIDTH  = 260;
-        var MAXHEIGHT = 180;
-        var div = document.getElementById(preId);
-        if (file.files && file.files[0])
-        {
-            div.innerHTML ='<img id='+imgId+'>';
-
-            var img = document.getElementById(imgId);
-
-            img.onload = function(){
-                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
-
-                img.width  =  rect.width;
-
-                img.height =  rect.height;
-
-//                 img.style.marginLeft = rect.left+'px';
-
-                img.style.marginTop = rect.top+'px';
-            }
-            var reader = new FileReader();
-
-            reader.onload = function(evt){img.src = evt.target.result;}
-
-            reader.readAsDataURL(file.files[0]);
-        }
-        else //兼容IE
-        {
-            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
-
-            file.select();
-
-            var src = document.selection.createRange().text;
-
-            div.innerHTML = '<img id='+imgId+'>';
-
-            var img = document.getElementById(imgId);
-
-            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
-
-            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
-
-            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
-
-            div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
-
-        }
-    }
-
-    $("#"+formId).submit();
-
-}
-function clacImgZoomParam( maxWidth, maxHeight, width, height ){
-
-    var param = {top:0, left:0, width:width, height:height};
-
-    if( width>maxWidth || height>maxHeight )
-    {
-        rateWidth = width / maxWidth;
-        rateHeight = height / maxHeight;
-        if( rateWidth > rateHeight )
-        {
-            param.width =  maxWidth;
-
-            param.height = Math.round(height / rateWidth);
-        }else
-
-        {
-            param.width = Math.round(width / rateHeight);
-            param.height = maxHeight;
-        }
-    }
-
-
-    //   param.left = Math.round((maxWidth - param.width) / 2);
-
-    // param.top = Math.round((maxHeight - param.height) / 2);
-    param.width = 150;
-    param.height = 150;
-    param.left = 0;
-    param.top = 0;
-    return param;
-
-}

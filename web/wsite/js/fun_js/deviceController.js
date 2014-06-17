@@ -53,8 +53,8 @@ function deviceCtrl($scope, $http)
     {
          $scope.tips="";
          if(!flag) $scope.changeId = 1;
-         $scope.randomTime = "&t="+new Date();
-         getAjaxLink(baseurl+'obd?page='+$scope.currentPage+'&pagesize='+ $scope.pageRecord+$scope.queryString+$scope.randomTime,"","get",1);
+        $scope.randomTime = new Date();
+         getAjaxLink(baseurl+'obd?page='+$scope.currentPage+'&pagesize='+ $scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime,"","get",1);
 //         $http.get(baseurl+'obd?page='+$scope.currentPage+'&pagesize='+ $scope.pageRecord+$scope.queryString+$scope.randomTime).success(function(data){
 //
 //          }).error(function(data){
@@ -126,8 +126,8 @@ function deviceCtrl($scope, $http)
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
     {
-        var randomTime = new Date();//防止浏览器缓存，加上随机时间。
-        getAjaxLink(baseurl + 'obd/'+obd_code+"?t="+randomTime,"","get",3);
+        $scope.randomTime = new Date();
+        getAjaxLink(baseurl + 'obd/'+obd_code+"?t="+$scope.randomTime,"","get",3);
 //        $http.get(baseurl + 'obd/'+obd_code+"?t="+randomTime).success(function(data){
 //
 //        }).error(function(data){
@@ -142,7 +142,8 @@ function deviceCtrl($scope, $http)
         $scope.choosedOC = obd_code;
         $scope.postData = {code:obd_code};
         GetOwnerInfo(obd_code);
-        getAjaxLink(baseurl + 'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord +'&obd_code='+obd_code,$scope.postData,"get",4);
+        $scope.randomTime = new Date();
+        getAjaxLink(baseurl + 'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord +'&obd_code='+obd_code+"&t="+$scope.randomTime,$scope.postData,"get",4);
 //        $http.get(baseurl + 'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord +'&obd_code='+obd_code,$scope.postData)
 //          .success(function(data){
 //        }).error(function(data){
@@ -159,7 +160,8 @@ function deviceCtrl($scope, $http)
         //$scope.postData = {code:obd_code,drive_id:drive_id};
         GetOwnerInfo(obd_code);
         $scope.driveDetail = $scope.drvInfos[id];
-        getAjaxLink(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord,"","get",5);
+        $scope.randomTime = new Date();
+        getAjaxLink(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime,"","get",5);
 //        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
 //
 //        }).error(function(data){

@@ -29,7 +29,8 @@ function driveDataCtrl($scope, $http){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        getAjaxLink(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString,"","get",1);
+        $scope.randomTime = new Date();
+        getAjaxLink(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime,"","get",1);
 //        $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
 //
 //        }).error(function(data){
@@ -106,8 +107,8 @@ function driveDataCtrl($scope, $http){
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
     {
-        var randomTime = new Date();//防止浏览器缓存，加上随机时间。
-        $http.get(baseurl + 'obd/'+obd_code+"?t="+randomTime).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl + 'obd/'+obd_code+"?t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 $scope.deviceDetail = data.car;
@@ -130,13 +131,16 @@ function driveDataCtrl($scope, $http){
         $scope.index = id;
       //  $scope.postData = {code:obd_code,drive_id:drive_id};
         GetOwnerInfo(obd_code);
+        $scope.tips = "";
         $scope.driveDetail = $scope.drvInfos[id];
-        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.details.length== 0)
                 {
-                    alert("暂无行程数据");
+//                    alert("暂无行程数据");
+                      $scope.tips="暂无行程数据";
                 }
                 else{
                    // $.changeContentHeight("630px");
@@ -144,11 +148,11 @@ function driveDataCtrl($scope, $http){
                     {
                         data.details[i].createTime = $.changeDate(data.details[i].createTime);
                     }
-                    $scope.driveDiv = false;
-                    $scope.oneDetailDiv = true;
-                    $scope.details = data.details;
-                    PagingInfo(data.totalCount);
                 }
+                $scope.driveDiv = false;
+                $scope.oneDetailDiv = true;
+                $scope.details = data.details;
+                PagingInfo(data.totalCount);
             }
             else
             {

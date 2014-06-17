@@ -33,7 +33,8 @@ angular.module("DriveDataApp", [])
         function GetFirstPageInfo()
         {
             $scope.tips="";
-            $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+            $scope.randomTime = new Date();
+            $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
                 if(data.status == "ok")
                 {
                     if(data.drvInfos.length == 0)
@@ -101,11 +102,12 @@ angular.module("DriveDataApp", [])
         //get owner and car info  缺少所属4s店
         function GetOwnerInfo(obd_code)
         {
-            $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car?obd_code='+obd_code).success(function(data){
+            $scope.randomTime = new Date();
+            $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car?obd_code='+obd_code+"&t="+$scope.randomTime).success(function(data){
                 if(data.status == "ok")
                 {
                   $scope.carInfo = data.cars[0];
-                    $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car/'+$scope.carInfo.id+'/cust?obd_code='+obd_code).success(function(data){
+                    $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car/'+$scope.carInfo.id+'/cust?obd_code='+obd_code+"&t="+$scope.randomTime).success(function(data){
                       if(data.status=="ok")
                       {
                          $scope.custInfo = data.custs[0];
@@ -147,7 +149,8 @@ angular.module("DriveDataApp", [])
             //  $scope.postData = {code:obd_code,drive_id:drive_id};
             GetOwnerInfo(obd_code);
             $scope.driveDetail = $scope.drvInfos[id];
-            $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+            $scope.randomTime = new Date();
+            $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime).success(function(data){
                 if(data.status == "ok")
                 {
                     if(data.details.length== 0)

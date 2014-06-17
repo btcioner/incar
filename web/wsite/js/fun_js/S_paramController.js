@@ -27,7 +27,8 @@ function s_paramCtrl($scope, $http){
         {
             $scope.queryStr='?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord
         }
-        getAjaxLink(baseurl+'brand/'+bid+'/series'+$scope.queryStr,"","get",1);
+        $scope.randomTime = new Date();
+        getAjaxLink(baseurl+'brand/'+bid+'/series'+$scope.queryStr+"&t="+$scope.randomTime,"","get",1);
 //        $http.get(baseurl+'brand/'+bid+'/series'+$scope.queryStr).success(function(data){
 //
 //        }).error(function(data){

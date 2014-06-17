@@ -40,7 +40,8 @@ function s_fuelMatchCtrl($scope,$http)
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity?page="+$scope.currentPage+"&pagesize="+$scope.pageRecord+$scope.queryString).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity?page="+$scope.currentPage+"&pagesize="+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.activities.length ==0)
@@ -52,12 +53,12 @@ function s_fuelMatchCtrl($scope,$http)
                     {
                         if(data.activities[i].status == "1")
                         {
-                            data.activities[i].tdStyle1 = "display:block";
-                            data.activities[i].tdStyle2 = "display:none";
+                            data.activities[i].tdStyle1 = true;
+                            data.activities[i].tdStyle2 = false;
                         }
                         else{
-                            data.activities[i].tdStyle1 = "display:none";
-                            data.activities[i].tdStyle2 = "display:block";
+                            data.activities[i].tdStyle1 = false;
+                            data.activities[i].tdStyle2 = true;
                         }
                     }
                 }
@@ -168,7 +169,8 @@ function s_fuelMatchCtrl($scope,$http)
     function getAllTags(tags)
     {
         var tagArr = tags.split(",");
-        $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/"+ $.cookie("brand_id")).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/"+ $.cookie("brand_id")+"?t="+$scope.randomTime).success(function(data){
 
             $scope.tagsGroup = data;
             for(var i=0;i<$scope.tagsGroup.length;i++)
@@ -322,7 +324,8 @@ function s_fuelMatchCtrl($scope,$http)
     //获取车系
     function getSeries()
     {
-        $http.get(baseurl+'4s/'+ $.cookie("s4_id")+'/activity/'+$scope.fuleMatchDetail.id+'/s_p').success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl+'4s/'+ $.cookie("s4_id")+'/activity/'+$scope.fuleMatchDetail.id+'/s_p'+"?t="+$scope.randomTime).success(function(data){
             $scope.s_p = data.s_p;
         });
     }
@@ -347,7 +350,8 @@ function s_fuelMatchCtrl($scope,$http)
                 break;
 
         }
-        $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+ $scope.fuleMatchDetail.id+"/cust?page="+$scope.currentPage_var+"&pagesize="+$scope.pageRecord+queryString+$scope.queryString).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+ $scope.fuleMatchDetail.id+"/cust?page="+$scope.currentPage_var+"&pagesize="+$scope.pageRecord+queryString+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.members.length == 0)
@@ -524,7 +528,8 @@ function s_fuelMatchCtrl($scope,$http)
                 break;
             case 6:
                 getCustomTagList();
-                $http.get('/tag/getTagsByCarId/'+$scope.cusDetail.carId).success(function(data){
+                $scope.randomTime = new Date();
+                $http.get('/tag/getTagsByCarId/'+$scope.cusDetail.carId+"?t="+$scope.randomTime).success(function(data){
                     $scope.systemTag = data.systemTag;
                     $scope.customTag = data.customTag;
                     for(var i=0;i<$scope.customTags.length;i++)
@@ -550,7 +555,8 @@ function s_fuelMatchCtrl($scope,$http)
     {
         $scope.tips="";
         $scope.queryString="&org_id="+ $.cookie("s4_id")+"&obd_code="+$scope.cusDetail.obd_code;
-        $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.drvInfos.length == 0)
@@ -579,11 +585,12 @@ function s_fuelMatchCtrl($scope,$http)
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
     {
-        $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car?obd_code='+obd_code).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car?obd_code='+obd_code+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 $scope.carInfo = data.cars[0];
-                $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car/'+$scope.carInfo.id+'/cust?obd_code='+obd_code).success(function(data){
+                $http.get(baseurl + '4s/'+$.cookie("s4_id")+'/car/'+$scope.carInfo.id+'/cust?obd_code='+obd_code+"&t="+$scope.randomTime).success(function(data){
                     if(data.status=="ok")
                     {
                         $scope.custInfo = data.custs[0];
@@ -609,7 +616,8 @@ function s_fuelMatchCtrl($scope,$http)
         $scope.index = id;
         GetOwnerInfo(obd_code);
         $scope.driveDetail = $scope.drvInfos[id];
-        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.details.length== 0)
@@ -662,7 +670,8 @@ function s_fuelMatchCtrl($scope,$http)
     function getReservationRecord()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.carId).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.carId+"&t="+$scope.randomTime).success(function(data){
             $scope.careList = data.works;
             PagingInfo(data.totalCount);
             if(data.works.length > 0)
@@ -687,7 +696,8 @@ function s_fuelMatchCtrl($scope,$http)
     function getCareRecord()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.carId).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.carId+"&t="+$scope.randomTime).success(function(data){
             $scope.recordList = data.records;
             PagingInfo(data.totalCount);
             if(data.records.length > 0)
@@ -723,7 +733,8 @@ function s_fuelMatchCtrl($scope,$http)
     function getCustomTagList()
     {
         $scope.tips="";
-        $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")+"?t="+$scope.randomTime).success(function(data){
             $scope.customTags = data[0].tags;
             PagingInfo( $scope.customTags.length);
         }).error(function(data){
@@ -817,99 +828,4 @@ function s_fuelMatchCtrl($scope,$http)
             }
         }
     }
-}
-
-//预览图片
-function changeImg(file,plugId,formId,preId,imgId)
-{
-    var filepath = $("#"+plugId).val();
-    var extStart=filepath.lastIndexOf(".");
-    var ext=filepath.substring(extStart,filepath.length).toUpperCase();
-    if(ext!=".BMP"&&ext!=".PNG"&&ext!=".JPG"&&ext!=".JPEG"){
-        alert("图片限于bmp,png,jpeg,jpg格式");
-        $("#"+plugId).val("");
-    }
-    else{
-        var MAXWIDTH  = 260;
-        var MAXHEIGHT = 180;
-        var div = document.getElementById(preId);
-        if (file.files && file.files[0])
-        {
-            div.innerHTML ='<img id='+imgId+'>';
-
-            var img = document.getElementById(imgId);
-
-            img.onload = function(){
-                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
-
-                img.width  =  rect.width;
-
-                img.height =  rect.height;
-
-//                 img.style.marginLeft = rect.left+'px';
-
-                img.style.marginTop = rect.top+'px';
-            }
-            var reader = new FileReader();
-
-            reader.onload = function(evt){img.src = evt.target.result;}
-
-            reader.readAsDataURL(file.files[0]);
-        }
-        else //兼容IE
-        {
-            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
-
-            file.select();
-
-            var src = document.selection.createRange().text;
-
-            div.innerHTML = '<img id='+imgId+'>';
-
-            var img = document.getElementById(imgId);
-
-            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
-
-            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
-
-            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
-
-            div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
-
-        }
-    }
-
-    $("#"+formId).submit();
-
-}
-function clacImgZoomParam( maxWidth, maxHeight, width, height ){
-
-    var param = {top:0, left:0, width:width, height:height};
-
-    if( width>maxWidth || height>maxHeight )
-    {
-        rateWidth = width / maxWidth;
-        rateHeight = height / maxHeight;
-        if( rateWidth > rateHeight )
-        {
-            param.width =  maxWidth;
-            param.height = Math.round(height / rateWidth);
-        }else
-
-        {
-            param.width = Math.round(width / rateHeight);
-            param.height = maxHeight;
-        }
-    }
-
-
-    //   param.left = Math.round((maxWidth - param.width) / 2);
-
-    // param.top = Math.round((maxHeight - param.height) / 2);
-    param.width = 150;
-    param.height = 150;
-    param.left = 0;
-    param.top = 0;
-    return param;
-
 }
