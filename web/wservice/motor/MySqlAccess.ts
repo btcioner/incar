@@ -15,13 +15,33 @@ module Service{
                     poolInCar.queryRawFn = poolInCar.query;
 
                     poolInCar.query = (sql, args, cb)=>{
-                        var snSQL = (poolInCar.TraceCount++);
-                        var tmA = new Date();
-                        TraceSQL(sql, args, snSQL, tmA);
+                        var pack = {
+                            bTraceOutSQL : false,
+                            snSQL : (poolInCar.TraceCount++),
+                            tmA : new Date()
+                        };
+                        setTimeout(()=>{
+                            // 如果1000毫秒内没有输出SQL语句,那么立即输出SQL语句
+                            if(!pack.bTraceOutSQL){
+                                TraceSQL(sql, args, pack.snSQL, pack.tmA);
+                                pack.bTraceOutSQL = true;
+                            }
+                        }, 1000);
                         poolInCar.queryRawFn(sql, args, (ex, result)=>{
                             var tmB = new Date();
-                            TraceTime(snSQL, tmB.getTime() - tmA.getTime());
-                            if(ex) console.info(">>>>> SQL#%d \033[31m%s\033[0m", snSQL, ex.message);
+                            if(pack.bTraceOutSQL){
+                                // 如果已经输出了SQL语句,那么只需再输出耗时即可
+                                TraceTime(pack.snSQL, tmB.getTime() - pack.tmA.getTime(), result);
+                            }
+                            else{
+                                // 如果尚未输出SQL语句,那么输出全部
+                                TraceSQL(sql, args, pack.snSQL, pack.tmA, tmB, result);
+                                pack.bTraceOutSQL = true;
+                            }
+
+                            // 如果出错,那么输出错误
+                            if(ex) console.info(">>>>> SQL#%d \033[31m%s\033[0m", pack.snSQL, ex.message);
+                            // 传递原始回调
                             cb(ex, result);
                         });
                     };
@@ -32,18 +52,40 @@ module Service{
         }
 
         // 调试用
-        export function TraceSQL(sql:string, args:any, sn:number, tmStart:Date):string{
+        export function TraceSQL(sql:string, args:any, sn:number, tmStart:Date, tmEnd?:Date, result?:any):string{
             var sqlfull = mysql.format(sql, args);
             var strTM = util.format("%s-%s-%s %s:%s:%s",
                 tmStart.getFullYear(), tmStart.getMonth(), tmStart.getDate(),
                 tmStart.getHours(), tmStart.getMinutes(), tmStart.getSeconds());
-            console.info(">>>>> SQL#%d \033[32m%s\033[0m > \033[33m%s\033[0m", sn, strTM, sqlfull);
+            if(tmEnd){
+                var tmSpan = tmEnd.getTime() - tmStart.getTime();
+                var affected = 0;
+                var strAffected = "\033[32m";
+                if(result){
+                    if(result.affectedRows) affected = result.affectedRows;
+                    else if(result.length) affected = result.length;
+                    if(affected > 1) strAffected += affected + "\033[0mrows";
+                    else strAffected += affected + "\033[0mrow";
+                }
+                console.info(">>>>> SQL#%d \033[32m%s %d\033[0mms %s> \033[33m%s\033[0m", sn, strTM, tmSpan, strAffected, sqlfull);
+            }
+            else {
+                console.info(">>>>> SQL#%d \033[32m%s\033[0m > \033[33m%s\033[0m", sn, strTM, sqlfull);
+            }
             return sqlfull;
         }
 
         // 调试用
-        export function TraceTime(sn:number, tmSpan:number):void{
-            console.info(">>>>> SQL#%d \033[32m%d\033[0mms", sn, tmSpan);
+        export function TraceTime(sn:number, tmSpan:number, result:any):void{
+            var affected = 0;
+            var strAffected = "\033[32m";
+            if(result){
+                if(result.affectedRows) affected = result.affectedRows;
+                else if(result.length) affected = result.length;
+                if(affected > 1) strAffected += affected + "\033[0mrows";
+                else strAffected += affected + "\033[0mrow";
+            }
+            console.info(">>>>> SQL#%d \033[32m%d\033[0mms > %s", sn, tmSpan, strAffected);
         }
 
         // 存储一系列id到一个临时表中

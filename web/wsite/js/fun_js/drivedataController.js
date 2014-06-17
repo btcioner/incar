@@ -29,29 +29,14 @@ function driveDataCtrl($scope, $http){
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
-            if(data.status == "ok")
-            {
-                if(data.drvInfos.length == 0)
-                {
-                    $scope.tips="暂无数据！";
-                }
-                $scope.drvInfos = data.drvInfos;
-                for(var i=0;i<data.drvInfos.length;i++)
-                {
-                    $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
-                    $scope.drvInfos[i].fireTime = $.changeDate($scope.drvInfos[i].fireTime);
-                    $scope.drvInfos[i].flameOutTime = $.changeDate($scope.drvInfos[i].flameOutTime);
-                }
-                PagingInfo(data.totalCount);
-            }
-            else
-            {
-                alert(data.status);
-            }
-        }).error(function(data){
-                alert("请求无响应");
-        })
+        $scope.randomTime = new Date();
+        getAjaxLink(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime,"","get",1);
+//        $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString).success(function(data){
+//
+//        }).error(function(data){
+//                alert("请求无响应");
+//        })
+
         $http.get(baseurl+'brand').success(function(data){
         //    $scope.carBrand0 =[{brand:"请选择",brandCode:""},{brand:"所有",brandCode:""}]
             $scope.carBrand1 = data.brands;
@@ -122,8 +107,8 @@ function driveDataCtrl($scope, $http){
     //get owner and car info  缺少所属4s店
     function GetOwnerInfo(obd_code)
     {
-        var randomTime = new Date();//防止浏览器缓存，加上随机时间。
-        $http.get(baseurl + 'obd/'+obd_code+"?t="+randomTime).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl + 'obd/'+obd_code+"?t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 $scope.deviceDetail = data.car;
@@ -146,13 +131,16 @@ function driveDataCtrl($scope, $http){
         $scope.index = id;
       //  $scope.postData = {code:obd_code,drive_id:drive_id};
         GetOwnerInfo(obd_code);
+        $scope.tips = "";
         $scope.driveDetail = $scope.drvInfos[id];
-        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl + 'cmpx/drive_detail/'+obd_code+'/'+drive_id+'?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.details.length== 0)
                 {
-                    alert("暂无行程数据");
+//                    alert("暂无行程数据");
+                      $scope.tips="暂无行程数据";
                 }
                 else{
                    // $.changeContentHeight("630px");
@@ -160,11 +148,11 @@ function driveDataCtrl($scope, $http){
                     {
                         data.details[i].createTime = $.changeDate(data.details[i].createTime);
                     }
-                    $scope.driveDiv = false;
-                    $scope.oneDetailDiv = true;
-                    $scope.details = data.details;
-                    PagingInfo(data.totalCount);
                 }
+                $scope.driveDiv = false;
+                $scope.oneDetailDiv = true;
+                $scope.details = data.details;
+                PagingInfo(data.totalCount);
             }
             else
             {
@@ -173,7 +161,60 @@ function driveDataCtrl($scope, $http){
         }).error(function(data){
                 alert("请求无响应");
          });
+    }
 
+    //利用$http封装访问，并解决防盗链问题。
+    function getAjaxLink(url,query,type,id)
+    {
+        if($.cookie("nick") != "" && $.cookie("nick") != null)
+        {
+            //通过AngularJS自带的http访问。
+            $http({ method: type, url: url, data:query}).success(function(data){
+                if(data.status =="没有登录")
+                {
+                    alert("登录已超时！");
+                    window.location="../login.html";
+                }
+                else{
+                    getIndexData(id,data);
+                }
+            }). error(function(data){
+                    alert("请求无响应");
+                });
+        }
+        else{
+            alert("登录已超时！");
+            window.location="../login.html";
+        }
+    }
+
+    //在访问之后对数据进行处理
+    function getIndexData(id,data)
+    {
+        switch(id)
+        {
+            case 1:
+                if(data.status == "ok")
+                {
+                    if(data.drvInfos.length == 0)
+                    {
+                        $scope.tips="暂无数据！";
+                    }
+                    $scope.drvInfos = data.drvInfos;
+                    for(var i=0;i<data.drvInfos.length;i++)
+                    {
+                        $scope.drvInfos[i].carStatus = $.changeCarStatus( $scope.drvInfos[i].carStatus);
+                        $scope.drvInfos[i].fireTime = $.changeDate($scope.drvInfos[i].fireTime);
+                        $scope.drvInfos[i].flameOutTime = $.changeDate($scope.drvInfos[i].flameOutTime);
+                    }
+                    PagingInfo(data.totalCount);
+                }
+                else
+                {
+                    alert(data.status);
+                }
+                break;
+        }
     }
 
 

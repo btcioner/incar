@@ -1,6 +1,7 @@
 /**
  * Created by Liz on 14-2-27.
  */
+   //保养预约
    function s_reservationCtrl($scope, $http,$routeParams){
 
     $scope.reservationDiv = true;
@@ -25,7 +26,7 @@
     $scope.carBrand=[{id:"zero",name:"请选择"},{id:0,name:"丰田/TOYOTA"},{id:1,name:"本田/Honda"},{id:2,name:"日产/NISSAN"},{id:3,name:"三菱/MITSUBISHIMOTORS"}];
     $scope.carSeries=[{id:0,name:"请选择"}];
 
-    $scope.randomTime = new Date();
+
     if($routeParams.id!=null)
     {
         if($routeParams.id==1) GetFirstPageInfo("applied");
@@ -40,7 +41,8 @@
         var queryStr = "";
         $scope.tips="";
         if(str!="") queryStr="&step="+str;
-        $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+queryStr+$scope.queryString).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+queryStr+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             $scope.careList = data.works;
             PagingInfo(data.totalCount);
             if(data.works.length > 0)

@@ -23,41 +23,12 @@ function userManageCtrl($scope, $http){
     {
         $scope.tips="";
         $scope.randomTime = "&t="+new Date();
-        $http.get(baseurl+'staff?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.randomTime).success(function(data){
-            if(data.status == "ok")
-            {
-                if(data.staffs.length == 0)
-                {
-                    $scope.tips="暂无数据！";
-                }
-                for(var i = 0;i<data.staffs.length;i++ )
-                {
-
-                    data.staffs[i].last_login_time= $.changeDate(data.staffs[i].last_login_time);
-
-                    if(data.staffs[i].status == 0)
-                    {
-                        data.staffs[i]["class"] = "btn btn-info btn-mini";
-                        data.staffs[i].text = "解冻";
-                        data.staffs[i].status="冻结";
-                    };
-                    if(data.staffs[i].status == 1){
-                        data.staffs[i]["class"] = "btn btn-warning btn-mini";
-                        data.staffs[i].text = "冻结";
-                        data.staffs[i].status="正常";
-                    }
-
-                }
-                $scope.accounts = data.staffs;
-                PagingInfo(data.staffs.length);
-            }
-            else
-            {
-                alert(data.status);
-            }
-        }).error(function(data){
-                alert("请求无响应");
-        })
+        getAjaxLink(baseurl+'staff?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.randomTime,"","get",1);
+//        $http.get(baseurl+'staff?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.randomTime).success(function(data){
+//
+//        }).error(function(data){
+//                alert("请求无响应");
+//        })
     }
 
     //get paging param info
@@ -202,6 +173,72 @@ function userManageCtrl($scope, $http){
                         alert("请求没响应");
                     });
             }
+        }
+    }
+
+    //利用$http封装访问，并解决防盗链问题。
+    function getAjaxLink(url,query,type,id)
+    {
+        if($.cookie("nick") != "" && $.cookie("nick") != null)
+        {
+            //通过AngularJS自带的http访问。
+            $http({ method: type, url: url, data:query}).success(function(data){
+                if(data.status =="没有登录")
+                {
+                    alert("登录已超时！");
+                    window.location="../login.html";
+                }
+                else{
+                    getIndexData(id,data);
+                }
+            }). error(function(data){
+                    alert("请求无响应");
+                });
+        }
+        else{
+            alert("登录已超时！");
+            window.location="../login.html";
+        }
+    }
+
+    //在访问之后对数据进行处理
+    function getIndexData(id,data)
+    {
+        switch(id)
+        {
+            case 1:
+                if(data.status == "ok")
+                {
+                    if(data.staffs.length == 0)
+                    {
+                        $scope.tips="暂无数据！";
+                    }
+                    for(var i = 0;i<data.staffs.length;i++ )
+                    {
+
+                        data.staffs[i].last_login_time= $.changeDate(data.staffs[i].last_login_time);
+
+                        if(data.staffs[i].status == 0)
+                        {
+                            data.staffs[i]["class"] = "btn btn-info btn-mini";
+                            data.staffs[i].text = "解冻";
+                            data.staffs[i].status="冻结";
+                        };
+                        if(data.staffs[i].status == 1){
+                            data.staffs[i]["class"] = "btn btn-warning btn-mini";
+                            data.staffs[i].text = "冻结";
+                            data.staffs[i].status="正常";
+                        }
+
+                    }
+                    $scope.accounts = data.staffs;
+                    PagingInfo(data.staffs.length);
+                }
+                else
+                {
+                    alert(data.status);
+                }
+                break;
         }
     }
 }

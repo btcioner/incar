@@ -123,11 +123,11 @@
                     <td id="tdc">{{slot.benefit}}</td>
                     <td id="tdc">{{slot.promotion_time}}</td>
                     <td id="tdc">{{slot.promotion_status}}</td>
-                    <td id="tdc" style="{{slot.tdStyle1}}">
+                    <td id="tdc" ng-show="slot.tdStyle1">
                         <a class="btn btn-info btn-mini" ng-click="modify($index);">修改</a>
                         <a class="btn btn-warning btn-mini" ng-click="delete($index);">删除</a>
                     </td>
-                    <td id="tdc" style="{{slot.tdStyle2}}">
+                    <td id="tdc" ng-show="slot.tdStyle2">
                        -
                     </td>
                 </tr>

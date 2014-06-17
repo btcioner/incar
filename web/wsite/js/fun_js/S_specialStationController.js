@@ -17,11 +17,13 @@
     $scope.description = "";
     $scope.promotion_time = "";
 
+
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/promotionslot?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord).success(function(data){
+        $scope.randomTime = new Date();
+        $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/promotionslot?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 $scope.slots = data.slots;
@@ -35,14 +37,14 @@
                     {
                         $scope.slots[i].slot_time = $.changeDate($scope.slots[i].slot_time);
                         $scope.slots[i].promotion_time = $.changeDate($scope.slots[i].promotion_time);
-                        if( $scope.slots[i].promotion_status == 0)
+                        if( $scope.slots[i].promotion_status !=1)
                         {
-                            $scope.slots[i].tdStyle1="display:none";
-                            $scope.slots[i].tdStyle2="display:block";
+                            $scope.slots[i].tdStyle1 = false;
+                            $scope.slots[i].tdStyle2 = true;
                         }
                         else{
-                            $scope.slots[i].tdStyle1="display:block";
-                            $scope.slots[i].tdStyle2="display:none";
+                            $scope.slots[i].tdStyle1 = true;
+                            $scope.slots[i].tdStyle2=false;
                         }
                         $scope.slots[i].promotion_status = $.changeSlotStatus($scope.slots[i].promotion_status);
                     }
@@ -147,10 +149,10 @@
             if(data.status == "ok")
             {
                 alert("添加成功！");
-
+                   GetFirstPageInfo();
                 $scope.slotListDiv = true;
                 $scope.slotAddDiv = false;
-                GetFirstPageInfo();
+
             }
             else{
                 alert(data.status);

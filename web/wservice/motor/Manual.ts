@@ -38,11 +38,11 @@ module Service {
 
             var totalCount = 0;
             if(!task.B.ex) totalCount = task.B.result[0].count;
-            task.A.result.forEach((obj:any)=>{
-                if(obj.filename) {
-                    obj.filename = "/data/manual/" + obj.filename;
-                }
-            });
+//            task.A.result.forEach((obj:any)=>{
+//                if(obj.filename) {
+//                    obj.filename = "/data/manual/" + obj.filename;
+//                }
+//            });
 
             res.json({status:"ok", totalCount:totalCount, manual:task.A.result});
         };
@@ -59,9 +59,9 @@ module Service {
             else if(result.length === 0){ res.json(new TaskException(-1, util.format("行车手册%d不存在", req.params.id), null)); return; }
             else{
                 var manual = result[0];
-                if(manual.filename) {
-                    manual.filename = "/data/manual/" + manual.filename;
-                }
+//                if(manual.filename) {
+//                    manual.filename = "/data/manual/" + manual.filename;
+//                }
                 res.json({status:"ok", manual:manual});
                 return;
             }
@@ -69,15 +69,16 @@ module Service {
     }
 
     export function AddManual(req, res):void{
-        if(req.headers["user-agent"] && req.headers["user-agent"].indexOf("Trident")>=0)
-            res.setHeader("Content-Type", "text/plain");
-        else
-            res.setHeader("Content-Type", "application/json");
+//        if(req.headers["user-agent"] && req.headers["user-agent"].indexOf("Trident")>=0)
+//            res.setHeader("Content-Type", "text/plain");
+//        else
+//            res.setHeader("Content-Type", "application/json");
         if(Object.keys(req.body).length === 0){
             res.json({postData:{
                 keyword: "备胎",
                 title:"如何更换备胎",
-                description:"就这样更换备胎"
+                description:"就这样更换备胎",
+                filename:"图文图片的url"
                 },
                 remark:"必填:title"
             });
@@ -85,15 +86,15 @@ module Service {
         }
 
         var data = req.body;
-        var file = { filename: null };
-        if(req.files.pro_img){
-            var idx = req.files.pro_img.path.lastIndexOf("\\");
-            file.filename = req.files.pro_img.path.slice(idx+1);
-        }
+//        var file = { filename: null };
+//        if(req.files.pro_img){
+//            var idx = req.files.pro_img.path.lastIndexOf("\\");
+//            file.filename = req.files.pro_img.path.slice(idx+1);
+//        }
 
         var dac = MySqlAccess.RetrievePool();
         var sql = "INSERT t_manual_content(keyword, title, description, filename) VALUES(?,?,?,?)";
-        dac.query(sql, [data.keyword, data.title, data.description, file.filename], (ex, result)=>{
+        dac.query(sql, [data.keyword, data.title, data.description, data.filename], (ex, result)=>{
             if(ex){ res.json(new TaskException(-1, "创建行车手册失败", ex)); return; }
             else{
                 res.json({status:"ok", id: result.insertId });
@@ -102,15 +103,16 @@ module Service {
     }
 
     export function ModifyManual(req, res):void{
-        if(req.headers["user-agent"] && req.headers["user-agent"].indexOf("Trident")>=0)
-            res.setHeader("Content-Type", "text/plain");
-        else
-            res.setHeader("Content-Type", "application/json");
+//        if(req.headers["user-agent"] && req.headers["user-agent"].indexOf("Trident")>=0)
+//            res.setHeader("Content-Type", "text/plain");
+//        else
+//            res.setHeader("Content-Type", "application/json");
         if(Object.keys(req.body).length === 0){
             res.json({putData:{
                 keyword: "备胎",
                 title:"如何更换备胎",
-                description:"就这样更换备胎"
+                description:"就这样更换备胎",
+                filename:"图文图片的url"
             },
                 remark:"必填:title"
             });
@@ -128,11 +130,12 @@ module Service {
                 if(data.keyword && data.keyword.trim().length > 0) manual.keyword = data.keyword.trim();
                 if(data.title && data.title.trim().length > 0) manual.title = data.title.trim();
                 if(data.description && data.description.trim().length > 0) manual.description = data.description.trim();
+                if(data.filename && data.filename.trim().length > 0) manual.filename = data.filename.trim();
                 // Fix: ignore empty file uploaded.
-                if(req.files.pro_img && req.files.pro_img.size > 0){
-                    var idx = req.files.pro_img.path.lastIndexOf("\\");
-                    manual.filename = req.files.pro_img.path.slice(idx+1);
-                }
+//                if(req.files.pro_img && req.files.pro_img.size > 0){
+//                    var idx = req.files.pro_img.path.lastIndexOf("\\");
+//                    manual.filename = req.files.pro_img.path.slice(idx+1);
+//                }
                 sql = "UPDATE t_manual_content SET ? WHERE id = ?";
                 dac.query(sql, [manual, manual.id], (ex, result)=>{
                     if(ex){ res.json(new TaskException(-1, "修改行车手册失败", null)); return; }

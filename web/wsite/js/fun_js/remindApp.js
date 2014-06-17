@@ -35,12 +35,19 @@ angular.module("SMaintainApp", [
         });
        // $locationProvider.html5Mode(true);
 }).controller("mainCtrl",function($scope){
-        $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+        if($.cookie("nick") != "" && $.cookie("nick") != null)
+        {
+            $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+        }else{
+            alert("登录已超时！");
+            window.location="../login.html";
+        }
     });
 
 function s_statisticsCtrl($scope,$http)
 {
-    $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care?page=1&pagesize=1').success(function(data){
+    $scope.randomTime = new Date();
+    $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care?page=1&pagesize=1&t='+$scope.randomTime).success(function(data){
         $scope.careCount = data.totalCount;
     })
 }

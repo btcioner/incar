@@ -14,29 +14,19 @@ function knowledgeBaseCtrl($scope, $http){
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
     $scope.id = "";
+    $scope.filename = "";
 
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {
         $scope.tips="";
-        $scope.randomTime = "&t="+new Date();
-        $http.get(baseurl + 'manual?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.randomTime).success(function(data){
-            if(data.status == "ok")
-            {
-                if(data.manual.length == 0)
-                {
-                    $scope.tips="暂无数据！";
-                }
-                $scope.manual = data.manual;
-                PagingInfo(data.totalCount);
-            }
-            else
-            {
-                alert(data.status);
-            }
-        }).error(function(data){
-                alert("请求无响应");
-            })
+        $scope.randomTime = new Date();
+        getAjaxLink(baseurl + 'manual?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime,"","get",1);
+//        $http.get(baseurl + 'manual?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.randomTime).success(function(data){
+//
+//        }).error(function(data){
+//                alert("请求无响应");
+//        })
     }
 
     //get paging param info
@@ -60,10 +50,9 @@ function knowledgeBaseCtrl($scope, $http){
 
     //新增
     $scope.add = function(){
-        keyword:$scope.keyword,
-        $scope.title,
-        $scope.description,
-        $("#pro_img").val("");
+        $("#formId_edit3").ajaxForm(function(data){
+            $scope.filename = data.split("</pre>")[0].split(">")[1].split("\"")[9];
+        });
         $scope.knowledgeListDiv = false;
         $scope.addKnowledgeDiv = true;
     }
@@ -71,38 +60,44 @@ function knowledgeBaseCtrl($scope, $http){
     //添加确认
     $scope.AddConfirm = function()
     {
-        $("#formId").ajaxForm(function(){
-            GetFirstPageInfo();
-            alert("添加成功");
-//            $scope.manual[$scope.manual.length] = {
-//                id:$scope.manual[length-1].id +1,
-//                keyword:$scope.keyword,
-//                title:$scope.title,
-//                description:$scope.description,
-//                filename:$("#pro_img").val()
-//            }
-
-            $scope.knowledgeListDiv = true;
-            $scope.addKnowledgeDiv = false;
-        });
+       $scope.postData={title:$scope.title,keyword:$scope.keyword,description:$scope.description,filename:$scope.filename};
+        $http.post(baseurl + "manual",$scope.postData).success(function(data){
+            if(data.status == "ok")
+            {
+                alert("添加成功");
+                GetFirstPageInfo();
+                $scope.knowledgeListDiv = true;
+                $scope.addKnowledgeDiv = false;
+            }
+        }).error(function(data){
+                alert("请求无响应！");
+            });
     }
 
     //修改
     $scope.modify = function(id){
+        $scope.knowDetail = $scope.manual[id];
+        $("#formId_edit2").ajaxForm(function(data){
+            $scope.knowDetail.filename = data.split("</pre>")[0].split(">")[1].split("\"")[9];
+        });
         $scope.knowledgeListDiv = false;
         $scope.modifyKnowledgeDiv = true;
-        $scope.knowDetail = $scope.manual[id];
-        $("#formId_edit").attr("action", "/wservice/manual/"+ $scope.knowDetail.id);
+
+       // $("#formId_edit").attr("action", "/wservice/manual/"+ $scope.knowDetail.id);
     }
     //修改确认
     $scope.ModifyConfirm = function()
     {
-        $("#formId_edit").ajaxForm(function(data){
-            GetFirstPageInfo();
-            alert("修改成功");
-
-            $scope.knowledgeListDiv = true;
-            $scope.modifyKnowledgeDiv = false;
+        $http.post(baseurl + "manual/"+$scope.knowDetail.id,$scope.knowDetail).success(function(data){
+            if(data.status == "ok")
+            {
+                alert("修改成功!");
+                GetFirstPageInfo();
+                $scope.knowledgeListDiv = true;
+                $scope.modifyKnowledgeDiv = false;
+            }
+        }).error(function(data){
+            alert("请求无响应！");
         });
     }
 
@@ -141,16 +136,52 @@ function knowledgeBaseCtrl($scope, $http){
         }
     }
 
+//利用$http封装访问，并解决防盗链问题。
+    function getAjaxLink(url,query,type,id)
+    {
+        if($.cookie("nick") != "")
+        {
+            //通过AngularJS自带的http访问。
+            $http({ method: type, url: url, data:query}).success(function(data){
+                if(data.status =="没有登录")
+                {
+                    alert("登录已超时！");
+                    window.location="../login.html";
+                }
+                else{
+                    getIndexData(id,data);
+                }
+            }). error(function(data){
+                    alert("请求无响应");
+                });
+        }
+        else{
+            alert("登录已超时！");
+            window.location="../login.html";
+        }
+    }
 
-}
-
-function clickFileName(name)
-{
-    var filepath = $("#"+name).val();
-    var extStart=filepath.lastIndexOf(".");
-    var ext=filepath.substring(extStart,filepath.length).toUpperCase();
-    if(ext!=".BMP"&&ext!=".PNG"&&ext!=".JPG"&&ext!=".JPEG"){
-        alert("图片限于bmp,png,jpeg,jpg格式");
-        $("#"+name).val("");
+//在访问之后对数据进行处理
+    function getIndexData(id,data)
+    {
+        switch(id)
+        {
+            case 1:
+                if(data.status == "ok")
+                {
+                    if(data.manual.length == 0)
+                    {
+                        $scope.tips="暂无数据！";
+                    }
+                    $scope.manual = data.manual;
+                    PagingInfo(data.totalCount);
+                }
+                else
+                {
+                    alert(data.status);
+                }
+                break;
+        }
     }
 }
+

@@ -32,7 +32,13 @@ angular.module("SActivityApp", [
         });
   //  $locationProvider.html5Mode(true);
 }).controller("mainCtrl",function($scope){
-        $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+        if($.cookie("nick") != "" && $.cookie("nick") != null)
+        {
+            $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+        }else{
+            alert("登录已超时！");
+            window.location="../login.html";
+        }
         $scope.randomTime = new Date();
         $scope.changeTime = function()
         {
