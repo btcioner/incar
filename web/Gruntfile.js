@@ -70,6 +70,12 @@ module.exports = function (grunt) {
       }
     },
 
+    less:{
+        msite_bootstrap : {
+            files: { 'msite/mstyles/bootstrap.css': 'msite/mstyles/bootstrap.less' }
+        }
+    },
+
     open: {
       server: {
         url: 'http://localhost:<%= express.options.port %>'
@@ -172,8 +178,11 @@ module.exports = function (grunt) {
 //        'wservice/{,*/}*.js',
 //        'wservice/{,*/}*.js.map'
         'wservice/motor.js',
-        'wservice/motor.js.map'
-      ]
+        'wservice/motor.js.map',
+        'msite/mscripts/wxapp.js',
+        'msite/mscripts/wxapp.js.map'
+      ],
+      less: [ 'msite/mstyles/bootstrap.css']
     },
 
     // Add vendor prefixed styles
@@ -452,11 +461,14 @@ module.exports = function (grunt) {
     // 'uglify',
     'rev',
     'usemin',
-    'typescript'
+    'typescript',
+    'less'
   ]);
 
   grunt.registerTask('default', [
     'newer:jshint'
     ,'build'
   ]);
+
+  grunt.loadNpmTasks('grunt-contrib-less');
 };
