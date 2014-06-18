@@ -27,7 +27,7 @@ angular.module("SActivityApp", [
             templateUrl:'/4sStore/partials/activity_lotteryTicket.html'//彩票
         })
         .otherwise({
-             controller: 'test',
+             controller: 's_statisticsCtrl',
              templateUrl: '/4sStore/partials/activity_index.html'//首页
         });
   //  $locationProvider.html5Mode(true);
@@ -40,6 +40,16 @@ angular.module("SActivityApp", [
             window.location="../login.html";
         }
         $scope.randomTime = new Date();
-
   });
+
+function s_statisticsCtrl($scope,$http)
+{
+      $scope.randomTime = new Date();
+      $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/promotionslot?page=1&pagesize=1&status=2'+"&t="+$scope.randomTime)
+          .success(function(data){
+              $scope.slotsCount = data.totalCount;
+          }).error(function(data){
+              alert("请求无响应!");
+          })
+ }
 
