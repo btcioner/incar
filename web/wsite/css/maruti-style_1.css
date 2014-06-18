@@ -102,7 +102,9 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 #sidebar > ul li ul { margin:0px; padding:0px; display:none; z-index:999;  position:absolute; left:0px; top:40px;  background:#41bedd; min-width:200px;} 
 #sidebar > ul li ul li { list-style-type:none; margin:0px; font-size:12px;line-height:30px;  } 
 #sidebar > ul li ul li a { display:block; padding:5px 10px; color:#fff; text-decoration:none; font-weight:bold; } 
-#sidebar > ul li ul li:hover a{ background-color:#36a8c5;} 
+#sidebar > ul li ul li:hover a{
+	background-color:#36a8c5;
+} 
 #sidebar > ul li span { cursor:pointer; margin:0px 2px 0 5px; font-weight:bold; color:#fff; font-size:11px; }
 #sidebar > ul li a i{ background-image: url("../img/glyphicons-halflings-white.png");     margin-top:4px;    vertical-align: top;}
 #my_menu_input{ display:none;}
@@ -963,7 +965,7 @@ ul.stat-boxes2 li:hover{  background:#f6f6f6}
     margin: 1px 5px 0;
 }
 .taskStatus, .taskOptions {
-    text-align: center !important;
+	text-align: center !important;
 }
 .taskStatus .in-progress {
     color: #64909E;

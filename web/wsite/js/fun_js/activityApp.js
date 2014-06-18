@@ -40,9 +40,6 @@ angular.module("SActivityApp", [
             window.location="../login.html";
         }
         $scope.randomTime = new Date();
-        $scope.changeTime = function()
-        {
-            $scope.randomTime = new Date();
-        }
+
   });
 

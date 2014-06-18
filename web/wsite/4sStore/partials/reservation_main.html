@@ -1,48 +1,4 @@
-<div id="content">
-    <div id="content-header">
-        <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">预约服务</a></div>
-    </div>
-    <div class="container-fluid">
-    <div class="row-fluid" >
-    <div style="width: 13%;float: left;margin: 2px">
-        <div class="accordion" id="collapse-group">
-            <div class="accordion-group widget-box" >
-               <div class="accordion-heading">
-                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne/{{randomTime}}" data-toggle="collapse" class="collapsed" ng-click="ReservationTab(0)"> <span class="icon"><i class="icon-magnet"></i></span>
-                        <h5>保养预约</h5>
-                    </a></div>
-                </div>
-                <div class="collapse in accordion-body" id="collapseGOne/{{randomTime}}" >
-                    <div class="widget-content" style="text-align: right;padding:0">
-                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(1)">新申请</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(2)">已拒绝</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(3)">已确认</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(4)">已完成</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(5)">未到店</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(6)">已取消</a>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-group widget-box" >
-                <div class="accordion-heading">
-                    <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo/{{randomTime}}" data-toggle="collapse" class="collapsed" ng-click="ReservationTab(0)"> <span class="icon"><i class="icon-magnet"></i></span>
-                        <h5>试乘试驾</h5>
-                    </a></div>
-                </div>
-                <div class="collapse  accordion-body" id="collapseGTwo/{{randomTime}}" >
-                    <div class="widget-content" style="text-align: right;padding:0">
-                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(1)">新申请</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(2)">已拒绝</a>
-                        <a class="btn btn-info" style="width: 100%;" ng-click="ReservationTab(3)">已确认</a>
-                    </div>
-                </div>
-            </div>
 
-
-        </div>
-    </div>
-    <div class="container-fluid" style="width: 83%;float: left">
-        <div class="row-fluid" >
             <!--新申请操作 begin-->
             <div class="widget-box" ng-show="applyOperDiv">
                 <div class="widget-title">
@@ -232,8 +188,8 @@
                             <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody ng-repeat="mt in careList">
-                        <tr class="gradeX">
+                        <tbody >
+                        <tr class="gradeX" ng-repeat="mt in careList">
                             <td style="text-align: center">{{mt.cust_nick}}</td>
                             <td style="text-align: center">{{mt.cust_phone}}</td>
                             <td style="text-align: center">{{mt.brand}}</td>
@@ -257,9 +213,3 @@
                   </div>
             </div>
             <!--预约服务列表 end-->
-        </div>
-    </div>
-</div>
-</div>
-</div>
-</div>
