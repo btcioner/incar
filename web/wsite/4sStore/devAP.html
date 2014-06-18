@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="devAP">
+<head lang="zh-cn">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="remark" content="此页面仅供微站测试">
+    <title>微站测试接入点</title>
+    <link href="../css/bootstrap-3.1.1.css" rel="stylesheet"/>
+    <link href="../css/angular-csp.css" rel="stylesheet"/>
+    <script src="../js/angular.min.js"></script>
+    <script src="../js/angular-resource.min.js"></script>
+    <script src="../js/underscore-min.js"></script>
+    <script src="../js/devAP.js"></script>
+</head>
+<body ng-controller="devAPCtrl">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <h1>微站测试接入点{{name}}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-4 text-center">
+            <!--http://devincar.winphone.us/msite/devAP.html?name=xgh-->
+            <img src="/mimages/devAP-{{name}}.png"><br>
+            <span ng-show="{{jump}}">正在重定向...{{jump_url}}</span><br>
+            <span class="label-danger">{{error}}</span>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="page in pages"><a href="{{page.url}}">{{page.title}}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+</body>
+</html>

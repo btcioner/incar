@@ -7,7 +7,7 @@ $(target).js $(target).js.map : motor\*.ts
     @dir /b *.ts > "%TEMP%\incar_ts_$(puzzle).tmp"
     @type "%TEMP%\incar_ts_$(puzzle).tmp"
     @echo "..."
-    @call tsc.cmd --target "ES5" --module commonjs --sourcemap --sourceRoot "motor" --out "%TEMP%\$(target).js" @"%TEMP%\incar_ts_$(puzzle).tmp"
+    @call tsc.cmd --target "ES5" --module commonjs --sourcemap --sourceRoot "$(target)" --out "%TEMP%\$(target).js" @"%TEMP%\incar_ts_$(puzzle).tmp"
     @cd ..
     @move /Y "%TEMP%\$(target).js" ".\" >NUL
     @move /Y "%TEMP%\$(target).js.map" ".\" >NUL
