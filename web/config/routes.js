@@ -10,6 +10,7 @@ var obdMessage=require('../wservice/obdMessage');
 var wservice = require('../wservice/motor');
 var mservice = require('../mservice/mservice');
 var tagService=require('../tag/tag');
+var alarmService=require('../alarm/alarm');
 /** 
  *  Application routes
  *  13007196492(联通卡)
@@ -88,6 +89,9 @@ module.exports = function(app) {
     app.put('/tag/markTags',tagService.markTags);               //给指定车辆打上自定义标签
     app.post('/tag/addTag',tagService.addTag);                  //添加自定义标签
     app.delete('/tag/delTag/:tagId',tagService.delTag);            //删除自定义标签
+
+    app.get('/alarm/:s4Id/:remindStatus',alarmService.allCollideRemind);      //获取碰撞提醒信息
+    app.put('/alarm/:remindId',alarmService.careCollideRemind);            //关怀碰撞提醒信息
 
     app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin);
     app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin);
