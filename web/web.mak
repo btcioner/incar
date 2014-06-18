@@ -14,7 +14,7 @@ target4 = bootstrap-3.1.1
 folder4 = wsite\css
 folder4b = msite\mstyles
 
-all : $(target) $(target2) $(target3)
+all : $(target) $(target2) $(target3)  $(target4)
 
 $(target) : $(folder)\$(target).js $(folder)\$(target).js.map
 $(folder)\$(target).js $(folder)\$(target).js.map : $(folder)\$(target)\*.ts
