@@ -92,7 +92,7 @@ module.exports = function(app) {
     app.post('/tag/addTag',tagService.addTag);                  //添加自定义标签
     app.delete('/tag/delTag/:tagId',tagService.delTag);            //删除自定义标签
 
-    app.get('/alarm/:s4Id/:remindStatus',alarmService.allCollideRemind);      //获取碰撞提醒信息
+    app.get('/alarm/:s4Id',alarmService.allCollideRemind);      //获取碰撞提醒信息
     app.put('/alarm/:remindId',alarmService.careCollideRemind);            //关怀碰撞提醒信息
 
     app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin);
