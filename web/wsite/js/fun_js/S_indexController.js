@@ -4,6 +4,7 @@
 //首页加载动态的统计数据
 var app = angular.module("SIndexApp", []);
 app.controller("s_indexCtrl", function($scope, $http){
+
     if($.cookie("nick") != "" && $.cookie("nick") != null)
     {
         $scope.nickName = $.cookie("nick");//保存登录进来用户的nick

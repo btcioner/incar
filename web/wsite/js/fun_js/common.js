@@ -160,6 +160,9 @@ var randomTime = new Date();
             case "aborted":
                 return "未到店";
                 break;
+            default:
+                return "";
+                break;
 
         }
     }

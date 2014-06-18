@@ -5,7 +5,6 @@
 
 function s_customerCtrl($scope, $http,$routeParams){
 
-
     $scope.cusDetailDiv = false;
     $scope.cusListDiv = true;
     $scope.cusTabDiv = false;

@@ -56,7 +56,35 @@ module.exports = function (grunt) {
           comments: true,
           target: "ES5"
         }
+      },
+      msite_wxapp:{
+        src: ['msite/mscripts/wxapp/*.ts'],
+        dest: 'msite/mscripts/wxapp.js',
+        options: {
+            module: 'commonjs',
+            sourceMap: true,
+            basePath: "wxapp/",
+            comments: true,
+            target: "ES5"
+        }
+      },
+      wsite_devAP:{
+          src: ['wsite/js/devAP/*.ts'],
+          dest: 'wsite/js/devAP.js',
+          options: {
+              module: 'commonjs',
+              sourceMap: true,
+              basePath: "devAP/",
+              comments: true,
+              target: "ES5"
+          }
       }
+    },
+
+    less:{
+        wsite_bootstrap311 : {
+            files: { 'wsite/css/bootstrap-3.1.1.css': 'wsite/css/bootstrap-3.1.1.less' }
+        }
     },
 
     open: {
@@ -161,8 +189,13 @@ module.exports = function (grunt) {
 //        'wservice/{,*/}*.js',
 //        'wservice/{,*/}*.js.map'
         'wservice/motor.js',
-        'wservice/motor.js.map'
-      ]
+        'wservice/motor.js.map',
+        'msite/mscripts/wxapp.js',
+        'msite/mscripts/wxapp.js.map',
+        'wsite/js/devAP.js',
+        'wsite/js/devAP.js.map',
+      ],
+      less: [ 'msite/mstyles/bootstrap-3.1.1.css', 'wsite/css/bootstrap-3.1.1.css']
     },
 
     // Add vendor prefixed styles
@@ -441,7 +474,8 @@ module.exports = function (grunt) {
     // 'uglify',
     'rev',
     'usemin',
-    'typescript'
+    'typescript',
+    'less'
   ]);
 
   grunt.registerTask('default', [

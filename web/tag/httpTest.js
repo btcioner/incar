@@ -10,10 +10,10 @@ var dataSet = JSON.stringify({
 });
 var data=dataSet;
 var opt = {
-    method: "put",
+    method: "get",
     host: "localhost",
     port: 80,
-    path: "/tag/markTags",
+    path: "/alarm/1?remindStatus=2",
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)

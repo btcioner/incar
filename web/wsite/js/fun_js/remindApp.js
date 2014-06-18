@@ -47,7 +47,7 @@ angular.module("SMaintainApp", [
 function s_statisticsCtrl($scope,$http)
 {
     $scope.randomTime = new Date();
-    $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care?page=1&pagesize=1&t='+$scope.randomTime).success(function(data){
+    $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/care?page=1&pagesize=1&t='+$scope.randomTime).success(function(data){
         $scope.careCount = data.totalCount;
     })
 }
