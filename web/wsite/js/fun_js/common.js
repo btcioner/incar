@@ -166,11 +166,17 @@ var randomTime = new Date();
 
         }
     }
-
+   //保养提醒信息状态
     $.changeCareStatus = function(step)
     {
         if(step == "refused") return "已拒绝";
         else return "已预约";
+    }
+   //碰撞提醒状态
+    $.changeAlarmStatus = function(status)
+    {
+        if(status == "1") return "新提醒";
+        else return "已关怀";
     }
 
     $.changeCarStatus = function(status)

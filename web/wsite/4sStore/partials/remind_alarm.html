@@ -1,108 +1,36 @@
 <!--查看详情 begin-->
-<div class="widget-box" ng-show="applyOperDiv">
+<div class="widget-box" ng-show="operDiv">
     <div class="widget-title">
         <span class="icon"><i class="icon-th"></i></span>
         <h5>碰撞提醒详情</h5>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="gotoBack(1)" >返回</a>
     </div>
     <div class="widget-content nopadding">
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th>车主姓名</th>
-                <th style="background-color:#F9F9F9;">{{carDetails.owner_nick}}</th>
+                <th style="background-color:#F9F9F9;">{{carDetails.nick}}</th>
                 <th>联系电话
-                <th style="background-color:#F9F9F9;">{{carDetails.owner_phone}}</th>
-                </th>
-                <th>OBD编号</th>
-                <th style="background-color:#F9F9F9;">{{carDetails.obd_code}}</th>
+                <th style="background-color:#F9F9F9;">{{carDetails.phone}}</th>
+                <th>车牌号</th>
+                <th style="background-color:#F9F9F9;">{{carDetails.license}}</th>
             </tr>
             <tr>
                 <th>品牌</th>
                 <th style="background-color:#F9F9F9;">{{carDetails.brand}}</th>
                 <th>系列</th>
                 <th style="background-color:#F9F9F9;">{{carDetails.series}}</th>
-                <th>上次提醒时间</th>
-                <th style="background-color:#F9F9F9;">{{carDetails.last_care_time}}</th>
-            </tr>
-            <tr>
-                <th>上次保养里程</th>
-                <th style="background-color:#F9F9F9;">{{carDetails.max_mileage - carDetails.new_mileage}}</th>
-                <th>上次保养周期</th>
-                <th style="background-color:#F9F9F9;">{{carDetails.max_hour - carDetails.new_hour}}</th>
-                <th colspan="2" rowspan="2" ng-show="buttonTh"><a class='btn btn-success'  ng-click='operationChild(1)'>已预约</a>
-                    &nbsp;&nbsp;&nbsp;<a class='btn btn-success'  ng-click='operationChild(2)'>未预约</a></th>
-                <th ng-show="remindMileTi">提醒时里程</th>
-                <th style="background-color:#F9F9F9;" ng-show="remindMileTe">{{carDetails.care_mileage}}</th>
-            </tr>
-            <tr ng-show="show5">
                 <th>提醒时间</th>
-                <th style="background-color:#F9F9F9;">{{carDetails.care_time}}</th>
-                <th>未预约原因</th>
-                <th colspan="3" style="text-align: left;background-color:#F9F9F9;">最近没有时间</th>
+                <th style="background-color:#F9F9F9;">{{carDetails.careTime}}</th>
             </tr>
-            <tr ng-show="show1">
-                <th >提醒时里程</th>
-                <th style="background-color:#F9F9F9;">9800</th>
-                <th>提醒时间</th>
-                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-            </tr>
-            <tr ng-show="show2">
-                <th>提醒时间</th>
-                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                <th>预约保养时间</th>
-                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                <th colspan="2"></th>
-            </tr>
-            <tr ng-show="show3">
-                <th>提醒时间</th>
-                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                <th>预约保养时间</th>
-                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                <th>保养项目</th>
-                <th style="background-color:#F9F9F9;">车体保养</th>
-            </tr>
-            <tr ng-show="show4">
-                <th>保养费用</th>
-                <th style="background-color:#F9F9F9;">1000</th>
-                <th>保养开始时间</th>
-                <th style="background-color:#F9F9F9;">2014-04-04 13:00</th>
-                <th>保养结束时间</th>
-                <th style="background-color:#F9F9F9;">2014-04-04 17:00</th>
+            <tr ng-show="oper_button">
+              <th colspan="6"><button class="btn btn-success" ng-click="operationChild()">已联系</button></th>
             </tr>
             </thead>
         </table>
     </div>
-    <div class="widget-content nopadding" ng-show="alreadyReserDiv">
-        <form action="#" method="get" class="form-horizontal">
-            <div class="control-group" >
-                <label class="control-label" style="margin-left:300px;">预约保养时间：
-                </label>
-                <div class="controls">
-                    <input type="text" class="span11" ng-model="working_time" style="width:200px;"   />
-                </div>
-            </div>
-            <div class="form-actions">
-                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirmOper(1);">确定</button>
-                <button type="button" class="btn btn-danger"   ng-click="cancel(1)">取消</button>
-            </div>
-        </form>
-    </div>
-    <div class="widget-content nopadding" ng-show="refuseReasonDiv">
-        <form action="#" method="get" class="form-horizontal">
-            <div class="control-group" >
-                <label class="control-label" style="margin-left:300px;">原因：
-                </label>
-                <div class="controls">
-                    <textarea ng-model="reason"></textarea>
-                </div>
-            </div>
-            <div class="form-actions">
-                <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirmOper(2);">确定</button>
-                <button type="button" class="btn btn-danger"   ng-click="cancel(2)">取消</button>
-            </div>
-        </form>
-    </div>
-</div>
+   </div>
 <!--查看详情 end-->
 <!--保养提醒列表 begin-->
 <div class="widget-box" ng-show="maintainListDiv">
@@ -110,26 +38,7 @@
         <span class="icon"><i class="icon-th"></i></span>
         <h5>保养提醒列表</h5>
     </div>
-    <!-- <div class="widget-content nopadding">
-         <table class="table table-bordered">
-             <thead>
-             <tr>
-                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;城市： &nbsp;&nbsp;&nbsp;<select style="width:150px;">
-                     <option>请选择</option>
-                 </select></th>
-                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4S店：&nbsp;&nbsp;&nbsp;<select style="width:150px;">
-                     <option>请选择</option>
-                 </select></th>
-                 <th style="vertical-align: middle;">品牌：&nbsp;&nbsp;&nbsp;<select style="width:150px;">
-                     <option>请选择</option>
-                 </select></th>
-                 <th  style="vertical-align: middle;"><a class="btn btn-success" style="" ng-click="">搜索</a></th>
-             </tr>
-             </thead>
-         </table>
-     </div>-->
     <div class="widget-content nopadding" >
-        <!--<table class="table table-bordered data-table">-->
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -152,7 +61,7 @@
                 <td style="text-align: center">{{al.series}}</td>
                 <td style="text-align: center">{{al.createTime}}</td>
                 <td style="text-align: center">{{al.remindStatus}}</td>
-                <td style="text-align: center"><a class="btn btn-info btn-mini" ng-click="Operation($index,'al.remindStatus')">查看</a></td>
+                <td style="text-align: center"><a class="btn btn-info btn-mini" ng-click="Operation($index,al.remindStatus)">查看</a></td>
             </tr>
             </tbody>
         </table>
@@ -166,53 +75,4 @@
     </div>
 </div>
 <!--保养提醒列表 end-->
-<!--关怀记录 begin-->
-<div class="widget-box" ng-show="careListDiv">
-    <div class="widget-title">
-        <span class="icon"><i class="icon-th"></i></span>
-        <h5>关怀记录列表</h5>
-    </div>
-    <div class="widget-content nopadding" >
-        <!--<table class="table table-bordered data-table">-->
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>车主姓名</th>
-                <th>联系电话</th>
-                <th>品牌</th>
-                <th>车型</th>
-                <th>车牌号</th>
-                <th>提醒里程</th>
-                <th>提醒周期</th>
-                <th>提醒时间</th>
-                <th>操作人</th>
-                <th>状态</th>
-                <th>理由</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="gradeX" ng-repeat="cl in carList">
-                <td style="text-align: center">{{cl.cust_nick}}</td>
-                <td style="text-align: center">{{cl.cust_phone}}</td>
-                <td style="text-align: center">{{cl.brand}}</td>
-                <td style="text-align: center">{{cl.series}}</td>
-                <td style="text-align: center">{{cl.license}}</td>
-                <td style="text-align: center">{{cl.json_args.care_mileage}}</td>
-                <td style="text-align: center">{{cl.json_args.care_hour}}</td>
-                <td style="text-align: center">{{cl.log_time}}</td>
-                <td style="text-align: center">{{cl.json_args.oper}}</td>
-                <td style="text-align: center">{{cl.step}}</td>
-                <td style="text-align: center">{{cl.json_args.reason}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div><font color="red">{{tips}}</font></div>
-    <div class="pagination alternate" style="float:right;">
-        共{{totalCount}}条&nbsp;页码{{currentPage}}/{{totalPage}} &nbsp;
-        跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
-        <option>1</option>
-    </select>页
-    </div>
-</div>
-<!--关怀记录列表 end-->
+
