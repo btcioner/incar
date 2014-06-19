@@ -127,5 +127,6 @@ CREATE TABLE IF NOT EXISTS t_remind(
     obdCode VARCHAR(32) COMMENT 'OBD设备唯一编码',
     remindType tinyint COMMENT '提醒类型(1-碰撞提醒)',
     remindStatus tinyint COMMENT '提醒状态(1-未处理，2-已处理)',
-    createTime timestamp COMMENT '创建时间'
+    createTime timestamp COMMENT '创建时间',
+    careTime timestamp COMMENT '处理时间'
 );

@@ -4,26 +4,6 @@
 'use strict';
 var db = require('../../config/db');
 
-exports.get1603Default=function(){
-    return {
-        diagnosisType:255,
-        initCode:0,
-        isCodeClear:240,
-        addressParam:"220.249.72.235",
-        portParam:"9005",
-        addressUpload:"220.249.72.235",
-        portUpload:"9005",
-        addressAlarm:"220.249.72.235",
-        portAlarm:"9005",
-        addressMessage:"220.249.72.235",
-        portMessage:"9005",
-        criticalVoltage:115,
-        uploadInterval:1,
-        voltageThreshold:"120,153",
-        updateId:"0.0.0",
-        closeAfterFlameOut:65535
-    };
-};
 var findBySql=function(sql,args,callback){
     console.log("开始查询："+sql);
     var connection=db().getConnection(function(err,connection){

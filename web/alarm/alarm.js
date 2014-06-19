@@ -12,7 +12,9 @@ exports.allCollideRemind=function(req,res){
     var pageSize=parseInt(query['pageSize']);
     var remindStatus=req.query.remindStatus;
     var remindType=1;
-    var sql="select r.id,u.nick,u.phone,c.license,c.brand as brandCode,c.series as seriesCode,cd.brand,cd.series,r.remindType,r.remindStatus,r.createTime " +
+    var sql="select r.id,u.nick,u.phone,c.license," +
+        "c.brand as brandCode,c.series as seriesCode,cd.brand,cd.series," +
+        "r.remindType,r.remindStatus,r.createTime,r.careTime " +
         "from t_remind r " +
         "left join t_car c on r.obdCode=c.obd_code " +
         "left join t_car_user cu on c.id=cu.car_id " +
@@ -34,8 +36,8 @@ exports.careCollideRemind=function(req,res){
     if(!remindId){
         res.json({status:'failure',message:'无法获取提醒Id'});
     }
-    var sql="update t_remind set remindStatus=? where id=?";
-    var args=[2,remindId];
+    var sql="update t_remind set remindStatus=?,careTime=? where id=?";
+    var args=[2,new Date(),remindId];
     dao.executeBySql([sql],[args],function(err){
         if(err){
             res.json({status:'failure'});
