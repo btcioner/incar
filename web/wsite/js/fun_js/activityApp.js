@@ -45,7 +45,7 @@ angular.module("SActivityApp", [
 function s_statisticsCtrl($scope,$http)
 {
       $scope.randomTime = new Date();
-      $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/promotionslot?page=1&pagesize=1&status=2'+"&t="+$scope.randomTime)
+      $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/promotionslot?status=2'+"&t="+$scope.randomTime)
           .success(function(data){
               $scope.slotsCount = data.totalCount;
           }).error(function(data){
