@@ -48,13 +48,13 @@ angular.module("SReservationApp", [
 function s_statisticsCtrl($scope,$http)
 {
     $scope.randomTime = new Date();
-     $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page=1&pagesize=1&step=applied&t='+$scope.randomTime).success(function(data){
+     $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?step=applied&t='+$scope.randomTime).success(function(data){
         $scope.applyCount = data.totalCount;
     })
-    $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page=1&pagesize=1&step=approved&t='+$scope.randomTime).success(function(data){
+    $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?step=approved&t='+$scope.randomTime).success(function(data){
         $scope.approveCount = data.totalCount;
     })
-    $http.get(baseurl+'4s/'+$.cookie("s4_id")+'/drivetry?page=1&pagesize=1&step=applied&t='+$scope.randomTime).success(function(data){
+    $http.get(baseurl+'4s/'+$.cookie("s4_id")+'/drivetry?step=applied&t='+$scope.randomTime).success(function(data){
         $scope.drivetryCount = data.totalCount;
     })
 }

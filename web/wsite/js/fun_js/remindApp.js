@@ -23,12 +23,12 @@ angular.module("SMaintainApp", [
             templateUrl:'/4sStore/partials/remind_maintain.html'//显示全部保养信息
         })
         .when('/collapseGTwo',{
-            controller:'',
-            templateUrl:'/4sStore/partials/remind_fault.html'//显示全部维修信息
+            controller:'s_alarmCtrl',
+            templateUrl:'/4sStore/partials/remind_alarm.html'//显示全部维修信息
          })
-        .when('/collapseGThree',{
-            controller:'',
-            templateUrl:'/4sStore/partials/remind_safety.html'//显示全部维修信息
+        .when('/collapseGTwo/:id',{
+            controller:'s_alarmCtrl',
+            templateUrl:'/4sStore/partials/remind_alarm.html'//显示全部维修信息
         })
         .otherwise({
            redirectTo:'/main'//跳转到预约服务的主界面
