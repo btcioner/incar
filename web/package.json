@@ -25,8 +25,8 @@
     "bufferhelper": "latest",
     "mysql": "latest",
     "iconv-lite": "latest",
-    "later":"latest",
-    "cron":"latest"
+    "later": "latest",
+    "cron": "latest"
   },
   "devDependencies": {
     "grunt": "^0.4.2",

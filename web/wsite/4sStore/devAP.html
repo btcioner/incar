@@ -8,28 +8,37 @@
     <link href="../css/bootstrap-3.1.1.css" rel="stylesheet"/>
     <link href="../css/angular-csp.css" rel="stylesheet"/>
     <script src="../js/angular.min.js"></script>
-    <script src="../js/angular-resource.min.js"></script>
-    <script src="../js/underscore-min.js"></script>
+    <script src="../js/qrcode.js"></script>
     <script src="../js/devAP.js"></script>
 </head>
 <body ng-controller="devAPCtrl">
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 text-center">
-            <h1>微站测试接入点{{name}}</h1>
+            <h1>微站测试接入点{{model.name}}</h1>
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-md-4 text-center">
-            <!--http://devincar.winphone.us/msite/devAP.html?name=xgh-->
-            <img src="/mimages/devAP-{{name}}.png"><br>
-            <span ng-show="{{jump}}">正在重定向...{{jump_url}}</span><br>
-            <span class="label-danger">{{error}}</span>
+        <div class="col-xs-12 col-md-4 text-center" >
+            <div ng-bind-html="model.img_qrcode"></div><br>
+            <div class="input-group">
+                <input ng-model="model.url" type="text" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="model.changeQRCode()">Go!</button>
+                </span>
+            </div>
         </div>
         <div class="col-xs-12 col-md-4">
             <ul class="list-group">
-                <li class="list-group-item" ng-repeat="page in pages"><a href="{{page.url}}">{{page.title}}</a></li>
+                <li class="list-group-item" ng-repeat="page in model.pages">
+                    <a ng-href="{{page.url}}">{{page.title}}</a>
+                </li>
             </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <button type="button" class="btn btn-success" ng-click="model.reload($event)">Reload</button>
         </div>
     </div>
 </div>
