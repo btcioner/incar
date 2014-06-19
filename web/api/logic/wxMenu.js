@@ -255,7 +255,8 @@ wxMenu.onClick['MY4S.MANUAL'] = function(message, session, next) {
             title: '行车手册',
             description: result,
             picurl: '',
-            url: ''  /**  http://linuxsrv.winphone.us/msite/manual?user=' + message.FromUserName + '@' + message.ToUserName **/
+            /**  http://linuxsrv.winphone.us/msite/manual?user=' + message.FromUserName + '@' + message.ToUserName **/
+            url: 'http://linuxsrv.winphone.us/msite/page_xcsc.html'
         }]);
     });
 };

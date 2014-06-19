@@ -33,6 +33,11 @@ exports = module.exports = function() {
             var pool = global.poolInCar;
             pool.query("SELECT id FROM t_4s LIMIT 1", null, function(ex, result){});
         }, 120*1000);
+
+        if(process.env.TraceSQL)
+            console.info("设置环境变量TraceSQL=false即可关闭SQL输出");
+        else
+            console.info("设置环境变量TraceSQL=true可以开启SQL输出");
     }
     return global.poolInCar;
 };

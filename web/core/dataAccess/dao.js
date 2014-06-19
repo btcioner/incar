@@ -4,27 +4,7 @@
 'use strict';
 var db = require('../../config/db');
 
-exports.get1603Default=function(){
-    return {
-        diagnosisType:255,
-        initCode:0,
-        isCodeClear:240,
-        addressParam:"220.249.72.235",
-        portParam:"9005",
-        addressUpload:"220.249.72.235",
-        portUpload:"9005",
-        addressAlarm:"220.249.72.235",
-        portAlarm:"9005",
-        addressMessage:"220.249.72.235",
-        portMessage:"9005",
-        criticalVoltage:115,
-        uploadInterval:1,
-        voltageThreshold:"120,153",
-        updateId:"0.0.0",
-        closeAfterFlameOut:65535
-    };
-};
-exports.findBySql=function(sql,args,callback){
+var findBySql=function(sql,args,callback){
     console.log("开始查询："+sql);
     var connection=db().getConnection(function(err,connection){
         if(err){
@@ -40,6 +20,31 @@ exports.findBySql=function(sql,args,callback){
             connection.release();
         });
     });
+};
+exports.findBySql=findBySql;
+exports.findBySqlForPage=function(sql,args,cb,page,pageSize){
+    if(page&&pageSize){
+        var sqlCount="select count(*) as rowCount from ("+sql+") as t";
+        var sqlPage="select * from ("+sql+") as t limit ?,?";
+        findBySql(sqlCount,args,function(rows){
+            if(rows.length){
+                var rowCount=rows[0]['rowCount'];
+                args.push((page-1)*pageSize);
+                args.push(pageSize);
+                findBySql(sqlPage,args,function(rows){
+                    cb({rowCount:rowCount,data:rows});
+                });
+            }
+            else{
+                cb({rowCount:0,data:[]});
+            }
+        });
+    }
+    else{
+        findBySql(sql,args,function(rows){
+            cb({rowCount:rows.length,data:rows});
+        });
+    }
 };
 exports.insertBySql=function(sql,args,callback){
     var connection=db().getConnection(function(err,connection){
