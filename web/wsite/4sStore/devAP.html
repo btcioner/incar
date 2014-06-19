@@ -10,12 +10,17 @@
     <script src="../js/angular.min.js"></script>
     <script src="../js/qrcode.js"></script>
     <script src="../js/devAP.js"></script>
+    <style type="text/css">
+        body{
+            padding-bottom: 20px;
+        }
+    </style>
 </head>
 <body ng-controller="devAPCtrl">
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 text-center">
-            <h1>微站测试接入点{{model.name}}</h1>
+            <h1>微站测试接入点</h1>
         </div>
     </div>
     <div class="row">
@@ -38,7 +43,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12 text-center">
-            <button type="button" class="btn btn-success" ng-click="model.reload($event)">Reload</button>
+            <button type="button" class="btn btn-success" ng-click="model.reload()">Reload</button>
         </div>
     </div>
 </div>
