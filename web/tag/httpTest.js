@@ -13,7 +13,7 @@ var opt = {
     method: "get",
     host: "localhost",
     port: 80,
-    path: "/alarm/1?remindStatus=2",
+    path: "/alarm/1?remindStatus=1&page=2&pageSize=5",
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)

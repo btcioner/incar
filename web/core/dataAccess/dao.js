@@ -24,7 +24,7 @@ exports.get1603Default=function(){
         closeAfterFlameOut:65535
     };
 };
-exports.findBySql=function(sql,args,callback){
+var findBySql=function(sql,args,callback){
     console.log("开始查询："+sql);
     var connection=db().getConnection(function(err,connection){
         if(err){
@@ -40,6 +40,31 @@ exports.findBySql=function(sql,args,callback){
             connection.release();
         });
     });
+};
+exports.findBySql=findBySql;
+exports.findBySqlForPage=function(sql,args,cb,page,pageSize){
+    if(page&&pageSize){
+        var sqlCount="select count(*) as rowCount from ("+sql+") as t";
+        var sqlPage="select * from ("+sql+") as t limit ?,?";
+        findBySql(sqlCount,args,function(rows){
+            if(rows.length){
+                var rowCount=rows[0]['rowCount'];
+                args.push((page-1)*pageSize);
+                args.push(pageSize);
+                findBySql(sqlPage,args,function(rows){
+                    cb({rowCount:rowCount,data:rows});
+                });
+            }
+            else{
+                cb({rowCount:0,data:[]});
+            }
+        });
+    }
+    else{
+        findBySql(sql,args,function(rows){
+            cb({rowCount:rows.length,data:rows});
+        });
+    }
 };
 exports.insertBySql=function(sql,args,callback){
     var connection=db().getConnection(function(err,connection){
