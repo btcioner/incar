@@ -12,14 +12,20 @@ function  s_maintainCtrl($scope, $http,$routeParams){
     $scope.working_time = "";
     $scope.reason = "";
 
-     GetFirstPageInfo();
+    if($routeParams.id != null && $routeParams.id == "alCare")
+    {
+        GetFirstPageInfo_1();
+    }
+    else
+    {
+        GetFirstPageInfo();
+    }
+
     function GetFirstPageInfo()
     {
         $scope.tips="";
         $scope.randomTime = new Date();
-        $http.get(
-            baseurl+'organization/'+$.cookie("s4_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime
-        ).success(function(data){
+        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime).success(function(data){
             if(data.status=="ok")
             {
                 $scope.carList = data.cars;
@@ -32,6 +38,34 @@ function  s_maintainCtrl($scope, $http,$routeParams){
                 alert(data.status);
             }
         }).error(function(data){
+                alert("请求无响应");
+        });
+    }
+
+    function GetFirstPageInfo_1()
+    {
+        $scope.tips="";
+        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+randomTime)
+            .success(function(data){
+                if(data.status=="ok")
+                {
+                    $scope.carList = data.records;
+                    PagingInfo(data.totalCount);
+                    if($scope.carList.length == 0)
+                    {
+                        $scope.tips="暂无数据";
+                    }
+                    else{
+                        for(var i=0;i<$scope.carList.length;i++)
+                        {
+                            $scope.carList[i].log_time = $.changeDate($scope.carList[i].log_time);
+                            $scope.carList[i].step = $.changeCareStatus($scope.carList[i].step);
+                        }
+                    }
+                }else{
+                    alert(data.status);
+                }
+            }).error(function(data){
                 alert("请求无响应");
             });
     }
@@ -55,11 +89,9 @@ function  s_maintainCtrl($scope, $http,$routeParams){
         GetFirstPageInfo();
     }
 
-
     //查看保养预约详情
     $scope.Operation = function(index,type)
     {
-
         changeView(1);
         switch(type)
         {
@@ -187,54 +219,5 @@ function  s_maintainCtrl($scope, $http,$routeParams){
                 break;
         }
     }
-    $scope.remindStatus = function(id)
-    {
 
-        switch(id)
-        {
-            case 0:
-                changeView(2);
-                GetFirstPageInfo();
-                break;
-            case 1://新申请
-                changeView(2);
-                GetFirstPageInfo();
-                break;
-            case 2://已拒绝
-                changeView(3);
-                $scope.tips="";
-                $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+randomTime)
-                    .success(function(data){
-                        if(data.status=="ok")
-                        {
-                            $scope.carList = data.records;
-                            PagingInfo(data.totalCount);
-                            if($scope.carList.length == 0)
-                            {
-                                $scope.tips="暂无数据";
-                            }
-                            else{
-                                for(var i=0;i<$scope.carList.length;i++)
-                                {
-                                    $scope.carList[i].log_time = $.changeDate($scope.carList[i].log_time);
-                                    $scope.carList[i].step = $.changeCareStatus($scope.carList[i].step);
-                                }
-                            }
-                        }else{
-                            alert(data.status);
-                        }
-                    }).error(function(data){
-                        alert("请求无响应");
-                    });
-                break;
-            case 3://已确认
-                break;
-            case 4://已完成
-                break;
-            case 5://未到店
-                break;
-            case 6://已取消
-                break;
-        }
-    }
 }

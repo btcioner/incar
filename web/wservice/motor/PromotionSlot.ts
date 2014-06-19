@@ -3,12 +3,16 @@
 module Service {
     // Get all promotion slots of an organization
     export function GetPromotionSlotAllInOrg(req, res):void{
-        res.setHeader("Accept-Query", "page,pagesize");
+        res.setHeader("Accept-Query", "page,pagesize,status");
         var page = new Pagination(req.query.page, req.query.pagesize);
         var sql = "SELECT %s FROM t_promotion_slot WHERE storeId = ?";
         var dac = MySqlAccess.RetrievePool();
         var args = [req.params.org_id];
-
+        if(req.query.status)
+        {
+            sql += " and promotion_status = ?";
+            args.push(req.query.status);
+        }
         var task:any = { finished: 0 };
         task.begin = ()=>{
             // query total count

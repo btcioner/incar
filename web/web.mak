@@ -24,7 +24,7 @@ $(folder)\$(target).js $(folder)\$(target).js.map : $(folder)\$(target)\*.ts
     type "%TEMP%\incar_ts_$(target)_$(puzzle).tmp"
     echo "..."
     call tsc.cmd --target "ES5" --module commonjs --sourcemap --sourceRoot "$(target)" --out "%TEMP%\$(target).js" @"%TEMP%\incar_ts_$(target)_$(puzzle).tmp"
-    cd $(MAKEDIR)
+    cd "$(MAKEDIR)"
     move /Y "%TEMP%\$(target).js" ".\$(folder)\" > NUL
     move /Y "%TEMP%\$(target).js.map" ".\$(folder)\" > NUL
     del "%TEMP%\incar_ts_$(target)_$(puzzle).tmp"
@@ -38,7 +38,7 @@ $(folder2)\$(target2).js $(folder2)\$(target2).js.map : $(folder2)\$(target2)\*.
     type "%TEMP%\incar_ts_$(target2)_$(puzzle2).tmp"
     echo "..."
     call tsc.cmd --target "ES5" --module commonjs --sourcemap --sourceRoot "$(target2)" --out "%TEMP%\$(target2).js" @"%TEMP%\incar_ts_$(target2)_$(puzzle2).tmp"
-    cd $(MAKEDIR)
+    cd "$(MAKEDIR)"
     move /Y "%TEMP%\$(target2).js" ".\$(folder2)\" > NUL
     move /Y "%TEMP%\$(target2).js.map" ".\$(folder2)\" > NUL
     del "%TEMP%\incar_ts_$(target2)_$(puzzle2).tmp"
@@ -52,7 +52,7 @@ $(folder3)\$(target3).js $(folder3)\$(target3).js.map : $(folder3)\$(target3)\*.
     type "%TEMP%\incar_ts_$(target3)_$(puzzle3).tmp"
     echo "..."
     call tsc.cmd --target "ES5" --module commonjs --sourcemap --sourceRoot "$(target3)" --out "%TEMP%\$(target3).js" @"%TEMP%\incar_ts_$(target3)_$(puzzle3).tmp"
-    cd $(MAKEDIR)
+    cd "$(MAKEDIR)"
     move /Y "%TEMP%\$(target3).js" ".\$(folder3)\" > NUL
     move /Y "%TEMP%\$(target3).js.map" ".\$(folder3)\" > NUL
     del "%TEMP%\incar_ts_$(target3)_$(puzzle3).tmp"
@@ -64,6 +64,6 @@ $(folder4)\$(target4).css $(folder4b)\$(target4).css: $(folder4)\$(target4).less
     echo "..."
     cd $(folder4)
     call lessc.cmd $(target4).less > $(target4).css
-    cd $(MAKEDIR)
+    cd "$(MAKEDIR)"
     copy /Y $(folder4)\$(target4).css  $(folder4b)\$(target4).css
     echo "Done!"

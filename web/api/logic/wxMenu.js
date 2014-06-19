@@ -259,5 +259,17 @@ wxMenu.onClick['MY4S.MANUAL'] = function(message, session, next) {
         }]);
     });
 };
-
+wxMenu.onClick['MY4S.CONTACT'] = function(message, session, next) {
+    my4S.contact(message.FromUserName, message.ToUserName,session, function(err, result){
+        if (err) {
+            return next(err);
+        }
+        return next(null, [{
+            title: '联系我们',
+            description: result,
+            picurl: '',
+            url: ''  /**  http://linuxsrv.winphone.us/msite/manual?user=' + message.FromUserName + '@' + message.ToUserName **/
+        }]);
+    });
+};
 exports = module.exports = wxMenu;

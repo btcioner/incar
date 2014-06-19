@@ -58,7 +58,23 @@ booking.getBrand=function(sopenid,callback){
               }
     });
 }
-
+booking.get4sDetail=function(sopenid,callback){
+    var pool = this.db();
+    pool.query('select name,description,brand,address,hotline from t_4s where openid=?;',[sopenid],function(err,result){
+        if(err) callback(err);
+        else {
+            if(result&&result.length===1) {
+                      var data={};
+                      data.name=result[0].name;
+                      data.description=result[0].description;
+                      data.brand=result[0].brand;
+                      data.address=result[0].address;
+                      data.hotline=result[0].hotline;
+                     callback(null,data);
+            }else callback(new Error('The 4s is not exist.'))
+        }
+    });
+};
 booking.db = require('../../config/db');
 
 exports = module.exports = booking;

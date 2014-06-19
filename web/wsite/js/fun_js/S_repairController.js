@@ -1,25 +1,29 @@
 /**
  * Created by Liz on 14-2-27.
  */
-
+//试乘试驾js
 function s_repairCtrl($scope, $http,$routeParams){
 
 
-//    $scope.reserStatus = $routeParams;
     $scope.driveTryDiv = true;
     $scope.applyOperDiv = false;
     $scope.previewDiv = false;
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
     $scope.randomTime = new Date();
-    GetFirstPageInfo("");//get fist driveData for first page；
-    function GetFirstPageInfo(str)
+    $scope.queryString = "";
+
+    if($routeParams.id != null)
     {
-        var queryStr = "";
+       $scope.queryString = "&step=" + $routeParams.id;
+    }
+
+    GetFirstPageInfo();//get fist driveData for first page；
+    function GetFirstPageInfo()
+    {
         $scope.tips="";
-        if(str!="") queryStr="&step="+str;
         $scope.randomTime = new Date();
-        $http.get(baseurl+'4s/'+$.cookie("s4_id")+'/drivetry?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+queryStr+"&t="+$scope.randomTime).success(function(data){
+        $http.get(baseurl+'4s/'+$.cookie("s4_id")+'/drivetry?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.tries.length == 0)
@@ -33,7 +37,8 @@ function s_repairCtrl($scope, $http,$routeParams){
                         {
                             data.tries[i].text = "管理";
                         }
-                        else{
+                        else
+                        {
                             data.tries[i].text = "查看";
                         }
                         data.tries[i].status = $.changeWorkStatus(data.tries[i].step);
@@ -51,28 +56,28 @@ function s_repairCtrl($scope, $http,$routeParams){
             })
     }
 
-   //下拉框选择
-    $scope.ReservationTab = function(id)
-    {
-        $scope.driveTryDiv = true;
-        $scope.applyOperDiv = false;
-        $scope.previewDiv = false;
-        switch(id)
-        {
-            case 0:
-                GetFirstPageInfo("");
-                break;
-            case 1://新申请
-                GetFirstPageInfo("applied");
-                break;
-            case 2://已拒绝
-                GetFirstPageInfo("rejected");
-                break;
-            case 3://已确认
-                GetFirstPageInfo("approved");
-                break;
-        }
-    }
+//   //下拉框选择
+//    $scope.ReservationTab = function(id)
+//    {
+//        $scope.driveTryDiv = true;
+//        $scope.applyOperDiv = false;
+//        $scope.previewDiv = false;
+//        switch(id)
+//        {
+//            case 0:
+//                GetFirstPageInfo();
+//                break;
+//            case 1://新申请
+//                GetFirstPageInfo();
+//                break;
+//            case 2://已拒绝
+//                GetFirstPageInfo();
+//                break;
+//            case 3://已确认
+//                GetFirstPageInfo();
+//                break;
+//        }
+//    }
 
     //get paging param info
     function PagingInfo(totalCount)
@@ -90,7 +95,7 @@ function s_repairCtrl($scope, $http,$routeParams){
     $scope.changePage=function(changeId)
     {
         $scope.currentPage = changeId ;
-        GetFirstPageInfo("");
+        GetFirstPageInfo();
     }
 
 
@@ -132,7 +137,7 @@ function s_repairCtrl($scope, $http,$routeParams){
                     if(data.status=="ok")
                     {
                         alert("操作成功!");
-                        GetFirstPageInfo("");
+                        GetFirstPageInfo();
                         $scope.driveTryDiv = true;
                         $scope.applyOperDiv = false;
                         $scope.previewDiv = false;
@@ -158,7 +163,7 @@ function s_repairCtrl($scope, $http,$routeParams){
             $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
                 if(data.status == "ok")
                 {
-                    GetFirstPageInfo("");
+                    GetFirstPageInfo();
                     alert("操作成功");
                     $scope.driveTryDiv = true;
                     $scope.applyOperDiv = false;

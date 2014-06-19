@@ -27,8 +27,12 @@ angular.module("SReservationApp", [
             controller:'s_repairCtrl',
             templateUrl:'/4sStore/partials/repair_main.html'//显示全部维修信息
          })
+        .when('/collapseGTwo',{
+            controller:'s_repairCtrl',
+            templateUrl:'/4sStore/partials/repair_main.html'//显示全部保养信息
+        })
         .otherwise({
-           redirectTo:'/main'//跳转到预约服务的主界面
+            redirectTo:'/main'//跳转到预约服务的主界面
         });
        // $locationProvider.html5Mode(true);
 }).controller("mainCtrl",function($scope){
@@ -44,11 +48,13 @@ angular.module("SReservationApp", [
 function s_statisticsCtrl($scope,$http)
 {
     $scope.randomTime = new Date();
-     $http.get(baseurl+'organization/'+$.cookie("org_id")+'/work/care?page=1&pagesize=1&step=applied').success(function(data){
+     $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page=1&pagesize=1&step=applied&t='+$scope.randomTime).success(function(data){
         $scope.applyCount = data.totalCount;
-
     })
-    $http.get(baseurl+'organization/'+$.cookie("org_id")+'/work/care?page=1&pagesize=1&step=approved').success(function(data){
+    $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page=1&pagesize=1&step=approved&t='+$scope.randomTime).success(function(data){
         $scope.approveCount = data.totalCount;
+    })
+    $http.get(baseurl+'4s/'+$.cookie("s4_id")+'/drivetry?page=1&pagesize=1&step=applied&t='+$scope.randomTime).success(function(data){
+        $scope.drivetryCount = data.totalCount;
     })
 }

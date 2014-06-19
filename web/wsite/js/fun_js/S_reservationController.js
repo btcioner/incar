@@ -7,7 +7,7 @@
     $scope.reservationDiv = true;
     $scope.applyOperDiv = false;
     $scope.reserAddDiv = false;
-    $scope.repairDiv = true;
+    $scope.repairDiv = false;
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
     $scope.jj_reason = "";
@@ -26,42 +26,36 @@
     $scope.carBrand=[{id:"zero",name:"请选择"},{id:0,name:"丰田/TOYOTA"},{id:1,name:"本田/Honda"},{id:2,name:"日产/NISSAN"},{id:3,name:"三菱/MITSUBISHIMOTORS"}];
     $scope.carSeries=[{id:0,name:"请选择"}];
 
-
     if($routeParams.id!=null)
     {
-        if($routeParams.id==1) GetFirstPageInfo("applied");
-        if($routeParams.id==2) GetFirstPageInfo("approved");
-        if($routeParams.id==0) GetFirstPageInfo("");
+        $scope.queryString = "&step="+$routeParams.id;
     }
-    else{
-        GetFirstPageInfo("");
-    }
-    function GetFirstPageInfo(str)
+
+    GetFirstPageInfo();
+    function GetFirstPageInfo()
     {
-        var queryStr = "";
-        $scope.tips="";
-        if(str!="") queryStr="&step="+str;
+        $scope.tips = "";
         $scope.randomTime = new Date();
-        $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+queryStr+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
-            $scope.careList = data.works;
-            PagingInfo(data.totalCount);
+        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             if(data.works.length > 0)
             {
-                for(var i=0;i< $scope.careList.length;i++)
+                for(var i=0;i< data.works.length;i++)
                 {
-                     $scope.careList[i].working_time =  $.changeDate($scope.careList[i].working_time);
-                     $scope.careList[i].created_time =  $.changeDate($scope.careList[i].created_time);
-                     $scope.careList[i].updated_time =  $.changeDate($scope.careList[i].updated_time);
-                     $scope.careList[i].step = $.changeWorkStatus($scope.careList[i].step);
+                     data.works[i].working_time =  $.changeDate(data.works[i].working_time);
+                     data.works[i].created_time =  $.changeDate(data.works[i].created_time);
+                     data.works[i].updated_time =  $.changeDate(data.works[i].updated_time);
+                     data.works[i].step = $.changeWorkStatus(data.works[i].step);
                 }
             }
             else{
                 $scope.tips="暂无数据";
             }
-
+            $scope.careList = data.works;
+            PagingInfo(data.totalCount);
         }).error(function(data){
                 alert("请求无响应");
         });
+        $scope.queryString = "";
     }
 
     //改变车型自动加载车款
@@ -96,7 +90,7 @@
         if($scope.ownerLicense=="")$scope.ownerLicense="";
         if($scope.work_time_begin=="")$scope.work_time_begin="";
         $scope.queryString = "&cust_nick="+$scope.ownerNick+"&license="+$scope.ownerLicense+"&working_time_begin="+$scope.work_time_begin;
-        GetFirstPageInfo("");
+        GetFirstPageInfo();
     }
     //get paging param info
     function PagingInfo(totalCount)
@@ -114,7 +108,7 @@
     $scope.changePage=function(changeId)
     {
         $scope.currentPage = changeId ;
-        GetFirstPageInfo("");
+        GetFirstPageInfo();
     }
 
    //详情子操作
@@ -127,7 +121,7 @@
               $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                   if(data.status=="ok")
                   {
-                    GetFirstPageInfo("");
+                    GetFirstPageInfo();
                     alert("操作成功");
                     changeView(2);
                   }else{
@@ -142,7 +136,7 @@
               $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                   if(data.status=="ok")
                   {
-                      GetFirstPageInfo("");
+                      GetFirstPageInfo();
                       alert("操作成功");
                       changeView(2);
                   }else
@@ -164,7 +158,7 @@
               $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                   if(data.status=="ok")
                   {
-                      GetFirstPageInfo("");
+                      GetFirstPageInfo();
                       alert("操作成功");
                       changeView(2);
                   }else{
@@ -270,7 +264,7 @@
                 $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                     if(data.status == "ok")
                     {
-                        GetFirstPageInfo("");
+                        GetFirstPageInfo();
                         alert("操作成功");
                         changeView(2);
                     }
@@ -287,7 +281,7 @@
                 $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                     if(data.status == "ok")
                     {
-                        GetFirstPageInfo("");
+                        GetFirstPageInfo();
                         alert("操作成功");
                         changeView(2);
                     }
@@ -339,32 +333,32 @@
         }
     }
 
-    $scope.ReservationTab = function(id)
-    {
-        changeView(2);
-        switch(id)
-        {
-            case 0:
-                GetFirstPageInfo("");
-                break;
-            case 1://新申请
-                GetFirstPageInfo("applied");
-                break;
-            case 2://已拒绝
-                GetFirstPageInfo("rejected");
-                break;
-            case 3://已确认
-                GetFirstPageInfo("approved");
-                break;
-            case 4://已完成
-                GetFirstPageInfo("done");
-                break;
-            case 5://未到店
-                GetFirstPageInfo("aborted");
-                break;
-            case 6://已取消
-                GetFirstPageInfo("cancelled");
-                break;
-        }
-    }
+//    $scope.ReservationTab = function(id)
+//    {
+//        changeView(2);
+//        switch(id)
+//        {
+//            case 0:
+//                GetFirstPageInfo("");
+//                break;
+//            case 1://新申请
+//                GetFirstPageInfo("applied");
+//                break;
+//            case 2://已拒绝
+//                GetFirstPageInfo("rejected");
+//                break;
+//            case 3://已确认
+//                GetFirstPageInfo("approved");
+//                break;
+//            case 4://已完成
+//                GetFirstPageInfo("done");
+//                break;
+//            case 5://未到店
+//                GetFirstPageInfo("aborted");
+//                break;
+//            case 6://已取消
+//                GetFirstPageInfo("cancelled");
+//                break;
+//        }
+//    }
 }

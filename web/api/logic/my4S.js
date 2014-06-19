@@ -112,7 +112,7 @@ my4S.trialrun=function(userName,sopenid, session, callback){
            }else{
                var data={};
                data.brandName=result;
-               session.textMsgReplierIndex = 'my4S.onTrialrun';
+              session.textMsgReplierIndex = 'my4S.onTrialrun';
                callback(null,compiled(data));
            }
     });
@@ -143,4 +143,26 @@ my4S.manual = function(userName, session, callback){
     callback(null, compiled({}));
 };
 
+my4S.contact=function(userName,sopenid,session,callback){
+    var tpl = [
+        '            <h2><%=name%></h2>：\n\n',
+        '地址：<%=address%>\n\n',
+        '热线电话：<%=hotline%>\n\n'
+    ].join('');
+    booking.get4sDetail(sopenid,function(err,result){
+        if(err){
+            session.textMsgReplierIndex = null;
+            //if (session.slotData) delete session.slotData;
+            callback(err);
+        }else{
+            var data={};
+            data.name=result.name;
+            data.address=result.address;
+            data.hotline=result.hotline;
+            data.description=result.description;
+             session.textMsgReplierIndex = 'my4S.onContact';
+            callback(null,compiled(data));
+        }
+    });
+};
 exports = module.exports = my4S;
