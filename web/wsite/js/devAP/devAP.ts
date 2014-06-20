@@ -13,7 +13,7 @@ module devAP {
     // 向AngularJS注册
     var _module = angular.module('devAP', []);
     _module.config(['$locationProvider', ($locationProvider)=> {
-        $locationProvider.html5Mode(false);
+        $locationProvider.html5Mode(true);
     }]);
 
     // 页面控制器
