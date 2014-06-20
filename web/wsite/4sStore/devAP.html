@@ -27,9 +27,9 @@
         <div class="col-xs-12 col-md-4 text-center" >
             <div ng-bind-html="model.img_qrcode"></div><br>
             <div class="input-group">
-                <input ng-model="model.url" type="text" class="form-control">
+                <input ng-model="model.url" type="text" class="form-control" ng-keypress="model.changeQRCode($event)">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="model.changeQRCode()">Go!</button>
+                    <button class="btn btn-default" type="button" ng-click="model.changeQRCode($event)">Go!</button>
                 </span>
             </div>
         </div>

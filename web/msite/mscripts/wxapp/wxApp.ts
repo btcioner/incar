@@ -29,6 +29,10 @@ module wxApp {
             this.srvManual = $resource("/wservice/manual");
         };
 
+        public search2 = ($event) =>{
+            if($event.keyCode === 13) this.search();
+        };
+
         public search = () =>{
             this.tip = "正在搜索: " + this.keyword + "...";
             this.searchResult.length = 0;

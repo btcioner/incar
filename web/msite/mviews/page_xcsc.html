@@ -32,7 +32,7 @@
         <div id="containe_290">
             <!--searchbox start-->
             <div class="searchbox">
-                <div class="float"><input name="keywords" type="text" ng-model="model.keyword"/></div>
+                <div class="float"><input name="keywords" type="text" ng-model="model.keyword" ng-keypress="model.search2($event)"/></div>
                 <div class="float">
                     <a href="javascript:void(0)" ng-click="model.search()">
                         <img src="../mimages/icon_07.png" width="31" height="31"/>
