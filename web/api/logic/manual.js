@@ -29,7 +29,7 @@ manual.retrieve = function(keyword, callback) {
             itemA.title = rows[0].title;
             itemA.description = rows[0].description;
             var imgurl = config.baseUrl + '/data/manual/' + rows[0].filename;
-            if(rows[0].filename && row[0].filename.slice(0, 7).toLowerCase() === 'http://')
+            if(rows[0].filename && rows[0].filename.slice(0, 7).toLowerCase() === 'http://')
                 imgurl = rows[0].filename;
             itemA.picurl = imgurl;
             itemA.url = imgurl;
