@@ -19,7 +19,7 @@ function trimString(strInput) {
 manual.retrieve = function(keyword, callback) {
     var pool = this.db();
     var pattern = trimString(keyword);
-    var sqlWithParameters = 'select title, description, filename from t_manual_content where find_in_set(?, `keyword`);';
+    var sqlWithParameters = 'select title, description, filename from t_manual_content where keyword like "%?%";';
     var sql = mysql.format(sqlWithParameters, [pattern]);
     pool.query(sql, function(err, rows) {
         if (err) { return callback(err); }
