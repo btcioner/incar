@@ -27,7 +27,8 @@
     <div id="main_wrap">
         <!--containe_100 start--><div id="containe_100">
         <div class="detail_titlie center"><h1 id="title">2014节油大赛招募中</h1>
-            <h6 class="text_05" id="announce">发布时间：2014-5-15   发布单位：XX4S旗舰店</h6></div>
+            <h6 class="text_05" id="announce">发布时间：2014-5-15   发布单位：XX4S旗舰店</h6>
+           <h6 class="text_05" id="start_end">活动时间：</h6></div>
         <!--<div class="text_04 center">亲自体验，让数据说话!</div>
         <div class="detai_text"><p class="text_06">2014节油大赛现已拉开帷幕。大赛倡导一种快乐的省油驾驶习惯，促进车主之间驾驶乐趣的交流，增进车主和品牌之间的凝聚力。</p><p class="text_06">本次大赛将于2014年5月-7月在全国范围内举行10场开放式道路比赛，覆盖多个重点省份和城市，并与当地主流专业媒体合作，给您带来更多惊喜体验。</p></div>
         <div><ul class="p_title"><li class="line_img02"></li><li><span>参赛要求</span></li><li class="line_img02 float"></li></ul><div class="clear"></div></div>
@@ -61,6 +62,15 @@
                 var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
                 var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
                 document.getElementById("announce").innerHTML="发布时间："+tsYear+"-"+tsMonth+"-"+tsDay+"&nbsp;&nbsp;&nbsp;&nbsp;发布单位："+result.s4_name;
+                var tmTemp=new Date(result.tm_start);
+                var tmYear=tmTemp.getFullYear();
+                var tmMonth=((tmTemp.getMonth()+1)>9)?(tmTemp.getMonth()+1):"0"+(tmTemp.getMonth()+1);
+                var tmDay=(tmTemp.getDate()>9)?tmTemp.getDate():"0"+tmTemp.getDate();
+                var teTemp=new Date(result.tm_end);
+                var teYear=teTemp.getFullYear();
+                var teMonth=((teTemp.getMonth()+1)>9)?(teTemp.getMonth()+1):"0"+(teTemp.getMonth()+1);
+                var teDay=(teTemp.getDate()>9)?teTemp.getDate():"0"+teTemp.getDate();
+                document.getElementById("start_end").innerHTML="活动时间："+tmYear+"-"+tmMonth+"-"+tmDay+"——"+teYear+"-"+teMonth+"-"+teDay;
                 document.getElementById("content").innerHTML=result.brief;
                 if(result.template_id==1) document.getElementById("applyBtn").innerHTML="<a href='###' onclick=apply('"+result.tags+"')><div class='button02'>我要报名</div></a>";
             },
