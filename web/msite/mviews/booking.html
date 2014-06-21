@@ -88,7 +88,16 @@
                     var postData={};
                     if($('#start').val()==''||$('#end').val()==''){alert("请输入预约时间");return;}
                     if($('#phone').val()==''||$('#phone').val()==null){alert("请输入联系电话");return;}
-                    if(document.getElementById("carType").value=='-1'||document.getElementById("carType").value==null){alert("请选择车型");return;}
+                    var obj=document.getElementById("carType");
+                    var carTypeValue;
+                    var carTypeText;
+                    for(i=0;i<obj.length;i++) {
+                        if(obj[i].selected==true) {
+                            carTypeText=obj[i].text;//获取文本
+                            carTypeValue=obj[i].value;
+                        }
+                    }
+                    if(carTypeValue=='-1'||carTypeValue==null){alert("请选择车型");return;}
                     bookDate=document.getElementById("start").value;
                     bookTime=document.getElementById("end").value;
                     postData.user=user;
@@ -100,7 +109,7 @@
                     postData.mileage=$('#mileage').val();
                     postData.carType=document.getElementById("carType").value;
                     alert(carType);
-                    postData.args=JSON.stringify({'brand':brand,'series':carType});
+                    postData.args=JSON.stringify({'brand':brand,'series':carTypeValue});
                     alert(args);
                     postData.acc_id=acc_id;
                     //alert("33333333");
