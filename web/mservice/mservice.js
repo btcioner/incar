@@ -28,6 +28,7 @@ var cancelSlotBookingService= require('./cancelSlotBookingService');
 var myActivityService= require('./myActivityService');
 var my4sInfoService= require('./my4sInfoService');
 var activityDetailService= require('./activityDetailService');
+var applyService= require('./applyService');
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
 
 userService(mservice);
@@ -49,6 +50,7 @@ cancelSlotBookingService(mservice);
 myActivityService(mservice);
 my4sInfoService(mservice);
 activityDetailService(mservice);
+applyService(mservice);
 (function(service) {
 
     function entrance(req, res) {

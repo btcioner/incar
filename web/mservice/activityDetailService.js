@@ -35,10 +35,12 @@ function search(db,act_id,callback) {
                     if(rows&&rows.length==1){
                             actData.id=rows[0].id;
                             actData.s4_id=rows[0].s4_id;
+                            actData.template_id=rows[0].template_id;
                             actData.title=rows[0].title;
                             actData.brief=rows[0].brief;
                             actData.awards=rows[0].awards;
                             actData.status=rows[0].status;
+                            actData.tags=rows[0].tags;
                             actData.tm_announce=rows[0].tm_announce;
                             actData.tm_start=rows[0].tm_start;
                             actData.tm_end=rows[0].tm_end;

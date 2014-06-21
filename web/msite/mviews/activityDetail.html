@@ -35,7 +35,9 @@
         <div class="detai_text"><P class="text_06">本次大赛奖品丰厚，每场比赛的前三名有机会获得XXXX等大奖。每场比赛的冠军车主将直接晋级总决赛，更多重磅奖品等您来拿!</P></div>
         -->
         <div class="detai_text"><P class="text_06" id="content"></P></div>
-        <div class="button_bg"><a href="###"><div class="button02">我要报名</div></a></div>
+        <div class="button_bg" id="applyBtn">
+            <!--<a href="###" onclick="apply()"><div class="button02">我要报名</div></a>-->
+        </div>
     </div><!--containe_100 end-->
         <div class="w10"></div>
     </div><!--main_wrap end-->
@@ -56,6 +58,7 @@
                 var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
                 document.getElementById("announce").innerHTML="发布时间："+tsYear+"-"+tsMonth+"-"+tsDay+"&nbsp;&nbsp;&nbsp;&nbsp;发布单位："+result.s4_name;
                 document.getElementById("content").innerHTML=result.brief;
+                if(result.template_id==1) ocument.getElementById("applyBtn").innerHTML="<a href='###' onclick='apply("+result.tags+")'><div class='button02'>我要报名</div></a>";
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                  alert("没有找到相关信息\n或此活动已取消！");
@@ -63,7 +66,23 @@
             }
         });
     }
+ function apply(tags){
+     $.ajax({
+         type: "POST",
+         url: "/mservice/applyActivity",
+         data: {'user':user,'id':id,'tags':tags},
+         dataType: "json",
+         success: function (result,status) {
+             alert("报名成功！");
+             window.location="/msite/myActivity.html?user="+user;
 
+         },
+         error:function(XMLHttpRequest, textStatus, errorThrown){
+             alert("报名失败\n你已经报名或不符合报名条件！");
+             window.location="/msite/my4sInfo.html?user="+user;
+         }
+     });
+ }
 </script>
 </body>
 </html>

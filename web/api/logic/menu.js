@@ -12,7 +12,7 @@ var WXAPI = require('../weixin').API;
 exports = module.exports = function(tickTasks, menuObject, callback) {
     var pool = db();
 
-    var sql = 'select wx_app_name appName, wx_app_id appId, wx_app_secret appSecret from t_4s where id=1;';
+    var sql = 'select wx_app_name appName, wx_app_id appId, wx_app_secret appSecret from t_4s ;';
 
     pool.query(sql, function(err, rows){
         if (err) { return callback(err, null); }
