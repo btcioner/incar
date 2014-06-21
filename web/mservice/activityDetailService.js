@@ -46,7 +46,8 @@ function search(db,act_id,callback) {
                             pool.query('select name from t_4s where id=?',[ actData.s4_id],function(err,data){
                                 if(err)callback(err);
                                 else if(data){
-                                    callback(null,data);
+                                    actData.s4_name=data[0].name;
+                                    callback(null,actData);
                                 }else callback(new Error("The 4s is not find."));
                             });
                      }else callback(new Error("Can not find the activity for the id."));
