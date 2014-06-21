@@ -88,7 +88,7 @@
                     var postData={};
                     if($('#start').val()==''||$('#end').val()==''){alert("请输入预约时间");return;}
                     if($('#phone').val()==''||$('#phone').val()==null){alert("请输入联系电话");return;}
-                    if($('#carType').val()==''||$('#carType').val()==null){alert("请选择车型");return;}
+                    if($('#carType').val()=='-1'||$('#carType').val()==null){alert("请选择车型");return;}
                     bookDate=document.getElementById("start").value;
                     bookTime=document.getElementById("end").value;
                     postData.user=user;
@@ -99,7 +99,9 @@
                     postData.phone=$('#phone').val();
                     postData.mileage=$('#mileage').val();
                     postData.carType=$('#carType').val();
+                    alert(carType);
                     postData.args=JSON.stringify({'brand':brand,'series':carType});
+                    alert(args);
                     postData.acc_id=acc_id;
                     //alert("33333333");
                     if(bookDate<=today) {alert("预约时间错误！");return;}
