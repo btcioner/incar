@@ -88,7 +88,7 @@
                     var postData={};
                     if($('#start').val()==''||$('#end').val()==''){alert("请输入预约时间");return;}
                     if($('#phone').val()==''||$('#phone').val()==null){alert("请输入联系电话");return;}
-                    if($('#carType').val()=='-1'||$('#carType').val()==null){alert("请选择车型");return;}
+                    if(document.getElementById("carType").value=='-1'||document.getElementById("carType").value==null){alert("请选择车型");return;}
                     bookDate=document.getElementById("start").value;
                     bookTime=document.getElementById("end").value;
                     postData.user=user;
@@ -98,7 +98,7 @@
                     postData.license=$('#license').val();
                     postData.phone=$('#phone').val();
                     postData.mileage=$('#mileage').val();
-                    postData.carType=$('#carType').val();
+                    postData.carType=document.getElementById("carType").value;
                     alert(carType);
                     postData.args=JSON.stringify({'brand':brand,'series':carType});
                     alert(args);
