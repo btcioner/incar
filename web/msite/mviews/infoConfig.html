@@ -71,7 +71,8 @@
                 success: function (result,status) {
                     alert("修改成功");
                     // document.getElementById("Tip").innerHTML=result;
-                    window.close();
+                    //关闭微信浏览器
+                    WeixinJSBridge.call('closeWindow');
                 },
                 error:function(XMLHttpRequest, textStatus, errorThrown){
                     alert("修改失败\n请检查OBD Id是否正确");
