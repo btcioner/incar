@@ -13,7 +13,7 @@ module devAP {
     // 向AngularJS注册
     var _module = angular.module('devAP', []);
     _module.config(['$locationProvider', ($locationProvider)=> {
-        $locationProvider.html5Mode(false);
+        $locationProvider.html5Mode(true);
     }]);
 
     // 页面控制器
@@ -46,7 +46,9 @@ module devAP {
             document.location.reload(true);
         };
 
-        public changeQRCode = ()=>{
+        public changeQRCode = ($event)=>{
+            if(($event instanceof KeyboardEvent) && $event.keyCode !== 13) return;
+
             if(localStorage){
                 // 保存配置
                 localStorage.setItem(this._lskURL, this.url);
