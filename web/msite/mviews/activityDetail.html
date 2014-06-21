@@ -49,9 +49,12 @@
             dataType: "json",
             success: function (result,status) {
                 //alert("success");
-                obd_code=result.obd_code;
-                license=result.license;
-                s4id=result.s4_openid;
+                document.getElementById("title").innerHTML=result.title;
+                var tsTemp=new Date(result.tm_announce);
+                var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
+                var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
+                document.getElementById("title").innerHTML="发布时间："+tsMonth+"-"+tsDay+"    发布单位："+result.s4_name;
+                document.getElementById("title").innerHTML=result.brief;
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                  alert("没有找到相关信息\n或此活动已取消！");
