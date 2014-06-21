@@ -58,6 +58,8 @@
                 var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
                 document.getElementById("announce").innerHTML="发布时间："+tsYear+"-"+tsMonth+"-"+tsDay+"&nbsp;&nbsp;&nbsp;&nbsp;发布单位："+result.s4_name;
                 document.getElementById("content").innerHTML=result.brief;
+                alert("template:"+result.template_id);
+                alert(result.template_id==1);
                 if(result.template_id==1) ocument.getElementById("applyBtn").innerHTML="<a href='###' onclick='apply("+result.tags+")'><div class='button02'>我要报名</div></a>";
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
