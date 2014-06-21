@@ -47,7 +47,10 @@ function applyData(db,openid,sopenid,act_id,tags,callback) {
                                       pool.query('insert into t_activity_member (act_id,cust_id,status,ref_car_id,ref_tags) values(?,?,2,?,?);',
                                           [act_id,acc_id,rows[0].car_id,tags],function(err,ressult){
                                             if(err) callback(err);
-                                            else callback(null,1);
+                                            else {
+                                                console.log("insert into t_activity_member SUCCESS.");
+                                                callback(null,1);
+                                            }
                                       });
                                   }else callback(new Error("Can not find car from t_car_user."));
                               }
