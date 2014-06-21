@@ -43,8 +43,11 @@ function search(db,act_id,callback) {
                             actData.tm_start=rows[0].tm_start;
                             actData.tm_end=rows[0].tm_end;
                             actData.logo_url=rows[0].logo_url;
-                            pool.query('select name from t_4s where ',[],function(){
-                                callback(null,data);
+                            pool.query('select name from t_4s where id=?',[ actData.s4_id],function(err,data){
+                                if(err)callback(err);
+                                else if(data){
+                                    callback(null,data);
+                                }else callback(new Error("The 4s is not find."));
                             });
                      }else callback(new Error("Can not find the activity for the id."));
                 }
