@@ -51,9 +51,10 @@
                 //alert("success");
                 document.getElementById("title").innerHTML=result.title;
                 var tsTemp=new Date(result.tm_announce);
+                var tsYear=tsTemp.getFullYear();
                 var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
                 var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
-                document.getElementById("announce").innerHTML="发布时间："+tsMonth+"-"+tsDay+"    发布单位："+result.s4_name;
+                document.getElementById("announce").innerHTML="发布时间："+tsYear+"-"+tsMonth+"-"+tsDay+"&nbsp;&nbsp;&nbsp;&nbsp;发布单位："+result.s4_name;
                 document.getElementById("content").innerHTML=result.brief;
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
