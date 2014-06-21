@@ -73,14 +73,18 @@
          url: "/mservice/applyActivity",
          data: {'user':user,'id':id,'tags':tags},
          dataType: "json",
-         success: function (result,status) {
+         success: function (status,result) {
+             alert("status:"+status);
+             if(status==400){
              alert("报名成功！");
              window.location="/msite/myActivity.html?user="+user;
-
+             }else {
+                 alert("报名失败\n你已经报名或不符合报名条件！");
+                 window.location="/msite/my4sInfo.html?user="+user;
+             }
          },
          error:function(XMLHttpRequest, textStatus, errorThrown){
-             alert("报名失败\n你已经报名或不符合报名条件！");
-             window.location="/msite/my4sInfo.html?user="+user;
+
          }
      });
  }
