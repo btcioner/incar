@@ -152,11 +152,11 @@
                             var data={};
                             data.seriesCode=result.series;
                             data.series=result.seriesName;
-                            //setSeries(data);
+                            setSeries(data);
                         },
                         error:function(XMLHttpRequest, textStatus, errorThrown){
                             //alert("连接失败\n请检查网络连接是否正常");
-                           // setSeries(null);
+                            setSeries(null);
                         }
                     });
                 }
