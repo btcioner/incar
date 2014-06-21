@@ -83,10 +83,10 @@
             data: {'user':user,'s4_id':s4_id,'acc_id':acc_id},
             dataType: "json",
             success: function (result,status) {
-                alert(result.length);
+                //alert(result.length);
                 var strTemp="";
                 for(var i=0;i<result.length;i++){
-                    alert("index:"+i);
+                    //alert("index:"+i);
                     var rowLabel;
                     if(i%2==0) rowLabel="rows02";  else rowLabel="rows01"; //判断奇偶行
                     //判断活动状态
@@ -96,14 +96,14 @@
                     else if(result[i].status==4) status="已结束";
                     else if(result[i].status==5) status="结果已发布";
                     else status="无效";
-                    alert(status);
+                    //alert(status);
                     //判断我的活动参加状态
                     var myStatus="";
                     if(result[i].myStatus==1) myStatus="已报名";
                     else if(result[i].myStatus==2) myStatus="已参加";
                     else if(result[i].myStatus==3) myStatus="已退出";
                     else if(result[i].myStatus==4) myStatus="被拒绝";
-                    alert(myStatus);
+                   // alert(myStatus);
                     //活动发布时间
                     var tsTemp=new Date(result[i].tm_announce);
                     var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);

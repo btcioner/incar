@@ -20,7 +20,7 @@ function my4sInfo(req, res) {
     search(db,sopenid,function(err, data) {
         if (err) { res.send(200,err); }
         else {
-            console.log(data);
+            console.log("4sInfo length :"+data.length);
             res.send(data);
         }
     });
