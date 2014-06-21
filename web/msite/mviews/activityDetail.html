@@ -60,7 +60,7 @@
                 document.getElementById("content").innerHTML=result.brief;
                 alert("template:"+result.template_id);
                 alert(result.template_id==1);
-                if(result.template_id==1) ocument.getElementById("applyBtn").innerHTML="<a href='###' onclick='apply("+result.tags+")'><div class='button02'>我要报名</div></a>";
+                if(result.template_id==1) document.getElementById("applyBtn").innerHTML="<a href='###' onclick='apply("+result.tags+")'><div class='button02'>我要报名</div></a>";
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                  alert("没有找到相关信息\n或此活动已取消！");
