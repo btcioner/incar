@@ -89,9 +89,14 @@
                 alert("lengh:"+result.length);
                var str="";
                for(var i=0;i<result.length;i++){
-                   var actStart=result[i].tm_announce.getYear()+"/"+
-                           ((result[i].tm_announce.getMonth()+1)>9)?(result[i].tm_announce.getMonth()+1):"0"+(result[i].tm_announce.getMonth()+1) +"/"+
-                           (result[i].tm_announce.getDate()>9)?result[i].tm_announce.getDate():"0"+result[i].tm_announce.getDate();
+                   var tsTemp=new Date(result[i].tm_announce);
+                   var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
+                   var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
+                   //var tsDate=tsMonth +"/"+tsDay;
+                   //var tsHour=(tsTemp.getHours()>9)?tsTemp.getHours():"0"+tsTemp.getHours();
+                   //var tsMin= (tsTemp.getMinutes()>9)?tsTemp.getMinutes():"0"+tsTemp.getMinutes();
+                   //var tsTime=tsHour+":"+tsMin;
+                   var actStart=tsMonth +"/"+tsDay;
                    var content=result[i].brief.substring(0,20);
                    str+='<a href="activityDetail.html?user='+user+'&id='+result[i].id+'"><li>' +
                            '<div class="listbox01">' +
