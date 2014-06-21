@@ -16,6 +16,7 @@
         function init(){
             user=getQueryString("user");
             id=getQueryString("id");
+            document.getElementById("returnBtn").href="/msite/my4sInfo.html?user="+user;
             getDetail();
         }
     </script>
@@ -37,6 +38,9 @@
         <div class="detai_text"><P class="text_06" id="content"></P></div>
         <div class="button_bg" id="applyBtn">
             <!--<a href="###" onclick="apply()"><div class="button02">我要报名</div></a>-->
+        </div>
+        <div class="button_bg" >
+            <a href="###" id="returnBtn"><div class="button02">返回</div></a>
         </div>
     </div><!--containe_100 end-->
         <div class="w10"></div>
