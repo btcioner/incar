@@ -29,7 +29,7 @@ function getActivityDetail(req, res) {
 function search(db,act_id,callback) {
     var actData={};
     var pool = db();
-    pool.query('select id,s4_id,template_id,title,brief,status,logo_url,tm_announce,tm_start,tm_end  from t_activity where id=?;',[act_id],function(err,rows){
+    pool.query('select id,s4_id,template_id,title,brief,status,logo_url,tags,tm_announce,tm_start,tm_end  from t_activity where id=?;',[act_id],function(err,rows){
                 if(err)callback(err);
                 else{
                     if(rows&&rows.length==1){
