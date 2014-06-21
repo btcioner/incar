@@ -22,7 +22,7 @@ function applyActivity(req, res) {
     applyData(db,openid,sopenid,act_id,tags,function(err, data) {
         if (err) { res.send(200,err); }
         else {
-            res.send(data);
+            res.send(400,data);
         }
     });
 }
@@ -49,7 +49,7 @@ function applyData(db,openid,sopenid,act_id,tags,callback) {
                                             if(err) callback(err);
                                             else {
                                                 console.log("insert into t_activity_member SUCCESS.");
-                                                callback(null,1);
+                                                callback(null,{'re':1});
                                             }
                                       });
                                   }else callback(new Error("Can not find car from t_car_user."));

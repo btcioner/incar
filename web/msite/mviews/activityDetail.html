@@ -74,8 +74,8 @@
          data: {'user':user,'id':id,'tags':tags},
          dataType: "json",
          success: function (result,status) {
-             alert("status:"+status);
-             if(status==400){
+             alert("status:"+result.re);
+             if(result.re==1){
              alert("报名成功！");
              window.location="/msite/myActivity.html?user="+user;
              }else {
