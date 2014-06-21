@@ -73,7 +73,7 @@
          url: "/mservice/applyActivity",
          data: {'user':user,'id':id,'tags':tags},
          dataType: "json",
-         success: function (status,result) {
+         success: function (result,status) {
              alert("status:"+status);
              if(status==400){
              alert("报名成功！");
