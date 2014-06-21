@@ -22,7 +22,7 @@ function applyActivity(req, res) {
     applyData(db,openid,sopenid,act_id,tags,function(err, data) {
         if (err) { res.send(200,err); }
         else {
-            res.send(400,data);
+            res.send(data);
         }
     });
 }
@@ -44,7 +44,7 @@ function applyData(db,openid,sopenid,act_id,tags,callback) {
                               if(err) callback(err);
                               else{
                                   if(rows) {
-                                      pool.query('insert into t_activity_member (act_id,cust_id,status,ref_car_id,ref_tags) values(?,?,2,?,?);',
+                                      pool.query('insert into t_activity_member (act_id,cust_id,status,ref_car_id,ref_tags) values(?,?,1,?,?);',
                                           [act_id,acc_id,rows[0].car_id,tags],function(err,ressult){
                                             if(err) callback(err);
                                             else {
