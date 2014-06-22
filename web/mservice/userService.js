@@ -59,7 +59,7 @@ function userLogin(req,res){
         }
     });
 }
-//登记并注册没有账户的微信用户
+//登记或修改（设置）账号
 function userEnroll(req, res) {
     if(!userCheck(req, res)){
         var params=req.params;
@@ -143,8 +143,8 @@ function carEnroll(req,res){
     var openId4S=temp[1];
     var wx=openId+":"+openId4S
     var obdCode=params.obdCode;
-    var brand=params.brand;
-    var series=params.series;
+    var brand=params.brandCode;
+    var series=params.seriesCode;
     var modelYear=params.modelYear;
     var license=params.license;
     var mileage=params.mileage;

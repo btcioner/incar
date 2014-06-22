@@ -25,6 +25,7 @@
   var user;//用户openId
   //var webserviceurl;//webservice地址
   var today;//当天日期
+  var brandCode;
   //获取传入的参数
   function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -70,13 +71,24 @@
       if($('#enginetype').val()==null||$('#enginetype').val().length=='-1'){alert("请选择发动机类型");return;}
       if($('#displacement').val()==null||$('#displacement').val().length<1){alert("请填写排气量");return;}
       if($('#carage').val()==null||$('#carage').val().length=='-1'){alert("请选择车龄");return;}
-      alert("1");
+      //alert("1");
 
           postData.user = user;
           postData.name = document.getElementById("name").value;//用户名
           postData.obd_code = document.getElementById("obd_code").value;
           postData.brand= document.getElementById("brand").value;
+          postData.brandCode= brandCode;
           postData.series= document.getElementById("selectSeries").value;
+          var obj=document.getElementById("selectSeries");
+          var serieseValue;
+          var seriesText;
+          for(i=0;i<obj.length;i++) {
+             if(obj[i].selected==true) {
+                 seriesText=obj[i].text;//获取文本
+                 serieseValue=obj[i].value;
+               }
+            }
+          postData.seriesCode=serieseValue;
           postData.modelYear= document.getElementById("modelYear").value;
           postData.nick= document.getElementById("nick").value;
           postData.phone= document.getElementById("phone").value;
@@ -86,7 +98,7 @@
           postData.disp= document.getElementById("disp").value;
           postData.age= document.getElementById("age").value;
           postData.last_login_time = today;//最后登录时间
-      alert("2");
+      //alert("2");
       $.ajax({
           type: "POST",
           url: "/mservice/enroll",
@@ -155,11 +167,12 @@
             dataType: "json",
             success:function(data){
                 document.getElementById('brand').value=data.brand;
+                brandCode=data.brandCode;
                 var str='<option value="-1">请选择</option>';
                 for(var i=0;i<data.seriesData.length;i++){
                     str+='<option value="'+data.seriesData[i].seriesCode+'">'+data.seriesData[i].series+'</option> '
                 }
-                document.getElementById('series').innerHTML=str;
+                document.getElementById('selectSeries').innerHTML=str;
             }
         });
     }
