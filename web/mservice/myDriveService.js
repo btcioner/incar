@@ -360,7 +360,7 @@ function getCarbonDataForLatestTime(db, obdCode, callback) {
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
-                var carbonResult = (rows[0].fuel * rows[0].mileage * 2.24);
+                var carbonResult = ((rows[0].fuel * rows[0].mileage * 2.24)/100.0);
                 if (!! carbonResult) {
                     carbonResult = carbonResult.toFixed(2);
                 }
@@ -387,7 +387,7 @@ function getCarbonDataForLatestWeek(db, obdCode, callback) {
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
-                var carbonResult = rows[0].fuelTotal * 2.24;
+                var carbonResult = rows[0].fuelTotal * 2.24/100;
                 if (!! carbonResult) {
                     carbonResult = carbonResult.toFixed(2);
                 }
@@ -413,7 +413,7 @@ function getCarbonDataForInterval(db, obdCode, startDatetime, endDatetime, callb
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
-                var carbonResult = rows[0].fuelTotal * 2.24;
+                var carbonResult = rows[0].fuelTotal * 2.24/100;
                 if (!! carbonResult) {
                     carbonResult = carbonResult.toFixed(2);
                 }
