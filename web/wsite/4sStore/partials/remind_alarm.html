@@ -1,0 +1,78 @@
+<!--查看详情 begin-->
+<div class="widget-box" ng-show="operDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>碰撞提醒详情</h5>
+        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="gotoBack(1)" >返回</a>
+    </div>
+    <div class="widget-content nopadding">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>车主姓名</th>
+                <th style="background-color:#F9F9F9;">{{carDetails.nick}}</th>
+                <th>联系电话
+                <th style="background-color:#F9F9F9;">{{carDetails.phone}}</th>
+                <th>车牌号</th>
+                <th style="background-color:#F9F9F9;">{{carDetails.license}}</th>
+            </tr>
+            <tr>
+                <th>品牌</th>
+                <th style="background-color:#F9F9F9;">{{carDetails.brand}}</th>
+                <th>系列</th>
+                <th style="background-color:#F9F9F9;">{{carDetails.series}}</th>
+                <th>提醒时间</th>
+                <th style="background-color:#F9F9F9;">{{carDetails.careTime}}</th>
+            </tr>
+            <tr ng-show="oper_button">
+              <th colspan="6"><button class="btn btn-success" ng-click="operationChild()">已联系</button></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+   </div>
+<!--查看详情 end-->
+<!--保养提醒列表 begin-->
+<div class="widget-box margin_16" ng-show="maintainListDiv">
+    <div class="widget-title">
+        <span class="icon"><i class="icon-th"></i></span>
+        <h5>碰撞提醒列表</h5>
+    </div>
+    <div class="widget-content nopadding" >
+        <table class="table table-bordered">
+            <thead>
+            <tr class="bgcolor01">
+                <th>车主姓名</th>
+                <th>联系电话</th>
+                <th>车牌号</th>
+                <th>品牌</th>
+                <th>系列</th>
+                <th>创建时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="gradeX" ng-repeat="al in alarmList">
+                <td style="text-align: center">{{al.nick}}</td>
+                <td style="text-align: center">{{al.phone}}</td>
+                <td style="text-align: center">{{al.license}}</td>
+                <td style="text-align: center">{{al.brand}}</td>
+                <td style="text-align: center">{{al.series}}</td>
+                <td style="text-align: center">{{al.createTime}}</td>
+                <td style="text-align: center">{{al.remindStatus}}</td>
+                <td style="text-align: center"><a class="btn btn-info btn-mini" ng-click="Operation($index,al.remindStatus)">查看</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div><font color="red">{{tips}}</font></div>
+    <div class="pagination alternate" style="float:right;">
+        共{{totalCount}}条&nbsp;页码{{currentPage}}/{{totalPage}} &nbsp;
+        跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
+        <option>1</option>
+    </select>页
+    </div>
+</div>
+<!--保养提醒列表 end-->
+

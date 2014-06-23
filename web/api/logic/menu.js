@@ -12,7 +12,7 @@ var WXAPI = require('../weixin').API;
 exports = module.exports = function(tickTasks, menuObject, callback) {
     var pool = db();
 
-    var sql = 'select wx_app_name appName, wx_app_id appId, wx_app_secret appSecret from t_4s where id=1;';
+    var sql = 'select id,name,wx_app_name appName, wx_app_id appId, wx_app_secret appSecret from t_4s ;';
 
     pool.query(sql, function(err, rows){
         if (err) { return callback(err, null); }
@@ -22,7 +22,7 @@ exports = module.exports = function(tickTasks, menuObject, callback) {
                     var api = new WXAPI(element.appId, element.appSecret);
                     api.createMenu(menuObject, function(err, result){
                         if (err) {
-                            console.log('Error occurred when weixin menu was newly defined - ---' + err + '\n');
+                            console.log('4s store: '+element.name+' weixin menu initial error.   4s store id :'+element.id+'\n' + err + '\n');
                         }
                         else {
                             console.log('Weixin menu was newly defined!!\n');

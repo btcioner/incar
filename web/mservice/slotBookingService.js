@@ -31,8 +31,8 @@ function slotBooking(req, res) {
                 self.db().query('select id from t_slot_booking where channel_specific like ? order by ts desc limit 1',["%"+postData.user+'%'],function(err,rows){
                     if(err){ console.log(err); return res.send(400, err);}
                     else if(rows){
-                        self.db().query('insert into t_work (work,step,work_ref_id,org_id,cust_id,working_time,created_time) value(?,?,?,?,?,?,now())',
-                            ['care','applied',rows[0].id,orgId,postData.acc_id,postData.timeSlot],function(err,result){
+                        self.db().query('insert into t_work (work,step,work_ref_id,org_id,cust_id,working_time,json_args,created_time) values(?,?,?,?,?,?,?,now())',
+                            ['care','applied',rows[0].id,orgId,postData.acc_id,postData.timeSlot,postData.args],function(err,result){
                               if(err){ console.log(err); return res.send(400, err);}
                                 return res.send(200, result);
                         });

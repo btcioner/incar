@@ -81,7 +81,7 @@ function getCarInfo(db, callback){
                                 else callback(new Error('brandName is null'));
                             });
                             report.series=rows[0].series;
-                            getSeriesName(db,rows[0].series,function(err,data){
+                            getSeriesName(db,rows[0].brand,rows[0].series,function(err,data){
                                 if(err) callback(err);
                                 else if(data)
                                     report.seriesName=data;
@@ -109,9 +109,9 @@ function getBrandName(db,brandCode,callback){
              }
     });
 }
-function getSeriesName(db,seriesCode,callback){
+function getSeriesName(db,brandCode,seriesCode,callback){
     var pool = db();
-    pool.query('select series from t_car_dictionary where seriesCode=?;',[seriesCode],function(err,rows){
+    pool.query('select series from t_car_dictionary where brandCode=? and seriesCode=?;',[brandCode,seriesCode],function(err,rows){
         if(err) callback(err);
         else{
             callback(null,rows[0].series);

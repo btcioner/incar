@@ -14,11 +14,19 @@ angular.module("SActivityApp", [
             controller: 's_specialStationCtrl',
             templateUrl: '/4sStore/partials/activity_main.html'//特价工位
         })
-        .when('/collapseGTwo/:id',{
+        .when('/collapseGOne/:id', {
+            controller: 's_specialStationCtrl',
+            templateUrl: '/4sStore/partials/activity_main.html'//特价工位
+        })
+        .when('/collapseGTwo',{
             controller:'s_activityCtrl',
             templateUrl:'/4sStore/partials/activity_promoteInfo.html'//活动资讯
         })
-        .when('/saveFuelMatch/:id',{
+        .when('/saveFuelMatch',{
+            controller:'s_fuelMatchCtrl',
+            templateUrl:'/4sStore/partials/activity_saveFuelMatch.html'//红包
+        })
+        .when('/saveFuelMatch',{
             controller:'s_fuelMatchCtrl',
             templateUrl:'/4sStore/partials/activity_saveFuelMatch.html'//红包
          })
@@ -39,17 +47,34 @@ angular.module("SActivityApp", [
             alert("登录已超时！");
             window.location="../login.html";
         }
-        $scope.randomTime = new Date();
+        $scope.changeLeftbar = function(id)
+        {
+            for(var i=1;i<5;i++)
+            {
+                if(i==id)
+                {
+                    $("#div_"+i).removeClass().addClass("accordion-heading sidebar_a");
+                }
+                else{
+                    $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
+                }
+            }
+        }
   });
 
 function s_statisticsCtrl($scope,$http)
 {
       $scope.randomTime = new Date();
-      $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/promotionslot?page=1&pagesize=1&status=2'+"&t="+$scope.randomTime)
+      $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/promotionslot?status=2&t='+$scope.randomTime)
           .success(function(data){
               $scope.slotsCount = data.totalCount;
           }).error(function(data){
               alert("请求无响应!");
           })
- }
-
+     $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity?status=2&t="+$scope.randomTime)
+          .success(function(data){
+              $scope.saveFuelCount = data.totalCount;
+            }).error(function(data){
+                alert("请求无响应!");
+            })
+}

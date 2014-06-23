@@ -10,21 +10,26 @@
     <script src="../js/angular.min.js"></script>
     <script src="../js/qrcode.js"></script>
     <script src="../js/devAP.js"></script>
+    <style type="text/css">
+        body{
+            padding-bottom: 20px;
+        }
+    </style>
 </head>
 <body ng-controller="devAPCtrl">
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 text-center">
-            <h1>微站测试接入点{{model.name}}</h1>
+            <h1>微站测试接入点</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12 col-md-4 text-center" >
             <div ng-bind-html="model.img_qrcode"></div><br>
             <div class="input-group">
-                <input ng-model="model.url" type="text" class="form-control">
+                <input ng-model="model.url" type="text" class="form-control" ng-keypress="model.changeQRCode($event)">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="model.changeQRCode()">Go!</button>
+                    <button class="btn btn-default" type="button" ng-click="model.changeQRCode($event)">Go!</button>
                 </span>
             </div>
         </div>
@@ -38,7 +43,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12 text-center">
-            <button type="button" class="btn btn-success" ng-click="model.reload($event)">Reload</button>
+            <button type="button" class="btn btn-success" ng-click="model.reload()">Reload</button>
         </div>
     </div>
 </div>

@@ -38,7 +38,7 @@ booking.applySlot = function(userName,sopenid, slot, callback) {
     getOrgId(this.db, userName,sopenid, function(err, orgId) {
         if (err) { return callback(err); }
         pool.query('insert into t_slot_booking(storeId, slot_location, slot_time, promotion_id, channel, channel_specific, booking_time, booking_status, tc, ts) values (?,?,?,?,?,?, now(), 1,?,now());',
-            [orgId, slot.location, slot.time, slot.id, 'weixin', userName, userName+'@weixin'], function(err, result) {
+            [orgId, slot.location, slot.time, slot.id, 'weixin', userName+'@'+sopenid, userName+'@'+sopenid+'@weixin'], function(err, result) {
             if (err) { return callback(err); }
             return callback(null, result);
         });
@@ -60,7 +60,7 @@ booking.getBrand=function(sopenid,callback){
 }
 booking.get4sDetail=function(sopenid,callback){
     var pool = this.db();
-    pool.query('select name,description,brand,address,hotline from t_4s where openid=?;',[sopenid],function(err,result){
+    pool.query('select name,description,brand,logo_url,address,hotline from t_4s where openid=?;',[sopenid],function(err,result){
         if(err) callback(err);
         else {
             if(result&&result.length===1) {
@@ -68,6 +68,7 @@ booking.get4sDetail=function(sopenid,callback){
                       data.name=result[0].name;
                       data.description=result[0].description;
                       data.brand=result[0].brand;
+                      data.logo_url=result[0].logo_url;
                       data.address=result[0].address;
                       data.hotline=result[0].hotline;
                      callback(null,data);

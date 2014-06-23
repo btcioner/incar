@@ -25,54 +25,17 @@
     <div id="main_wrap">
         <!--containe_100 start--><div id="containe_100">
         <ul id="actContent">
-            <!--活动项box01 start--><a href="###"><li>
+            <!--活动项box01 start-->
+            <!--<a href="###"><li>
             <div class="listbox01">
                 <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
                 <div class="icon_6a float"></div>
                 <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开始啦。为期一个月的优惠活动开始啦......</p></div>
                 <div class="clear"></div>
             </div>
-        </li></a><!--活动项box01 end-->
-            <!--活动项box02 start--><a href="###"><li>
-            <div class="listbox01">
-                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开始啦。为期一个月的优惠活动开始啦......</p></div>
-                <div class="icon_6b float"></div>
-                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
-                <div class="clear"></div>
-            </div>
-        </li></a><!--活动项box02 end-->
-            <!--活动项box01 start--><a href="###"><li>
-            <div class="listbox01">
-                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
-                <div class="icon_6a float"></div>
-                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开始啦。为期一个月的优惠活动开始啦......</p></div>
-                <div class="clear"></div>
-            </div>
-        </li></a><!--活动项box01 end-->
-            <!--活动项box02 start--><a href="###"><li>
-            <div class="listbox01">
-                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开始啦。为期一个月的优惠活动开始啦......</p></div>
-                <div class="icon_6b float"></div>
-                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
-                <div class="clear"></div>
-            </div>
-        </li></a><!--活动项box02 end-->
-            <!--活动项box01 start--><a href="###"><li>
-            <div class="listbox01">
-                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
-                <div class="icon_6a float"></div>
-                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开始啦。为期一个月的优惠活动开始啦......</p></div>
-                <div class="clear"></div>
-            </div>
-        </li></a><!--活动项box01 end-->
-            <!--活动项box02 start--><a href="###"><li>
-            <div class="listbox01">
-                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开.为期一个月的优惠活动开始啦始啦......</p></div>
-                <div class="icon_6b float"></div>
-                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
-                <div class="clear"></div>
-            </div>
-        </li></a><!--活动项box02 end-->
+        </li></a>-->
+            <!--活动项box01 end-->
+            <!--活动项box02 start--><!--活动项box02 end-->
         </ul>
     </div><!--containe_100 end-->
         <div class="w10"></div>
@@ -86,11 +49,17 @@
             data: {'user':user},
             dataType: "json",
             success: function (result,status) {
+                //alert("lengh:"+result.length);
                var str="";
                for(var i=0;i<result.length;i++){
-                   var actStart=result[i].tm_announce.getYear()+"/"+
-                           ((result[i].tm_announce.getMonth()+1)>9)?(result[i].tm_announce.getMonth()+1):"0"+(result[i].tm_announce.getMonth()+1) +"/"+
-                           (result[i].tm_announce.getDate()>9)?result[i].tm_announce.getDate():"0"+result[i].tm_announce.getDate();
+                   var tsTemp=new Date(result[i].tm_announce);
+                   var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
+                   var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
+                   //var tsDate=tsMonth +"/"+tsDay;
+                   //var tsHour=(tsTemp.getHours()>9)?tsTemp.getHours():"0"+tsTemp.getHours();
+                   //var tsMin= (tsTemp.getMinutes()>9)?tsTemp.getMinutes():"0"+tsTemp.getMinutes();
+                   //var tsTime=tsHour+":"+tsMin;
+                   var actStart=tsMonth +"/"+tsDay;
                    var content=result[i].brief.substring(0,20);
                    str+='<a href="activityDetail.html?user='+user+'&id='+result[i].id+'"><li>' +
                            '<div class="listbox01">' +
@@ -103,6 +72,7 @@
                               '</div>' +
                           '</li></a>';
                }
+                //alert("str:"+str);
                 document.getElementById("actContent").innerHTML=str;
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){

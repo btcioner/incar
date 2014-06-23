@@ -3,7 +3,7 @@
  */
 
 
- function s_specialStationCtrl($scope,$http) {
+ function s_specialStationCtrl($scope,$http,$routeParams) {
 
     $scope.slotListDiv = true;
     $scope.slotAddDiv = false;
@@ -16,14 +16,17 @@
     $scope.benefit = "";
     $scope.description = "";
     $scope.promotion_time = "";
-
-
+    $scope.queryString = "";
+    if($routeParams.id !=null)
+    {
+        $scope.queryString ="&status="+$routeParams.id;
+    }
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {
         $scope.tips="";
         $scope.randomTime = new Date();
-        $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/promotionslot?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&t="+$scope.randomTime).success(function(data){
+        $http.get(baseurl+'organization/'+ $.cookie("s4_id")+'/promotionslot?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 $scope.slots = data.slots;

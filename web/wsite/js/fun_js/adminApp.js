@@ -9,45 +9,52 @@ angular.module("AdminApp", [
     'ngRoute'
     ]).config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.
-        when('/main/:id', {
+        when('/main', {
             controller: 'deviceCtrl',
             templateUrl: '/admin/partials/deviceManage.html'//设备管理
         })
-        .when('/driveData/:id',{
+        .when('/driveData',{
             controller:'driveDataCtrl',
             templateUrl:'/admin/partials/driveData.html'//行车数据
         })
-        .when('/customer4s/:id',{
+        .when('/customer4s',{
             controller:'customerCtrl',
             templateUrl:'/admin/partials/customer4s.html'//4s店客户
          })
-        .when('/carOwners/:id',{
+        .when('/carOwners',{
             controller:'carOwnersCtrl',
             templateUrl:'/admin/partials/carOwners.html'//车主
         })
-        .when('/userManage/:id',{
+        .when('/userManage',{
             controller:'userManageCtrl',
             templateUrl:'/admin/partials/userManage.html'//系统用户
         })
-        .when('/knowledgeBase/:id',{
+        .when('/knowledgeBase',{
             controller:'knowledgeBaseCtrl',
             templateUrl:'/admin/partials/knowledgeBase.html'//行车手册
         })
-        .when('/paramSetting/:id',{
+        .when('/paramSetting',{
             controller:'s_paramCtrl',
             templateUrl:'/admin/partials/paramSetting.html'//行车手册
         })
         .otherwise({
-           redirectTo:'/main/1'//跳转到设备管理
+           redirectTo:'/main'//跳转到设备管理
         });
       //  $locationProvider.html5Mode(true);
 
 }).controller("adminCtrl",function($scope){
 
      $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
-     $scope.randomTime  = new Date();
-     $scope.changeTime = function()
+     //动态改变被激活菜单
+     $scope.active = function(ac_id)
      {
-         $scope.randomTime  = new Date();
+        for(var i=1;i<8;i++)
+        {
+            $("#li_active_"+i).removeClass();
+            if(i==ac_id)
+            {
+                $("#li_active_"+i).addClass("menu_hl");
+            }
+        }
      }
 });

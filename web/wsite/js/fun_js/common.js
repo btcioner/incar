@@ -166,11 +166,17 @@ var randomTime = new Date();
 
         }
     }
-
+   //保养提醒信息状态
     $.changeCareStatus = function(step)
     {
         if(step == "refused") return "已拒绝";
         else return "已预约";
+    }
+   //碰撞提醒状态
+    $.changeAlarmStatus = function(status)
+    {
+        if(status == "1") return "新提醒";
+        else return "已关怀";
     }
 
     $.changeCarStatus = function(status)
@@ -212,7 +218,7 @@ function changeImg(file,plugId,formId,preId,imgId)
         var div = document.getElementById(preId);
         if (file.files && file.files[0])
         {
-            div.innerHTML ='<img id='+imgId+' style="width:150px;">';
+            div.innerHTML ='<img id='+imgId+' style="width:120px;">';
 
             var img = document.getElementById(imgId);
 
@@ -284,8 +290,8 @@ function clacImgZoomParam( maxWidth, maxHeight, width, height ){
     //   param.left = Math.round((maxWidth - param.width) / 2);
 
     // param.top = Math.round((maxHeight - param.height) / 2);
-    param.width = 150;
-    param.height = 150;
+    param.width = 120;
+    param.height = 120;
     param.left = 0;
     param.top = 0;
     return param;

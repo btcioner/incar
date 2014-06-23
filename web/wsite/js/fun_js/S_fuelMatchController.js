@@ -2,7 +2,7 @@
  * Created by Liz on 14-04-08.
  */
 
-function s_fuelMatchCtrl($scope,$http)
+function s_fuelMatchCtrl($scope,$http,$routeParams)
 {
     $scope.matchListDiv = true;
     $scope.matchModifyDiv = false;
@@ -35,7 +35,10 @@ function s_fuelMatchCtrl($scope,$http)
     $scope.queryString = "";
     $scope.seriesCode = "";
     $scope.disp = "";
-
+    if($routeParams.id != null)
+    {
+        $scope.queryString = "&status="+$routeParams.id;
+    }
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {

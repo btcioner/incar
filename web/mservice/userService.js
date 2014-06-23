@@ -23,12 +23,14 @@ function getUserInfo(wx){
 //验证微信用户是否存在账户
 function userCheck(req,res){
     var params=req.params;
-    var openId=params.openId;
-    var openId4S=params.sopenId;
-    var wx=openId+"-"+openId4S
+    var temp=params.user.split('@');
+    var openId=temp[0];
+    var openId4S=temp[1];
+    var wx=openId+":"+openId4S
     var user=getUserInfo(wx);
     var accountId=user?user.accountId:null;
     res.write({status:'success',accountId:accountId});
+    return user?true:false;
 }
 //通过已有账户信息登录，并和当前微信用户绑定
 function userLogin(req,res){
@@ -57,43 +59,81 @@ function userLogin(req,res){
         }
     });
 }
-//登记并注册没有账户的微信用户
+//登记或修改（设置）账号
 function userEnroll(req, res) {
-    var params=req.params;
-    var username=params.name;
-    var password=params.password;
-    var temp=params.user.split('@');
-    var openId=temp[0];
-    var openId4S=temp[1];
-    var phone=params.phone;
-    var nickName=params.nick;
+    if(!userCheck(req, res)){
+        var params=req.params;
+        var username=params.name;
+        var password=params.password;
+        var temp=params.user.split('@');
+        var openId=temp[0];
+        var openId4S=temp[1];
+        var phone=params.phone;
+        var nickName=params.nick;
 
-    var sql="select id from t_4s where openid=?";
-    dao.findBySql(sql,[openId4S],function(rows){
-        if(rows.length>0){
-            var s4id=rowsp[0].id;
-            var user={
-                name:username,
-                pwd:password,
-                wx_oid:openId+':'+openId4S,
-                phone:phone,
-                nick:nickName,
-                s4_id:s4id
-            };
-            sql="insert into t_account set ?";
-            dao.insertBySql(sql,user,function(err,info){
-                if(err){
-                    res.write({status:'failed',message:'添加账户失败'});
-                }
-                var accountId=info.insertId;
-                res.wirte({status:'success',accountId:accountId});
-            });
-        }
-        else{
-            res.wirte({status:'failed',message:'无法识别的4SOpenId'});
-        }
-    });
-    carEnroll(req,res);
+        var sql="select id from t_4s where openid=?";
+        dao.findBySql(sql,[openId4S],function(rows){
+            if(rows.length>0){
+                var s4id=rowsp[0].id;
+                var user={
+                    name:username,
+                    pwd:password,
+                    wx_oid:openId+':'+openId4S,
+                    phone:phone,
+                    nick:nickName,
+                    s4_id:s4id
+                };
+                sql="insert into t_account set ?";
+                dao.insertBySql(sql,user,function(err,info){
+                    if(err){
+                        res.write({status:'failed',message:'添加账户失败'});
+                    }
+                    var accountId=info.insertId;
+                    res.wirte({status:'success',accountId:accountId});
+                });
+            }
+            else{
+                res.wirte({status:'failed',message:'无法识别的4SOpenId'});
+            }
+        });
+        carEnroll(req,res);
+    }else{
+        var params=req.params;
+        var username=params.name;
+        var password=params.password;
+        var temp=params.user.split('@');
+        var openId=temp[0];
+        var openId4S=temp[1];
+        var phone=params.phone;
+        var nickName=params.nick;
+
+        var sql="select id from t_4s where openid=?";
+        dao.findBySql(sql,[openId4S],function(rows){
+            if(rows.length>0){
+                var s4id=rowsp[0].id;
+                var user={
+                    name:username,
+                    pwd:password,
+                    wx_oid:openId+':'+openId4S,
+                    phone:phone,
+                    nick:nickName,
+                    s4_id:s4id
+                };
+                sql="update t_account set ? where wx_oid=?";
+                dao.insertBySql(sql,[user,user.wx_oid],function(err,info){
+                    if(err){
+                        res.write({status:'failed',message:'修改账户失败'});
+                    }
+                    var accountId=info.insertId;
+                    res.wirte({status:'success',accountId:accountId});
+                });
+            }
+            else{
+                res.wirte({status:'failed',message:'无法识别的4SOpenId'});
+            }
+        });
+        carEnroll(req,res);
+    }
 }
 //车辆登记
 function carEnroll(req,res){
@@ -103,8 +143,8 @@ function carEnroll(req,res){
     var openId4S=temp[1];
     var wx=openId+":"+openId4S
     var obdCode=params.obdCode;
-    var brand=params.brand;
-    var series=params.series;
+    var brand=params.brandCode;
+    var series=params.seriesCode;
     var modelYear=params.modelYear;
     var license=params.license;
     var mileage=params.mileage;

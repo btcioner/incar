@@ -1,46 +1,49 @@
-<!--remind info Begin-->
-<div class="span2" style="width: 40%;height: 50%;margin-left: 70px;">
-    <div class="widget-box">
-        <div class="widget-content nopadding">
-            <!--<table class="table table-bordered data-table">-->
-            <table class="table table-bordered ">
-                <thead>
-                <tr>
-                    <th style="text-align: left;">新产生保养提醒：<font color="blue">{{careCount}}</font>&nbsp;辆</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="gradeX">
-                    <td style="height:70px;">系统自动生成保养提醒</td>
-                </tr>
-                <tr>
-                    <td><a class="btn btn-info btn-mini" href="#collapseGOne">查看</a></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+<!--活动信息列表 begin-->
+<div class="widget-box margin_16" >
+    <div class="pad_l_r_60">
+        <!--一行两个块时class="pad_l_r_j60";一行三个块时class="pad_46"-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="#collapseGOne">
+                <div class="home_column">
+                    <div class="datebox color_y">{{careCount}}<br/>辆</div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">新产生保养提醒</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">系统自动生成保养提醒</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="#collapseGTwo/1">
+                <div class="home_column">
+                    <div class="datebox color_y">{{alarmCount}}<br/>辆</div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">新产生碰撞提醒</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">根据车辆设置的报警值来判断车辆已经产生碰撞</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+
+        <div class="clearfix"></div>
     </div>
 </div>
-<div class="span2" style="width: 40%;height: 50%;margin-left: 70px;">
-    <div class="widget-box">
-        <div class="widget-content nopadding">
-            <!--<table class="table table-bordered data-table">-->
-            <table class="table table-bordered ">
-                <thead>
-                <tr>
-                    <th style="text-align: left;">新碰撞提醒：<font color="blue">_</font>&nbsp;辆</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="gradeX">
-                    <td style="height:70px;">新产生的碰撞提醒。</td>
-                </tr>
-                <tr>
-                    <td><a class="btn btn-info btn-mini" href="#">查看</a></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<!--remind info End-->
+<!--活动信息列表 end-->

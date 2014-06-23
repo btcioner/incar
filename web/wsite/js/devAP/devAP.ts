@@ -13,31 +13,30 @@ module devAP {
     // 向AngularJS注册
     var _module = angular.module('devAP', []);
     _module.config(['$locationProvider', ($locationProvider)=> {
-        $locationProvider.html5Mode(false);
+        $locationProvider.html5Mode(true);
     }]);
 
     // 页面控制器
     class DevAPCtrl {
         constructor(ctrlName:string) {
-            _module.controller(ctrlName, ['$scope', '$location', '$sce', this.init]);
+            // 尝试读取以前的配置
+            if(localStorage && localStorage[this._lskURL]){
+                this.url = localStorage[this._lskURL];
+            }
+            // 向angular注册控制器
+            _module.controller(ctrlName, ['$scope', '$sce', this.init]);
         }
 
-        private init = ($scope, $location, $sce) => {
+        private init = ($scope, $sce) => {
             $scope.model = this;
             this.$sce = $sce;
-
-            var name = $location.search().name;
-            if (angular.isDefined(name)) this.name = name;
-
-            var url = this.urls[name];
-            if(angular.isDefined(url)) this.url = url += "?name=" + name;
 
             // qrcode
             this.makeQRCode(this.url, $sce);
         };
 
         private makeQRCode = (text:string, $sce:any)=>{
-            var qr = new qrcode(6, 'L');
+            var qr = new qrcode(6, 'Q');
             qr.addData(text);
             qr.make();
             this.img_qrcode = $sce.trustAsHtml(qr.createImgTag(6, 6));
@@ -47,8 +46,14 @@ module devAP {
             document.location.reload(true);
         };
 
-        public changeQRCode = ()=>{
-            this.makeQRCode(this.url, this. $sce);
+        public changeQRCode = ($event)=>{
+            if(($event instanceof KeyboardEvent) && $event.keyCode !== 13) return;
+
+            if(localStorage){
+                // 保存配置
+                localStorage.setItem(this._lskURL, this.url);
+            }
+            this.makeQRCode(this.url, this.$sce);
         };
 
         // 被测试的页面
@@ -56,15 +61,8 @@ module devAP {
             { title: "行车手册", url: "/msite/page_xcsc.html" },
             { title: "以后添加", url: "./msite/none.html" } ];
 
-        // 每个人可以把自己最常用的内网测试URL放在这里
-        public urls = {
-            xgh: "http://192.168.6.16:51234/4sStore/devAP.html",
-            jl : "http://192.168.88.107:51234/4sStore/devAP.html",
-            zp : "http://192.168.88.108:51234/4sStore/devAP.html" };
-
-        // 缺省url指向xgh
-        public name = "xgh";
-        public url = "http://192.168.6.18:51234/4sStore/devAP.html";
+        private _lskURL = "devAPurl";
+        public url = "http://192.168.88.123:51234/4sStore/devAP.html";
         public img_qrcode:string;
 
         private $sce:any;

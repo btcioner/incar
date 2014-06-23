@@ -145,10 +145,11 @@ my4S.manual = function(userName, session, callback){
 
 my4S.contact=function(userName,sopenid,session,callback){
     var tpl = [
-        '            <h2><%=name%></h2>：\n\n',
+        '<%=name%>：\n\n',
         '地址：<%=address%>\n\n',
         '热线电话：<%=hotline%>\n\n'
     ].join('');
+    var compiled = ejs.compile(tpl);
     booking.get4sDetail(sopenid,function(err,result){
         if(err){
             session.textMsgReplierIndex = null;
@@ -161,7 +162,7 @@ my4S.contact=function(userName,sopenid,session,callback){
             data.hotline=result.hotline;
             data.description=result.description;
              session.textMsgReplierIndex = 'my4S.onContact';
-            callback(null,compiled(data));
+            callback(null,compiled(data),data.logo_url);
         }
     });
 };

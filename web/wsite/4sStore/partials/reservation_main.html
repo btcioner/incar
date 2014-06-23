@@ -1,215 +1,215 @@
 
-            <!--新申请操作 begin-->
-            <div class="widget-box" ng-show="applyOperDiv">
-                <div class="widget-title">
-                    <span class="icon"><i class="icon-th"></i></span>
-                    <h5>保养预约详情</h5>
-                </div>
-                <div class="widget-content nopadding">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>车主姓名</th>
-                            <th style="background-color:#F9F9F9;">{{careDetail.cust_nick}}</th>
-                            <th>联系电话
-                            <th style="background-color:#F9F9F9;">{{careDetail.phone}}</th>
-                            <th >车牌号</th>
-                            <th style="background-color:#F9F9F9;">{{careDetail.license}}</th>
-                        </tr>
-                        <tr>
-                            <th>车品牌</th>
-                            <th style="background-color:#F9F9F9;">{{careDetail.brand}}</th>
-                            <th>当前里程</th>
-                            <th style="background-color:#F9F9F9;"></th>
-                            <th>申请渠道</th>
-                            <th style="background-color:#F9F9F9;">微信预约</th>
-                        </tr>
-                        <tr>
-                            <th>申请提交时间</th>
-                            <th style="background-color:#F9F9F9;">{{careDetail.created_time}}</th>
-                            <th>预约保养时间</th>
-                            <th style="background-color:#F9F9F9;">{{careDetail.working_time}}</th>
-                            <th colspan="2" ng-show="newApplyOper"><a class='btn btn-success'  ng-click='OperationChild("approve");'>确认</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-success'  ng-click='OperationChild("reject");'>拒绝</a></th>
-                            <th colspan="2" ng-show="completeOper"><a class='btn btn-success'  ng-click='OperationChild("cancel");'>取消</a>&nbsp;&nbsp;&nbsp;
-                                                                         <a class='btn btn-success'  ng-click='OperationChild("abort")'>未到店</a>&nbsp;&nbsp;&nbsp;
-                                                                         <a class='btn btn-success'  ng-click='OperationChild("done")'>已完成</a></th>
-                            <th ng-show="reservationProTi">保养项目</th>
-                            <th ng-show="reservationProTe" style="background-color:#F9F9F9;">{{done_items}}</th>
-                            <th ng-show="cancelTimeTi">取消时间</th>
-                            <th ng-show="cancelTimeTe" style="background-color:#F9F9F9;">{{cancelTime}}</th>
-                        </tr>
-                        <tr ng-show="diffDiv">
-                            <th style='height:30px;vertical-align: middle'>拒绝原因</th><th style='background-color:#F9F9F9;vertical-align: middle;text-align: left' colspan='5' rowspan='2'>{{reason}}</th>
-                        </tr>
-                        <tr ng-show="completeTr">
-                            <th>保养费用</th>
-                            <th style="background-color:#F9F9F9;">{{done_cost}}</th>
-                            <th>保养日期</th>
-                            <th style="background-color:#F9F9F9;">{{done_btime}}</th>
-                            <th colspan="2"></th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="widget-content nopadding" ng-show="rejectReason">
-                    <form action="#" method="get" class="form-horizontal">
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:200px;">原因：
-                            </label>
-                            <div class="controls">
-                                <textarea ng-model="jj_reason"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-success"  style="margin-left:200px;" ng-click="confirm(2);">确定</button>
-                            <button type="button" class="btn btn-danger"   ng-click="cancel(2)">取消</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="widget-content nopadding" ng-show="ReservationInfo">
-                    <form action="#" method="get" class="form-horizontal">
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:200px;">保养项目：
-                            </label>
-                            <div class="controls">
-                                <textarea ng-model="care_items" style="width:185px;"></textarea>
-                            </div>
-                        </div>
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:200px;">保养费用：
-                            </label>
-                            <div class="controls">
-                                <input type="text" class="span11" style="width:200px;" ng-model="care_cost"/>
-                            </div>
-                        </div>
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:200px;" >保养日期：
-                            </label>
-                            <div class="controls">
-                                <input type="text" class="span11" style="width:200px;" ng-model="begin_time"/>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-success"  style="margin-left:200px;" ng-click="confirm(1);">确定</button>
-                            <button type="button" class="btn btn-danger"   ng-click="cancel(1)">取消</button>
-                        </div>
-                    </form>
-                </div>
+<!--新申请操作 begin-->
+<div class="widget-box margin_16" ng-show="applyOperDiv">
+<div class="widget-title">
+    <span class="icon"><i class="icon-th"></i></span>
+    <h5>保养预约详情</h5>
+</div>
+<div class="widget-content nopadding">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>车主姓名</th>
+            <th style="background-color:#F9F9F9;">{{careDetail.cust_nick}}</th>
+            <th>联系电话
+            <th style="background-color:#F9F9F9;">{{careDetail.phone}}</th>
+            <th >车牌号</th>
+            <th style="background-color:#F9F9F9;">{{careDetail.license}}</th>
+        </tr>
+        <tr>
+            <th>车品牌</th>
+            <th style="background-color:#F9F9F9;">{{careDetail.brand}}</th>
+            <th>当前里程</th>
+            <th style="background-color:#F9F9F9;"></th>
+            <th>申请渠道</th>
+            <th style="background-color:#F9F9F9;">微信预约</th>
+        </tr>
+        <tr>
+            <th>申请提交时间</th>
+            <th style="background-color:#F9F9F9;">{{careDetail.created_time}}</th>
+            <th>预约保养时间</th>
+            <th style="background-color:#F9F9F9;">{{careDetail.working_time}}</th>
+            <th colspan="2" ng-show="newApplyOper"><a class='btn btn-success'  ng-click='OperationChild("approve");'>确认</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-success'  ng-click='OperationChild("reject");'>拒绝</a></th>
+            <th colspan="2" ng-show="completeOper"><a class='btn btn-success'  ng-click='OperationChild("cancel");'>取消</a>&nbsp;&nbsp;&nbsp;
+                                                         <a class='btn btn-success'  ng-click='OperationChild("abort")'>未到店</a>&nbsp;&nbsp;&nbsp;
+                                                         <a class='btn btn-success'  ng-click='OperationChild("done")'>已完成</a></th>
+            <th ng-show="reservationProTi">保养项目</th>
+            <th ng-show="reservationProTe" style="background-color:#F9F9F9;">{{done_items}}</th>
+            <th ng-show="cancelTimeTi">取消时间</th>
+            <th ng-show="cancelTimeTe" style="background-color:#F9F9F9;">{{cancelTime}}</th>
+        </tr>
+        <tr ng-show="diffDiv">
+            <th style='height:30px;vertical-align: middle'>拒绝原因</th><th style='background-color:#F9F9F9;vertical-align: middle;text-align: left' colspan='5' rowspan='2'>{{reason}}</th>
+        </tr>
+        <tr ng-show="completeTr">
+            <th>保养费用</th>
+            <th style="background-color:#F9F9F9;">{{done_cost}}</th>
+            <th>保养日期</th>
+            <th style="background-color:#F9F9F9;">{{done_btime}}</th>
+            <th colspan="2"></th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div class="widget-content nopadding" ng-show="rejectReason">
+    <form action="#" method="get" class="form-horizontal">
+        <div class="control-group" >
+            <label class="control-label" style="margin-left:200px;">原因：
+            </label>
+            <div class="controls">
+                <textarea ng-model="jj_reason"></textarea>
             </div>
-            <!--新申请操作 end-->
-            <!--添加预约 start-->
-            <div class="widget-box" ng-show="reserAddDiv">
-                <div class="widget-title">
-                    <span class="icon"><i class="icon-th"></i></span>
-                    <h5>添加预约</h5>
-                </div>
-                <div class="widget-content nopadding">
-                    <form action="#" method="get" class="form-horizontal">
-                <div class="control-group" >
-                    <label class="control-label" style="margin-left:300px;">车主姓名：</label>
-                    <div class="controls">
-                        <input type="text" class="span11" style="width:200px;" ng-model="cust_nick"/>
-                    </div>
-                </div>
-                <div class="control-group" >
-                    <label class="control-label" style="margin-left:300px;">联系电话：</label>
-                    <div class="controls">
-                        <input type="text" class="span11" style="width:200px;" ng-model="cust_phone"/>
-                    </div>
-                </div>
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:300px;">品牌：</label>
-                            <div class="controls">
-                                <select style="width:200px;" ng-model="brand_id" ng-options = "brand.id as brand.name for brand in carBrand" ng-change="changeSeries(brand_id)">
-                                    <option>请选择</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:300px;">车型：</label>
-                            <div class="controls">
-                                <select style="width:200px;" ng-model="series_id" ng-options="series.id as series.name for series in carSeries">
-                                    <option>请选择</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:300px;">预约时间：</label>
-                            <div class="controls">
-                                <input type="text" class="span11" style="width:200px;" ng-model="working_time"/>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="addConfirm();">确定</button>
-                            <button type="button" class="btn btn-danger"   ng-click="cancel(3);">取消</button>
-                        </div>
-                    </form>
-                </div>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn btn-success"  style="margin-left:200px;" ng-click="confirm(2);">确定</button>
+            <button type="button" class="btn btn-danger"   ng-click="cancel(2)">取消</button>
+        </div>
+    </form>
+</div>
+<div class="widget-content nopadding" ng-show="ReservationInfo">
+    <form action="#" method="get" class="form-horizontal">
+        <div class="control-group" >
+            <label class="control-label" style="margin-left:200px;">保养项目：
+            </label>
+            <div class="controls">
+                <textarea ng-model="care_items" style="width:185px;"></textarea>
             </div>
-            <!--添加预约 end-->
-            <!--预约服务列表 begin-->
-            <div class="widget-box" ng-show="reservationDiv">
-                <div class="widget-title">
-                    <span class="icon"><i class="icon-th"></i></span>
-                    <h5>保养预约列表</h5>
-                  <!--  <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加预约</a>-->
-                </div>
-                <div class="widget-content nopadding">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车主姓名： &nbsp;&nbsp;&nbsp;
-                                <input type="text" style="width:150px;" ng-model="ownerNick">
-                            </th>
-                            <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车牌号：&nbsp;&nbsp;&nbsp;
-                                <input type="text" style="width:150px;" ng-model="ownerLicense">
-                            </th>
-                            <th style="vertical-align: middle;">预约时间：&nbsp;&nbsp;&nbsp;
-                                <input type="text" style="width:150px;" ng-model="work_time_begin">
-                            </th>
-                            <th  style="vertical-align: middle;"><a class="btn btn-success" style="" ng-click="SearchDriveInfo()">搜索</a></th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="widget-content nopadding">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>车主</th>
-                            <th>联系电话</th>
-                            <th>车型</th>
-                            <th>车牌号</th>
-                            <th>来源渠道</th>
-                            <th>申请时间</th>
-                            <th>预约时间</th>
-                            <th>操作人</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody >
-                        <tr class="gradeX" ng-repeat="mt in careList">
-                            <td style="text-align: center">{{mt.cust_nick}}</td>
-                            <td style="text-align: center">{{mt.cust_phone}}</td>
-                            <td style="text-align: center">{{mt.brand}}</td>
-                            <td style="text-align: center">{{mt.license}}</td>
-                            <td style="text-align: center">微信</td>
-                            <td style="text-align: center">{{mt.working_time}}</td>
-                            <td style="text-align: center">{{mt.created_time}}</td>
-                            <td style="text-align: center">{{mt.json_args.oper}}</td>
-                            <td style="text-align: center">{{mt.step}}</td>
-                            <td style="text-align: center"><input type="button" class="btn btn-info btn-mini" value="查看" ng-click="Operation($index,mt.step);"></a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                  <div><font color="red">{{tips}}</font></div>
-                  <div class="pagination alternate" style="float:right;">
-                      共{{totalCount}}条&nbsp;页码{{currentPage}}/{{totalPage}} &nbsp;
-                      跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
-                      <option>1</option>
-                   </select>页
-                  </div>
+        </div>
+        <div class="control-group" >
+            <label class="control-label" style="margin-left:200px;">保养费用：
+            </label>
+            <div class="controls">
+                <input type="text" class="span11" style="width:200px;" ng-model="care_cost"/>
             </div>
-            <!--预约服务列表 end-->
+        </div>
+        <div class="control-group" >
+            <label class="control-label" style="margin-left:200px;" >保养日期：
+            </label>
+            <div class="controls">
+                <input type="text" class="span11" style="width:200px;" ng-model="begin_time"/>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn btn-success"  style="margin-left:200px;" ng-click="confirm(1);">确定</button>
+            <button type="button" class="btn btn-danger"   ng-click="cancel(1)">取消</button>
+        </div>
+    </form>
+</div>
+</div>
+<!--新申请操作 end-->
+<!--添加预约 start-->
+<div class="widget-box margin_16" ng-show="reserAddDiv">
+<div class="widget-title">
+    <span class="icon"><i class="icon-th"></i></span>
+    <h5>添加预约</h5>
+</div>
+<div class="widget-content nopadding">
+    <form action="#" method="get" class="form-horizontal">
+<div class="control-group" >
+    <label class="control-label" style="margin-left:300px;">车主姓名：</label>
+    <div class="controls">
+        <input type="text" class="span11" style="width:200px;" ng-model="cust_nick"/>
+    </div>
+</div>
+<div class="control-group" >
+    <label class="control-label" style="margin-left:300px;">联系电话：</label>
+    <div class="controls">
+        <input type="text" class="span11" style="width:200px;" ng-model="cust_phone"/>
+    </div>
+</div>
+        <div class="control-group" >
+            <label class="control-label" style="margin-left:300px;">品牌：</label>
+            <div class="controls">
+                <select style="width:200px;" ng-model="brand_id" ng-options = "brand.id as brand.name for brand in carBrand" ng-change="changeSeries(brand_id)">
+                    <option>请选择</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-group" >
+            <label class="control-label" style="margin-left:300px;">车型：</label>
+            <div class="controls">
+                <select style="width:200px;" ng-model="series_id" ng-options="series.id as series.name for series in carSeries">
+                    <option>请选择</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-group" >
+            <label class="control-label" style="margin-left:300px;">预约时间：</label>
+            <div class="controls">
+                <input type="text" class="span11" style="width:200px;" ng-model="working_time"/>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="addConfirm();">确定</button>
+            <button type="button" class="btn btn-danger"   ng-click="cancel(3);">取消</button>
+        </div>
+    </form>
+</div>
+</div>
+<!--添加预约 end-->
+<!--预约服务列表 begin-->
+<div class="widget-box margin_16" ng-show="reservationDiv">
+<div class="widget-title">
+    <span class="icon"><i class="icon-th"></i></span>
+    <h5>保养预约列表</h5>
+  <!--  <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加预约</a>-->
+</div>
+<div class="widget-content nopadding table_widget_bg">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th style="vertical-align: middle;">车主姓名：
+                <input type="text" style="width:150px;" ng-model="ownerNick">
+            </th>
+            <th style="vertical-align: middle;">车牌号：
+                <input type="text" style="width:150px;" ng-model="ownerLicense">
+            </th>
+            <th style="vertical-align: middle;">预约时间：
+                <input type="text" style="width:150px;" ng-model="work_time_begin">
+            </th>
+            <th  style="vertical-align: middle;"><button class="btn btn-success" style="" ng-click="SearchDriveInfo()">搜索</button></th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div class="widget-content nopadding">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>车主</th>
+            <th>联系电话</th>
+            <th>车型</th>
+            <th>车牌号</th>
+            <th>来源渠道</th>
+            <th>申请时间</th>
+            <th>预约时间</th>
+            <th>操作人</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr class="gradeX" ng-repeat="mt in careList">
+            <td style="text-align: center">{{mt.cust_nick}}</td>
+            <td style="text-align: center">{{mt.cust_phone}}</td>
+            <td style="text-align: center">{{mt.brand}}</td>
+            <td style="text-align: center">{{mt.license}}</td>
+            <td style="text-align: center">微信</td>
+            <td style="text-align: center">{{mt.working_time}}</td>
+            <td style="text-align: center">{{mt.created_time}}</td>
+            <td style="text-align: center">{{mt.json_args.oper}}</td>
+            <td style="text-align: center">{{mt.step}}</td>
+            <td style="text-align: center"><input type="button" class="btn btn-info btn-mini" value="查看" ng-click="Operation($index,mt.step);"></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+  <div><font color="red">{{tips}}</font></div>
+  <div class="pagination alternate" style="float:right;">
+      共{{totalCount}}条&nbsp;页码{{currentPage}}/{{totalPage}} &nbsp;
+      跳转至<select style="width:50px;" ng-model="changeId" ng-options="to.size as to.size for to in totalOption"ng-change="changePage(changeId);">
+      <option>1</option>
+   </select>页
+  </div>
+</div>
+<!--预约服务列表 end-->

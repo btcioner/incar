@@ -43,18 +43,31 @@ angular.module("SReservationApp", [
             alert("登录已超时！");
             window.location="../login.html";
         }
+        $scope.changeLeftbar = function(id)
+        {
+            for(var i=1;i<3;i++)
+            {
+                if(i==id)
+                {
+                    $("#div_"+i).removeClass().addClass("accordion-heading sidebar_a");
+                }
+                else{
+                    $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
+                }
+            }
+        }
     });
 
 function s_statisticsCtrl($scope,$http)
 {
     $scope.randomTime = new Date();
-     $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page=1&pagesize=1&step=applied&t='+$scope.randomTime).success(function(data){
+     $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?step=applied&t='+$scope.randomTime).success(function(data){
         $scope.applyCount = data.totalCount;
     })
-    $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page=1&pagesize=1&step=approved&t='+$scope.randomTime).success(function(data){
+    $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?step=approved&t='+$scope.randomTime).success(function(data){
         $scope.approveCount = data.totalCount;
     })
-    $http.get(baseurl+'4s/'+$.cookie("s4_id")+'/drivetry?page=1&pagesize=1&step=applied&t='+$scope.randomTime).success(function(data){
+    $http.get(baseurl+'4s/'+$.cookie("s4_id")+'/drivetry?step=applied&t='+$scope.randomTime).success(function(data){
         $scope.drivetryCount = data.totalCount;
     })
 }

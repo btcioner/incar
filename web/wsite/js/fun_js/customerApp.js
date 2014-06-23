@@ -99,10 +99,19 @@ angular.module("SCustomerApp", [
                 {
                     $scope.tagsGroup[i].link = "#collapseG_"+ $scope.tagsGroup[i].groupId;
                     $scope.tagsGroup[i].fid = "collapseG_"+ $scope.tagsGroup[i].groupId;
+                    if(i==0)
+                    {
+                        $scope.tagsGroup[i].class = "accordion-heading sidebar_a";
+                    }
+                    else{
+                        $scope.tagsGroup[i].class = "accordion-heading sidebar_b";
+                    }
+                    $scope.tagsGroup[i].id = "div_"+i;
                     for(var j=0;j<$scope.tagsGroup[i].tags.length;j++)
                     {
                         $scope.tagsGroup[i].tags[j].tagFlag = "";
                     }
+
                 }
             }).error(function(data){
                     alert("请求无响应");
@@ -114,13 +123,34 @@ angular.module("SCustomerApp", [
                     alert("请求无响应");
             })
         }
+        $scope.changeLeftbar = function(id)
+        {
+            for(var i=0;i<8;i++)
+            {
+                if(i==id)
+                {
+                    $("#div_"+i).removeClass().addClass("accordion-heading sidebar_a");
+                }
+                else{
+                    $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
+                }
+            }
+        }
     });
 
 function s_statisticsCtrl($scope,$http)
 {
     $scope.countDiv = true;
     $scope.randomTime = new Date();
-    $http.get(baseurl+'cmpx/carowner?page=1&pagesize=1&org_id='+ $.cookie("s4_id")+"&t"+$scope.randomTime).success(function(data){
-        $scope.carOwnerCount = data.totalCount;
+    $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?t"+$scope.randomTime).success(function(data){
+        $scope.carOwnerCount = data.rowCount;
+    })
+    //微信端
+    $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?tagId=1&t="+$scope.randomTime).success(function(data){
+        $scope.weixinCount = data.rowCount;
+    })
+    //手机端
+    $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?tagId=2&t="+$scope.randomTime).success(function(data){
+        $scope.appCount = data.rowCount;
     })
 }

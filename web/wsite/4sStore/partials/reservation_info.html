@@ -1,65 +1,67 @@
-<!--Service_reservation info Begin-->
-<div class="span2" style="width: 40%;height: 50%;margin-left: 70px;">
-    <div class="widget-box">
-        <div class="widget-content nopadding">
-            <table class="table table-bordered ">
-                <thead>
-                <tr>
-                    <th style="text-align: left;">待处理保养申请：<font color="blue">{{applyCount}}</font>&nbsp;辆</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="gradeX">
-                    <td style="height:70px;">车主已提出保养预约申请，未确认预约。</td>
-                </tr>
-                <tr>
-                    <td><a class="btn btn-info btn-mini" href="#collapseGOne/applied">查看</a></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+<!--活动信息列表 begin-->
+<div class="widget-box margin_16">
+    <div class="pad_46">
+        <!--一行两个块时class="pad_l_r_j60";一行三个块时class="pad_46"-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="#collapseGOne/applied">
+                <div class="home_column">
+                    <div class="datebox color_b">{{applyCount}}<br/>辆</div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">待处理保养申请</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">车主已提出保养预约申请，未确认预约。</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="#collapseGOne/approved">
+                <div class="home_column">
+                    <div class="datebox color_b">{{approveCount}}<br/>辆</div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">待完成保养</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">已确认预约，但未完成保养。</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="#collapseGTwo/{{randomTime}}">
+                <div class="home_column">
+                    <div class="datebox color_b">{{drivetryCount}}<br/>辆</div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">待处理试乘试驾申请</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">车主已提出试乘试驾预约申请，未确认预约。</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <div class="clearfix"></div>
     </div>
 </div>
-<div class="span2" style="width: 40%;height: 50%;margin-left: 70px;">
-    <div class="widget-box">
-        <div class="widget-content nopadding">
-            <table class="table table-bordered ">
-                <thead>
-                <tr>
-                    <th style="text-align: left;">待完成保养：<font color="blue">{{approveCount}}</font>&nbsp;辆</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="gradeX">
-                    <td style="height:70px;">已确认预约，但未完成保养。</td>
-                </tr>
-                <tr>
-                    <td><a class="btn btn-info btn-mini" href="#collapseGOne/approved">查看</a></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<div class="span2" style="width: 40%;height: 50%;margin-left: 70px;">
-    <div class="widget-box">
-        <div class="widget-content nopadding">
-            <table class="table table-bordered ">
-                <thead>
-                <tr>
-                    <th style="text-align: left;">待处理试乘试驾申请：<font color="blue">{{drivetryCount}}</font>&nbsp;辆</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="gradeX">
-                    <td style="height:70px;">车主已提出试乘试驾预约申请，未确认预约。</td>
-                </tr>
-                <tr>
-                    <td><a class="btn btn-info btn-mini" href="#collapseGTwo/{{randomTime}}">查看</a></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<!--Service_reservation info End-->
+<!--活动信息列表 end-->

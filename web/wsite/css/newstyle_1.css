@@ -5,6 +5,71 @@ body{
 
 
 }
+.w_70 {
+	width: 70px;
+}
+.w_160 {
+	width: 200px;
+}
+.pad_t_b_10 {
+	padding-top: 10px;
+	padding-right: 0px;
+	padding-bottom: 10px;
+	padding-left: 0px;
+}
+.pad_l_15 {
+	padding-left: 15px;
+}
+.pad_46 {
+	padding: 46px;
+}
+.pad_l_r_60 {
+	padding-right: 60px;
+	padding-left: 60px;
+}
+.pad_l_r_60 .home_columnbox {
+	margin-right: 70px;
+	margin-left: 70px;
+    margin-top:50px;
+}
+
+
+.text_01 {
+	line-height: 16px;
+	color: #FFF;
+	background-color: #85bb41;
+	padding: 4px;
+	width: 60px;
+	text-align: center;
+	margin-right: 5px;
+}
+
+.text_02 {
+	line-height: 24px;
+	width: 70px;
+	padding-right: 5px;
+}
+.text_03 {
+	line-height: 16px;
+	color: #FFF;
+	background-color: #85bb41;
+	width: 71px;
+	text-align: center;
+	padding-right: 2px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+.text_04 {
+	font-family: "微软雅黑";
+	font-size: 14px;
+	font-weight: bold;
+	color: #666;
+}
+
+
+
+
+
 .sidebar_a {
 	background-image: url(../img/sidebar_bg.png);
 	background-repeat: repeat-x;
@@ -96,6 +161,7 @@ body{
 	background-repeat: no-repeat;
 	background-position: center center;
 }
+
 .color_r {
     background-color: #DA4F49;
 }
@@ -108,6 +174,10 @@ body{
 .color_g {
     background-color: #5BB75B;
 }
+.menu_hl {
+	background-color: #6da920;
+}
+
 .icon_01 {
     background-image: url("../img/icon_01.png");
 }
@@ -134,4 +204,49 @@ body{
 	font-size: 16px;
 	color: #666;
 	/* [disabled]font-weight: bold; */
+}
+.formstyle_box01 {
+	/* [disabled]background-color: #99F; */
+	width: 870px;
+	margin-right: auto;
+	margin-left: auto;
+}
+.formstyle_box01 .mainleftbox,.formstyle_box01 .mainrightbox{
+    float: left;
+}
+.formstyle_box01 .mainleftbox{
+	width: 400px;
+	/* [disabled]background-color: #d59392; */
+ }
+.formstyle_box01 .mainrightbox{
+	width: 470px;
+	/* [disabled]background-color: #df8505; */
+}
+.img_textstyle01 {
+	font-size: 12px;
+	color: #CCC;
+	line-height: 28px;
+	padding-top: 10px;
+	padding-bottom: 4px;
+	display: block;
+}
+.horizontal_content01 {
+	/* [disabled]background-color: #CC9; */
+	padding-bottom: 20px;
+}
+.button_box01 {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	width: 220px;
+	margin-right: auto;
+	margin-left: auto;
+}
+#warp #content .row-fluid .mainbox01 {
+	background-image: url(../images/backgrounds/bodyBg.png);
+	width: 98%;
+	margin-right: auto;
+	margin-left: auto;
+	min-height:460px;
+    _height:460px;
+
 }

@@ -29,22 +29,28 @@ function getActivityDetail(req, res) {
 function search(db,act_id,callback) {
     var actData={};
     var pool = db();
-    pool.query('select id,title,brief,status,tm_start,tm_end  from t_activity where id=?;',[act_id],function(err,rows){
+    pool.query('select id,s4_id,template_id,title,brief,status,logo_url,tags,tm_announce,tm_start,tm_end  from t_activity where id=?;',[act_id],function(err,rows){
                 if(err)callback(err);
                 else{
                     if(rows&&rows.length==1){
-                            actData.id=rows[i].id;
-                            actData.s4_id=rows[i].s4_id;
-                            actData.title=rows[i].title;
-                            actData.brief=rows[i].brief;
-                            actData.awards=rows[i].awards;
-                            actData.status=rows[i].status;
-                            actData.tm_announce=rows[i].tm_announce;
-                            actData.tm_start=rows[i].tm_start;
-                            actData.tm_end=rows[i].tm_end;
-                            actData.logo_url=rows[i].logo_url;
-                            pool.query('select name from t_4s where ',[],function(){
-                                callback(null,data);
+                            actData.id=rows[0].id;
+                            actData.s4_id=rows[0].s4_id;
+                            actData.template_id=rows[0].template_id;
+                            actData.title=rows[0].title;
+                            actData.brief=rows[0].brief;
+                            actData.awards=rows[0].awards;
+                            actData.status=rows[0].status;
+                            actData.tags=rows[0].tags;
+                            actData.tm_announce=rows[0].tm_announce;
+                            actData.tm_start=rows[0].tm_start;
+                            actData.tm_end=rows[0].tm_end;
+                            actData.logo_url=rows[0].logo_url;
+                            pool.query('select name from t_4s where id=?',[ actData.s4_id],function(err,data){
+                                if(err)callback(err);
+                                else if(data){
+                                    actData.s4_name=data[0].name;
+                                    callback(null,actData);
+                                }else callback(new Error("The 4s is not find."));
                             });
                      }else callback(new Error("Can not find the activity for the id."));
                 }

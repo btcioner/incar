@@ -1,5 +1,5 @@
 <!--设置联系信息begin-->
-<div class="widget-box" ng-show="modifyDiv">
+<div class="widget-box margin_16" ng-show="modifyDiv">
     <div class="widget-title">
         <span class="icon"><i class="icon-th"></i></span>
         <h5>修改联系信息</h5>
@@ -37,16 +37,16 @@
 </div>
 <!--设置联系信息end-->
 <!--联系人列表 begin-->
-<div class="widget-box" ng-show="settingListDiv">
+<div class="widget-box margin_16" ng-show="settingListDiv">
     <div class="widget-title">
         <span class="icon"><i class="icon-th"></i></span>
         <h5>联系人列表</h5>
     </div>
-    <div class="widget-content nopadding">
+    <div class="widget-content nopadding ">
         <!--<table class="table table-bordered data-table">-->
         <table class="table table-bordered">
             <thead>
-            <tr>
+            <tr class="bgcolor01">
                 <th>地址</th>
                 <th>热线</th>
                 <th>图片</th>
@@ -57,7 +57,7 @@
             <tr class="gradeX">
                 <td id="tdc">{{s4.address}}</td>
                 <td id="tdc">{{s4.hotline}}</td>
-                <td id="tdc"><img src="../../{{s4.logo_url}}" style="width:200px;height:200px" /></td>
+                <td id="tdc"><img src="../../{{s4.logo_url}}" style="width:100px;height:100px" /></td>
                 <td id="tdc">
                     <a class="btn btn-info btn-mini" ng-click="modify();">修改</a>
                 </td>

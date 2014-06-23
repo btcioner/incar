@@ -1231,17 +1231,19 @@ form {
 	border-top: 1px solid #ffffff;
 	border-bottom: 1px solid #eeeeee;
 	margin-bottom: 0;
+	padding-right: 5px;
+	padding-left: 5px;
 }
 .form-horizontal .control-group:last-child {
 	border-bottom: 0;
 }
 .form-horizontal .control-label {
 	padding-top: 15px;
-	width: 180px;
+	/* [disabled]width: 180px; */
 }
 .form-horizontal .controls {
-	margin-left: 200px;
-	padding: 10px 0;
+	/* [disabled]margin-left: 200px; */
+	/* [disabled]padding: 10px 0; */
 }
 .form-horizontal input[type=text], .form-horizontal input[type=password], .form-horizontal textarea {
 	

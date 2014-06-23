@@ -1,18 +1,19 @@
 <!--活动信息列表 begin-->
-<div class="widget-box" ng-show="newsListDiv">
+<div class="widget-box margin_16" ng-show="newsListDiv">
     <div class="widget-title">
         <span class="icon"><i class="icon-th"></i></span>
         <h5>活动信息列表</h5>
-        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加活动</a>
+        <a class="btn btn-success"  style="float:right;margin:12px 30px 0 0;" ng-click="add();">+添加活动</a>
     </div>
-    <div class="widget-content nopadding">
+    <div class="widget-content nopadding table_widget_bg">
         <!--<table class="table table-bordered data-table">-->
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态： &nbsp;&nbsp;&nbsp;
+                <th style="vertical-align: middle;"><div class="textbox01">状态：</div>
+                    <div class="formbox_01">
                     <select style="width:150px;padding-left:15px;" ng-model="ser_status" ng-options="ss.id as ss.name for ss in statusSelect" >
-                    </select></th>
+                    </select></div><div style="clear:left;"></div></th>
                 <th style="vertical-align: middle;">活动关键字：<input type="text" ng-model="ser_title" style="width:150px;"/></th>
                 <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo();">搜索</button></th>
             </tr>
@@ -23,7 +24,7 @@
         <!--<table class="table table-bordered data-table">-->
         <table class="table table-bordered data-table">
             <thead>
-            <tr>
+            <tr class="bgcolor01">
                 <th>活动标题</th>
                 <th>创建时间</th>
                 <th>发布时间</th>
@@ -37,7 +38,7 @@
                 <td id="tdc">{{al.tm_created}}</td>
                 <td id="tdc">{{al.tm_announce}}</td>
                 <td id="tdc">{{al.status_name}}</td>
-                <td id="tdc" ng-show="{{al.tdStyle1}}">
+                <td id="tdc" ng-show="{{al.tdStyle1}}" >
                     <a class="btn btn-primary btn-mini" ng-click="preview($index);">预览</a>
                     <a class="btn btn-info btn-mini" ng-click="modify($index);">修改</a>
                     <a class="btn btn-success btn-mini" ng-click="publishConfirm(al.id);">发布</a>

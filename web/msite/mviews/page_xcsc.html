@@ -1,24 +1,65 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>行车手册</title>
-<link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
-<link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
+<!DOCTYPE html>
+<html ng-app="wxApp">
+<head lang="zh-cn">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>行车手册</title>
+    <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css"/>
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        body {
+            background-color: #efefef;
+        }
+        .img_manual{
+            text-align:center;
+            max-width: 260px;
+        }
+        .txt_manual{
+            font-size:large;
+        }
+    </style>
+    <script src="../mscripts/angular.min.js"></script>
+    <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/wxapp.js"></script>
 </head>
 
-<body>
+<body ng-controller="driveManualCtrl">
 <div id="wrap">
-  <!--main_wrap start-->
-  <div id="main_wrap">
-    <!--containe_100 start--><div id="containe_290">
-      <!--searchbox start--><div class="searchbox">
-        <div class="float"><input name="" type="text" /></div><div class="float"><a href="#"><img src="../mimages/icon_07.png" width="31" height="31" /></a></div><div class="clear"></div>
-      </div><!--searchbox end-->
-      <!--paperbox start--><div class="paperbox"><div class="paperbox_bgtop"><div class="paperbox_main">这里显示关键字和显示搜索结果，手册内容</div></div></div><!--paperbox end-->
-    </div><!--containe_100 end-->
-    <div class="w10"></div>
-  </div><!--main_wrap end-->
+    <!--main_wrap start-->
+    <div id="main_wrap">
+        <!--containe_100 start-->
+        <div id="containe_290">
+            <!--searchbox start-->
+            <div class="searchbox">
+                <div class="float"><input name="keywords" type="text" ng-model="model.keyword" ng-keypress="model.search2($event)"/></div>
+                <div class="float">
+                    <a href="javascript:void(0)" ng-click="model.search()">
+                        <img src="../mimages/icon_07.png" width="31" height="31"/>
+                    </a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!--searchbox end-->
+            <!--paperbox start-->
+            <div class="paperbox">
+                <div class="paperbox_bgtop" ng-repeat="item in model.searchResult">
+                    <div class="paperbox_main txt_manual">
+                        <h4 ng-show="item.title">{{item.title}}</h4>
+                        <img ng-src="{{item.img_url}}" alt="{{item.title}}" ng-show="item.img_url" class="img_manual"><br ng-show="item.img_url">
+                        {{item.description}}
+                    </div>
+                </div>
+                <div class="paperbox_bgtop" ng-show="model.tip">
+                    <div class="paperbox_main">{{model.tip}}</div>
+                </div>
+            </div>
+            <!--paperbox end-->
+        </div>
+        <!--containe_100 end-->
+        <div class="w10"></div>
+    </div>
+    <!--main_wrap end-->
 </div>
 </body>
 </html>

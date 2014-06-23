@@ -18,8 +18,8 @@ function trimString(strInput) {
 
 manual.retrieve = function(keyword, callback) {
     var pool = this.db();
-    var pattern = trimString(keyword);
-    var sqlWithParameters = 'select title, description, filename from t_manual_content where find_in_set(?, `keyword`);';
+    var pattern = '%'+ trimString(keyword) + '%';
+    var sqlWithParameters = 'select title, description, filename from t_manual_content where keyword like ?;';
     var sql = mysql.format(sqlWithParameters, [pattern]);
     pool.query(sql, function(err, rows) {
         if (err) { return callback(err); }
@@ -28,12 +28,15 @@ manual.retrieve = function(keyword, callback) {
             var itemB = {};
             itemA.title = rows[0].title;
             itemA.description = rows[0].description;
-            itemA.picurl = config.baseUrl + '/data/manual/' + rows[0].filename;
-            itemA.url = config.baseUrl + '/data/manual/' + rows[0].filename;
+            var imgurl = config.baseUrl + '/data/manual/' + rows[0].filename;
+            if(rows[0].filename && rows[0].filename.slice(0, 7).toLowerCase() === 'http://')
+                imgurl = rows[0].filename;
+            itemA.picurl = imgurl;
+            itemA.url = imgurl;
             itemB.title = rows[0].description;
             itemB.description = rows[0].description;
             itemB.picurl = '';
-            itemB.url = config.baseUrl + '/data/manual/' + rows[0].filename;
+            itemB.url = imgurl;
             return callback(null, [itemA, itemB]);
         }
         else { return callback(new Error('no rows returned for the keyword you input.')); }
