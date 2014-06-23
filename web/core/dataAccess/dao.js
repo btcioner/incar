@@ -9,16 +9,20 @@ var findBySql=function(sql,args,callback){
     var connection=db().getConnection(function(err,connection){
         if(err){
             console.log("获得connection出现错误:"+err);
-            throw err;
+            callback([],{status:'failure',message:'数据库连接错误，无法获得数据!'});
         }
-        connection.query(sql,args,function(err, rows, fields){
-            if (err){
-                console.log(err);
-                rows=[];
-            }
-            callback(rows);
-            connection.release();
-        });
+        else{
+            connection.query(sql,args,function(err, rows){
+                if (err){
+                    console.log("查询错误:"+err);
+                    callback([],{status:'failure',message:'查询错误,请检查SQL!'});
+                }
+                else{
+                    callback(rows);
+                }
+                connection.release();
+            });
+        }
     });
 };
 exports.findBySql=findBySql;

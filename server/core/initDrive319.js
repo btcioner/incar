@@ -28,7 +28,7 @@ var sql="insert into t_obd_drive set ?";
 var sqlDetail="insert into t_drive_detail set ?";
 var detailArray=[];
 var driveArray=[];
-var driveCount=500;
+var driveCount=100;
 var carCondition=[
     {"id":0,"value":"8.83"},
     {"id":1,"value":"0"},
@@ -62,7 +62,7 @@ var speedGroupArray=[45,90,160];
 
 for(var i=0;i<driveCount;i++){
     var runtime=getRandom(600,3600,0);
-    var fireTime=getRandomTime(2014,5,15);
+    var fireTime=getRandomTime(2014,5,23);
     var flameOutTime=new Date(fireTime.valueOf()+runtime*1000);
     var lastUpdateTime=new Date(flameOutTime.valueOf()+60 * 1000);
     var speedGroup=[];

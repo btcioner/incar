@@ -2,11 +2,15 @@
  * Created by LM on 14-3-10.
  */
 var convert=require('iconv-lite');
-var myDataBuffer=new Buffer(1024);
+var myDataBuffer;
 var myOffset=0;
 exports.init=function(inBuffer,inOffset){
-    myDataBuffer=inBuffer;
+    if (Buffer.isBuffer(inBuffer))
+        myDataBuffer=inBuffer;
+    else
+        myDataBuffer = new Buffer(inBuffer);
     myOffset=inOffset;
+    return myDataBuffer;
 };
 exports.writeByte=function(data){
     myDataBuffer.writeUInt8(data,myOffset);
@@ -16,7 +20,15 @@ exports.writeWord=function(data){
     myDataBuffer.writeUInt16BE(data,myOffset);
     myOffset+=2;
 };
+exports.writeShort=function(data){
+    myDataBuffer.writeInt16BE(data,myOffset);
+    myOffset+=2;
+};
 exports.writeLong=function(data){
+    myDataBuffer.writeInt32BE(data,myOffset);
+    myOffset+=4;
+};
+exports.writeDoubleWord=function(data){
     myDataBuffer.writeUInt32BE(data,myOffset);
     myOffset+=4;
 };
@@ -39,7 +51,17 @@ exports.nextWord=function(){
     myOffset+=2;
     return content;
 };
+exports.nextShort=function(){
+    var content= myDataBuffer.readInt16BE(myOffset);
+    myOffset+=2;
+    return content;
+};
 exports.nextLong=function(){
+    var content= myDataBuffer.readInt32BE(myOffset);
+    myOffset+=4;
+    return content;
+};
+exports.nextDoubleWord=function(){
     var content= myDataBuffer.readUInt32BE(myOffset);
     myOffset+=4;
     return content;
@@ -57,8 +79,13 @@ exports.nextString=function(){
     }
     return null;
 };
-exports.getBuffer=function(){
-    return myDataBuffer.slice(0,myOffset);
+exports.getLength=function(){
+    return Buffer.byteLength(myDataBuffer);
+};
+exports.getBuffer=function(start,end){
+    var s=start?start:0;
+    var e=end?end:myOffset;
+    return myDataBuffer.slice(s,e);
 };
 exports.getOffset=function(){
     return myOffset
@@ -71,11 +98,20 @@ exports.toString0X=function(dataBuffer){
     for(var i=0;i<dataBuffer.length;i++){
         var intVal=dataBuffer.readUInt8(i);
         if(intVal<0x10){
-            dataString+="0"+intVal+" ";
+            dataString+="0"+intVal.toString(16).toUpperCase()+" ";
         }
         else{
             dataString+=intVal.toString(16).toUpperCase()+" ";
         }
     }
     return dataString;
+};
+exports.getCheckSum=function(ofs,length){
+    var checksum = 0;
+    var byteValue = 0;
+    for (var i = ofs; i < ofs+length; i++) {
+        byteValue = myDataBuffer.readUInt8(i);
+        checksum += byteValue;
+    }
+    return checksum;
 };

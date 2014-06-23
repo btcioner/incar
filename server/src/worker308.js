@@ -535,8 +535,8 @@ function get1603Response(obd){
     //熄火后信息
     dataManager.writeByte(obd.fireOffCount);
     if(obd.fireOffCount>0x00){
-        dataManager.writeWord(obd.criticalVoltage);
-        dataManager.writeByte(obd.closeAfterFlameOut);
+        dataManager.writeWord(obd.closeAfterFlameOut);
+        dataManager.writeByte(obd.criticalVoltage);
         var vtArray =obd.voltageThreshold.split(',');
         dataManager.writeWord(vtArray.length);
         for(var i=0;i<vtArray.length;i++){
@@ -599,12 +599,12 @@ function get1603Default(){
 
         fireOffCount:0x03,              //熄火后信息更新数量(0x00或0x03)
         criticalVoltage:115,            //关机临界电压
-        closeAfterFlameOut:0xFF,        //熄火后关闭时间点
+        closeAfterFlameOut:0x00B4,      //熄火后关闭时间点
         voltageThreshold:"120,153",     //熄火后电池电压阀值
 
-        runtimeCount:0x00,              //运行中数据更新数量(0x00或0x02，暂时只支持0x00)
-        uploadInterval:300,             //行驶中上传数据间隔时间
-        uploadParamId:"65024,65026,65027",//行驶中上传数据参数Id，参考4.01和4.02
+        runtimeCount:0x02,              //运行中数据更新数量(0x00或0x02，暂时只支持0x00)
+        uploadInterval:100,             //行驶中上传数据间隔时间
+        uploadParamId:"12",//行驶中上传数据参数Id，参考4.01和4.02
 
         updateId:"0.0.0"                //软件升级Id
     };

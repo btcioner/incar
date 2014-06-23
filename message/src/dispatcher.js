@@ -82,26 +82,26 @@ function setValueByID(id,value){
 function receive1621(dataBuffer){
     dataManager.init(dataBuffer,2);
     //1、获得报文内容
-    var obdCode=dataManager.nextString();               //OBD编号
-    var vin=dataManager.nextString();                   //VIN码
-    var brand=dataManager.nextByte();                   //品牌
-    var series=dataManager.nextByte();                  //系列
-    var modelYear=dataManager.nextByte();               //年款
-
-    var content=[];
-    var contentCount=dataManager.nextWord();
-    for(var i=0;i<contentCount;i++){
-        var id=dataManager.nextWord();                  //ID
-        var value=getValueByID(id);
-        content.push({id:id,value:value});
+    var obdCode=dataManager.nextString();           //OBD编号
+    var tripId=dataManager.nextDoubleWord();        //Trip编号
+    var vid=dataManager.nextString();               //vid
+    var vin=dataManager.nextString();               //VIN码
+    var faultLevel=dataManager.nextByte();          //故障等级
+    var faultCount=dataManager.nextWord();          //故障个数
+    var fault=[];
+    for(var i=0;i<faultCount;i++){
+        var code=dataManager.nextString();             //故障码
+        var status=dataManager.nextString();           //故障码属性
+        var desc=dataManager.nextString();             //故障码描述
+        fault.push({code:code,status:status,desc:desc});
     }
     return {
         obdCode:obdCode,
+        tripId:tripId,
+        vid:vid,
         vin:vin,
-        brand:brand,
-        series:series,
-        modelYear:modelYear,
-        content:content
+        faultLevel:faultLevel,
+        fault:fault
     };
 }
 function receive1625(dataBuffer){
@@ -246,7 +246,7 @@ exports.receiveMessageResponse=function(req,res){
             break;
     }
     console.log(returnJson);
-    var dataJson={dataString:returnJson};
+    /*var dataJson={dataString:returnJson};
     var opt = {
         method: "POST",
         host: "localhost",
@@ -259,5 +259,5 @@ exports.receiveMessageResponse=function(req,res){
     };
     var req = http.request(opt, function (serverFeedback) {});
     req.write(JSON.stringify(dataJson));
-    req.end();
+    req.end();*/
 };
