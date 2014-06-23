@@ -21,26 +21,26 @@
         }
     </style>
 <link rel="stylesheet" href="../kindeditor/themes/default/default.css" />
-<link rel="stylesheet" href="../css/bootstrap.min.css" />
-<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" media="screen" href="../css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="../css/bootstrap.min_1.css" />
+<!--<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">-->
+<!--<link rel="stylesheet" type="text/css" media="screen" href="../css/bootstrap-datetimepicker.min.css">-->
 <link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="../css/uniform.css" />
-<link rel="stylesheet" href="../css/select2.css" />
-<link rel="stylesheet" href="../css/maruti-style.css" />
-<link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" type="text/css" href="../css/mycss/main.css" />
-
+<link rel="stylesheet" href="../css/select2_1.css" />
+<link rel="stylesheet" href="../css/maruti-style_1.css" />
+<link rel="stylesheet" href="../css/maruti-media_1.css" class="skin-color" />
+<link rel="stylesheet" type="text/css" href="../css/newstyle_1.css" />
     <style type="text/css">
-        #preview{width:260px;height:190px;overflow:hidden;}
+        #preview{width:150px;height:150px;overflow:hidden;}
         #imghead {filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);}
-        #preview1{width:260px;height:190px;overflow:hidden;}
+        #preview1{width:150px;height:150px;overflow:hidden;}
         #imghead1 {filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);}
-        #preview_3{width:260px;height:190px;overflow:hidden;}
+        #preview_3{width:150px;height:150px;overflow:hidden;}
         #imghead_3 {filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);}
     </style>
 </head>
 <body  ng-controller="mainCtrl">
+<div id="warp">
 <!--Header-part-->
 <div id="header">
     <h1 style="font-size: 25px;">4S店运营平台</h1>
@@ -64,7 +64,7 @@
         <li class="active"><a href="index.html" target="_parent"><i class="icon icon-home"></i> <span>首页</span></a> </li>
         <li><a href="reservationService.html" target="_parent"><i class="icon icon-th"></i> <span>预约管理</span></a></li>
         <li > <a href="maintainInfo.html" target="_parent"><i class="icon icon-file"></i> <span>提醒管理</span></a></li>
-        <li> <a href="activityInfo.html" target="_parent"><i class="icon icon-pencil"></i> <span>活动管理</span></a> </li>
+        <li class="menu_hl"> <a href="activityInfo.html" target="_parent"><i class="icon icon-pencil"></i> <span>活动管理</span></a> </li>
         <li> <a href="customerManage.html" target="_parent"><i class="icon icon-inbox"></i> <span>客户管理</span></a> </li>
         <li><a href="driveData.html" target="_parent"><i class="icon icon-fullscreen"></i> <span>行车数据</span></a></li>
         <li> <a href="setting.html" target="_parent"><i class="icon icon-th-list"></i> <span>设置</span></a></li>
@@ -76,42 +76,45 @@
       <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">活动信息</a></div>
   </div>
     <div class="row-fluid">
-        <div class="span1" style="width: 10%;float: left;margin: 2px">
+        <!--左侧box start--><div class="left_box">
+        <div class="span1" style="width: 100%;">
             <div class="accordion" id="collapse-group">
                 <div class="accordion-group widget-box">
-                    <div class="accordion-heading">
-                        <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne" data-toggle="collapse"> <span class="icon"><i class="icon-magnet"></i></span>
+                    <div class="accordion-heading sidebar_a" id="div_1">
+                        <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne" data-toggle="collapse" ng-click="changeLeftbar(1);"> <span class="icon"><i class="icon-magnet"></i></span>
                             <h5>特价工位</h5>
                         </a> </div>
                     </div>
                 </div>
 
-                <div class="accordion-group widget-box" style="margin-top: 2px">
-                    <div class="accordion-heading">
-                        <div class="widget-title"><a data-parent="#collapse-group" href="#collapseGTwo/{{randomTime}}" data-toggle="collapse"> <span class="icon"><i class="icon-magnet"></i></span>
+                <div class="accordion-group widget-box" >
+                    <div class="accordion-heading sidebar_b" id="div_2">
+                        <div class="widget-title"><a data-parent="#collapse-group" href="#collapseGTwo" data-toggle="collapse" ng-click="changeLeftbar(2);"> <span class="icon"><i class="icon-magnet"></i></span>
                             <h5>资讯信息</h5>
                         </a></div>
                     </div>
                 </div>
-                <div class="accordion-group widget-box" style="margin-top: 2px">
-                    <div class="accordion-heading">
-                        <div class="widget-title"> <a  href="#saveFuelMatch/{{randomTime}}" data-toggle="collapse" ng-click="changeTime()"> <span class="icon"><i class="icon-briefcase"></i></span>
+                <div class="accordion-group widget-box" >
+                    <div class="accordion-heading sidebar_b" id="div_3">
+                        <div class="widget-title"> <a data-parent="#collapse-group"  href="#saveFuelMatch" data-toggle="collapse"  ng-click="changeLeftbar(3);"> <span class="icon"><i class="icon-briefcase"></i></span>
                             <h5 >节油大赛</h5>
                         </a></div>
                     </div>
                 </div>
-                <div class="accordion-group widget-box" style="margin-top: 2px">
-                    <div class="accordion-heading">
-                        <div class="widget-title"> <a  href="#lotteryTicket" data-toggle="collapse"> <span class="icon"><i class="icon-filter"></i></span>
+                <div class="accordion-group widget-box" >
+                    <div class="accordion-heading sidebar_b" id="div_4">
+                        <div class="widget-title"> <a data-parent="#collapse-group"  href="#lotteryTicket" data-toggle="collapse" ng-click="changeLeftbar(4);"> <span class="icon"><i class="icon-filter"></i></span>
                             <h5 >送彩票</h5>
                         </a> </div>
                     </div>
                 </div>
             </div>
             </div>
-        <div class="span10" ng-view="" style="width: 86%;float: left" >
-
-        </div>
+    </div><!--左侧box end-->
+     <!--右侧box start--><div class="right_bxo">
+    <div class="span10" ng-view="" style="width:100%;" >
+       </div>
+    </div> <!--右侧box end-->
     </div>
 </div>
 <!--<div id="datetimepicker" class="input-append date">-->
@@ -120,9 +123,8 @@
         <!--<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>-->
       <!--</span>-->
 <!--</div>-->
-<div class="row-fluid">
+ </div>
   <div id="footer" class="span12"> 2014 &copy; 英卡</div>
-</div>
 <script charset="utf-8" src="../kindeditor/kindeditor-min.js"></script>
 <script charset="utf-8" src="../kindeditor/lang/zh_CN.js"></script>
 <script src="../js/jquery.min.js"></script>

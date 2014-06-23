@@ -1,9 +1,9 @@
 <div id="content" >
   <div id="content-header">
-      <div id="breadcrumb"><a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>主页</a> <a href="driveData.html?token={{token}}" class="current">行车数据</a> </div>
+      <div id="breadcrumb"><a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>主页</a> <a href="driveData.html" class="">行车数据</a> </div>
   </div>
-  <div class="container-fluid">
   	<div class="row-fluid" >
+    <!--mainbox01 start--><div class="mainbox01" >
       <div class="span12">
           <!--一次行程数据详情 start-->
           <div class="widget-box" ng-show="oneDetailDiv">
@@ -174,12 +174,12 @@
           </div>
           <!--一分钟行车数据详情 end-->
           <!--行车数据列表 start-->
-        <div class="widget-box" ng-show="driveDiv">
+        <div class="widget-box margin_16" ng-show="driveDiv">
           <div class="widget-title">
              <span class="icon"><i class="icon-th"></i></span> 
             <h5>行车数据列表</h5>
           </div>
-            <div class="widget-content nopadding">
+            <div class="widget-content nopadding table_widget_bg_tr">
                 <!--<table class="table table-bordered data-table">-->
                 <table class="table table-bordered">
                     <thead>
@@ -228,7 +228,7 @@
                 <!--<table class="table table-bordered data-table">-->
                 <table class="table table-bordered">
                     <thead>
-                    <tr>
+                    <tr class="bgcolor01">
                         <th>城市</th>
                         <th>4S店</th>
                         <th>品牌</th>

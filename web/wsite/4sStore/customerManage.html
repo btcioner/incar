@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="SCustomerApp">
 <head>
-<title>4S店管理系统</title>
+<title>客户管理</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/bootstrap.min_1.css" />
 <link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="../css/uniform.css" />
-<link rel="stylesheet" href="../css/select2.css" />
-<link rel="stylesheet" href="../css/maruti-style.css" />
-<link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" type="text/css" href="../css/mycss/main.css" />
+<link rel="stylesheet" href="../css/select2_1.css" />
+<link rel="stylesheet" href="../css/maruti-style_1.css" />
+<link rel="stylesheet" href="../css/maruti-media_1.css" class="skin-color" />
+<link rel="stylesheet" type="text/css" href="../css/newstyle_1.css" />
 </head>
 <body  ng-controller="customerCtrl">
+<div id="warp">
 <!--Header-part-->
 <div id="header">
     <h1 style="font-size: 25px;">4S店运营平台</h1>
@@ -38,7 +39,7 @@
         <li><a href="reservationService.html" target="_parent"><i class="icon icon-th"></i> <span>预约管理</span></a></li>
         <li > <a href="maintainInfo.html" target="_parent"><i class="icon icon-file"></i> <span>提醒管理</span></a></li>
         <li> <a href="activityInfo.html" target="_parent"><i class="icon icon-pencil"></i> <span>活动管理</span></a> </li>
-        <li> <a href="customerManage.html" target="_parent"><i class="icon icon-inbox"></i> <span>客户管理</span></a> </li>
+        <li class="menu_hl"> <a href="customerManage.html" target="_parent"><i class="icon icon-inbox"></i> <span>客户管理</span></a> </li>
         <li><a href="driveData.html" target="_parent"><i class="icon icon-fullscreen"></i> <span>行车数据</span></a></li>
         <li> <a href="setting.html" target="_parent"><i class="icon icon-th-list"></i> <span>设置</span></a></li>
     </ul>
@@ -48,44 +49,47 @@
         <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">活动信息</a></div>
     </div>
     <div class="row-fluid">
-        <div class="span1" style="width: 10%;float: left;margin: 2px">
+        <!--左侧box start--><div class="left_box">
+        <div class="span1" style="width: 100%;">
             <div class="accordion" id="collapse-group" >
-                <div class="accordion-group widget-box"  ng-repeat="group in tagsGroup" style="margin-top: 2px">
-                    <div class="accordion-heading">
-                        <div class="widget-title"> <a data-parent="#collapse-group" href="{{group.link}}" data-toggle="collapse"> <span class="icon"><i class="icon-list"></i></span>
+                <div class="accordion-group widget-box"  ng-repeat="group in tagsGroup">
+                    <div class="{{group.class}}" id="{{group.id}}">
+                        <div class="widget-title"> <a data-parent="#collapse-group" href="{{group.link}}" data-toggle="collapse" ng-click="changeLeftbar($index);"> <span class="icon"><i class="icon-list"></i></span>
                             <h5>{{group.groupName}}</h5>
                         </a> </div>
                     </div>
                     <div class="collapse accordion-body" id="{{group.fid}}" >
                         <div class="widget-content" style="text-align: right;padding: 0" ng-repeat ="tag in group.tags">
-                            <a class="btn btn-info" style="width: 100%;" href="{{group.link}}/{{tag.tagId}}">{{tag.tagName}}</a>
+                            <a class="btn btn-menu" style="width: 100%;" href="{{group.link}}/{{tag.tagId}}">{{tag.tagName}}</a>
                         </div>
                     </div>
                 </div>
-                <div class="accordion-group widget-box" style="margin-top: 2px">
-                    <div class="accordion-heading">
-                        <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseG_X" data-toggle="collapse"> <span class="icon"><i class="icon-magnet"></i></span>
+                <div class="accordion-group widget-box" >
+                    <div class="accordion-heading sidebar_b" id="div_7">
+                        <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseG_X" data-toggle="collapse" ng-click="changeLeftbar(7);"> <span class="icon"><i class="icon-magnet"></i></span>
                             <h5>自定义标签</h5>
                         </a> </div>
                     </div>
                     <div class="collapse accordion-body" id="collapseG_X">
                         <div class="widget-content" style="text-align: right;padding: 0">
-                            <a class="btn btn-info" style="width: 100%;" href="#collapseG_X/X">标签管理</a>
+                            <a class="btn btn-menu" style="width: 100%;" href="#collapseG_X/X">标签管理</a>
                         </div>
                         <div class="widget-content" style="text-align: right;padding: 0" ng-repeat="ctt in customTags">
-                            <a class="btn btn-info" style="width: 100%;" href="#collapseG_X/{{ctt.tagId}}">{{ctt.tagName}}</a>
+                            <a class="btn btn-menu" style="width: 100%;" href="#collapseG_X/{{ctt.tagId}}">{{ctt.tagName}}</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="span10" ng-view="" style="width: 86%;float: left" >
+    </div><!--左侧box end-->
+        <!--右侧box start--><div class="right_bxo">
+        <div class="span10" ng-view="" style="width: 100%;" >
         </div>
+    </div> <!--右侧box end-->
     </div>
 </div>
-<div class="row-fluid">
-  <div id="footer" class="span12"> 2014 &copy; 英卡</div>
 </div>
+  <div id="footer" class="span12"> 2014 &copy; 英卡</div>
 <script src="../js/jquery.min.js"></script>
 <script src="../js/jquery.cookie.js"></script>
 <script src="../js/jquery.dataTables.min.js"></script>

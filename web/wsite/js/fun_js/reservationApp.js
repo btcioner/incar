@@ -43,6 +43,19 @@ angular.module("SReservationApp", [
             alert("登录已超时！");
             window.location="../login.html";
         }
+        $scope.changeLeftbar = function(id)
+        {
+            for(var i=1;i<3;i++)
+            {
+                if(i==id)
+                {
+                    $("#div_"+i).removeClass().addClass("accordion-heading sidebar_a");
+                }
+                else{
+                    $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
+                }
+            }
+        }
     });
 
 function s_statisticsCtrl($scope,$http)

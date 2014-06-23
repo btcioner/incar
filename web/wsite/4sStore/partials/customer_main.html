@@ -1,80 +1,67 @@
-<div class="container-fluid">
-    <div class="row-fluid" >
-            <div class="span12">
-                <!--main info Begin-->
-                <div class="span6" >
-                    <div class="widget-box">
-                        <div class="widget-content nopadding">
-                            <!--<table class="table table-bordered data-table">-->
-                            <table class="table table-bordered ">
-                                <thead>
-                                <tr>
-                                    <th style="text-align: left;">全部客户：<font color="blue">{{carOwnerCount}}</font>&nbsp;人</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="gradeX">
-                                    <td style="height:70px;">此4S店下所有车主</td>
-                                </tr>
-                                <tr>
-                                    <td><a class="btn btn-info btn-mini" href="#collapseGOne" >查看</a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="span6" >
-                    <div class="widget-box">
-                        <div class="widget-content nopadding">
-                            <!--<table class="table table-bordered data-table">-->
-                            <table class="table table-bordered ">
-                                <thead>
-                                <tr>
-                                    <th style="text-align: left;">微信车主：<font color="blue">_</font>&nbsp;人</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="gradeX">
-                                    <td style="height:70px;">关注了微信服务号的所有车主</td>
-                                </tr>
-                                <tr>
-                                    <td><a class="btn btn-info btn-mini" href="">查看</a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!--main  info End-->
-            </div>
-        </div>
-        <div class="row-fluid" >
-            <div class="span12">
-                <!--main info Begin-->
-                <div class="span6" >
-                    <div class="widget-box">
-                        <div class="widget-content nopadding">
-                            <table class="table table-bordered ">
-                                <thead>
-                                <tr>
-                                    <th style="text-align: left;">APP车主：<font color="blue">{{carOwnerCount}}</font>&nbsp;人</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="gradeX">
-                                    <td style="height:70px;">此4S店下所有APP车主</td>
-                                </tr>
-                                <tr>
-                                    <td><a class="btn btn-info btn-mini" href="">查看</a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!--main  info End-->
-            </div>
-        </div>
-</div>
+<!--活动信息列表 begin-->
+<div class="widget-box margin_16" >
+    <div class="pad_46">
+        <!--一行两个块时class="pad_l_r_j60";一行三个块时class="pad_46"-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="#collapseG_1">
+                <div class="home_column">
+                    <div class="datebox color_b">{{carOwnerCount}}<br/>人</div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">全部客户</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">此4S店下所有车主</td>
+                            </tr>
+                        </table>
 
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="#collapseG_6/1">
+                <div class="home_column">
+                    <div class="datebox color_b">{{weixinCount}}<br/>人</div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">微信车主</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">关注了微信服务号的所有车主</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="#collapseG_6/2">
+                <div class="home_column">
+                    <div class="datebox color_b">{{appCount}}<br/>人</div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">APP车主</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">此4S店下所有APP车主</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!--活动信息列表 end-->

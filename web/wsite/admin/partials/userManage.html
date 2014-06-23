@@ -2,8 +2,8 @@
   <div id="content-header">
       <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>主页</a> <a href="#" class="current">系统用户</a> </div>
   </div>
-  <div class="container-fluid">
-  	<div class="row-fluid" id="productListDiv">
+  	<div class="row-fluid" >
+        <!--mainbox01 start--><div class="mainbox01" >
       <div class="span12">
           <!--添加系统用户 begin-->
           <div class="widget-box" ng-show="userModifyDiv">
@@ -108,7 +108,7 @@
           </div>
           <!--添加 end-->
         <!--系统用户列表 begin-->
-        <div class="widget-box" ng-show="userListDiv">
+        <div class="widget-box margin_16" ng-show="userListDiv">
           <div class="widget-title">
              <span class="icon"><i class="icon-th"></i></span> 
             <h5>用户列表</h5>
@@ -118,7 +118,7 @@
             <!--<table class="table table-bordered data-table">-->
             <table class="table table-bordered">
               <thead>
-                <tr>
+                <tr class="bgcolor01">
                     <th>帐号</th>
                     <th>名字</th>
                     <th>联系电话</th>

@@ -1,9 +1,9 @@
 <div id="content">
   <div id="content-header">
-      <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>主页</a> <a href="#" class="current">知识库</a> </div>
+      <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>主页</a> <a href="#" class="">知识库</a> </div>
   </div>
-  <div class="container-fluid">
   	<div class="row-fluid" >
+        <!--mainbox01 start--><div class="mainbox01" >
       <div class="span12">
           <!--修改词条 start-->
           <div class="widget-box" ng-show="modifyKnowledgeDiv">
@@ -105,17 +105,17 @@
           </div>
         <!--添加词条 end-->
         <!--知识库列表 begin-->
-        <div class="widget-box" ng-show="knowledgeListDiv">
+        <div class="widget-box margin_16" ng-show="knowledgeListDiv">
           <div class="widget-title">
             <span class="icon"><i class="icon-th"></i></span>
             <h5>知识库列表</h5>
-            <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();">+添加词条</a>
+            <button class="btn btn-success" style="float:right;margin:12px 30px 0 0;" ng-click="add();">+添加词条</button>
           </div>
           <div class="widget-content nopadding">
             <!--<table class="table table-bordered data-table">-->
             <table class="table table-bordered">
               <thead>
-                <tr>
+                <tr class="bgcolor01">
                     <th>关键字</th>
                     <th>标题</th>
                     <th>图文</th>

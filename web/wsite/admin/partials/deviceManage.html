@@ -1,9 +1,8 @@
-<div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>主页</a> <a href="deviceManage.html?token={{token}}" class="current">设备管理</a> </div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>主页</a> <a href="deviceManage.html" class="">设备管理</a> </div>
 </div>
-<div class="container-fluid">
 <div class="row-fluid" >
+<!--mainbox01 start--><div class="mainbox01" >
 <div class="span12">
 <!--设备添加 start-->
 <div class="widget-box" ng-show="addDiv">
@@ -321,13 +320,13 @@
 </div>
 <!--一分钟行车数据详情 end-->
 <!--设备列表 start-->
-<div class="widget-box" ng-show="deviceList" >
+<div class="widget-box margin_16" ng-show="deviceList" >
     <div class="widget-title">
         <span class="icon"><i class="icon-th"></i></span>
         <h5>设备列表</h5>
-        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="add();" >+添加设备</a>
+        <button class="btn btn-success" style="float:right;margin:12px 30px 0 0;" ng-click="add();" >+添加设备</button>
     </div>
-    <div class="widget-content nopadding">
+    <div class="widget-content nopadding table_widget_bg_tr">
         <!--<table class="table table-bordered data-table">-->
         <table class="table table-bordered">
             <thead>
@@ -346,7 +345,7 @@
                     <input type="text"  style="width:150px;" placeholder="开始日期" ng-model="ser_addTimeB" />-<input type="text" style="width:150px;" ng-model="ser_addTimeE" placeholder="结束日期" /></th>
                 <th style="vertical-align: middle;">激活日期段：
                     <input type="text"  style="width:150px;" placeholder="开始日期" ng-model="ser_actTimeB" />-<input type="text" style="width:150px;" ng-model="ser_actTimeE" placeholder="结束日期" /></th>
-                <th  style="vertical-align: middle;" rowspan="2"><a class="btn btn-success" style="" ng-click="SearchDriveInfo();">搜索</a></th>
+                <th  style="vertical-align: middle;" rowspan="2"><button class="btn btn-success" style="" ng-click="SearchDriveInfo();">搜索</button></th>
             </tr>
             </thead>
         </table>
@@ -355,7 +354,7 @@
         <!--<table class="table table-bordered data-table">-->
         <table class="table table-bordered ">
             <thead>
-            <tr>
+            <tr class="bgcolor01">
                 <th>OBD编号</th>
                 <th>SIM卡号</th>
                 <th>状态</th>
@@ -391,6 +390,5 @@
 </div>
 <!--设备列表 end-->
 </div>
-</div>
-</div>
+</div> <!--mainbox01 end-->
 </div>

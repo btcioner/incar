@@ -42,6 +42,19 @@ angular.module("SMaintainApp", [
             alert("登录已超时！");
             window.location="../login.html";
         }
+        $scope.changeLeftbar = function(id)
+        {
+            for(var i=1;i<3;i++)
+            {
+                if(i==id)
+                {
+                    $("#div_"+i).removeClass().addClass("accordion-heading sidebar_a");
+                }
+                else{
+                    $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
+                }
+            }
+        }
     });
 
 function s_statisticsCtrl($scope,$http)
@@ -49,5 +62,8 @@ function s_statisticsCtrl($scope,$http)
     $scope.randomTime = new Date();
     $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/care?page=1&pagesize=1&t='+$scope.randomTime).success(function(data){
         $scope.careCount = data.totalCount;
+    })
+    $http.get('/alarm/'+$.cookie("s4_id")+'?status=1&t='+$scope.randomTime).success(function(data){
+        $scope.alarmCount = data.rowCount;
     })
 }
