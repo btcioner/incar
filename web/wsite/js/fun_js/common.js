@@ -293,7 +293,7 @@ function clacImgZoomParam( maxWidth, maxHeight, width, height ){
     param.width = 120;
     param.height = 120;
     param.left = 0;
-    param.top = 0;
+    param.top = 20;
     return param;
 
 }

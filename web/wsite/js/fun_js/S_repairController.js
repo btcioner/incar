@@ -132,23 +132,25 @@ function s_repairCtrl($scope, $http,$routeParams){
         switch(oper)
         {
             case "approve":
-                $scope.postData = {op:"approve"};
-                $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
-                    if(data.status=="ok")
-                    {
-                        alert("操作成功!");
-                        GetFirstPageInfo();
-                        $scope.driveTryDiv = true;
-                        $scope.applyOperDiv = false;
-                        $scope.previewDiv = false;
-                    }else{
-                        alert("请求无响应");
-                    }
-                }).error(function(data){
-                        alert("请求无响应");
-                    })
+                if(confirm("是否已确认?"))
+                {
+                    $scope.postData = {op:"approve"};
+                    $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
+                        if(data.status=="ok")
+                        {
+                            alert("操作成功!");
+                            GetFirstPageInfo();
+                            $scope.driveTryDiv = true;
+                            $scope.applyOperDiv = false;
+                            $scope.previewDiv = false;
+                        }else{
+                            alert("请求无响应");
+                        }
+                    }).error(function(data){
+                            alert("请求无响应");
+                        })
+                }
                 break;
-
             case "reject":
                 $scope.rejectReason = true;
                 break;
@@ -158,24 +160,24 @@ function s_repairCtrl($scope, $http,$routeParams){
     //确定
     $scope.confirm = function()
     {
-
-            $scope.postData={op: "reject", reason:$scope.jj_reason};
-            $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
-                if(data.status == "ok")
-                {
-                    GetFirstPageInfo();
-                    alert("操作成功");
-                    $scope.driveTryDiv = true;
-                    $scope.applyOperDiv = false;
-                    $scope.previewDiv = false;
-                }
-                else{
-                    alert("请求无响应");
-                }
-            }).error(function(data){
-                    alert("请求无响应");
-                })
-
+            if(confirm("是否已拒绝?")){
+                $scope.postData={op: "reject", reason:$scope.jj_reason};
+                $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
+                    if(data.status == "ok")
+                    {
+                        GetFirstPageInfo();
+                        alert("操作成功!");
+                        $scope.driveTryDiv = true;
+                        $scope.applyOperDiv = false;
+                        $scope.previewDiv = false;
+                    }
+                    else{
+                        alert("请求无响应");
+                    }
+                }).error(function(data){
+                        alert("请求无响应");
+                    })
+            }
      }
 
     //取消

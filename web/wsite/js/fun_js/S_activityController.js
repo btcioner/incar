@@ -86,9 +86,9 @@
         KindEditor.ready(function(K) {
             editor = K.create('#content_0', {
                 width : 380,
-                height : 350,
+                height : 300,
                 minWidth : 380,
-                minHeight : 350,
+                minHeight : 300,
                 allowFileManager : true,
                 items : [
                     'bold','italic','underline','|','insertorderedlist','insertunorderedlist','|','image','|',
@@ -143,7 +143,6 @@
     {
         getAllChooseTag();
         $scope.postData={title:$scope.title,brief:editor.html(),logo_url:$scope.logo_url,tags:$scope.tags};
-
         $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/2/activity",$scope.postData).success(function(data){
             if(data.status == "ok")
             {
@@ -154,7 +153,8 @@
             }
         }).error(function(data){
                 alert("请求无响应");
-            })
+        })
+        editor.remove();
     }
 
         //获取所有已选择的标签
@@ -185,9 +185,9 @@
         KindEditor.ready(function(K) {
             editor = K.create('#content_1', {
                 width : 380,
-                height : 350,
+                height : 300,
                 minWidth : 380,
-                minHeight : 350,
+                minHeight : 300,
                 allowFileManager : true,
                 items : [
                     'bold','italic','underline','|','insertorderedlist','insertunorderedlist','|','image','|',
@@ -302,6 +302,7 @@
         switch(id)
         {
             case 1:
+                editor.remove();
                 $scope.newsListDiv = true;
                 $scope.newsAddDiv = false;
                 break;
@@ -314,6 +315,25 @@
                 $scope.newsListDiv = true;
                 $scope.newsPreviewDiv = false;
                 break;
+        }
+    }
+
+    //全选
+    $scope.getAllSelect = function(id)
+    {
+
+        for(var i=0;i<$scope.tagsGroup.length;i++)
+        {
+            for(var j=0;j<$scope.tagsGroup[i].tags.length;j++)
+            {
+                if(!$scope.checkboxId_1)
+                {
+                    $scope.tagsGroup[i].tags[j].tagFlag = true;
+                }
+                else{
+                    $scope.tagsGroup[i].tags[j].tagFlag = false;
+                }
+            }
         }
     }
 }

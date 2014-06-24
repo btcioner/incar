@@ -30,7 +30,7 @@
                         <td id="tdc">{{tries.updated_time}}</td>
                         <td id="tdc">{{tries.status}}</td>
                         <td id="tdc" >
-                            <a class="btn btn-primary btn-mini" ng-click="manager($index,tries.step);">{{tries.text}}</a>
+                            <a class="btn btn-info btn-mini" ng-click="manager($index,tries.step);">{{tries.text}}</a>
                         </td>
                     </tr>
                     </tbody>
@@ -46,84 +46,85 @@
         </div>
         <!--试乘试驾列表 end-->
             <!--新申请操作 begin-->
-            <div class="widget-box" ng-show="applyOperDiv">
+            <div class="widget-box margin_16" ng-show="applyOperDiv">
                 <div class="widget-title">
                     <span class="icon"><i class="icon-th"></i></span>
                     <h5>试乘试驾操作</h5>
-                    <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="cancel(3)">返回</a>
+                    <button class="btn btn-success" style="float:right;margin:12px 30px 0 0;" ng-click="cancel(3)">返回</button>
                 </div>
                 <div class="widget-content nopadding">
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th>车主姓名</th>
-                            <th style="background-color:#F9F9F9;">{{triesDetail.nick}}</th>
-                            <th>联系电话
-                            <th style="background-color:#F9F9F9;">{{triesDetail.phone}}</th>
-                            <th >预约品牌</th>
-                            <th style="background-color:#F9F9F9;">{{triesDetail.json_args.brand_name}}</th>
+                            <th class="tablestyle-01">车主姓名</th>
+                            <th class="tablestyle-02">{{triesDetail.nick}}</th>
+                            <th class="tablestyle-01">联系电话
+                            <th class="tablestyle-02">{{triesDetail.phone}}</th>
+                            <th class="tablestyle-01">预约品牌</th>
+                            <th class="tablestyle-02">{{triesDetail.json_args.brand_name}}</th>
                         </tr>
                         <tr>
-                            <th>预约车系</th>
-                            <th style="background-color:#F9F9F9;">{{triesDetail.json_args.series_name}}</th>
-                            <th>预约时间</th>
-                            <th style="background-color:#F9F9F9;">{{triesDetail.working_time}}</th>
-                            <th>操作时间</th>
-                            <th style="background-color:#F9F9F9;"><a class='btn btn-success'  ng-click='OperationChild("approve");'>确认</a>
-                                &nbsp;&nbsp;&nbsp;<a class='btn btn-success'  ng-click='OperationChild("reject");'>拒绝</a></th>
+                            <th class="tablestyle-01">预约车系</th>
+                            <th class="tablestyle-02">{{triesDetail.json_args.series_name}}</th>
+                            <th class="tablestyle-01">预约时间</th>
+                            <th class="tablestyle-02">{{triesDetail.working_time}}</th>
+                            <th class="tablestyle-01">操作时间</th>
+                            <th class="tablestyle-02"><button class='btn btn-success'  ng-click='OperationChild("approve");'>确认</button>
+                                &nbsp;&nbsp;&nbsp;<button class='btn btn-success'  ng-click='OperationChild("reject");'>拒绝</button></th>
 
                             </th>
                         </tr>
                         </thead>
                     </table>
                 </div>
-                <div class="widget-content nopadding" ng-show="rejectReason">
-                    <form action="#" method="get" class="form-horizontal">
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:200px;">原因：
-                            </label>
-                            <div class="controls">
-                                <textarea ng-model="jj_reason"></textarea>
+                <div class="widget-content" ng-show="rejectReason">
+                    <form class="form-horizontal formstyle_box03">
+                        <div class="control-group w_44 fl" >
+                            <label class="control-label pad_l20 w_100">原因</label>
+                            <div class="controls pad_t_b_10">
+                                <textarea ng-model="jj_reason" style="width:300px;"></textarea>
                             </div>
                         </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-success"  style="margin-left:200px;" ng-click="confirm(2);">确定</button>
-                            <button type="button" class="btn btn-danger"   ng-click="cancel(2)">取消</button>
-                        </div>
+                        <div class="clearfix"></div>
+                        <!--button_box01 start-->
+                        <div class="button_box01">
+                            <button type="button" style="margin-right:40px;"  class="btn btn-large btn-success" ng-click="confirm(2);">确&nbsp;&nbsp;定</button>
+                            <button type="button"  class="btn btn-large btn-danger"   ng-click="cancel(2)">取&nbsp;&nbsp;消</button>
+                        </div><!--button_box01 start-->
                     </form>
                 </div>
             </div>
             <!--新申请操作 end-->
             <!--preview  begin-->
-            <div class="widget-box" ng-show="previewDiv">
+            <div class="widget-box margin_16" ng-show="previewDiv">
                 <div class="widget-title">
                     <span class="icon"><i class="icon-th"></i></span>
                     <h5>试乘试驾详情</h5>
-                    <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="cancel(3)">返回</a>
+                    <button class="btn btn-success" style="float:right;margin:12px 30px 0 0;" ng-click="cancel(3)">返回</button>
                 </div>
                 <div class="widget-content nopadding">
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th>车主姓名</th>
-                            <th style="background-color:#F9F9F9;">{{triesDetail.nick}}</th>
-                            <th>联系电话
-                            <th style="background-color:#F9F9F9;">{{triesDetail.phone}}</th>
-                            <th >预约品牌</th>
-                            <th style="background-color:#F9F9F9;">{{triesDetail.json_args.brand_name}}</th>
+                            <th class="tablestyle-01">车主姓名</th>
+                            <th class="tablestyle-02">{{triesDetail.nick}}</th>
+                            <th class="tablestyle-01">联系电话
+                            <th class="tablestyle-02">{{triesDetail.phone}}</th>
+                            <th class="tablestyle-01">预约品牌</th>
+                            <th class="tablestyle-02">{{triesDetail.json_args.brand_name}}</th>
                         </tr>
                         <tr>
-                            <th>预约车系</th>
-                            <th style="background-color:#F9F9F9;">{{triesDetail.json_args.series_name}}</th>
-                            <th>预约时间</th>
-                            <th style="background-color:#F9F9F9;">{{triesDetail.working_time}}</th>
-                            <th>操作人</th>
-                            <th style="background-color:#F9F9F9;">{{triesDetail.json_args.oper}}
+                            <th class="tablestyle-01">预约车系</th>
+                            <th class="tablestyle-02">{{triesDetail.json_args.series_name}}</th>
+                            <th class="tablestyle-01">预约时间</th>
+                            <th class="tablestyle-02">{{triesDetail.working_time}}</th>
+                            <th class="tablestyle-01">操作人</th>
+                            <th class="tablestyle-02">{{triesDetail.json_args.oper}}
                             </th>
                         </tr>
                         <tr ng-show="reasonTr">
-                            <th>拒绝原因</th>
-                            <th style="background-color:#F9F9F9;" colspan="5">{{triesDetail.json_args.reason}}</th>
+                            <th class="tablestyle-01">拒绝原因</th>
+                            <th class="tablestyle-02" colspan="5">{{triesDetail.json_args.reason}}</th>
                         </tr>
                         </thead>
                     </table>
