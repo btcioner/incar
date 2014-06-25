@@ -134,4 +134,3 @@ var createTime;         //创建日期
 
 var dao = require('./dao');
 dao.initDB();
-//dao.findBySql("select * from t_obd_info");

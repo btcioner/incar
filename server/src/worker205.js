@@ -352,7 +352,7 @@ function packetProcess_1603(dataBuffer) {
     obd.createTime=new Date();
     obd.lastUpdateTime=new Date();
     //2、根据OBD编号查询OBD信息，一个JSON对象
-    var sql="select * from t_obd_info t where t.obdCode=?";
+    /*var sql="select * from t_obd_info t where t.obdCode=?";
     dao.findBySql(sql,obdCode,function(rows) {
         //3、如果找到了则校验传入的OBD信息和数据库中的OBD信息，若不同则更新
         if(rows.length>0){
@@ -366,7 +366,7 @@ function packetProcess_1603(dataBuffer) {
             if(firmwareVersion!==obdInfo.firmwareVersion)needUpdate=true;
             if(softwareVersion!==obdInfo.softwareVersion)needUpdate=true;
             if(needUpdate){
-                var sql="update t_obd_info t set ? where t.obdCode=?";
+                *//*var sql="update t_obd_info t set ? where t.obdCode=?";
                 var updateArgs=[{
                     vin:vin,
                     brand:brand,
@@ -379,7 +379,7 @@ function packetProcess_1603(dataBuffer) {
                 dao.executeBySql([sql],[updateArgs],function(err,rows,fields){
                     if(err)throw err;
                     console.log("更新成功:"+JSON.stringify(updateArgs));
-                });
+                });*//*
             }
             else{
                 console.log("不需要更新");
@@ -387,13 +387,13 @@ function packetProcess_1603(dataBuffer) {
         }
         //4、如果不存在则创建一个新的OBD，并写入默认数据
         else{
-            var sql="insert into t_obd_info set ?";
+            *//*var sql="insert into t_obd_info set ?";
             dao.executeBySql([sql],[obd],function(err,rows,fields){
                 if(err)throw err;
                 console.log("添加成功:"+JSON.stringify(obd));
-            });
+            });*//*
         }
-    });
+    });*/
 
 
     //5、生成要回复的报文内容并返回，回复和数据库操作异步处理
