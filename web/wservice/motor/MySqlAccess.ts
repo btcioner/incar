@@ -15,6 +15,11 @@ module Service{
                     poolInCar.queryRawFn = poolInCar.query;
 
                     poolInCar.query = (sql, args, cb)=>{
+                        if(typeof args === 'function'){
+                            cb = args;
+                            args = null;
+                        }
+
                         var pack = {
                             bTraceOutSQL : false,
                             snSQL : (poolInCar.TraceCount++),
