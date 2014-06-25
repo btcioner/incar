@@ -8,6 +8,8 @@ var WXAPI = require('../weixin').API;
 var myCar = require('./myCar');
 var my4S = require('./my4S');
 var menuBuilder = require('./menu');
+var config = require('../../config/config');
+var url = require('url');
 var wxMenu = {};
 
 wxMenu.defineWXMenu = function(appid, appsecret){
@@ -75,17 +77,17 @@ wxMenu.defineWXMenu = function(appid, appsecret){
                                 {
                                     "type":"view",
                                     "name":"我的活动",
-                                    "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForActivity.html"
+                                    "url": url.resolve(config.baseUrl, "msite/getCodeForActivity.html")
                                 },
                                 {
                                     "type":"view",
                                     "name":"我的预约",
-                                    "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForBook.html"
+                                    "url": url.resolve(config.baseUrl, "msite/getCodeForBook.html")
                                 },
                                 {
                                     "type":"view",
                                     "name":"设置",
-                                    "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForConf.html"
+                                    "url": url.resolve(config.baseUrl, "msite/getCodeForConf.html")
                                 }
                             ]
                     }
@@ -162,17 +164,17 @@ var menuObject={
                         {
                             "type":"view",
                             "name":"我的活动",
-                            "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForActivity.html"
+                            "url": url.resolve(config.baseUrl, "msite/getCodeForActivity.html")
                         },
                         {
                             "type":"view",
                             "name":"我的预约",
-                            "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForBook.html"
+                            "url": url.resolve(config.baseUrl, "msite/getCodeForBook.html")
                         },
                         {
                             "type":"view",
                             "name":"设置",
-                            "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForConf.html"
+                            "url": url.resolve(config.baseUrl, "msite/getCodeForConf.html")
                         }
                     ]
             }]
@@ -198,7 +200,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, session, next) {
                 title: '行车分析',
                 description: reportContent,
                 picurl: '',
-                url: 'http://linuxsuse.chinacloudapp.cn/msite/myDrive.html?user=' + message.FromUserName + '@' + message.ToUserName
+                url: url.resolve(config.baseUrl, "msite/myDrive.html?user=") + message.FromUserName + '@' + message.ToUserName
             }]);
         }
     });
@@ -214,7 +216,7 @@ wxMenu.onClick['MY4S.PROBE'] = function(message, session, next) {
             title: '试乘试驾',
             description: result,
             picurl: '',
-            url: 'http://linuxsuse.chinacloudapp.cn/msite/trialrun.html?user=' + message.FromUserName + '@' + message.ToUserName
+            url: url.resolve(config.baseUrl, "msite/trialrun.html?user=") + message.FromUserName + '@' + message.ToUserName
         }]);
     });
 };
@@ -227,7 +229,7 @@ wxMenu.onClick['MY4S.INFO'] = function(message, session, next) {
             title: '资讯活动',
             description: result,
             picurl: '',
-            url: 'http://linuxsuse.chinacloudapp.cn/msite/my4sInfo.html?user=' + message.FromUserName + '@' + message.ToUserName
+            url: url.resolve(config.baseUrl, "msite/my4sInfo.html?user=") + message.FromUserName + '@' + message.ToUserName
         }]);
     });
 };
@@ -241,7 +243,7 @@ wxMenu.onClick['MY4S.BOOKING'] = function(message, session, next) {
             title: '预约保养',
             description: result,
             picurl: '',
-            url: 'http://linuxsuse.chinacloudapp.cn/msite/booking.html?user=' + message.FromUserName + '@' + message.ToUserName
+            url: url.resolve(config.baseUrl, "msite/booking.html?user=") + message.FromUserName + '@' + message.ToUserName
         }]);
     });
 };
@@ -255,7 +257,7 @@ wxMenu.onClick['MY4S.MANUAL'] = function(message, session, next) {
             title: '行车手册',
             description: result,
             picurl: '',
-            url: 'http://linuxsuse.chinacloudapp.cn/msite/page_xcsc.html?user='+message.FromUserName+'@'+message.ToUserName
+            url: url.resolve(config.baseUrl, "msite/page_xcsc.html?user=")+message.FromUserName+'@'+message.ToUserName
         }]);
     });
 };
@@ -268,7 +270,7 @@ wxMenu.onClick['MY4S.CONTACT'] = function(message, session, next) {
             title: '联系我们',
             description: result,
             picurl: pic,
-            url: ''  /**  http://linuxsuse.chinacloudapp.cn/msite/manual?user=' + message.FromUserName + '@' + message.ToUserName **/
+            url: ''  /**  url.resolve(config.baseUrl, "msite/???.html?user=") + message.FromUserName + '@' + message.ToUserName **/
         }]);
     });
 };
