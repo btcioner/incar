@@ -46,12 +46,16 @@ booking.applySlot = function(userName,sopenid, slot, callback) {
                if (err) { return callback(err); }
               else{
                 pool.query('select id from t_slot_booking where channel_specific like ? order by ts desc limit 1',["%"+userName+'@'+sopenid+'%'],function(err,rows){
-                    if(err){ console.log(err); return res.send(400, err);}
+                    if(err){ console.log(err); return callback(err); }
                     else if(rows){
                         pool.query('insert into t_work (work,step,work_ref_id,org_id,cust_id,working_time,json_args,created_time) values(?,?,?,?,?,?,?,now())',
                             ['care','applied',rows[0].id,orgId,acc_row[0].id,slot.time,''],function(err,result){
-                                if(err){ console.log(err); return res.send(400, err);}
-                                return callback(null, result);
+                                if(err){ console.log(err); return callback(err); }
+                                pool.query('update t_promotion_slot set promotion_status=4 where id=?;',[slot.id],function(err,result){
+                                   if(err) return callback(err);
+                                    return callback(null, result);
+                                });
+
                             });
                     }
                 });

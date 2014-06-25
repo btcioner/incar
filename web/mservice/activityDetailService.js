@@ -49,6 +49,12 @@ function search(db,act_id,callback) {
                                 if(err)callback(err);
                                 else if(data){
                                     actData.s4_name=data[0].name;
+                                    if(actData.template_id==1){
+                                        pool.query('select min_milage from t_activity_save_gas where id=?;',[actData.id],function(err,result){
+                                             if(err)  callback(err);
+                                            actData.min_milage=result[0].min_milage;
+                                        });
+                                    }
                                     callback(null,actData);
                                 }else callback(new Error("The 4s is not find."));
                             });
