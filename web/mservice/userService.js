@@ -22,7 +22,7 @@ function getUserInfo(wx){
 }
 //验证微信用户是否存在账户
 function userCheck(req,res){
-    var params=req.params;
+    var params=req.body;
     var temp=params.user.split('@');
     var openId=temp[0];
     var openId4S=temp[1];
@@ -34,7 +34,7 @@ function userCheck(req,res){
 }
 //通过已有账户信息登录，并和当前微信用户绑定
 function userLogin(req,res){
-    var params=req.params;
+    var params=req.body;
     var openId=params.openId;
     var openId4S=params.sopenId;
     var username=params.username;
@@ -62,7 +62,7 @@ function userLogin(req,res){
 //登记或修改（设置）账号
 function userEnroll(req, res) {
     if(!userCheck(req, res)){
-        var params=req.params;
+        var params=req.body;
         var username=params.name;
         var password=params.password;
         var temp=params.user.split('@');
@@ -98,7 +98,7 @@ function userEnroll(req, res) {
         });
         carEnroll(req,res);
     }else{
-        var params=req.params;
+        var params=req.body;
         var username=params.name;
         var password=params.password;
         var temp=params.user.split('@');
@@ -137,7 +137,7 @@ function userEnroll(req, res) {
 }
 //车辆登记
 function carEnroll(req,res){
-    var params=req.params;
+    var params=req.body;
     var temp=params.user.split('@');
     var openId=temp[0];
     var openId4S=temp[1];
@@ -184,7 +184,7 @@ function carEnroll(req,res){
 }
 //车辆注销
 function carRescind(req,res){
-    var params=req.params;
+    var params=req.body;
     var accountId=params.accountId;
     var carId=params.carId;
 }
