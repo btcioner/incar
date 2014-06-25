@@ -52,10 +52,10 @@ function search(db,act_id,callback) {
                                     if(actData.template_id==1){
                                         pool.query('select min_milage from t_activity_save_gas where id=?;',[actData.id],function(err,result){
                                              if(err)  callback(err);
-                                            actData.min_milage=result[0].min_milage;
+                                             actData.min_milage=result[0].min_milage;
+                                             callback(null,actData);
                                         });
                                     }
-                                    callback(null,actData);
                                 }else callback(new Error("The 4s is not find."));
                             });
                      }else callback(new Error("Can not find the activity for the id."));
