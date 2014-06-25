@@ -39,10 +39,11 @@ angular.module("SActivityApp", [
              templateUrl: '/4sStore/partials/activity_index.html'//首页
         });
   //  $locationProvider.html5Mode(true);
-}).controller("mainCtrl",function($scope){
+}).controller("mainCtrl",function($scope,$http){
         if($.cookie("nick_4s") != "" && $.cookie("nick_4s") != null)
         {
             $scope.nickName = $.cookie("nick_4s");//保存登录进来用户的nick
+            $scope.s4Name = $.cookie("s4_name");
         }else{
             window.location="../login.html";
         }
@@ -57,6 +58,22 @@ angular.module("SActivityApp", [
                 else{
                     $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
                 }
+            }
+        }
+
+        //注销
+        $scope.logout = function()
+        {
+            if(confirm("是否确定要注销?"))
+            {
+                $http.get(baseurl+"logout").success(function(data){
+                    if(data.status == "ok")
+                    {
+                        window.location="../login.html";
+                    }
+                }).error(function(data){
+                        alert("请求无响应!");
+                    })
             }
         }
   });

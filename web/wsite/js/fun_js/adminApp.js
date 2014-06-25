@@ -70,7 +70,7 @@ angular.module("AdminApp", [
                     }
                 }).error(function(data){
                         alert("请求无响应!");
-                    })
+                })
             }
         }
 });

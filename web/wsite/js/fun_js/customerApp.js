@@ -83,6 +83,7 @@ angular.module("SCustomerApp", [
         if($.cookie("nick_4s") != "" && $.cookie("nick_4s") != null)
         {
             $scope.nickName = $.cookie("nick_4s");//保存登录进来用户的nick
+            $scope.s4Name = $.cookie("s4_name");
         }else{
             window.location="../login.html";
         }
@@ -133,6 +134,22 @@ angular.module("SCustomerApp", [
                 else{
                     $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
                 }
+            }
+        }
+
+        //注销
+        $scope.logout = function()
+        {
+            if(confirm("是否确定要注销?"))
+            {
+                $http.get(baseurl+"logout").success(function(data){
+                    if(data.status == "ok")
+                    {
+                        window.location="../login.html";
+                    }
+                }).error(function(data){
+                        alert("请求无响应!");
+                    })
             }
         }
     });
