@@ -7,8 +7,8 @@
 var net = require('net');
 var packet = require('./src/packet');
 var workerProcessMgr = require('child_process');
-var workerProcess205 = workerProcessMgr.fork('server/src/worker205.js', ['worker205Process']);
-var workerProcess308 = workerProcessMgr.fork('server/src/worker308.js', ['worker308Process']);
+var workerProcess205 = workerProcessMgr.fork('./src/worker205.js', ['worker205Process']);
+var workerProcess308 = workerProcessMgr.fork('./src/worker308.js', ['worker308Process']);
 console.log('主进程初始化完成：: ' + process.pid);
 var toString0X=function(dataBuffer){
     var dataString="";
