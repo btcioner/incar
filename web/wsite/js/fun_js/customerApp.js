@@ -99,13 +99,13 @@ angular.module("SCustomerApp", [
                 {
                     $scope.tagsGroup[i].link = "#collapseG_"+ $scope.tagsGroup[i].groupId;
                     $scope.tagsGroup[i].fid = "collapseG_"+ $scope.tagsGroup[i].groupId;
-                    if(i==0)
-                    {
-                        $scope.tagsGroup[i].class = "accordion-heading sidebar_a";
-                    }
-                    else{
+//                    if(i==0)
+//                    {
+//                        $scope.tagsGroup[i].class = "accordion-heading sidebar_a";
+//                    }
+//                    else{
                         $scope.tagsGroup[i].class = "accordion-heading sidebar_b";
-                    }
+//                    }
                     $scope.tagsGroup[i].id = "div_"+i;
                     for(var j=0;j<$scope.tagsGroup[i].tags.length;j++)
                     {
