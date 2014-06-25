@@ -270,7 +270,6 @@ function packetProcess_1601(dataBuffer,cb) {
                 cb();
             }
         });
-
     }
     //3、其他情况则更新行驶信息，需要先获取行驶信息的id
     else{
@@ -602,7 +601,7 @@ function get1603Default(){
         closeAfterFlameOut:0x00B4,      //熄火后关闭时间点
         voltageThreshold:"120,153",     //熄火后电池电压阀值
 
-        runtimeCount:0x02,              //运行中数据更新数量(0x00或0x02，暂时只支持0x00)
+        runtimeCount:0x00,              //运行中数据更新数量(0x00或0x02，暂时只支持0x00)
         uploadInterval:100,             //行驶中上传数据间隔时间
         uploadParamId:"12",//行驶中上传数据参数Id，参考4.01和4.02
 
