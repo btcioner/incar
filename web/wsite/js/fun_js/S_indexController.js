@@ -7,6 +7,7 @@ app.controller("s_indexCtrl", function($scope, $http){
     if($.cookie("nick_4s") != "" && $.cookie("nick_4s") != null)
     {
         $scope.nickName = $.cookie("nick_4s");//保存登录进来用户的nick
+        $scope.s4Name = $.cookie("s4_name");
         //查询新申请的预约记录
         $scope.randomTime = new Date();
         $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?step=applied&t='+$scope.randomTime).success(function(data){
@@ -18,6 +19,7 @@ app.controller("s_indexCtrl", function($scope, $http){
     }else{
        window.location="../login.html";
     }
+
      //注销
     $scope.logout = function()
     {
