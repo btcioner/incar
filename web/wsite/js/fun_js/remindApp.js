@@ -34,12 +34,12 @@ angular.module("SMaintainApp", [
            redirectTo:'/main'//跳转到预约服务的主界面
         });
        // $locationProvider.html5Mode(true);
-}).controller("mainCtrl",function($scope){
-        if($.cookie("nick") != "" && $.cookie("nick") != null)
+}).controller("mainCtrl",function($scope,$http){
+        if($.cookie("nick_4s") != "" && $.cookie("nick_4s") != null)
         {
-            $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+            $scope.nickName = $.cookie("nick_4s");//保存登录进来用户的nick
+            $scope.s4Name = $.cookie("s4_name");
         }else{
-            alert("登录已超时！");
             window.location="../login.html";
         }
         $scope.changeLeftbar = function(id)
@@ -55,7 +55,23 @@ angular.module("SMaintainApp", [
                 }
             }
         }
-    });
+
+        //注销
+        $scope.logout = function()
+        {
+            if(confirm("是否确定要注销?"))
+            {
+                $http.get(baseurl+"logout").success(function(data){
+                    if(data.status == "ok")
+                    {
+                        window.location="../login.html";
+                    }
+                }).error(function(data){
+                        alert("请求无响应!");
+                    })
+            }
+        }
+ });
 
 function s_statisticsCtrl($scope,$http)
 {

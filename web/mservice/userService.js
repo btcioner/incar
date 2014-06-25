@@ -22,19 +22,19 @@ function getUserInfo(wx){
 }
 //验证微信用户是否存在账户
 function userCheck(req,res){
-    var params=req.params;
+    var params=req.body;
     var temp=params.user.split('@');
     var openId=temp[0];
     var openId4S=temp[1];
     var wx=openId+":"+openId4S
     var user=getUserInfo(wx);
     var accountId=user?user.accountId:null;
-    res.write({status:'success',accountId:accountId});
+   // res.write({status:'success',accountId:accountId});
     return user?true:false;
 }
 //通过已有账户信息登录，并和当前微信用户绑定
 function userLogin(req,res){
-    var params=req.params;
+    var params=req.body;
     var openId=params.openId;
     var openId4S=params.sopenId;
     var username=params.username;
@@ -61,8 +61,9 @@ function userLogin(req,res){
 }
 //登记或修改（设置）账号
 function userEnroll(req, res) {
+    console.log(req.body);
     if(!userCheck(req, res)){
-        var params=req.params;
+        var params=req.body;
         var username=params.name;
         var password=params.password;
         var temp=params.user.split('@');
@@ -74,7 +75,7 @@ function userEnroll(req, res) {
         var sql="select id from t_4s where openid=?";
         dao.findBySql(sql,[openId4S],function(rows){
             if(rows.length>0){
-                var s4id=rowsp[0].id;
+                var s4id=rows[0].id;
                 var user={
                     name:username,
                     pwd:password,
@@ -98,7 +99,7 @@ function userEnroll(req, res) {
         });
         carEnroll(req,res);
     }else{
-        var params=req.params;
+        var params=req.body;
         var username=params.name;
         var password=params.password;
         var temp=params.user.split('@');
@@ -137,7 +138,7 @@ function userEnroll(req, res) {
 }
 //车辆登记
 function carEnroll(req,res){
-    var params=req.params;
+    var params=req.body;
     var temp=params.user.split('@');
     var openId=temp[0];
     var openId4S=temp[1];
@@ -154,13 +155,13 @@ function carEnroll(req,res){
     var disp=params.disp;
     var engine_type=params.engine_type;
     var user=getUserInfo(wx);
-    var s4Id=user.s4_id;
+    //var s4Id=user.s4_id;
     var sql="select id from t_car where obd_code=?";
     dao.findBySql(sql,[obdCode],function(rows){
         if(rows.length>0){
             var id=rows[0].id;
             var car={
-                s4_id:s4Id,
+                s4_id:user.s4_id,
                 brand:brand,
                 series:series,
                 modelYear:modelYear,
@@ -184,7 +185,7 @@ function carEnroll(req,res){
 }
 //车辆注销
 function carRescind(req,res){
-    var params=req.params;
+    var params=req.body;
     var accountId=params.accountId;
     var carId=params.carId;
 }

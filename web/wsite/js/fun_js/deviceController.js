@@ -234,6 +234,7 @@ function deviceCtrl($scope, $http)
     //在访问之后对数据进行处理
     function getIndexData(id,data)
     {
+        $scope.tips="";
         switch(id)
         {
             case 1: //查询所有设备列表
@@ -316,7 +317,7 @@ function deviceCtrl($scope, $http)
                 {
                     if(data.details.length== 0)
                     {
-                        alert("暂无行程数据");
+                        $scope.tips="暂无数据";
                     }
                     else
                     {
@@ -324,11 +325,11 @@ function deviceCtrl($scope, $http)
                         {
                             data.details[i].createTime = $.changeDate(data.details[i].createTime);
                         }
-                        $scope.detailDiv = false;
-                        $scope.oneDetailDiv = true;
-                        $scope.details = data.details;
-                        PagingInfo(data.totalCount);
                     }
+                    $scope.detailDiv = false;
+                    $scope.oneDetailDiv = true;
+                    $scope.details = data.details;
+                    PagingInfo(data.totalCount);
                 }
                 else
                 {

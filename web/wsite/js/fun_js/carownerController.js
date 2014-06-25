@@ -235,6 +235,7 @@ function carOwnersCtrl($scope, $http){
     //查看一个OBD一次行程的数据
     $scope.GetDriveDetail = function(obd_code,drive_id,id)
     {
+        $scope.tips="";
         $scope.choosedOC = obd_code;
         $scope.drive_id = drive_id;
         $scope.index = id;
@@ -246,7 +247,7 @@ function carOwnersCtrl($scope, $http){
             {
                 if(data.details.length== 0)
                 {
-                    alert("暂无行程数据");
+                    $scope.tips = "暂无数据";
                 }
                 else
                 {
@@ -254,11 +255,11 @@ function carOwnersCtrl($scope, $http){
                     {
                         data.details[i].createTime = $.changeDate(data.details[i].createTime);
                     }
-                    $scope.detailDiv = false;
-                    $scope.oneDetailDiv = true;
-                    $scope.details = data.details;
-                    PagingInfo(data.totalCount);
                 }
+                $scope.detailDiv = false;
+                $scope.oneDetailDiv = true;
+                $scope.details = data.details;
+                PagingInfo(data.totalCount);
             }
             else
             {

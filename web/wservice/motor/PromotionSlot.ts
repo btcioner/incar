@@ -149,6 +149,7 @@ module Service {
     // 特价工位定时调度器
     export class PromotionSlotScheduler{
         private _jobNext : any = null;
+        private _jobIdle : any = null;
 
         constructor(){
         }
@@ -177,6 +178,7 @@ module Service {
 
                         console.log(util.format("特价工位下次调度时间:%s",tmA));
                         var cron:any = require('cron');
+                        if(this._jobIdle) this._jobIdle.stop();
                         if(this._jobNext) this._jobNext.stop();
                         this._jobNext = new cron.CronJob(tmA, ()=>{
                             schedulerPS.start();
@@ -260,13 +262,11 @@ module Service {
         // 保险
         private KeepWatch(){
             var cron:any = require('cron');
-            var tmNext = new Date((new Date()).getTime() + 10*60*1000);
-            if(this._jobNext) this._jobNext.stop();
-            this._jobNext = new cron.CronJob(tmNext, ()=>{
+            this._jobIdle = new cron.CronJob("00 */10 * * * *", ()=>{
                 schedulerPS.start();
             });
-            this._jobNext.start();
-            console.log(util.format("特价工位进入空闲扫描模式,下次扫描:%s", tmNext));
+            this._jobIdle.start();
+            console.log(util.format("特价工位进入空闲扫描模式,每10分钟扫描一次"));
         }
     }
 

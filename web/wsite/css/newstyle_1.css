@@ -8,20 +8,41 @@ body{
 .w_70 {
 	width: 70px;
 }
+
+.w_44 {
+	width: 440px;
+}
+
 .w_160 {
 	width: 200px;
 }
+
+.w_100 {
+	width: 100px;
+}
+.w_390 {
+	width: 390px;
+}
+
+
 .pad_t_b_10 {
 	padding-top: 10px;
 	padding-right: 0px;
 	padding-bottom: 10px;
 	padding-left: 0px;
 }
+.pad_t_40 {
+	padding-top: 40px;
+}
+
 .pad_l_15 {
 	padding-left: 15px;
 }
+.pad_l20 {
+	padding-left: 20px;
+}
 .pad_46 {
-	padding: 46px;
+	padding: 60px;
 }
 .pad_l_r_60 {
 	padding-right: 60px;
@@ -30,8 +51,39 @@ body{
 .pad_l_r_60 .home_columnbox {
 	margin-right: 70px;
 	margin-left: 70px;
-    margin-top:50px;
+    margin-top:60px;
 }
+.margin_16 {
+	margin-top: 0px;
+	margin-right: 16px;
+	margin-bottom: 16px;
+	margin-left: 16px;
+}
+.mar_t_14 {
+	margin-top: 14px;
+}
+.mar_l_r_center {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.bor_r_b_l_no {
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+}
+.bor_r_no {
+	border-right-width: 0px;
+}
+.bor_no {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+}
+
+
+
 
 
 .text_01 {
@@ -76,6 +128,10 @@ body{
 	background-position: bottom;
 	height: 45px;
 }
+.sidebar_a h5 {
+	color: #FFF;
+}
+
 .add_button{
     float:right;margin:12px 30px 0 0;
 }
@@ -83,12 +139,8 @@ body{
 	color: #666;
 	height: 45px;
 }
-.margin_16 {
-	margin-top: 0px;
-	margin-right: 16px;
-	margin-bottom: 16px;
-	margin-left: 16px;
-}
+
+
 .bgcolor01 {
 	background-color: #EEE;
 }
@@ -211,17 +263,21 @@ body{
 	margin-right: auto;
 	margin-left: auto;
 }
+
 .formstyle_box01 .mainleftbox,.formstyle_box01 .mainrightbox{
     float: left;
 }
+
 .formstyle_box01 .mainleftbox{
 	width: 400px;
 	/* [disabled]background-color: #d59392; */
  }
+
 .formstyle_box01 .mainrightbox{
 	width: 470px;
 	/* [disabled]background-color: #df8505; */
 }
+
 .img_textstyle01 {
 	font-size: 12px;
 	color: #CCC;
@@ -243,10 +299,104 @@ body{
 }
 #warp #content .row-fluid .mainbox01 {
 	background-image: url(../images/backgrounds/bodyBg.png);
-	width: 98%;
+	width: 96%;
 	margin-right: auto;
 	margin-left: auto;
 	min-height:460px;
-    _height:460px;
+	_height:460px;
+	padding: 10px;
+}
+.formstyle_box02 {
+	width: 900px;
+	margin-right: auto;
+	margin-left: auto;
+	/* [disabled]background-color: #F90; */
+}
+.formstyle_box03 {
+	width: 500px;
+	margin-right: auto;
+	margin-left: auto;
+	/* [disabled]background-color: #F90; */
+}
+.tablestyle-01 {
+	background-color: #EFEFEF;
+	border-right-width: 1px;
+	border-right-style: dashed;
+	border-right-color: #CCC;
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #FFF;
+	text-align: right;
+}
 
+.tablestyle-02 {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #CCC;
+}
+
+.tablestyle-03 {
+	background-color: #EFEFEF;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #CCC;
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #FFF;
+}
+.tablestyle-04 {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #CCC;
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #FFF;
+}
+
+.formstyle_box04 {
+	/* [disabled]background-color: #99F; */
+	width: 570px;
+	margin-right: auto;
+	margin-left: auto;
+}
+.formstyle_box04 .mainleftbox, .formstyle_box04 .mainrightbox {
+	float: left;
+}
+
+.formstyle_box04 .mainleftbox {
+	width: 400px;
+	/* [disabled]background-color: #d59392; */
+}
+
+.formstyle_box04 .mainrightbox {
+	width: 170px;
+	/* [disabled]background-color: #df8505; */
+}
+.tabbox01 {
+	background-color: #CCC;
+	border: 1px solid #999;
+	padding: 8px;
+}
+.phone-bg {
+	background-image: url(../img/phone-bg.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 619px;
+	width: 521px;
+	margin-right: auto;
+	margin-left: auto;
+	padding-top: 149px;
+	padding-left: 176px;
+}
+.phone-bg .phone-main {
+	height: 460px;
+	width: 300px;
+	padding: 10px;
+	background-color: #efefef;
+}
+.phone-bg .phone-main .phone-content {
+	height: 460px;
+	width: 300px;
+	overflow: auto;
+	padding-right: 100px;
 }

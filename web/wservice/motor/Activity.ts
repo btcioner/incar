@@ -209,6 +209,7 @@ module Service{
     }
 
     export function ActivityGo(){
+        console.log("更新活动状态...");
         var dac = MySqlAccess.RetrievePool();
         var sql = [
             "UPDATE t_activity SET status = 2 WHERE status = 1 and tm_announce <= CURRENT_TIMESTAMP",
@@ -421,4 +422,20 @@ module Service{
             return dto;
         }
     }
+
+    class ActivityScheduler{
+        private _job:any = null;
+
+        public start(){
+            var cron:any = require('cron');
+            console.log("每5分钟更新一次活动状态");
+            this._job = new cron.CronJob("00 */5 * * * *", ()=>{
+                Service.ActivityGo();
+            }, null, true);
+            this._job.start();
+        }
+    }
+
+    var schedulerAct =  new ActivityScheduler();
+    schedulerAct.start();
 }

@@ -11,13 +11,12 @@
 <link rel="stylesheet" href="../css/maruti-style_1.css" />
 <link rel="stylesheet" href="../css/maruti-media_1.css" class="skin-color" />
 <link rel="stylesheet" type="text/css" href="../css/newstyle_1.css" />
-<link rel="shortcut icon" href="../img/favicon.ico" />
 </head>
 <body ng-controller="s_indexCtrl">
 <div id="warp">
 <!--Header-part-->
 <div id="header">
-    <h1 style="font-size: 25px;">4S店运营平台</h1>
+    <h1>{{s4Name}}</h1>
 </div>
 <!--close-Header-part-->
 
@@ -29,7 +28,7 @@
 <div id="user-nav" class="navbar navbar-inverse">
     <ul class="nav">
         <li style="color:white;vertical-align:middle; margin-top: 15px;"><span class="text">{{nickName}}</span></li>
-        <li class=""><a title="" href="../login.html"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
+        <li class=""><a title="" ng-click="logout();"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
     </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -53,7 +52,7 @@
     <div id="home_contentbox">
         <!--home_columnbox start-->
         <div class="home_columnbox">
-            <a href="reservationService.html#/collapseGOne/1">
+            <a href="reservationService.html#/collapseGOne/applied">
                 <div class="home_column">
                     <div class="datebox color_b">{{applyCount}}<br/>辆</div>
                     <div class="column_mainbox">

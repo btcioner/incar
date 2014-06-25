@@ -80,11 +80,11 @@ angular.module("SCustomerApp", [
         });
        // $locationProvider.html5Mode(true);
 }).controller("customerCtrl",function($scope,$http){
-        if($.cookie("nick") != "" && $.cookie("nick") != null)
+        if($.cookie("nick_4s") != "" && $.cookie("nick_4s") != null)
         {
-            $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+            $scope.nickName = $.cookie("nick_4s");//保存登录进来用户的nick
+            $scope.s4Name = $.cookie("s4_name");
         }else{
-            alert("登录已超时！");
             window.location="../login.html";
         }
         //获取所有客户标签接口
@@ -99,13 +99,13 @@ angular.module("SCustomerApp", [
                 {
                     $scope.tagsGroup[i].link = "#collapseG_"+ $scope.tagsGroup[i].groupId;
                     $scope.tagsGroup[i].fid = "collapseG_"+ $scope.tagsGroup[i].groupId;
-                    if(i==0)
-                    {
-                        $scope.tagsGroup[i].class = "accordion-heading sidebar_a";
-                    }
-                    else{
+//                    if(i==0)
+//                    {
+//                        $scope.tagsGroup[i].class = "accordion-heading sidebar_a";
+//                    }
+//                    else{
                         $scope.tagsGroup[i].class = "accordion-heading sidebar_b";
-                    }
+//                    }
                     $scope.tagsGroup[i].id = "div_"+i;
                     for(var j=0;j<$scope.tagsGroup[i].tags.length;j++)
                     {
@@ -134,6 +134,22 @@ angular.module("SCustomerApp", [
                 else{
                     $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
                 }
+            }
+        }
+
+        //注销
+        $scope.logout = function()
+        {
+            if(confirm("是否确定要注销?"))
+            {
+                $http.get(baseurl+"logout").success(function(data){
+                    if(data.status == "ok")
+                    {
+                        window.location="../login.html";
+                    }
+                }).error(function(data){
+                        alert("请求无响应!");
+                    })
             }
         }
     });

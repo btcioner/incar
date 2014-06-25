@@ -11,12 +11,16 @@
     <link rel="stylesheet" href="../css/maruti-style_1.css" />
     <link rel="stylesheet" href="../css/maruti-media_1.css" class="skin-color" />
     <link rel="stylesheet" type="text/css" href="../css/newstyle_1.css" />
+    <style type="text/css">
+        #preview{width:160px;height:160px;overflow:hidden;}
+        #imghead {filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);}
+    </style>
 </head>
 <body  ng-controller="adminCtrl">
 <div id="warp">
 <!--Header-part-->
 <div id="header">
-    <h1 style="font-size: 25px;">4S店运营平台</h1>
+    <h1>{{s4Name}}</h1>
 </div>
 <!--close-Header-part-->
 
@@ -28,7 +32,7 @@
 <div id="user-nav" class="navbar navbar-inverse">
     <ul class="nav">
         <li style="color:white;vertical-align:middle; margin-top: 15px;"><span class="text">{{nickName}}</span></li>
-        <li class=""><a title="" href="../login.html"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
+        <li class=""><a title="" ng-click="logout();"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
     </ul>
 </div>
 <!--close-top-Header-menu-->

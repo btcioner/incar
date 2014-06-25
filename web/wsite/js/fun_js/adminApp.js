@@ -42,7 +42,7 @@ angular.module("AdminApp", [
         });
       //  $locationProvider.html5Mode(true);
 
-}).controller("adminCtrl",function($scope){
+}).controller("adminCtrl",function($scope,$http){
 
      $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
      //动态改变被激活菜单
@@ -57,4 +57,20 @@ angular.module("AdminApp", [
             }
         }
      }
+
+        //注销
+        $scope.logout = function()
+        {
+            if(confirm("是否确定要注销?"))
+            {
+                $http.get(baseurl+"logout").success(function(data){
+                    if(data.status == "ok")
+                    {
+                        window.location="../login.html";
+                    }
+                }).error(function(data){
+                        alert("请求无响应!");
+                })
+            }
+        }
 });

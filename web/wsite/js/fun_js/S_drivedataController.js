@@ -5,11 +5,11 @@
 angular.module("DriveDataApp", [])
     .controller("driveDataCtrl",function($scope, $http){
 
-   if($.cookie("nick") != "" && $.cookie("nick") != null)
+   if($.cookie("nick_4s") != "" && $.cookie("nick_4s") != null)
     {
-        $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+        $scope.nickName = $.cookie("nick_4s");//保存登录进来用户的nick
+        $scope.s4Name = $.cookie("s4_name");
     }else{
-        alert("登录已超时！");
         window.location="../login.html";
     }
     $scope.driveDiv = true;
@@ -22,6 +22,7 @@ angular.module("DriveDataApp", [])
     $scope.obd_num="";
     $scope.city_name="";
     $scope.org_name="";
+    $scope.series = "";
     $scope.queryString = "&s4_id="+ $.cookie("s4_id");
 
     //筛选框初始值 todo--要从数据库读出来
@@ -41,7 +42,6 @@ angular.module("DriveDataApp", [])
                     {
                         $scope.tips="暂无数据！";
                     }
-
                     $scope.drvInfos = data.drvInfos;
                     for(var i=0;i<data.drvInfos.length;i++)
                     {
@@ -57,17 +57,18 @@ angular.module("DriveDataApp", [])
                 }
             }).error(function(data){
                     alert("请求无响应");
-                })
-            $http.get(baseurl+'brand').success(function(data){
-                $scope.carBrand = data.brands;
+            })
+            $http.get(baseurl+'brand/'+ $.cookie("brand_id")+'/series').success(function(data){
+                $scope.carSeries = data.series;
             });
+            $scope.queryString = "";
         }
-//按条件筛选行车数据行车数据
+    //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
           $scope.queryString = "&s4_id="+ $.cookie("s4_id");
-          if($scope.city_name=="请选择")$scope.city_name="";
-          $scope.queryString  = $scope.queryString+"&obd_code="+$scope.obd_num+"&city="+$scope.city_name;
+          if($scope.series == null){$scope.series =""};
+          $scope.queryString  = $scope.queryString+"&obd_code="+$scope.obd_num+"&series="+$scope.series;
           GetFirstPageInfo();
     }
 
@@ -143,6 +144,7 @@ angular.module("DriveDataApp", [])
         //查看一个OBD一次行程的数据
         $scope.GetDriveDetail = function(obd_code,drive_id,id)
         {
+            $scope.tips = "";
             $scope.chooseOC = obd_code;
             $scope.drive_id = drive_id;
             $scope.index = id;
@@ -155,18 +157,18 @@ angular.module("DriveDataApp", [])
                 {
                     if(data.details.length== 0)
                     {
-                        alert("暂无行程数据");
+                         $scope.tips="暂无数据";
                     }
                     else{
                         for(var i=0;i<data.details.length;i++)
                         {
                             data.details[i].createTime = $.changeDate(data.details[i].createTime);
                         }
-                        $scope.driveDiv = false;
-                        $scope.oneDetailDiv = true;
-                        $scope.details = data.details;
-                        PagingInfo(data.totalCount);
                     }
+                    $scope.driveDiv = false;
+                    $scope.oneDetailDiv = true;
+                    $scope.details = data.details;
+                    PagingInfo(data.totalCount);
                 }
                 else
                 {
@@ -214,10 +216,19 @@ angular.module("DriveDataApp", [])
         }
     }
 
-    //删除
-    $scope.deleteRecord = function(index){
-        if(confirm("确定要删除吗？")){
-            $scope.users.splice(index, 1);
+        //注销
+        $scope.logout = function()
+        {
+            if(confirm("是否确定要注销?"))
+            {
+                $http.get(baseurl+"logout").success(function(data){
+                    if(data.status == "ok")
+                    {
+                        window.location="../login.html";
+                    }
+                }).error(function(data){
+                        alert("请求无响应!");
+                    })
+            }
         }
-    }
 })

@@ -1,38 +1,38 @@
 <!--查看详情 begin-->
-<div class="widget-box" ng-show="operDiv">
+<div class="widget-box margin_16" ng-show="operDiv">
     <div class="widget-title">
         <span class="icon"><i class="icon-th"></i></span>
         <h5>碰撞提醒详情</h5>
-        <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="gotoBack(1)" >返回</a>
+        <button class="btn btn-success" style="float:right;margin:12px 30px 0 0;" ng-click="gotoBack(1)" >返回</button>
     </div>
     <div class="widget-content nopadding">
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th>车主姓名</th>
-                <th style="background-color:#F9F9F9;">{{carDetails.nick}}</th>
-                <th>联系电话
-                <th style="background-color:#F9F9F9;">{{carDetails.phone}}</th>
-                <th>车牌号</th>
-                <th style="background-color:#F9F9F9;">{{carDetails.license}}</th>
+                <th class="tablestyle-01">车主姓名</th>
+                <th class="tablestyle-02">{{carDetails.nick}}</th>
+                <th class="tablestyle-01">联系电话
+                <th class="tablestyle-02">{{carDetails.phone}}</th>
+                <th class="tablestyle-01">车牌号</th>
+                <th class="tablestyle-02">{{carDetails.license}}</th>
             </tr>
             <tr>
-                <th>品牌</th>
-                <th style="background-color:#F9F9F9;">{{carDetails.brand}}</th>
-                <th>系列</th>
-                <th style="background-color:#F9F9F9;">{{carDetails.series}}</th>
-                <th>提醒时间</th>
-                <th style="background-color:#F9F9F9;">{{carDetails.careTime}}</th>
+                <th class="tablestyle-01">品牌</th>
+                <th class="tablestyle-02">{{carDetails.brand}}</th>
+                <th class="tablestyle-01">系列</th>
+                <th class="tablestyle-02">{{carDetails.series}}</th>
+                <th class="tablestyle-01">提醒时间</th>
+                <th class="tablestyle-02">{{carDetails.careTime}}</th>
             </tr>
             <tr ng-show="oper_button">
-              <th colspan="6"><button class="btn btn-success" ng-click="operationChild()">已联系</button></th>
+              <th colspan="6" class="tablestyle-01"><button class="btn btn-success" ng-click="operationChild()">已联系</button></th>
             </tr>
             </thead>
         </table>
     </div>
    </div>
 <!--查看详情 end-->
-<!--保养提醒列表 begin-->
+<!--碰撞提醒列表 begin-->
 <div class="widget-box margin_16" ng-show="maintainListDiv">
     <div class="widget-title">
         <span class="icon"><i class="icon-th"></i></span>
@@ -74,5 +74,5 @@
     </select>页
     </div>
 </div>
-<!--保养提醒列表 end-->
+<!--碰撞提醒列表 end-->
 

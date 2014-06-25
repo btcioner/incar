@@ -1,0 +1,66 @@
+html, body {
+	width: 100%;
+	height: 100%;
+	background-image: url(../images/backgrounds/body_bg.png);
+}
+body {	background-color:#2E363F;    padding: 0;    margin-top:10%;}
+#logo, #loginbox {
+	width: 450px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+}
+#logo img {  margin: 0 auto;    display: block;}
+#loginbox { overflow: hidden !important;    text-align: left;    position: relative; }
+#loginbox form{
+	width:250px;
+	position:relative;
+	top:0;
+	left:0;
+	padding-left: 110px;
+	padding-right: 90px;
+}
+#loginbox .form-actions {	padding: 14px 20px 15px;}
+#loginbox .form-actions .pull-left { margin-top:0px;}
+#loginbox form#loginform {	z-index: 200; display:block;}
+#loginbox form#recoverform {	z-index: 100;	    display:none;}
+#loginbox form#recoverform .form-actions {    margin-top: 10px;}
+#loginbox .main_input_box { margin:0 auto; text-align:center}
+#loginbox .main_input_box .add-on{  background-color: #EEEEEE;    border: 1px solid #dadada;    display: inline-block;    font-size: 14px;    font-weight: normal;    height:30px;    line-height: 30px;    min-width: 16px;    padding: 4px 5px;     text-align: center;    text-shadow: 0 1px 0 #FFFFFF;    width:30px;}
+#loginbox .main_input_box input{ height:30px; display:inline-block; width:75%;  border: 1px solid #dadada; margin-bottom:3px;}
+#loginbox .controls{
+	padding:0 20px;
+	/* [disabled]background-color: #F69; */
+}
+#loginbox .control-group{
+	border-bottom:1px solid #f6f6f6;
+	margin-bottom:0px;
+	padding-top: 10px;
+	padding-right: 0;
+	padding-bottom: 0px;
+	padding-left: 0;
+}
+.form-vertical, .form-actions {    margin-bottom: 0;}
+#loginbox .normal_text{ padding:15px 10px; text-align:center; font-size:14px; line-height:20px; background:#49CCED; color:#fff; }
+@media (max-width: 480px){
+#logo { width: 40%; }
+#loginbox{ width:90%}
+#loginbox .control-group{ padding:8px 0; border-bottom:1px solid #dadada; margin-bottom:0px;}
+}
+#loginbox #loginimg {
+	height: 168px;
+	width: 440px;
+	border-radius: 5px;
+	box-shadow: 1px 1px 5px #000;
+	background-color: #FFF;
+	z-index: 999;
+	padding: 5px;
+}
+#loginbox #loginmain {
+	background-image: url(../img/login_bg.png);
+	height: 186px;
+	width: 450px;
+	margin-right: auto;
+	margin-left: auto;
+	z-index: 99;
+}

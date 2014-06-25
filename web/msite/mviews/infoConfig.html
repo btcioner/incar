@@ -18,9 +18,8 @@
 
     <script type="text/javascript">
         var user;//用户openId
-        var webserviceurl;//webservice地址
         var today;//当天日期
-
+        var wx_oid;
       //页面加载初始化
         function init(){
             //获取当前日期，初始化日期控件
@@ -44,7 +43,7 @@
         //提交注册数据
         function update(){
             var postData = {};
-            postData.user = user;
+            postData.user = user+'@'+wx_oid.split(":")[1];
             postData.name = document.getElementById("name").value;//用户名
             postData.obd_code = document.getElementById("obd_code").value;
             postData.brand= document.getElementById("brand").value;
@@ -141,6 +140,7 @@
               //document.getElementById('seleSeries').innerHTML=result.seriesName;
              // document.getElementById('seleSeries').value=result.series;
              // document.getElementById('seleModelYear').innerHTML=result.modelYear;
+              wx_oid=result.wx_oid;
               document.getElementById('modelYear').value='20'+result.modelYear;
               document.getElementById('license').value=result.license;
               document.getElementById('mileage').value=result.mileage;

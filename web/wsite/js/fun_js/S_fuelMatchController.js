@@ -235,7 +235,6 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     {
 //      获取编辑器里面的内容 alert(editor.html());
         getAllChooseTag();
-
         $scope.postData={title:$scope.title,brief:editor.html(),tm_announce:$scope.tm_announce,tm_start:$scope.tm_start,
         tm_end:$scope.tm_end,min_milage:$scope.min_milage,logo_url:$scope.logo_url,tags:$scope.tags};
         $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity",$scope.postData).success(function(data){
@@ -249,6 +248,10 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
         }).error(function(data){
                 alert("请求无响应");
         })
+        editor.remove();
+//        $scope.matchListDiv = true;
+//        $scope.matchAddDiv = false;
+
     }
    //预览
     $scope.preview = function(id,index)
@@ -305,7 +308,6 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
            case 3://已开始
                getSignUpList("",2);
                getSeries();
-
                $scope.matchStartedDiv = true;
                $scope.matchListDiv = false;
                break;
@@ -453,18 +455,22 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
      //发布结果确认
     $scope.publishConfirm = function()
     {
-        $scope.postData={"awards":editor.html(),"status":5};
-        $http.put(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+$scope.fuleMatchDetail.id, $scope.postData).success(function(data){
-            if(data.status == "ok")
-            {
-                alert("发布结果成功!");
-                GetFirstPageInfo();
-            }
-        }).error(function(data){
-                alert("请求无响应");
-            })
-        $scope.matchFinishedDiv = true;
-        $scope.matchPubResultDiv = false;
+        if(confirm("是否确定要发布?"))
+        {
+            $scope.postData={"awards":editor.html(),"status":5};
+            $http.put(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+$scope.fuleMatchDetail.id, $scope.postData).success(function(data){
+                if(data.status == "ok")
+                {
+                    alert("发布结果成功!");
+                    GetFirstPageInfo();
+                }
+            }).error(function(data){
+                    alert("请求无响应");
+                })
+            $scope.matchFinishedDiv = false;
+            $scope.matchPubResultDiv = false;
+            $scope.matchListDiv = true;
+        }
     }
 
     //点击姓名获取客户详情
@@ -751,6 +757,7 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
         switch(id)
         {
             case 1://添加-首页
+                editor.remove();
                 GetFirstPageInfo();
                 $scope.matchListDiv = true;
                 $scope.matchAddDiv = false;
@@ -790,6 +797,24 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
                 getSignUpList("",3);
                 $scope.matchFinishedDiv = true;
                 $scope.matchPubResultDiv = false;
+                break;
+            case 9:
+                $scope.driveDiv = true;
+                $scope.paging1 = true;
+                $scope.paging2 = false;
+                $scope.oneDetailDiv = false;
+                $scope.detailInfoDiv = false;
+                $scope.oneMinuteDetailDiv = false;
+                getDriveList();
+                break;
+            case 10:
+                $scope.driveDiv = false;
+                $scope.paging1 = false;
+                $scope.paging2 = true;
+                $scope.oneDetailDiv = true;
+                $scope.detailInfoDiv = true;
+                $scope.oneMinuteDetailDiv = false;
+                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id,$scope.index);
                 break;
         }
     }
