@@ -10,68 +10,70 @@
                   <span class="icon"><i class="icon-th"></i></span>
                   <h5>添加4S客户</h5>
               </div>
-              <div class="widget-content nopadding">
-                  <form action="#" method="get" class="form-horizontal">
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">4S店名：</label>
-                          <div class="controls">
-                              <input type="text" class="span11" style="width:200px;"  ng-model="comName" />
+              <div class="widget-content">
+                  <form class="form-horizontal formstyle_box02">
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">4S店名：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text"  class="span11"  ng-model="comName" style="width:260px;"/>
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">帐号：</label>
-                          <div class="controls">
-                              <input type="text" class="span11" ng-model="account" style="width:200px;" />
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">帐号：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text"  class="span11"  ng-model="account" style="width:260px;" />
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">密码：</label>
-                          <div class="controls">
-                              <input type="text" class="span11" ng-model="password" style="width:200px;" />
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">密码：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11"  ng-model="password" style="width:260px;" />
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">登录后缀名：</label>
-                          <div class="controls">
-                              <input type="text" class="span11" ng-model="short_name" style="width:200px;" />
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">登录后缀名：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11"  ng-model="short_name"  style="width:260px;" />
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">城市：</label>
-                          <div class="controls">
-                              <input type="text" class="span11" ng-model="city"  style="width:200px;" />
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">城市：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11"  ng-model="city"  style="width:260px;" />
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">经营品牌：</label>
-                          <div class="controls">
-                              <select style="width:150px;" ng-model="brand_id" ng-options = "brand.brandCode as brand.brand for brand in carBrand" >
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">经营品牌：</label>
+                          <div class="controls pad_t_b_10">
+                              <select style="width:260px;" class="span11" ng-model="brand_id" ng-options = "brand.brandCode as brand.brand for brand in carBrand" >
                                   <option>请选择</option>
                               </select>
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">微信服务号：</label>
-                          <div class="controls">
-                              <input type="text" class="span11" ng-model="openid"  style="width:200px;" />
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">微信服务号：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11"  ng-model="openid" style="width:260px;"  />
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">联系人：</label>
-                          <div class="controls">
-                              <input type="text" class="span11"  style="width:200px;" ng-model="admin_nick" />
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">联系人：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11"  ng-model="admin_nick" style="width:260px;" />
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">联系电话：</label>
-                          <div class="controls">
-                              <input type="text" class="span11"  style="width:200px;"  ng-model="admin_phone"/>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">联系电话：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11"  ng-model="admin_phone" style="width:260px;"/>
                           </div>
                       </div>
-                      <div class="form-actions">
-                          <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="addConfirm();">确定</button>
-                          <button type="button" class="btn btn-danger"   ng-click="gotoBack(2);">取消</button>
-                      </div>
+                      <div class="clearfix"></div>
+                      <!--button_box01 start-->
+                      <div class="button_box01">
+                          <button type="button" style="margin-right:40px;"  class="btn btn-large btn-success" ng-click="addConfirm();">确&nbsp;&nbsp;定</button>
+                          <button type="button"  class="btn btn-large btn-danger"   ng-click="gotoBack(2)">取&nbsp;&nbsp;消</button>
+                      </div><!--button_box01 start-->
                   </form>
               </div>
           </div>
@@ -82,68 +84,70 @@
                   <span class="icon"><i class="icon-th"></i></span>
                   <h5>修改4S客户</h5>
               </div>
-              <div class="widget-content nopadding">
-                  <form action="#" method="get" class="form-horizontal">
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">4S店名：</label>
-                          <div class="controls">
-                              <input type="text" class="span11" style="width:200px;" ng-model="oneCustomerInfo.name"/>
+              <div class="widget-content">
+                  <form class="form-horizontal formstyle_box02">
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">4S店名：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text"  class="span11"  ng-model="oneCustomerInfo.name" style="width:260px;"/>
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">帐号：</label>
-                          <div class="controls">
-                              <input type="text" class="span11" style="width:200px;" disabled  ng-model="oneCustomerInfo.admin_name"/>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">帐号：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text"  class="span11"  ng-model="oneCustomerInfo.admin_name" style="width:260px;" />
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">登录后缀名：</label>
-                          <div class="controls">
-                              <input type="text" class="span11" style="width:200px;"   ng-model="oneCustomerInfo.short_name"/>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">登录后缀名：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11" ng-model="oneCustomerInfo.short_name"  style="width:260px;" />
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">经营品牌：</label>
-                          <div class="controls">
-                              <select style="width:150px;" ng-model="oneCustomerInfo.brand" ng-options = "brand.brandCode as brand.brand for brand in carBrand" >
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">城市：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11" ng-model="oneCustomerInfo.city"  style="width:260px;" />
+                          </div>
+                      </div>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">经营品牌：</label>
+                          <div class="controls pad_t_b_10">
+                              <select style="width:260px;" class="span11" ng-model="oneCustomerInfo.brand" ng-options = "brand.brandCode as brand.brand for brand in carBrand" >
                                   <option>请选择</option>
                               </select>
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">城市：</label>
-                          <div class="controls">
-                              <input type="text" class="span11" style="width:200px;" ng-model="oneCustomerInfo.city"/>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">微信服务号：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11" ng-model="oneCustomerInfo.openid" style="width:260px;"  />
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">微信服务号：</label>
-                          <div class="controls">
-                              <input type="text" class="span11"   style="width:200px;" ng-model="oneCustomerInfo.openid"/>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">联系人：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11" ng-model="oneCustomerInfo.admin_nick" style="width:260px;" />
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">联系人：</label>
-                          <div class="controls">
-                              <input type="text" class="span11"   style="width:200px;" ng-model="oneCustomerInfo.admin_nick"/>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">联系电话：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11" ng-model="oneCustomerInfo.admin_phone" style="width:260px;"/>
                           </div>
                       </div>
-                      <div class="control-group" >
-                          <label class="control-label" style="margin-left:300px;">联系电话：</label>
-                          <div class="controls">
-                              <input type="text" class="span11"  style="width:200px;" ng-model="oneCustomerInfo.admin_phone"/>
-                          </div>
-                      </div>
-                      <div class="form-actions">
-                          <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="modifyConfirm(oneCustomerInfo);">确定</button>
-                          <button type="button" class="btn btn-danger"   ng-click="gotoBack(1);">取消</button>
-                      </div>
+                      <div class="clearfix"></div>
+                      <!--button_box01 start-->
+                      <div class="button_box01">
+                          <button type="button" style="margin-right:40px;"  class="btn btn-large btn-success" ng-click="modifyConfirm(oneCustomerInfo);">确&nbsp;&nbsp;定</button>
+                          <button type="button"  class="btn btn-large btn-danger"   ng-click="gotoBack(1)">取&nbsp;&nbsp;消</button>
+                      </div><!--button_box01 start-->
                   </form>
               </div>
           </div>
           <!--修改4S客户 end-->
         <!--4S客户列表 begin-->
-        <div class="widget-box margin_16" ng-show="customerListDiv">
+        <div class="widget-box " ng-show="customerListDiv">
           <div class="widget-title">
              <span class="icon"><i class="icon-th"></i></span> 
             <h5>4S客户列表{{tempTest}}</h5>
