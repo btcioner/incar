@@ -75,17 +75,17 @@ wxMenu.defineWXMenu = function(appid, appsecret){
                                 {
                                     "type":"view",
                                     "name":"我的活动",
-                                    "url":"http://linuxsrv.winphone.us/msite/getCodeForActivity.html"
+                                    "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForActivity.html"
                                 },
                                 {
                                     "type":"view",
                                     "name":"我的预约",
-                                    "url":"http://linuxsrv.winphone.us/msite/getCodeForBook.html"
+                                    "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForBook.html"
                                 },
                                 {
                                     "type":"view",
                                     "name":"设置",
-                                    "url":"http://linuxsrv.winphone.us/msite/getCodeForConf.html"
+                                    "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForConf.html"
                                 }
                             ]
                     }
@@ -162,17 +162,17 @@ var menuObject={
                         {
                             "type":"view",
                             "name":"我的活动",
-                            "url":"http://linuxsrv.winphone.us/msite/getCodeForActivity.html"
+                            "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForActivity.html"
                         },
                         {
                             "type":"view",
                             "name":"我的预约",
-                            "url":"http://linuxsrv.winphone.us/msite/getCodeForBook.html"
+                            "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForBook.html"
                         },
                         {
                             "type":"view",
                             "name":"设置",
-                            "url":"http://linuxsrv.winphone.us/msite/getCodeForConf.html"
+                            "url":"http://linuxsuse.chinacloudapp.cn/msite/getCodeForConf.html"
                         }
                     ]
             }]
@@ -198,7 +198,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, session, next) {
                 title: '行车分析',
                 description: reportContent,
                 picurl: '',
-                url: 'http://linuxsrv.winphone.us/msite/myDrive.html?user=' + message.FromUserName + '@' + message.ToUserName
+                url: 'http://linuxsuse.chinacloudapp.cn/msite/myDrive.html?user=' + message.FromUserName + '@' + message.ToUserName
             }]);
         }
     });
@@ -214,7 +214,7 @@ wxMenu.onClick['MY4S.PROBE'] = function(message, session, next) {
             title: '试乘试驾',
             description: result,
             picurl: '',
-            url: 'http://linuxsrv.winphone.us/msite/trialrun.html?user=' + message.FromUserName + '@' + message.ToUserName
+            url: 'http://linuxsuse.chinacloudapp.cn/msite/trialrun.html?user=' + message.FromUserName + '@' + message.ToUserName
         }]);
     });
 };
@@ -227,7 +227,7 @@ wxMenu.onClick['MY4S.INFO'] = function(message, session, next) {
             title: '资讯活动',
             description: result,
             picurl: '',
-            url: 'http://linuxsrv.winphone.us/msite/my4sInfo.html?user=' + message.FromUserName + '@' + message.ToUserName
+            url: 'http://linuxsuse.chinacloudapp.cn/msite/my4sInfo.html?user=' + message.FromUserName + '@' + message.ToUserName
         }]);
     });
 };
@@ -241,7 +241,7 @@ wxMenu.onClick['MY4S.BOOKING'] = function(message, session, next) {
             title: '预约保养',
             description: result,
             picurl: '',
-            url: 'http://linuxsrv.winphone.us/msite/booking.html?user=' + message.FromUserName + '@' + message.ToUserName
+            url: 'http://linuxsuse.chinacloudapp.cn/msite/booking.html?user=' + message.FromUserName + '@' + message.ToUserName
         }]);
     });
 };
@@ -255,7 +255,7 @@ wxMenu.onClick['MY4S.MANUAL'] = function(message, session, next) {
             title: '行车手册',
             description: result,
             picurl: '',
-            url: 'http://linuxsrv.winphone.us/msite/page_xcsc.html?user='+message.FromUserName+'@'+message.ToUserName
+            url: 'http://linuxsuse.chinacloudapp.cn/msite/page_xcsc.html?user='+message.FromUserName+'@'+message.ToUserName
         }]);
     });
 };
@@ -268,7 +268,7 @@ wxMenu.onClick['MY4S.CONTACT'] = function(message, session, next) {
             title: '联系我们',
             description: result,
             picurl: pic,
-            url: ''  /**  http://linuxsrv.winphone.us/msite/manual?user=' + message.FromUserName + '@' + message.ToUserName **/
+            url: ''  /**  http://linuxsuse.chinacloudapp.cn/msite/manual?user=' + message.FromUserName + '@' + message.ToUserName **/
         }]);
     });
 };
