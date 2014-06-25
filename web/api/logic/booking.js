@@ -31,17 +31,35 @@ booking.getPromotionSlots = function(userName,sopenid, callback) {
         });
     });
 };
-
+//need to insert into t_work
 booking.applySlot = function(userName,sopenid, slot, callback) {
     var pool = this.db();
     console.log(slot);
     getOrgId(this.db, userName,sopenid, function(err, orgId) {
         if (err) { return callback(err); }
-        pool.query('insert into t_slot_booking(storeId, slot_location, slot_time, promotion_id, channel, channel_specific, booking_time, booking_status, tc, ts) values (?,?,?,?,?,?, now(), 1,?,now());',
-            [orgId, slot.location, slot.time, slot.id, 'weixin', userName+'@'+sopenid, userName+'@'+sopenid+'@weixin'], function(err, result) {
-            if (err) { return callback(err); }
-            return callback(null, result);
+        else {
+       pool.query('select id from t_account where wx_oid like ?;',['%'+userNmae+':'+sopenid+'%'],function(err,acc_row){
+           if(err) { return callback(err); }
+           else{
+           pool.query('insert into t_slot_booking(storeId, slot_location, slot_time, promotion_id, channel, channel_specific, booking_time, booking_status, tc, ts) values (?,?,?,?,?,?, now(), 1,?,now());',
+               [orgId, slot.location, slot.time, slot.id, 'weixin', userName+'@'+sopenid, userName+'@'+sopenid+'@weixin'], function(err, result) {
+               if (err) { return callback(err); }
+              else{
+                pool.query('select id from t_slot_booking where channel_specific like ? order by ts desc limit 1',["%"+userName+'@'+sopenid+'%'],function(err,rows){
+                    if(err){ console.log(err); return res.send(400, err);}
+                    else if(rows){
+                        pool.query('insert into t_work (work,step,work_ref_id,org_id,cust_id,working_time,json_args,created_time) values(?,?,?,?,?,?,?,now())',
+                            ['care','applied',rows[0].id,orgId,acc_row[0].id,slot.time,''],function(err,result){
+                                if(err){ console.log(err); return res.send(400, err);}
+                                return callback(null, result);
+                            });
+                    }
+                });
+            }
+          });
+          }
         });
+        }
     });
 };
 booking.getBrand=function(sopenid,callback){
