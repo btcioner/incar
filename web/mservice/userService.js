@@ -29,7 +29,7 @@ function userCheck(req,res){
     var wx=openId+":"+openId4S
     var user=getUserInfo(wx);
     var accountId=user?user.accountId:null;
-    res.write({status:'success',accountId:accountId});
+   // res.write({status:'success',accountId:accountId});
     return user?true:false;
 }
 //通过已有账户信息登录，并和当前微信用户绑定
