@@ -77,6 +77,21 @@ var randomTime = new Date();
         return (year+"-"+month+"-"+day);
 
     }
+    $.changeDate_1 = function(date)
+    {
+        if(date == "0000-00-00 00:00:00" || date == null) return null;
+        var year = new Date(Date.parse(date)).getFullYear();
+
+        var month = (new Date(Date.parse(date)).getMonth()) + 1;
+        var day = new Date(Date.parse(date)).getDate();
+        var hour = new Date(Date.parse(date)).getHours();
+        var minute = new Date(Date.parse(date)).getMinutes();
+        if(month < 10) month= "0" + month;
+        if(day < 10) day= "0" + day;
+        if(hour < 10) hour = "0" + hour;
+        if(minute < 10) minute= "0" + minute;
+        return (year+"-"+month+"-"+day+" "+hour+":"+minute);
+    }
     $.changeDate = function(date)
     {
 //        if(date == "0000-00-00 00:00:00" || date == null) return null;

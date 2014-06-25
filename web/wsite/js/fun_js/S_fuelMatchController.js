@@ -16,15 +16,6 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     $scope.currentPage_3 = 1;//已结束
     $scope.currentPage_4 = 1;//已公布
     $scope.pageRecord = 10;
-    $scope.title = "";
-    $scope.brief = "";
-    $scope.tm_announce = "";
-    $scope.tm_start = "";
-    $scope.tm_end = "";
-    $scope.min_milage = "";
-    $scope.logo_url = "";
-    $scope.tags = "";
-    $scope.titleMove = "";
     $scope.statusSelect =[{id:0,name:"请选择"},{id:1,name:"已创建"},{id:2,name:"已发布"},{id:3,name:"已开始"},{id:4,name:"已结束"},{id:5,name:"已公布"}];
     $scope.ser_status ="";
     $scope.monthSelect =[{id:0,name:"请选择"},{id:1,name:"一月"},{id:2,name:"二月"},{id:3,name:"三月"},{id:4,name:"四月"},{id:5,name:"五月"}
@@ -39,6 +30,20 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     {
         $scope.queryString = "&status="+$routeParams.id;
     }
+
+    function initAddData()
+    {
+        $scope.title = "";
+        $scope.brief = "";
+        $scope.tm_announce = "";
+        $scope.tm_start = "";
+        $scope.tm_end = "";
+        $scope.min_milage = "";
+        $scope.logo_url = "";
+        $scope.titleMove = "";
+        $scope.checkboxId_1 = false;
+    }
+    $scope.tags = "";
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
     {
@@ -145,7 +150,9 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     //点击添加按钮
     $scope.add = function()
     {
-        $scope.checkboxId_1 = false;
+        initAddData();
+        $("#imghead").attr("src","../../data/200x200.jpg");
+        $("#edit_pro_img").val("");
         $("#formId_edit2").ajaxForm(function(data){
             $scope.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
@@ -163,7 +170,7 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
                 ]
             });
         });
-
+        editor.html("");
         getAllTags("");
         $scope.matchListDiv = false;
         $scope.matchAddDiv = true;
