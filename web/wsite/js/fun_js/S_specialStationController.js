@@ -140,8 +140,7 @@
             "description":$scope.description,
             "promotion_time":$scope.promotion_time,
             "promotion_status":1,
-            "tc":"",
-            "ts":new Date()
+            "tc":""
             };
         $http.post(baseurl + 'organization/'+ $.cookie("s4_id")+'/promotionslot',$scope.postData).success(function(data){
             if(data.status == "ok")
