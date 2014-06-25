@@ -72,7 +72,7 @@
                 var teMonth=((teTemp.getMonth()+1)>9)?(teTemp.getMonth()+1):"0"+(teTemp.getMonth()+1);
                 var teDay=(teTemp.getDate()>9)?teTemp.getDate():"0"+teTemp.getDate();
                 document.getElementById("start_end").innerHTML="活动时间："+tmYear+"-"+tmMonth+"-"+tmDay+"——"+teYear+"-"+teMonth+"-"+teDay;
-                if(!isNaN(result.min_milage)){
+                if(!isNaN(parseInt(result.min_milage))){
                     document.getElementById("act_condition").innerHTML="活动要求：活动期间最小里程为"+result.min_milage;
                 }
                  document.getElementById("content").innerHTML=result.brief;
