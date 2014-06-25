@@ -155,13 +155,13 @@ function carEnroll(req,res){
     var disp=params.disp;
     var engine_type=params.engine_type;
     var user=getUserInfo(wx);
-    var s4Id=user.s4_id;
+    //var s4Id=user.s4_id;
     var sql="select id from t_car where obd_code=?";
     dao.findBySql(sql,[obdCode],function(rows){
         if(rows.length>0){
             var id=rows[0].id;
             var car={
-                s4_id:s4Id,
+                s4_id:user.s4_id,
                 brand:brand,
                 series:series,
                 modelYear:modelYear,
