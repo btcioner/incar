@@ -83,7 +83,7 @@
                         </div>
                         <label class="control-label">标题图片：<br/ ><span class="img_textstyle01">图片要求:<br />尺寸为150px*150px，大小在100KB以内。</span></label>
                         <div class="controls">
-                            <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img"  onchange="changeImg(this,'edit_pro_img','formId_edit2','preview','imghead')"  style="width:240px;"  ng-model="logo_url"/>
+                            <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img"  onchange="changeImg(this,'edit_pro_img','formId_edit2','preview','imghead')"  style="width:240px;"  />
                         </div>
                     </div>
                 </div><!--mainleftbox end-->
@@ -114,7 +114,7 @@
                     <!--==================================================================-->
                     <div class="horizontal_content01" ng-repeat="group in tagsGroup">
                         <div class="text_02" style="float:left;" >{{group.groupName}}：</div>
-                        <div style="float:left;">
+                        <div style="float:left;width:730px;">
                             <div class="controls" >
                                 <span class="pad_l_15"  ng-repeat="tag in group.tags"><input type="checkbox" ng-model="tag.tagFlag"/>{{tag.tagName}}</span>
                             </div>
