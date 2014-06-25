@@ -75,7 +75,7 @@ function userEnroll(req, res) {
         var sql="select id from t_4s where openid=?";
         dao.findBySql(sql,[openId4S],function(rows){
             if(rows.length>0){
-                var s4id=rowsp[0].id;
+                var s4id=rows[0].id;
                 var user={
                     name:username,
                     pwd:password,
