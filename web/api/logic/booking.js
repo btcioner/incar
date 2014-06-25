@@ -38,7 +38,7 @@ booking.applySlot = function(userName,sopenid, slot, callback) {
     getOrgId(this.db, userName,sopenid, function(err, orgId) {
         if (err) { return callback(err); }
         else {
-       pool.query('select id from t_account where wx_oid like ?;',['%'+userNmae+':'+sopenid+'%'],function(err,acc_row){
+       pool.query('select id from t_account where wx_oid like ?;',['%'+userName+':'+sopenid+'%'],function(err,acc_row){
            if(err) { return callback(err); }
            else{
            pool.query('insert into t_slot_booking(storeId, slot_location, slot_time, promotion_id, channel, channel_specific, booking_time, booking_status, tc, ts) values (?,?,?,?,?,?, now(), 1,?,now());',
