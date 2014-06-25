@@ -14,7 +14,7 @@ var rootPath = path.normalize(__dirname + '/..');
 
 module.exports = {
     root: rootPath,
-    baseUrl: 'http://linuxsrv.winphone.us',
+    baseUrl: 'http://linuxsuse.chinacloudapp.cn',
     port: process.env.PORT || 1234
 };
 
