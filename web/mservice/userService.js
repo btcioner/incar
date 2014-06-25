@@ -61,6 +61,7 @@ function userLogin(req,res){
 }
 //登记或修改（设置）账号
 function userEnroll(req, res) {
+    console.log(req.body);
     if(!userCheck(req, res)){
         var params=req.body;
         var username=params.name;
