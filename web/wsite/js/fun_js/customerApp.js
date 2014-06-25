@@ -80,11 +80,10 @@ angular.module("SCustomerApp", [
         });
        // $locationProvider.html5Mode(true);
 }).controller("customerCtrl",function($scope,$http){
-        if($.cookie("nick") != "" && $.cookie("nick") != null)
+        if($.cookie("nick_4s") != "" && $.cookie("nick_4s") != null)
         {
-            $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+            $scope.nickName = $.cookie("nick_4s");//保存登录进来用户的nick
         }else{
-            alert("登录已超时！");
             window.location="../login.html";
         }
         //获取所有客户标签接口

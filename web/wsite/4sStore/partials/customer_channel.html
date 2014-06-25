@@ -37,7 +37,7 @@
 <!--<div class="container-fluid" style="width: 86%;float: left">-->
     <!--<div class="row-fluid" >-->
         <!--<div class="span12">-->
-            <div class="widget-box" ng-show="cusDetailDiv">
+            <div class="widget-box margin_16" ng-show="cusDetailDiv">
                 <div class="widget-title">
                     <span class="icon"><i class="icon-th"></i></span>
                     <h5>客户详情</h5>
@@ -67,8 +67,8 @@
                 </div>
             </div>
 <!--选项tabbox01卡 start-->
-   <div class="tabbox01">
-            <div class="widget-box" ng-show="cusTabDiv">
+   <div class="tabbox01" ng-show="cusTabDiv">
+            <div class="widget-box" >
                 <div class="widget-title">
                     <ul class="nav nav-tabs" style="padding-top:6px;">
                         <li class="active"><a data-toggle="tab"  ng-click="detailTab(1)">保养记录</a></li>
@@ -216,88 +216,86 @@
                         <table class="table table-bordered " ng-show ="detailInfoDiv">
                             <thead>
                             <tr >
-                                <th style="text-align: right" colspan="6"><a ng-click="gotoBack(1);" class="btn btn-info btn-mini">返回</a></th>
+                                <th style="text-align: right" colspan="8"><a ng-click="gotoBack(1);" class="btn btn-success btn-mini">返回</a></th>
                             </tr>
                             <tr>
-                                <th>城市</th>
-                                <th style="background-color:#F9F9F9;">{{custInfo.city}}</th>
-                                <th>4S店</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.s4_name}}</th>
-                                <th>品牌</th>
-                                <th style="background-color:#F9F9F9;">{{carInfo.brand_name}}</th>
+                                <th class="tablestyle-01">城市</th>
+                                <th class="tablestyle-02">{{custInfo.city}}</th>
+                                <th class="tablestyle-01">4S店</th>
+                                <th class="tablestyle-02">{{driveDetail.s4_name}}</th>
+                                <th class="tablestyle-01">品牌</th>
+                                <th class="tablestyle-02">{{carInfo.brand_name}}</th>
+                                <th class="tablestyle-01">车系</th>
+                                <th class="tablestyle-02">{{carInfo.series_name}}</th>
                             </tr>
                             <tr>
-                                <th>车系</th>
-                                <th style="background-color:#F9F9F9;">{{carInfo.series_name}}</th>
-                                <th>车主</th>
-                                <th style="background-color:#F9F9F9;">{{custInfo.nick}}</th>
-                                <th>联系电话</th>
-                                <th style="background-color:#F9F9F9;">{{custInfo.phone}}</th>
+                                <th class="tablestyle-01">车主</th>
+                                <th class="tablestyle-02">{{custInfo.nick}}</th>
+                                <th class="tablestyle-01">联系电话</th>
+                                <th class="tablestyle-02">{{custInfo.phone}}</th>
+                                <th class="tablestyle-01">OBD编号</th>
+                                <th class="tablestyle-02">{{carInfo.obd_code}}</th>
+                                <th class="tablestyle-01">SIM卡号</th>
+                                <th class="tablestyle-02">{{carInfo.sim_number}}</th>
                             </tr>
                             <tr>
-                                <th>OBD编号</th>
-                                <th style="background-color:#F9F9F9;">{{carInfo.obd_code}}</th>
-                                <th>SIM卡号</th>
-                                <th style="background-color:#F9F9F9;">{{carInfo.sim_number}}</th>
-                                <th colspan="2"></th>
+                                <th class="tablestyle-01">VIN码</th>
+                                <th class="tablestyle-02">{{driveDetail.vin}}</th>
+                                <th class="tablestyle-01">状态</th>
+                                <th class="tablestyle-02">{{carInfo.act_type_name}}</th>
+                                <th class="tablestyle-01">点火时间</th>
+                                <th class="tablestyle-02">{{driveDetail.fireTime}}</th>
+                                <th class="tablestyle-01">点火电压</th>
+                                <th class="tablestyle-02">{{driveDetail.firingVoltage}}</th>
                             </tr>
                             <tr>
-                                <th>VIN码</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.vin}}</th>
-                                <th>状态</th>
-                                <th style="background-color:#F9F9F9;">{{carInfo.act_type_name}}</th>
-                                <th>点火时间</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.fireTime}}</th>
+                                <th class="tablestyle-01">发动机运行时间</th>
+                                <th class="tablestyle-02">{{driveDetail.runTime}}</th>
+                                <th class="tablestyle-01">本次平均油耗</th>
+                                <th class="tablestyle-02">{{driveDetail.currentAvgOilUsed}}</th>
+                                <th class="tablestyle-01">急加速次数</th>
+                                <th class="tablestyle-02">{{driveDetail.speedUp}}</th>
+                                <th class="tablestyle-01">急减数次数</th>
+                                <th class="tablestyle-02">{{driveDetail.speedDown}}</th>
                             </tr>
                             <tr>
-                                <th>点火电压</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.firingVoltage}}</th>
-                                <th>发动机运行时间</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.runTime}}</th>
-                                <th>本次平均油耗</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.currentAvgOilUsed}}</th>
+                                <th class="tablestyle-01">急转弯次数</th>
+                                <th class="tablestyle-02">{{driveDetail.sharpTurn}}</th>
+                                <th class="tablestyle-01">熄火电压</th>
+                                <th class="tablestyle-02">{{driveDetail.flameOutVoltage}}</th>
+                                <th class="tablestyle-01">累计平均油耗</th>
+                                <th class="tablestyle-02">{{driveDetail.avgOilUsed}}</th>
+                                <th class="tablestyle-01">累计行驶里程</th>
+                                <th class="tablestyle-02">{{driveDetail.mileage}}</th>
                             </tr>
                             <tr>
-                                <th>急加速次数</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.speedUp}}</th>
-                                <th>急减数次数</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.speedDown}}</th>
-                                <th>急转弯次数</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.sharpTurn}}</th>
+                                <th class="tablestyle-01">1速段里程</th>
+                                <th class="tablestyle-02">{{driveDetail.speedGroup[0].time}}秒，{{driveDetail.speedGroup[0].distance}}米</th>
+                                <th class="tablestyle-01">1-45速段里程</th>
+                                <th class="tablestyle-02">{{driveDetail.speedGroup[1].time}}秒，{{driveDetail.speedGroup[1].distance}}米</th>
+                                <th class="tablestyle-01">45-90速段里程</th>
+                                <th class="tablestyle-02">{{driveDetail.speedGroup[2].time}}秒，{{driveDetail.speedGroup[2].distance}}米</th>
+                                <th class="tablestyle-01">熄火时间</th>
+                                <th class="tablestyle-02">{{driveDetail.flameOutTime}}</th>
                             </tr>
                             <tr>
-                                <th>熄火电压</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.flameOutVoltage}}</th>
-                                <th>累计平均油耗</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.avgOilUsed}}</th>
-                                <th>累计行驶里程</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.mileage}}</th>
-                            </tr>
-                            <tr>
-                                <th>0速段里程</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.speedGroup[0].time}}秒，{{driveDetail.speedGroup[0].distance}}米</th>
-                                <th>0-80速段里程</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.speedGroup[1].time}}秒，{{driveDetail.speedGroup[1].distance}}米</th>
-                                <th>80-160速段里程</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.speedGroup[2].time}}秒，{{driveDetail.speedGroup[2].distance}}米</th>
-                            </tr>
-                            <tr>
-                                <th>熄火时间</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.flameOutTime}}</th>
-                                <th>熄火后电压</th>
-                                <th style="background-color:#F9F9F9;">{{driveDetail.flameOutVoltage}}</th>
-                                <th></th>
-                                <th style="background-color:#F9F9F9;"></th>
+
+                                <th class="tablestyle-01">熄火后电压</th>
+                                <th class="tablestyle-02">{{driveDetail.flameOutVoltage}}</th>
+                                <th class="tablestyle-01"></th>
+                                <th class="tablestyle-02"></th>
+                                <th class="tablestyle-01"></th>
+                                <th class="tablestyle-02"></th>
+                                <th class="tablestyle-01"></th>
+                                <th class="tablestyle-02"></th>
                             </tr>
                             </thead>
                         </table>
                         <table class="table table-bordered" ng-show="oneDetailDiv">
                             <thead>
-                            <tr >
+                            <tr class="bgcolor01">
                                 <th>OBD设备编号</th>
                                 <th>行驶编号</th>
-                             <!--   <th>累计平均油耗</th>
-                                <th>累计行驶里程</th>-->
                                 <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
@@ -306,8 +304,6 @@
                             <tr class="gradeX" ng-repeat="device in details">
                                 <td id="tdc">{{device.obdCode}}</td>
                                 <td id="tdc">{{device.id}}</td>
-                             <!--   <td id="tdc">{{device.avgOilUsed}}</td>
-                                <td id="tdc">{{device.mileage}}</td>-->
                                 <td id="tdc">{{device.createTime}}</td>
                                 <td id="tdc"><a class="btn btn-info btn-mini" ng-click="GetOneMinuteDetail($index);">详细数据</a></td>
                             </tr>
@@ -318,9 +314,9 @@
                     <table class="table table-bordered" ng-show="oneMinuteDetailDiv">
                         <thead>
                         <tr >
-                            <th style="text-align: right" colspan="3"><a ng-click="gotoBack(2);" class="btn btn-info btn-mini">返回</a></th>
+                            <th style="text-align: right" colspan="3"><button ng-click="gotoBack(2);" class="btn btn-success btn-mini">返回</button></th>
                         </tr>
-                        <tr >
+                        <tr class="bgcolor01">
                             <th>ID</th>
                             <th>参数</th>
                             <th>值</th>
@@ -447,7 +443,7 @@
             </div>
             <!--客户列表 end-->
             <!--自定义标签管理 begin-->
-            <div class="widget-box" ng-show="labelListDiv">
+            <div class="widget-box margin_16" ng-show="labelListDiv">
                 <div class="widget-title">
                     <span class="icon"><i class="icon-th"></i></span>
                     <h5>自定义标签列表</h5>
@@ -487,7 +483,7 @@
             </div>
             <!--自定义标签管理 end-->
             <!--添加自定义标签 start-->
-            <div class="widget-box" ng-show="labelAddDiv">
+            <div class="widget-box margin_16" ng-show="labelAddDiv">
                 <div class="widget-title">
                     <span class="icon"><i class="icon-th"></i></span>
                     <h5>添加标签</h5>

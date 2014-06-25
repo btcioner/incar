@@ -16,6 +16,7 @@ app.controller("loginCtrl", function($scope, $http){
     $scope.password="";
 
     $scope.login = function(){
+//        $.cookie("nick","");
         /*检验是否为空*/
         if($scope.username1 == '' ||  $scope.username1.trim == ''){
             alert("用户名不能为空");
@@ -37,7 +38,7 @@ app.controller("loginCtrl", function($scope, $http){
                     $http.get(baseurl+"4s/"+data.staff.s4_id).success(function(data1){
                        if(data1.status == "ok")
                        {
-                           $.cookie("nick",data.staff.nick);
+                           $.cookie("nick_4s",data.staff.nick);
                            $.cookie("s4_id",data.staff.s4_id);
                            $.cookie("brand_id",data1.s4.brand);
                            window.location.href='/4sStore/index.html';
@@ -54,8 +55,6 @@ app.controller("loginCtrl", function($scope, $http){
             else
             {
                 alert(data.status);
-                $scope.password="";
-                $scope.username1="";
             }
             }).error(function(data){
                 alert("请求无响应");

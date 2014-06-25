@@ -798,6 +798,24 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
                 $scope.matchFinishedDiv = true;
                 $scope.matchPubResultDiv = false;
                 break;
+            case 9:
+                $scope.driveDiv = true;
+                $scope.paging1 = true;
+                $scope.paging2 = false;
+                $scope.oneDetailDiv = false;
+                $scope.detailInfoDiv = false;
+                $scope.oneMinuteDetailDiv = false;
+                getDriveList();
+                break;
+            case 10:
+                $scope.driveDiv = false;
+                $scope.paging1 = false;
+                $scope.paging2 = true;
+                $scope.oneDetailDiv = true;
+                $scope.detailInfoDiv = true;
+                $scope.oneMinuteDetailDiv = false;
+                $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id,$scope.index);
+                break;
         }
     }
     $scope.callBack = function(id,tid)

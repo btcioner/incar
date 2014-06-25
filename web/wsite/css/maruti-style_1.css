@@ -595,30 +595,32 @@ ul.stat-boxes2 li:hover{  background:#f6f6f6}
     border-bottom: 0 none;
 }
 .widget-title .nav-tabs li a {
-    border-bottom: medium none !important;
-    border-left: 1px solid #DDDDDD;
-    border-radius: 0 0 0 0;
-    border-right: 1px solid #DDDDDD;
-    border-top: medium none;
-    color: #999999;
-    margin: 0;
-    outline: medium none;
-    padding: 9px 10px 8px;
-    font-weight: bold;
+	border-radius: 0 0 0 0;
+	color: #FFF;
+	outline: medium none;
+	font-weight: bold;
+	margin-top: 0;
+	margin-right: 4px;
+	margin-bottom: 0;
+	margin-left: 0;
+	padding-top: 9px;
+	padding-right: 10px;
+	padding-bottom: 8px;
+	padding-left: 10px;
+	background-color: #DBDBDB;
     /*text-shadow: 0 1px 0 #FFFFFF;*/
 }
 .widget-title .nav-tabs li:first-child a{
     border-left: medium none !important;
 }
 .widget-title .nav-tabs li a:hover {
-    background-color: transparent !important;
-    border-color: #D6D6D6;
-    border-width: 0 1px;
-    color: #666666;
+	background-color: #E8E8E8 !important;
+	color: #639e44;
 }
 .widget-title .nav-tabs li.active a {
-    background-color: #F9F9F9 !important;
-    color: #444444;
+	background-color: #FFF !important;
+	color: #639e44;
+	font-size: 15px;
 }
 .widget-title span.icon {
 	/* [disabled]border-right: 1px solid #cdcdcd; */
@@ -650,7 +652,7 @@ ul.stat-boxes2 li:hover{  background:#f6f6f6}
 }
 
 .widget-content {
-	/* [disabled]padding: 12px 15px; */
+	padding: 12px 15px;
 	border: 1px solid #cdcdcd;
 }
 .widget-box.widget-plain .widget-content {
