@@ -95,6 +95,10 @@ module Service{
     // 用户注销
     export function Logout(req, res){
         res.clearCookie("token");
+        res.clearCookie("nick_4s");
+        res.clearCookie("nick");
+        res.clearCookie("s4_id");
+        res.clearCookie("brand_id");
         res.json({status:"ok"});
     }
 
