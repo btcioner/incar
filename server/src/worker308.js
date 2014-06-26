@@ -22,7 +22,6 @@ function toTime(str){
     }
     return min;
 }
-console.log(toTime('2014-09-08 21:23:34'));
 function sendToMessageServer(dataBuffer,commandWord){
     console.log("接收到短信回复："+commandWord+"\n");
     var dataJson={dataString:dataBuffer};
