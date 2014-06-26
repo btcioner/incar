@@ -20,7 +20,7 @@ function brandData(req, res) {
             if (err) {
                 // try to use the appid to resolve the brand
                 if(postData.appid){
-                    getBrandFromAppId(postData.appid, function(ex, data){
+                    getBrandFromAppId(db, postData.appid, function(ex, data){
                         if(ex) console.log(ex);
                         else res.send(data);
                     });
@@ -127,8 +127,7 @@ function getBrandForNew(db, spoenid,callback){
     });
 }
 
-function getBrandFromAppId(appid, cb){
-    var db = this.db;
+function getBrandFromAppId(db, appid, cb){
     var pool = db();
     var report ={};
     pool.query('select brand from t_4s where wx_app_id=?;',[appid],function(err,rows){
