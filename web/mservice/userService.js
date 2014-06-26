@@ -184,7 +184,7 @@ function carEnroll(req,res, cb){
                 disp:disp,
                 mileage:mileage,
                 age:ageDate,
-                engine_type:engine_type,
+                engineType:engine_type,
                 created_date:new Date()
             };
             sql="update t_car set ? where id=?";
