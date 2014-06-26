@@ -6,20 +6,29 @@
  function s_activityCtrl($scope, $http){
     $scope.newsListDiv = true;
     $scope.newsAddDiv = false;
-    $scope.titleMove = "";
-    $scope.news_name = "";
-    $scope.contentMove = "";
-    $scope.news_content = "";
+
+
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
-    $scope.title = "";
-    $scope.brief = "";
-    $scope.logo_url = "";
+
+
     $scope.tags = "";
     $scope.queryString = "";
     $scope.statusSelect =[{id:0,name:"请选择"},{id:1,name:"已创建"},{id:2,name:"已发布"}];
     $scope.ser_status = "";
     $scope.ser_title = "";
+
+    function initAddData()
+    {
+        $scope.titleMove = "";
+        $scope.news_name = "";
+        $scope.contentMove = "";
+        $scope.news_content = "";
+        $scope.title = "";
+        $scope.brief = "";
+        $scope.logo_url = "";
+        $scope.checkboxId_1 = false;
+    }
 
         GetFirstPageInfo();//get fist driveData for first page；
         function GetFirstPageInfo()
@@ -79,6 +88,9 @@
     //添加按钮
     $scope.add = function()
     {
+        initAddData();
+        $("#imghead").attr("src","../../data/200x200.jpg");
+        $("#edit_pro_img").val("");
         $("#formId_edit2").ajaxForm(function(data){
             $scope.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
@@ -177,6 +189,7 @@
    //修改按钮
     $scope.modify = function(id)
     {
+        $scope.checkboxId_1 = false;
         $scope.logo_url = "";
         $scope.activityDetail = $scope.activityList[id];
         $("#formId_edit3").ajaxForm(function(data){
@@ -240,15 +253,15 @@
     {
        if(confirm("确定要发布此活动资讯吗？"))
        {
-           $http.put(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+id,{tm_announce:new Date()}).success(function(data){
-               if(data.status == "ok")
-               {
-                   alert("发布成功!");
-                   GetFirstPageInfo();
-               }
+           $http.put(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+id,{tm_announce: $.changeDate_1(new Date())}).success(function(data){
+           if(data.status == "ok")
+           {
+               alert("发布成功!");
+               GetFirstPageInfo();
+           }
            }).error(function(data){
-                   alert("请求无响应");
-            })
+               alert("请求无响应");
+           })
        }
     }
 
