@@ -140,7 +140,7 @@ function driveDataCtrl($scope, $http){
                 if(data.details.length== 0)
                 {
 //                    alert("暂无行程数据");
-                      $scope.tips="暂无行程数据";
+                      $scope.tips="暂无数据";
                 }
                 else{
                    // $.changeContentHeight("630px");
