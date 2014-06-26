@@ -12,7 +12,7 @@ exports = module.exports = function(service) {
 function getUserInfo(wx){
     var sql="select * from t_account where wx_oid like ?";
     dao.findBySql(sql,['%'+wx+'%'],function(rows){
-        if(rows.length>0){
+                if(rows.length>0){
             return rows[0];
         }
         else{
@@ -96,15 +96,21 @@ function userEnroll(req, res) {
                     if(err){
                         res.send({status:'failed',message:'添加账户失败'});
                     }
+
                     var accountId=info.insertId;
-                    res.send({status:'success',accountId:accountId});
+                    user.id = info.insertId;
+                    req.body.user = user;
+
+                    carEnroll(req,res, function(ex){
+                        if(ex) { res.send(ex); return; }
+                        res.send({status:'success',accountId:accountId});
+                    });
                 });
             }
             else{
                 res.send({status:'failed',message:'无法识别的appid'});
             }
         });
-        carEnroll(req,res);
     }else{
         var params=req.body;
         var username=params.name;
@@ -144,7 +150,7 @@ function userEnroll(req, res) {
     }
 }
 //车辆登记
-function carEnroll(req,res){
+function carEnroll(req,res, cb){
     var params=req.body;
     var temp=params.user.split('@');
     var openId=temp[0];
@@ -161,10 +167,13 @@ function carEnroll(req,res){
     ageDate.setYear(ageDate.getFullYear()-age);
     var disp=params.disp;
     var engine_type=params.engine_type;
-    var user=getUserInfo(wx);
+    var user=params.user;
+
+    if(!user) console.error("===>传入的参数缺少user!!!");
+
     //var s4Id=user.s4_id;
-    var sql="select id from t_car where obd_code=?";
-    dao.findBySql(sql,[obdCode],function(rows){
+    var sql="select id from t_car where obd_code=? and s4_id=?";
+    dao.findBySql(sql,[obdCode, user.s4_id],function(rows){
         if(rows.length>0){
             var id=rows[0].id;
             var car={
@@ -183,9 +192,11 @@ function carEnroll(req,res){
             sql="update t_car set ? where id=?";
             dao.executeBySql(sql,[car,id],function(){
                 console.log("更新成功");
+                if(cb) { cb(null); }
             });
         }
         else{
+            if(cb) { cb({status:'failed',message:'OBD不存在'}); return; }
             res.send({status:'failed',message:'OBD不存在'});
         }
     });
