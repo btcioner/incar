@@ -89,7 +89,8 @@ function userEnroll(req, res) {
                     wx_oid:openId+':'+ rows[0].openid,
                     phone:phone,
                     nick:nickName,
-                    s4_id:s4id
+                    s4_id:s4id,
+                    tel_pwd:"000000000000"
                 };
                 sql="insert into t_account set ?";
                 dao.insertBySql(sql,user,function(err,info){
