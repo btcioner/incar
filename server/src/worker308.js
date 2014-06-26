@@ -234,7 +234,7 @@ function packetProcess_1601(dataBuffer,cb) {
     var tripId=dataManager.nextDoubleWord();            //Trip编号
     var vid=dataManager.nextString();                   //vid
     var vin=dataManager.nextString();                   //VIN码
-    var receiveTime=dataManager.nextString();           //当前时间
+    var receiveTime=getDateTimeStamp(dataManager.nextString());           //当前时间
     var lastUpdateTime=getDateTimeStamp(null);
     var dataType=dataManager.nextByte();                //数据包类型
     //2、如果是发动机启动则创建一条新的行驶信息
@@ -256,7 +256,7 @@ function packetProcess_1601(dataBuffer,cb) {
                 obd.fireLongitude=other[0];                 //经度
                 obd.fireLatitude=other[1];                  //纬度
                 obd.fireDirection=other[2];                 //方向
-                obd.fireLocationTime=other[3];              //定位时间
+                obd.fireLocationTime=getDateTimeStamp(other[3]);              //定位时间
                 obd.fireLocationType=other[4];              //定位方式(1-基站定位,2-GPS定位)
                 obd.lastUpdateTime=lastUpdateTime;
                 var sql="insert into t_obd_drive set ?";
@@ -428,7 +428,6 @@ function packetProcess_1602(dataBuffer,cb) {
     obdAlarm.vid=vid;
     obdAlarm.vin=vin;
     obdAlarm.createTime=createTime;
-    console.log(createTime+"-----------------------------------");
     obdAlarm.alarmType=alarmType;
     obdAlarm.speed=speed;
     obdAlarm.travelDistance=travelDistance;
