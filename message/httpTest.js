@@ -25,7 +25,7 @@ var dataGet = JSON.stringify({obdInfo:{
     0xFE1C:'lahmyyc2014.vicp.cc',
     0xFE1D:48928
 }});
-var data='';
+var data=dataSet;
 //13871574583
 //18071740867 21
 //18476363151 深圳
@@ -35,7 +35,7 @@ var opt = {
     method: "POST",
     host: "localhost",
     port: 1234,
-    path: "/message/send/18071740867/"+0x1625,
+    path: "/message/send/13007196492/"+0x1623,
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)

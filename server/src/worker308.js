@@ -423,7 +423,7 @@ function packetProcess_1602(dataBuffer,cb) {
     var tripId=dataManager.nextDoubleWord();        //Trip编号
     var vid=dataManager.nextString();               //vid
     var vin=dataManager.nextString();               //VIN码
-    var createTime=dataManager.nextString();        //当前时间
+    var createTime=toTime(dataManager.nextString());        //当前时间
     var alarmType=dataManager.nextByte();           //报警类型
     var speed=dataManager.nextString();             //车速
     var travelDistance=dataManager.nextString();    //行驶距离
@@ -431,7 +431,7 @@ function packetProcess_1602(dataBuffer,cb) {
     var longitude=other[0];          //经度
     var latitude=other[1];           //纬度
     var direction=other[2];          //方向
-    var locationTime=other[3];       //定位时间
+    var locationTime=toTime(other[3]);       //定位时间
     var locationType=other[4];       //定位方式(1-基站定位,2-GPS定位)
     var obdAlarm={};
     obdAlarm.obdCode=obdCode;
