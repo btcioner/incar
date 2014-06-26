@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS t_car_user(
 );
 -- 标签大类表
 CREATE TABLE IF NOT EXISTS t_tag_group(
-    id int auto_increment PRIMARY KEY COMMENT '编号',
+    id int PRIMARY KEY COMMENT '编号',
     name varchar(50) COMMENT '标签大类名称',
     description varchar(300) COMMENT '标签大类说明',
     type tinyint COMMENT '0-系统标签 1-自定义标签'

@@ -11,6 +11,17 @@ var http = require("http");
 var byteCmd=[0xFE01,0xFE04,0xFE16,0xF913807970E17,0xFE19];
 var wordCmd=[0xFE06,0xFE08,0xFE0A,0xFE0C,0xFE0D,0xFE0E,0xFE0F,0xFE11,0xFE12,0xFE1A];
 var longCmd=[0xFE03,0xFE14];
+
+function toTime(str){
+    var dt=new Date(str);
+    var min=new Date('1970-01-01 08:00:00');
+    if((dt.getDate()==date.substring(date.length-2))){
+        if(dt>min){
+            return dt;
+        }
+    }
+    return min;
+}
 function sendToMessageServer(dataBuffer,commandWord){
     console.log("接收到短信回复："+commandWord+"\n");
     var dataJson={dataString:dataBuffer};
@@ -234,7 +245,7 @@ function packetProcess_1601(dataBuffer,cb) {
     var tripId=dataManager.nextDoubleWord();            //Trip编号
     var vid=dataManager.nextString();                   //vid
     var vin=dataManager.nextString();                   //VIN码
-    var receiveTime=getDateTimeStamp(dataManager.nextString());           //当前时间
+    var receiveTime=toTime(dataManager.nextString());           //当前时间
     var lastUpdateTime=getDateTimeStamp(null);
     var dataType=dataManager.nextByte();                //数据包类型
     //2、如果是发动机启动则创建一条新的行驶信息
@@ -256,7 +267,7 @@ function packetProcess_1601(dataBuffer,cb) {
                 obd.fireLongitude=other[0];                 //经度
                 obd.fireLatitude=other[1];                  //纬度
                 obd.fireDirection=other[2];                 //方向
-                obd.fireLocationTime=getDateTimeStamp(other[3]);              //定位时间
+                obd.fireLocationTime=toTime(other[3]);              //定位时间
                 obd.fireLocationType=other[4];              //定位方式(1-基站定位,2-GPS定位)
                 obd.lastUpdateTime=lastUpdateTime;
                 var sql="insert into t_obd_drive set ?";
@@ -342,7 +353,7 @@ function packetProcess_1601(dataBuffer,cb) {
                     var flameOutLongitude=other[0];      //熄火时经度
                     var flameOutLatitude=other[1];       //熄火时纬度
                     var flameOutDirection=other[2];      //熄火时方向
-                    var flameOutLocationTime=getDateTimeStamp(other[3]);   //熄火时定位时间
+                    var flameOutLocationTime=toTime(other[3]);   //熄火时定位时间
                     var flameOutLocationType=other[4];   //熄火时定位方式(1-基站定位,2-GPS定位)
                     var sql="update t_obd_drive set ? where id=?";
                     var args=[{

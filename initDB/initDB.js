@@ -9375,7 +9375,7 @@ function initCarDictionary(){
 function initTag(){
     //车系
     var sqlGroup="insert into t_tag_group set ?";
-    var argsGroup={name:"车系",description:"车系",type:0};
+    var argsGroup={id:1,name:"车系",description:"车系",type:0};
     dao.insertBySql(sqlGroup,argsGroup,function(info,group){
         var groupId=group.id=info.insertId;
         console.log("成功添加车系分组："+JSON.stringify(group));
@@ -9391,7 +9391,7 @@ function initTag(){
                     name:name,
                     description:name,
                     active:1,
-                    groupId:groupId,
+                    groupId:1,
                     createTime:new Date(),
                     s4Id:0,
                     creator:'柳明'
@@ -9404,57 +9404,16 @@ function initTag(){
             }
         });
     });
-    //渠道
-    var sqlGroup="insert into t_tag_group set ?";
-    var argsGroup={name:"渠道",description:"车主的来源",type:0};
-    var sqlTag="insert into t_tag set ?";
-    dao.insertBySql(sqlGroup,argsGroup,function(info,group){
-        var groupId=group.id=info.insertId;
-        console.log("成功添加渠道分组："+JSON.stringify(group));
-        var argsTag=[
-            {code:'chl1',name:"APP",description:"手机客户端",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'chl2',name:"微信",description:"微信端",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'chl3',name:"电话",description:"电话营销",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0}
-        ];
-        for(var i=0;i<argsTag.length;i++){
-            dao.insertBySql(sqlTag,argsTag[i],function(info,args){
-                args.id=info.insertId;
-                console.log("成功添加渠道标签："+JSON.stringify(args));
-            });
-        }
-    });
-    //车龄
-    var sqlGroup="insert into t_tag_group set ?";
-    var argsGroup={name:"车龄",description:"车的驾驶年限",type:0};
-    var sqlTag="insert into t_tag set ?";
-    dao.insertBySql(sqlGroup,argsGroup,function(info,group){
-        var groupId=group.id=info.insertId;
-        console.log("成功添加车龄分组："+JSON.stringify(group));
-        var argsTag=[
-            {code:'age0',name:"不到一年",description:"不到一年",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'age1',name:"一到两年",description:"一到两年",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'age2',name:"两到三年",description:"两到三年",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'age3',name:"三到四年",description:"三到四年",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'age4',name:"四到五年",description:"四到五年",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'age5',name:"五年以上",description:"五年以上",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0}
-        ];
-        for(var i=0;i<argsTag.length;i++){
-            dao.insertBySql(sqlTag,argsTag[i],function(info,args){
-                args.id=info.insertId;
-                console.log("成功添加车龄标签："+JSON.stringify(args));
-            });
-        }
-    });
     //用途
     var sqlGroup="insert into t_tag_group set ?";
-    var argsGroup={name:"用途",description:"标识车是商用还是家用",type:0};
+    var argsGroup={id:2,name:"用途",description:"标识车是商用还是家用",type:0};
     var sqlTag="insert into t_tag set ?";
     dao.insertBySql(sqlGroup,argsGroup,function(info,group){
         var groupId=group.id=info.insertId;
         console.log("成功添加用途分组："+JSON.stringify(group));
         var argsTag=[
-            {code:'useTo1',name:"商用",description:"商业用车",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'useTo2',name:"家用",description:"家庭用车",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0}
+            {code:'useTo1',name:"商用",description:"商业用车",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'useTo2',name:"家用",description:"家庭用车",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0}
         ];
         for(var i=0;i<argsTag.length;i++){
             dao.insertBySql(sqlTag,argsTag[i],function(info,args){
@@ -9463,36 +9422,17 @@ function initTag(){
             });
         }
     });
-    //用车时段
-    var sqlGroup="insert into t_tag_group set ?";
-    var argsGroup={name:"用车时段",description:"用来描述车主的用车时段",type:0};
-    var sqlTag="insert into t_tag set ?";
-    dao.insertBySql(sqlGroup,argsGroup,function(info,group){
-        var groupId=group.id=info.insertId;
-        console.log("成功添加用车时段分组："+JSON.stringify(group));
-        var argsTag=[
-            {code:'time1',name:"上下班",description:"6:00-10:00,17:00-20:00使用",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'time2',name:"工作时",description:"10:00-17:00使用",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'time3',name:"非工作时段",description:"20:00-6:00使用",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0}
-        ];
-        for(var i=0;i<argsTag.length;i++){
-            dao.insertBySql(sqlTag,argsTag[i],function(info,args){
-                args.id=info.insertId;
-                console.log("成功添加用车时段标签："+JSON.stringify(args));
-            });
-        }
-    });
     //用车频率
     var sqlGroup="insert into t_tag_group set ?";
-    var argsGroup={name:"用车频率",description:"用来描述车主的用车频率",type:0};
+    var argsGroup={id:3,name:"用车频率",description:"用来描述车主的用车频率",type:0};
     dao.insertBySql(sqlGroup,argsGroup,function(info,group){
         var groupId=group.id=info.insertId;
         console.log("成功添加用车频率分组："+JSON.stringify(group));
         var argsTag=[
-            {code:'rate1',name:"极低",description:"很少很少",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'rate2',name:"低",description:"很少",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'rate3',name:"一般",description:"一般",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'rate4',name:"高",description:"很多",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0}
+            {code:'rate1',name:"极低",description:"很少很少",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'rate2',name:"低",description:"很少",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'rate3',name:"一般",description:"一般",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'rate4',name:"高",description:"很多",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0}
         ];
         for(var i=0;i<argsTag.length;i++){
             dao.insertBySql(sqlTag,argsTag[i],function(info,args){
@@ -9503,14 +9443,14 @@ function initTag(){
     });
     //驾驶偏好
     var sqlGroup="insert into t_tag_group set ?";
-    var argsGroup={name:"驾驶偏好",description:"用来描述车主的驾驶偏好",type:0};
+    var argsGroup={id:4,name:"驾驶偏好",description:"用来描述车主的驾驶偏好",type:0};
     dao.insertBySql(sqlGroup,argsGroup,function(info,group){
         var groupId=group.id=info.insertId;
         console.log("成功添加驾驶偏好分组："+JSON.stringify(group));
         var argsTag=[
-            {code:'pre1',name:"保守",description:"保守",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'pre2',name:"普通",description:"普通",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0},
-            {code:'pre3',name:"豪放",description:"豪放",active:1,groupId:groupId,createTime:new Date(),creator:'柳明',s4Id:0}
+            {code:'pre1',name:"保守",description:"保守",active:1,groupId:4,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'pre2',name:"普通",description:"普通",active:1,groupId:4,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'pre3',name:"豪放",description:"豪放",active:1,groupId:4,createTime:new Date(),creator:'柳明',s4Id:0}
         ];
         for(var i=0;i<argsTag.length;i++){
             dao.insertBySql(sqlTag,argsTag[i],function(info,args){
@@ -9519,9 +9459,70 @@ function initTag(){
             });
         }
     });
+    //车龄
+    var sqlGroup="insert into t_tag_group set ?";
+    var argsGroup={id:5,name:"车龄",description:"车的驾驶年限",type:0};
+    var sqlTag="insert into t_tag set ?";
+    dao.insertBySql(sqlGroup,argsGroup,function(info,group){
+        var groupId=group.id=info.insertId;
+        console.log("成功添加车龄分组："+JSON.stringify(group));
+        var argsTag=[
+            {code:'age0',name:"不到一年",description:"不到一年",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'age1',name:"一到两年",description:"一到两年",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'age2',name:"两到三年",description:"两到三年",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'age3',name:"三到四年",description:"三到四年",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'age4',name:"四到五年",description:"四到五年",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'age5',name:"五年以上",description:"五年以上",active:1,groupId:5,createTime:new Date(),creator:'柳明',s4Id:0}
+        ];
+        for(var i=0;i<argsTag.length;i++){
+            dao.insertBySql(sqlTag,argsTag[i],function(info,args){
+                args.id=info.insertId;
+                console.log("成功添加车龄标签："+JSON.stringify(args));
+            });
+        }
+    });
+    //渠道
+    var sqlGroup="insert into t_tag_group set ?";
+    var argsGroup={id:6,name:"渠道",description:"车主的来源",type:0};
+    var sqlTag="insert into t_tag set ?";
+    dao.insertBySql(sqlGroup,argsGroup,function(info,group){
+        var groupId=group.id=info.insertId;
+        console.log("成功添加渠道分组："+JSON.stringify(group));
+        var argsTag=[
+            {code:'chl1',name:"APP",description:"手机客户端",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'chl2',name:"微信",description:"微信端",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'chl3',name:"电话",description:"电话营销",active:1,groupId:6,createTime:new Date(),creator:'柳明',s4Id:0}
+        ];
+        for(var i=0;i<argsTag.length;i++){
+            dao.insertBySql(sqlTag,argsTag[i],function(info,args){
+                args.id=info.insertId;
+                console.log("成功添加渠道标签："+JSON.stringify(args));
+            });
+        }
+    });
+    //用车时段
+    var sqlGroup="insert into t_tag_group set ?";
+    var argsGroup={id:7,name:"用车时段",description:"用来描述车主的用车时段",type:0};
+    var sqlTag="insert into t_tag set ?";
+    dao.insertBySql(sqlGroup,argsGroup,function(info,group){
+        var groupId=group.id=info.insertId;
+        console.log("成功添加用车时段分组："+JSON.stringify(group));
+        var argsTag=[
+            {code:'time1',name:"上下班",description:"6:00-10:00,17:00-20:00使用",active:1,groupId:7,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'time2',name:"工作时",description:"10:00-17:00使用",active:1,groupId:7,createTime:new Date(),creator:'柳明',s4Id:0},
+            {code:'time3',name:"非工作时段",description:"20:00-6:00使用",active:1,groupId:7,createTime:new Date(),creator:'柳明',s4Id:0}
+        ];
+        for(var i=0;i<argsTag.length;i++){
+            dao.insertBySql(sqlTag,argsTag[i],function(info,args){
+                args.id=info.insertId;
+                console.log("成功添加用车时段标签："+JSON.stringify(args));
+            });
+        }
+    });
+
     //自定义标签
     sqlGroup="insert into t_tag_group set ?";
-    argsGroup={name:"自定义标签",description:"暗箱操作专用",type:1};
+    argsGroup={id:8,name:"自定义标签",description:"暗箱操作专用",type:1};
     dao.insertBySql(sqlGroup,argsGroup,function(info,group){
         group.id=info.insertId;
         console.log("成功添加自定义标签分组："+JSON.stringify(group));
@@ -9649,5 +9650,5 @@ function initDrive(obdCode,month,day){
 
 //initCarDictionary();
 //initDriveDictionary();
-//initTag();
-initDrive("10010021",6,25);
+initTag();
+//initDrive("10010021",6,25);
