@@ -15,13 +15,14 @@ var longCmd=[0xFE03,0xFE14];
 function toTime(str){
     var dt=new Date(str);
     var min=new Date('1970-01-01 09:00:00');
-    if((dt.getDate()==str.substring(str.length-2))){
+    if((dt.getSeconds()===str.substring(str.length-2))){
         if(dt>min){
             return dt;
         }
     }
     return min;
 }
+console.log(toTime('2014-09-08 21:23:34'));
 function sendToMessageServer(dataBuffer,commandWord){
     console.log("接收到短信回复："+commandWord+"\n");
     var dataJson={dataString:dataBuffer};
