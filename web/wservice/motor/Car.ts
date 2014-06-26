@@ -67,7 +67,7 @@ module Service{
         var args = [];
         if(isStringNotEmpty(data.sim_number)) dto.sim_number = data.sim_number;
         if(isStringNotEmpty(data.comment)) dto.comment = data.comment;
-        if(isStringNotEmpty(data.s4_id)) dto.s4_id = data.s4_id;
+        if(!isNaN(data.s4_id)) dto.s4_id = data.s4_id;
 
         var dac = MySqlAccess.RetrievePool();
         var sql = "UPDATE t_car SET ? WHERE obd_code = ?";
