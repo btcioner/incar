@@ -79,7 +79,7 @@ function userEnroll(req, res) {
             return;
         }
 
-        var sql="select id from t_4s where wx_app_id=?";
+        var sql="select id, openid from t_4s where wx_app_id=?";
         dao.findBySql(sql,[appid],function(rows){
             if(rows.length>0){
                 var s4id=rows[0].id;
