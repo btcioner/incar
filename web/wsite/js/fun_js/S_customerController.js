@@ -233,6 +233,16 @@ function s_customerCtrl($scope, $http,$routeParams){
         $scope.cusDetailDiv = true;
         $scope.cusListDiv = false;
         $scope.cusTabDiv = true;
+        for(var i=1;i<7;i++)
+        {
+            $("#tab"+i).hide();
+            $("#tab_"+i).removeClass();
+        }
+        $("#tab_1").addClass("active");
+        $("#tab1").show();
+        $("#tab1").removeClass();
+        $("#tab1").addClass("tab-pane active");
+        getReservationRecord();
     }
 
     $scope.detailTab = function(id)
