@@ -188,11 +188,17 @@ function carEnroll(req,res, cb){
                 created_date:new Date()
             };
             sql="update t_car set ? where id=?";
-            dao.executeBySql(sql,[car,id],function(){
+            var pool = findPool();
+            pool.query(sql, [car,id], function(ex, result){
+                if(ex){
+                    console.log(ex);
+                    if(cb) cb(ex);
+                    else res.json(ex);
+                    return;
+                }
 
                 // 建立t_car_user;
                 var sql = "INSERT t_car_user(s4_id,acc_id,car_id,user_type) values(?,?,?,?)";
-                var pool = findPool();
                 pool.query(sql, [user.s4_id, user.id, id, 1], function(ex, result){
                     if(ex) {
                         console.log(ex);
