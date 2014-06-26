@@ -447,14 +447,14 @@
                 <div class="widget-title">
                     <span class="icon"><i class="icon-th"></i></span>
                     <h5>自定义标签列表</h5>
-                    <a class="btn btn-success" style="float:right;margin:3px 30px 0 0;" ng-click="addCustomLabel();">添加</a>
+                    <button class="btn btn-success" style="float:right;margin:12px 30px 0 0;" ng-click="addCustomLabel();">添加</button>
                 </div>
 
                 <div class="widget-content nopadding">
                     <!--<table class="table table-bordered data-table">-->
                     <table class="table table-bordered">
                         <thead>
-                        <tr>
+                        <tr class="bgcolor01">
                             <th>标签名</th>
                             <th>创建时间</th>
                             <th>创建人</th>
@@ -488,18 +488,19 @@
                     <span class="icon"><i class="icon-th"></i></span>
                     <h5>添加标签</h5>
                 </div>
-                <div class="widget-content nopadding">
-                    <form action="#" method="get" class="form-horizontal">
-                        <div class="control-group" >
-                            <label class="control-label" style="margin-left:300px;">标签名称：</label>
-                            <div class="controls">
-                                <input type="text" class="span11" style="width:200px;" ng-model="label_name"  />
+                <div class="widget-content">
+                    <form class="form-horizontal formstyle_box03">
+                        <div class="control-group w_44 fl" >
+                            <label class="control-label pad_l20 w_100">OBD编号：</label>
+                            <div class="controls pad_t_b_10">
+                                <input type="text"  class="span11"  ng-model="label_name" style="width:300px;" />
                             </div>
                         </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-success"  style="margin-left:300px;" ng-click="confirmAddCustomLabel();">添加</button>
-                            <button type="button" class="btn btn-danger"   ng-click="gotoBack(4)">取消</button>
-                        </div>
+                        <!--button_box01 start-->
+                        <div class="button_box01">
+                            <button type="button" style="margin-right:40px;"  class="btn btn-large btn-success" ng-click="confirmAddCustomLabel();">确&nbsp;&nbsp;定</button>
+                            <button type="button"  class="btn btn-large btn-danger"   ng-click="gotoBack(4)">取&nbsp;&nbsp;消</button>
+                        </div><!--button_box01 start-->
                     </form>
                 </div>
             </div>

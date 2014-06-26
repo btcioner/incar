@@ -7,6 +7,8 @@ var baseurl="/wservice/";
 var randomTime = new Date();
 (function($){
 
+
+
     //删除cookie里面的东西
 //    $.del4sCookie = function()
 //    {
@@ -287,6 +289,7 @@ function changeImg(file,plugId,formId,preId,imgId)
     }
 
     $("#"+formId).submit();
+
 
 }
 function clacImgZoomParam( maxWidth, maxHeight, width, height ){

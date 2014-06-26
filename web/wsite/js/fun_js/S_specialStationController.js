@@ -11,15 +11,20 @@
 
     $scope.currentPage = 1;
     $scope.pageRecord = 10;
-    $scope.slot_location = "";
-    $scope.slot_time = "";
-    $scope.benefit = "";
-    $scope.description = "";
-    $scope.promotion_time = "";
+
     $scope.queryString = "";
     if($routeParams.id !=null)
     {
         $scope.queryString ="&status="+$routeParams.id;
+    }
+
+    function initAddData()
+    {
+        $scope.slot_location = "";
+        $scope.slot_time = "";
+        $scope.benefit = "";
+        $scope.description = "";
+        $scope.promotion_time = "";
     }
     GetFirstPageInfo();//get fist driveData for first page；
     function GetFirstPageInfo()
@@ -126,6 +131,7 @@
 //        $('#datetimepicker1').datetimepicker({
 //            format: 'yyyy-MM-dd hh:mm:ss'
 //        });
+        initAddData();
         $scope.slotListDiv = false;
         $scope.slotAddDiv = true;
     }
