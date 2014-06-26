@@ -9,8 +9,25 @@
      var code=getQueryString("code");
      var state=getQueryString("state");
 
+     // !!!非常非常重要!!!
+     // !!!secret绝对不能被返回给客户端,这会造成非常严重的问题!!!
+     // !!!这个问题必须尽快被修正!!!
+     // !!!getOpenid.html必须被删除,secret也必须在问题修正后被重置!!!
+     // !!!必须用一个服务来向weixin服务器传送code!!!
+
+     // !!!这是临时的办法!!!
+     var appid = null, appsec = null;
+     if(window.location.href.indexOf("linuxsuse") >= 0) {
+         appid = 'wx5de0018d8c7b0b0d';
+         appsec = 'ea3cbd792917a19f7d043b02b7a7a0c6';
+     }
+     else{
+         appid = 'wx87f6a395b821f071';
+         appsec = '836bf9c018b3b97d98d561163d5ae771';
+     }
+
      var reqUrl="https://api.weixin.qq.com/sns/oauth2/access_token?"+
-             "appid=wx5de0018d8c7b0b0d&secret=ea3cbd792917a19f7d043b02b7a7a0c6"+
+             "appid=" + appid + "&secret=" + appsec +
              "&code="+code+"&grant_type=authorization_code";
 
      $.ajax({
