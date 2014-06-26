@@ -23,6 +23,7 @@
     </style>
  <script type="text/javascript">
   var user;//用户openId
+  var appid;//wxappid
   //var webserviceurl;//webservice地址
   var today;//当天日期
   var brandCode;
@@ -41,6 +42,7 @@
            today = new Date();
         //获取user的微信openId
 			user=getQueryString("user");
+            appid=getQueryString("appid");
 		//获取汽车品牌、车型数据
            initCarBrand();
 		  //
@@ -163,7 +165,7 @@
         $.ajax({
             type: "POST",
             url: "/mservice/brandData",
-            data: {'user':user},
+            data: {'user':user, 'appid':appid },
             dataType: "json",
             success:function(data){
                 document.getElementById('brand').value=data.brand;
