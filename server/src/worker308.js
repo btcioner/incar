@@ -423,7 +423,7 @@ function packetProcess_1602(dataBuffer,cb) {
     var tripId=dataManager.nextDoubleWord();        //Trip编号
     var vid=dataManager.nextString();               //vid
     var vin=dataManager.nextString();               //VIN码
-    var createTime=toTime(dataManager.nextString());        //当前时间
+    var createTime=toTime(dataManager.nextString());//当前时间
     var alarmType=dataManager.nextByte();           //报警类型
     var speed=dataManager.nextString();             //车速
     var travelDistance=dataManager.nextString();    //行驶距离
@@ -686,7 +686,36 @@ function packetProcess_1607(dataBuffer,cb) {
     cb();
 }
 function packetProcess_1608(dataBuffer,cb) {
-    console.log('接收到1608数据');
+    var obdCode=dataManager.nextString();           //OBD编号
+    var tripId=dataManager.nextDoubleWord();        //Trip编号
+    var vid=dataManager.nextString();               //vid
+    var vin=dataManager.nextString();               //VIN码
+    var createTime=toTime(dataManager.nextString());//当前时间
+    var faultCode=[];
+    var fcCount=dataManager.nextByte();               //故障码个数
+    for(var i=0;i<fcCount;i++){
+        var code=dataManager.nextString();             //故障码
+        var status=dataManager.nextString();           //故障码属性
+        var desc=dataManager.nextString();             //故障码描述
+        faultCode.push({code:code,status:status,desc:desc});
+    }
+    var driveDetail=[];
+    var detailCount=dataManager.nextWord();            //车况信息个数
+    for(var i=0;i<detailCount;i++){
+        var id=dataManager.nextWord();;             //ID
+        var value=dataManager.nextString();         //值
+        driveDetail.push({id:id,value:value});
+    }
+    var lowSpeed={
+        obdCode:obdCode,
+        tripId:tripId,
+        vid:vid,
+        vin:vin,
+        receiveTime:createTime,
+        faultCode:faultCode,
+        driveDetail:driveDetail
+    };
+    console.log('成功创建怠速信息:'+JSON.stringify(lowSpeed));
     cb();
 }
 function packetProcess_160A(dataBuffer,cb) {
