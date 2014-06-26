@@ -14,7 +14,7 @@ var longCmd=[0xFE03,0xFE14];
 
 function toTime(str){
     var dt=new Date(str);
-    var min=new Date('1970-01-01 08:00:00');
+    var min=new Date('1970-01-01 09:00:00');
     if((dt.getDate()==str.substring(str.length-2))){
         if(dt>min){
             return dt;
