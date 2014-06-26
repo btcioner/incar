@@ -18,6 +18,7 @@
 
     <script type="text/javascript">
         var user;//用户openId
+        var appid; // wx_app_id
         var today;//当天日期
         var wx_oid;
       //页面加载初始化
@@ -26,6 +27,7 @@
             today = new Date();
             //获取user的微信openId
             user=getQueryString("user");
+            appid=getQueryString("appid");
             //alert(user);
             //查询用户信息，预先写入文本框
             searchUser();
@@ -153,7 +155,7 @@
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 alert("您还未注册或未绑定OBD信息\n请先注册账号！");
-                window.location="/msite/enroll.html?user="+user;
+                window.location="/msite/enroll.html?user="+user+"&appid="+appid;
             }
         });
     }
