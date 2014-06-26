@@ -79,7 +79,7 @@ function userEnroll(req, res) {
             return;
         }
 
-        var sql="select id from t_4s where appid=?";
+        var sql="select id from t_4s where wx_app_id=?";
         dao.findBySql(sql,[appid],function(rows){
             if(rows.length>0){
                 var s4id=rows[0].id;
@@ -149,8 +149,8 @@ function carEnroll(req,res){
     var temp=params.user.split('@');
     var openId=temp[0];
     var openId4S=temp[1];
-    var wx=openId+":"+openId4S
-    var obdCode=params.obdCode;
+    var wx=openId+":"+openId4S;
+    var obdCode=params.obd_code;
     var brand=params.brandCode;
     var series=params.seriesCode;
     var modelYear=params.modelYear;
@@ -186,7 +186,7 @@ function carEnroll(req,res){
             });
         }
         else{
-            res.write({status:'failed',message:'OBD不存在'});
+            res.send({status:'failed',message:'OBD不存在'});
         }
     });
 }
