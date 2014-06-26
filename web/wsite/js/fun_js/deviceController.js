@@ -204,7 +204,7 @@ function deviceCtrl($scope, $http)
     $scope.ModifyConfrim = function(sim_number,obd_code)
     {
         $scope.changeId = 1;
-        $scope.postData={sim_number:sim_number,s4_id};
+        $scope.postData={sim_number:sim_number,s4_id:$scope.deviceDetail.s4_id};
         getAjaxLink(baseurl + 'obd/'+obd_code,$scope.postData,"put",6);
 //        $http.put(baseurl + 'obd/'+obd_code,$scope.postData).success(function(data){
 //
