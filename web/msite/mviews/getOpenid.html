@@ -37,7 +37,7 @@
          dataType: "json",
          success: function (result) {
             //alert("成功"+result.openid);
-             if(state=='conf') window.location="/msite/infoConfig.html?user="+result.openid;
+             if(state=='conf') window.location="/msite/infoConfig.html?user="+result.openid+"&appid="+appid;
              else if(state=='book') window.location="/msite/myBooking.html?user="+result.openid;
              else if(state=='activity') window.location="/msite/myActivity.html?user="+result.openid;
          },
