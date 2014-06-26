@@ -75,7 +75,10 @@ function getBrand(db, username,callback) {
                         else {callback(new Error('4s has no brand.'));}
                     }
                 });
-            }else {callback(new Error('user has no 4s.'));}
+            }else {
+                console.log("user has no 4s.");
+                callback(new Error('user has no 4s.'));
+            }
         }
     });
 }
