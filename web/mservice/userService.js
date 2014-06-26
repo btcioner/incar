@@ -153,10 +153,6 @@ function userEnroll(req, res) {
 //车辆登记
 function carEnroll(req,res, cb){
     var params=req.body;
-    var temp=params.user.split('@');
-    var openId=temp[0];
-    var openId4S=temp[1];
-    var wx=openId+":"+openId4S;
     var obdCode=params.obd_code;
     var brand=params.brandCode;
     var series=params.seriesCode;
