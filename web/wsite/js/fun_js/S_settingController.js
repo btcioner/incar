@@ -22,8 +22,10 @@ function s_systemCtrl($scope, $http){
     $scope.modify = function()
     {
         $("#formId_edit2").ajaxForm(function(data){
+
             $scope.s4.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
+
         $scope.modifyDiv = true;
         $scope.settingListDiv = false;
     }

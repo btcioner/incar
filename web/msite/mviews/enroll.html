@@ -4,7 +4,7 @@
 <head>
     <title>欢迎注册</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,  user-scalable=no" />
 
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script  src="../mscripts/car.js"></script>
@@ -23,6 +23,7 @@
     </style>
  <script type="text/javascript">
   var user;//用户openId
+  var appid;//wxappid
   //var webserviceurl;//webservice地址
   var today;//当天日期
   var brandCode;
@@ -41,6 +42,7 @@
            today = new Date();
         //获取user的微信openId
 			user=getQueryString("user");
+            appid=getQueryString("appid");
 		//获取汽车品牌、车型数据
            initCarBrand();
 		  //
@@ -64,13 +66,13 @@
       }
       if($('#brand').val()==null||$('#brand').val()=='-1'){alert("请选择汽车品牌");return;}
       if($('#selectSeries').val()==null||$('#selectSeries').val()=='-1'){alert("请选择品牌系列");return;}
-      if($('#manuyear').val()==null||$('#manuyear').val()=='-1'){alert("请选择年款");return;}
-      if($('#ownername').val()==null||$('#ownername').val().length<1){alert("请填写车主姓名");return;}
-      if($('#phonenumber').val()==null||$('#phonenumber').val().length<1){alert("请填写联系电话");return;}
-      if($('#currentMileage').val()==null||$('#currentMileage').val().length<1){alert("请填写当前里程");return;}
-      if($('#enginetype').val()==null||$('#enginetype').val().length=='-1'){alert("请选择发动机类型");return;}
-      if($('#displacement').val()==null||$('#displacement').val().length<1){alert("请填写排气量");return;}
-      if($('#carage').val()==null||$('#carage').val().length=='-1'){alert("请选择车龄");return;}
+      if($('#modelYear').val()==null||$('#modelYear').val()=='-1'){alert("请选择年款");return;}
+      if($('#nick').val()==null||$('#nick').val().length<1){alert("请填写车主姓名");return;}
+      if($('#phone').val()==null||$('#phone').val().length<1){alert("请填写联系电话");return;}
+      if($('#mileage').val()==null||$('#mileage').val().length<1){alert("请填写当前里程");return;}
+      if($('#engine_type').val()==null||$('#engine_type').val().length=='-1'){alert("请选择发动机类型");return;}
+      if($('#disp').val()==null||$('#disp').val().length<1){alert("请填写排气量");return;}
+      if($('#age').val()==null||$('#age').val().length=='-1'){alert("请选择车龄");return;}
       //alert("1");
 
           postData.user = user;
@@ -79,6 +81,7 @@
           postData.brand= document.getElementById("brand").value;
           postData.brandCode= brandCode;
           postData.series= document.getElementById("selectSeries").value;
+          postData.appid = appid;
           var obj=document.getElementById("selectSeries");
           var serieseValue;
           var seriesText;
@@ -163,7 +166,7 @@
         $.ajax({
             type: "POST",
             url: "/mservice/brandData",
-            data: {'user':user},
+            data: {'user':user, 'appid':appid },
             dataType: "json",
             success:function(data){
                 document.getElementById('brand').value=data.brand;

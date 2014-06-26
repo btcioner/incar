@@ -71,15 +71,22 @@ function userEnroll(req, res) {
         var openId4S=temp[1];
         var phone=params.phone;
         var nickName=params.nick;
+        var appid = params.appid;
 
-        var sql="select id from t_4s where openid=?";
-        dao.findBySql(sql,[openId4S],function(rows){
+        if(!appid) {
+            console.log("没有传入参数appid");
+            res.send("没有传入参数appid");
+            return;
+        }
+
+        var sql="select id from t_4s where appid=?";
+        dao.findBySql(sql,[appid],function(rows){
             if(rows.length>0){
                 var s4id=rows[0].id;
                 var user={
                     name:username,
                     pwd:password,
-                    wx_oid:openId+':'+openId4S,
+                    wx_oid:openId+':'+ rows[0].openid,
                     phone:phone,
                     nick:nickName,
                     s4_id:s4id
@@ -87,14 +94,14 @@ function userEnroll(req, res) {
                 sql="insert into t_account set ?";
                 dao.insertBySql(sql,user,function(err,info){
                     if(err){
-                        res.write({status:'failed',message:'添加账户失败'});
+                        res.send({status:'failed',message:'添加账户失败'});
                     }
                     var accountId=info.insertId;
-                    res.wirte({status:'success',accountId:accountId});
+                    res.send({status:'success',accountId:accountId});
                 });
             }
             else{
-                res.wirte({status:'failed',message:'无法识别的4SOpenId'});
+                res.send({status:'failed',message:'无法识别的appid'});
             }
         });
         carEnroll(req,res);

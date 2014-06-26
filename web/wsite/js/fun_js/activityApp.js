@@ -45,7 +45,7 @@ angular.module("SActivityApp", [
             $scope.nickName = $.cookie("nick_4s");//保存登录进来用户的nick
             $scope.s4Name = $.cookie("s4_name");
         }else{
-            window.location="../login.html";
+            parent.location.href="../login.html";
         }
         $scope.changeLeftbar = function(id)
         {

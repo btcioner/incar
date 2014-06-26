@@ -65,7 +65,7 @@ angular.module("SReservationApp", [
                 $http.get(baseurl+"logout").success(function(data){
                     if(data.status == "ok")
                     {
-                        window.location="../login.html";
+                        parent.location.href="../login.html";
                     }
                 }).error(function(data){
                         alert("请求无响应!");

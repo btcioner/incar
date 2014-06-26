@@ -42,7 +42,7 @@ app.controller("loginCtrl", function($scope, $http){
                            $.cookie("s4_id",data.staff.s4_id);
                            $.cookie("brand_id",data1.s4.brand);
                            $.cookie("s4_name",data1.s4.name);
-                           window.location.href='/4sStore/index.html';
+                           window.location.href='/4sStore/main.html';
                        }
                     }).error(function(data1){
                             alert("请求无响应");

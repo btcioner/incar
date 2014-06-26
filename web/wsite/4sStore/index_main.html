@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="SIndexApp">
+<head>
+<title>4S店管理系统</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../css/bootstrap.min_1.css" />
+<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="../css/uniform.css" />
+<link rel="stylesheet" href="../css/select2_1.css" />
+<link rel="stylesheet" href="../css/maruti-style_1.css" />
+<link rel="stylesheet" href="../css/maruti-media_1.css" class="skin-color" />
+<link rel="stylesheet" type="text/css" href="../css/newstyle_1.css" />
+</head>
+<body ng-controller="s_indexCtrl" class="main_dis" id="body_id">
+<div id="warp">
+<div id="content" >
+    <div id="content-header">
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class=""><i class="icon-home"></i>首页</a></div>
+    </div>
+    <!--home_contentbox start-->
+    <div id="home_contentbox">
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="reservationService.html#/collapseGOne/applied">
+                <div class="home_column">
+                    <div class="datebox color_b">{{applyCount}}<br/>辆</div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">服务预约</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">车主通过微信、APP、电话等渠道生成的预约保养、维修单。</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="maintainInfo.html#/collapseGOne">
+                <div class="home_column">
+                    <div class="datebox color_y">{{careCount}}<br/>辆</div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">提醒信息</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">依据车辆状态，如里程达到保养周期、发生故障等信息，生成客户关怀、提醒信息。</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="activityInfo.html">
+                <div class="home_column">
+                    <div class="iconbox color_r icon_01"></div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">活动管理</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">发布特价工位、试乘试驾、转盘、彩票、节油大赛等活动。</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="customerManage.html">
+                <div class="home_column">
+                    <div class="iconbox icon_02 color_g"></div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">客户管理</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">系统用户管理，包括微信用户、APP用户，包括分组等操作。</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="driveData.html">
+                <div class="home_column">
+                    <div class="iconbox icon_03 color_b"></div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">行车数据</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">所有车辆行驶数据。</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <!--home_columnbox start-->
+        <div class="home_columnbox">
+            <a href="setting.html">
+                <div class="home_column">
+                    <div class="iconbox icon_04 color_y"></div>
+                    <div class="column_mainbox">
+                        <table width="172" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="35" valign="bottom"><span class="title">系统设置</span></td>
+                            </tr>
+                            <tr>
+                                <td height="105" valign="middle">系统设置。</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div><!--home_columnbox end-->
+        <div class="clearfix"></div>
+    </div><!--home_contentbox end-->
+
+</div><!--content end-->
+</div><!--warp end-->
+
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.cookie.js"></script>
+<script src="../js/jquery.dataTables.min.js"></script>
+<script src="../js/jquery.uniform.js"></script>
+<script src="../js/jquery.ui.custom.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/select2.min.js"></script>
+<script src="../js/maruti.js"></script>
+<script src="../js/maruti.tables.js"></script>
+<script src="../js/angular.min.js"></script>
+<script src="../js/fun_js/common.js"></script>
+<script src="../js/fun_js/S_indexController.js"></script>
+</body>
+</html>

@@ -458,8 +458,6 @@ function s_customerCtrl($scope, $http,$routeParams){
             case 4:
                 changeView(3)
                 break;
-
-
         }
     }
  //自定义标签相关
@@ -475,11 +473,12 @@ function s_customerCtrl($scope, $http,$routeParams){
     //添加自定义标签按钮
     $scope.addCustomLabel = function()
     {
+        $scope.label_name = "";
         changeView(4);
     }
     $scope.confirmAddCustomLabel = function()
     {
-        $scope.postData = {"tagName":$scope.label_name,"s4Id": $.cookie("s4_id"),creator: $.cookie("nick")};
+        $scope.postData = {"tagName":$scope.label_name,"s4Id": $.cookie("s4_id"),creator: $.cookie("nick_4s")};
         $http.post('/tag/addTag/',$scope.postData).success(function(data){
                if(data.status == "success")
                {

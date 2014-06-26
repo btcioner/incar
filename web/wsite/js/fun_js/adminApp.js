@@ -43,8 +43,13 @@ angular.module("AdminApp", [
       //  $locationProvider.html5Mode(true);
 
 }).controller("adminCtrl",function($scope,$http){
-
-     $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+        if($.cookie("nick") != "" && $.cookie("nick") != null)
+        {
+            $("#body_id").css("display","block");
+            $scope.nickName = $.cookie("nick");//保存登录进来用户的nick
+        }else{
+            window.location="../login.html";
+        }
      //动态改变被激活菜单
      $scope.active = function(ac_id)
      {

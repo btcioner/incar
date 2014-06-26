@@ -400,3 +400,7 @@ body{
 	overflow: auto;
 	padding-right: 100px;
 }
+.main_dis
+{
+    display:none;
+}
