@@ -4,7 +4,7 @@
 <head>
     <title>欢迎注册</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,  user-scalable=no" />
 
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script  src="../mscripts/car.js"></script>
@@ -66,7 +66,7 @@
       }
       if($('#brand').val()==null||$('#brand').val()=='-1'){alert("请选择汽车品牌");return;}
       if($('#selectSeries').val()==null||$('#selectSeries').val()=='-1'){alert("请选择品牌系列");return;}
-      if($('#manuyear').val()==null||$('#manuyear').val()=='-1'){alert("请选择年款");return;}
+      if($('#modelYear').val()==null||$('#modelYear').val()=='-1'){alert("请选择年款");return;}
       if($('#ownername').val()==null||$('#ownername').val().length<1){alert("请填写车主姓名");return;}
       if($('#phonenumber').val()==null||$('#phonenumber').val().length<1){alert("请填写联系电话");return;}
       if($('#currentMileage').val()==null||$('#currentMileage').val().length<1){alert("请填写当前里程");return;}
