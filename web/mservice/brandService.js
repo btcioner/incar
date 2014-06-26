@@ -127,7 +127,7 @@ function getBrandForNew(db, spoenid,callback){
     });
 }
 
-function getBrandFromAppId(db, appid, cb){
+function getBrandFromAppId(db, appid, callback){
     var pool = db();
     var report ={};
     pool.query('select brand from t_4s where wx_app_id=?;',[appid],function(err,rows){
