@@ -25,7 +25,7 @@ booking.getPromotionSlots = function(userName,sopenid, callback) {
     var pool = this.db();
     getOrgId(this.db, userName,sopenid, function(err, result) {
         if (err) { return callback(err); }
-        pool.query('select id, slot_location location, slot_time time, benefit, description from t_promotion_slot where promotion_status = 2 and promotion_time > now() and storeId = ?;', [result], function(err, rows) {
+        pool.query('select id, slot_location location, slot_time time, benefit, description from t_promotion_slot where promotion_status = 2 and slot_time > now() and storeId = ?;', [result], function(err, rows) {
             if (err) { return callback(err); }
             return callback(null, rows);
         });
