@@ -5,6 +5,7 @@
 'use strict';
 
 var dao=require("../core/dataAccess/dao");
+var findPool = require('../config/db');
 
 exports = module.exports = function(service) {
     service.post.enroll = userEnroll;
@@ -188,8 +189,22 @@ function carEnroll(req,res, cb){
             };
             sql="update t_car set ? where id=?";
             dao.executeBySql(sql,[car,id],function(){
-                console.log("更新成功");
-                if(cb) { cb(null); }
+
+                // 建立t_car_user;
+                var sql = "INSERT t_car_user(s4_id,acc_id,car_id,user_type) values(?,?,?,?)";
+                var pool = findPool();
+                pool.query(sql, [user.s4_id, user.id, id, 1], function(ex, result){
+                    if(ex) {
+                        console.log(ex);
+                        if(cb) cb(ex);
+                        else res.json(ex);
+                        return;
+                    }
+
+                    console.log("更新成功");
+                    if(cb) { cb(null); }
+                    else res.json({status:"ok"});
+                });
             });
         }
         else{
