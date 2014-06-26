@@ -342,7 +342,7 @@ function packetProcess_1601(dataBuffer,cb) {
                     var flameOutLongitude=other[0];      //熄火时经度
                     var flameOutLatitude=other[1];       //熄火时纬度
                     var flameOutDirection=other[2];      //熄火时方向
-                    var flameOutLocationTime=other[3];   //熄火时定位时间
+                    var flameOutLocationTime=getDateTimeStamp(other[3]);   //熄火时定位时间
                     var flameOutLocationType=other[4];   //熄火时定位方式(1-基站定位,2-GPS定位)
                     var sql="update t_obd_drive set ? where id=?";
                     var args=[{
