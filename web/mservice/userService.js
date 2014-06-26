@@ -94,23 +94,25 @@ function userEnroll(req, res) {
                     tel_pwd:"000000000000"
                 };
                 sql="insert into t_account set ?";
-                dao.insertBySql(sql,user,function(err,info){
-                    if(err){
-                        res.send({status:'failed',message:'添加账户失败'});
+                var pool = findPool();
+                pool.query(sql, [user], function(ex, result){
+                    if(ex){
+                        res.json({status:'failed',message:'添加账户失败'});
+                        return;
                     }
 
-                    var accountId=info.insertId;
-                    user.id = info.insertId;
+                    var accountId=result.insertId;
+                    user.id = result.insertId;
                     req.body.user = user;
 
                     carEnroll(req,res, function(ex){
-                        if(ex) { res.send(ex); return; }
-                        res.send({status:'success',accountId:accountId});
+                        if(ex) { res.json(ex); return; }
+                        res.json({status:'success',accountId:accountId});
                     });
                 });
             }
             else{
-                res.send({status:'failed',message:'无法识别的appid'});
+                res.json({status:'failed',message:'无法识别的appid'});
             }
         });
     }else{
