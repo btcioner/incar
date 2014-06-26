@@ -47,10 +47,19 @@
                     <input type="text"  class="span11"  ng-model="deviceDetail.sim_number" style="width:260px;" />
                 </div>
             </div>
+
             <div class="control-group w_44 fl" >
                 <label class="control-label pad_l20 w_100">状态：</label>
                 <div class="controls pad_t_b_10">
                     <input type="text" class="span11" disabled ng-model="deviceDetail.act_type_name" style="width:260px;" />
+                </div>
+            </div>
+            <div class="control-group w_44 fl" >
+                <label class="control-label pad_l20 w_100">所属4S店：</label>
+                <div class="controls pad_t_b_10">
+                    <select style="width:260px;" class="span11" ng-model="deviceDetail.s4_id" ng-options="s4.id as s4.name for s4 in s4s_all">
+                        <option>请选择</option>
+                    </select>
                 </div>
             </div>
             <div class="control-group w_44 fl" >
@@ -71,12 +80,7 @@
                     <input type="text" class="span11" disabled ng-model="deviceDetail.series_name" style="width:260px;"  />
                 </div>
             </div>
-            <div class="control-group w_44 fl" >
-                <label class="control-label pad_l20 w_100">所属4S店：</label>
-                <div class="controls pad_t_b_10">
-                    <input type="text" class="span11" disabled ng-model="deviceDetail.s4_name" style="width:260px;"  />
-                </div>
-            </div>
+
             <div class="control-group w_44 fl" >
                 <label class="control-label pad_l20 w_100">城市：</label>
                 <div class="controls pad_t_b_10">

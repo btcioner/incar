@@ -488,6 +488,16 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
         getReservationRecord();
         $scope.cusDetailDiv = true;
         $scope.cusTabDiv = true;
+        for(var i=1;i<7;i++)
+        {
+            $("#tab"+i).hide();
+            $("#tab_"+i).removeClass();
+        }
+        $("#tab_1").addClass("active");
+        $("#tab1").show();
+        $("#tab1").removeClass();
+        $("#tab1").addClass("tab-pane active");
+        getReservationRecord();
         switch(id)
         {
             case 1:
@@ -545,7 +555,7 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
             case 6:
                 getCustomTagList();
                 $scope.randomTime = new Date();
-                $http.get('/tag/getTagsByCarId/'+$scope.cusDetail.carId+"?t="+$scope.randomTime).success(function(data){
+                $http.get('/tag/getTagsByCarId/'+$scope.cusDetail.ref_car_id+"?t="+$scope.randomTime).success(function(data){
                     $scope.systemTag = data.systemTag;
                     $scope.customTag = data.customTag;
                     for(var i=0;i<$scope.customTags.length;i++)
@@ -687,7 +697,7 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     {
         $scope.tips="";
         $scope.randomTime = new Date();
-        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.carId+"&t="+$scope.randomTime).success(function(data){
+        $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&step=done&car_id="+$scope.cusDetail.ref_car_id+"&t="+$scope.randomTime).success(function(data){
             $scope.careList = data.works;
             PagingInfo(data.totalCount);
             if(data.works.length > 0)
@@ -713,7 +723,7 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     {
         $scope.tips="";
         $scope.randomTime = new Date();
-        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.carId+"&t="+$scope.randomTime).success(function(data){
+        $http.get(baseurl+'organization/'+$.cookie("org_id")+'/care_tel_rec?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+"&car_id="+$scope.cusDetail.ref_car_id+"&t="+$scope.randomTime).success(function(data){
             $scope.recordList = data.records;
             PagingInfo(data.totalCount);
             if(data.records.length > 0)
@@ -731,15 +741,20 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
             });
     }
 
-    //给车打标签
-    $scope.markTags = function(tagId)
+//给车打标签
+    $scope.markTags = function()
     {
-        $scope.postData={"carId":$scope.cusDetail.carId,"tags":tagId};
-        $http.put('/tag/markTags/',$scope.postData).success(function(data){
-            if(data.status =="success")
+        $scope.tags = "";
+        for(var i=0;i<$scope.customTags.length;i++)
+        {
+            if($scope.customTags[i].tagFlag == true)
             {
-
+                $scope.tags = $scope.tags + $scope.customTags[i].tagId +",";
             }
+        }
+        $scope.postData={"carId":$scope.cusDetail.ref_car_id,"tags":$scope.tags};
+        $http.put('/tag/markTags/',$scope.postData).success(function(data){
+
         }).error(function(data){
                 alert("请求无响应");
             })
@@ -751,8 +766,7 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
         $scope.tips="";
         $scope.randomTime = new Date();
         $http.get('/tag/tagListCustom/'+ $.cookie("s4_id")+"?t="+$scope.randomTime).success(function(data){
-            $scope.customTags = data[0].tags;
-            PagingInfo( $scope.customTags.length);
+            $scope.customTags = data.data;
         }).error(function(data){
                 alert("请求无响应");
             })
