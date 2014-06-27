@@ -460,9 +460,6 @@ exports.markTags= function(req,res){
             args.push({car_id:carId,tag_id:tags[i]});
         }
     }
-    console.log(tagStr);
-    console.log(sqlList);
-    console.log(args);
     dao.executeBySql(sqlList,args,function(){
         res.json({status:'success'});
     });
