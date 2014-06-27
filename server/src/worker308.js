@@ -280,12 +280,12 @@ function packetProcess_1601(dataBuffer,cb) {
                     obd.fireLocationType=other[4];              //定位方式(1-基站定位,2-GPS定位)
                     obd.lastUpdateTime=lastUpdateTime;
                     var sql="insert into t_obd_drive set ?";
-                    dao.executeBySql(sql,obd,function(err){
-                        if(err){
+                    dao.insertBySql(sql,obd,function(info){
+                        if(info.err){
                             throw err;
                         }
                         else{
-                            console.log("成功创建行驶信息(点火):"+JSON.stringify(obd));
+                            console.log("成功创建行驶信息(点火):"+JSON.stringify(info));
                             cb();
                         }
                     });
