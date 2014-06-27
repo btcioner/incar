@@ -149,8 +149,13 @@ function saveToHistory(dataBuffer,tag){
     history.content=toString0X(dataBuffer);
     history.receiveDate=new Date();
     var sql="insert into t_obd_history set ?";
-    dao.executeBySql([sql],[history],function(){
-        console.log("成功创建历史信息!");
+    dao.executeBySql(sql,history,function(err){
+        if(err){
+            console.log("创建历史信息失败:"+err);
+        }
+        else{
+            console.log("成功创建历史信息!");
+        }
     });
 }
 function toString0X(dataBuffer){
@@ -251,167 +256,207 @@ function packetProcess_1601(dataBuffer,cb) {
     //2、如果是发动机启动则创建一条新的行驶信息
     if(dataType===0x01){
         var sql="select t.tripId,t.obdCode,t.id,t.carStatus from t_obd_drive t where t.tripId=? and t.obdCode=?";
-        dao.findBySql(sql,[tripId,obdCode],function(rows){
-            if(rows.length===0){
-                var obd={};
-                obd.obdCode=obdCode;
-                obd.tripId=tripId;
-                obd.vid=vid;
-                obd.vin=vin;
-                obd.carStatus=1;
-                obd.fireTime=receiveTime;
-                obd.firingVoltage=dataManager.nextString(); //点火电压
-                obd.fireSpeed=dataManager.nextString();     //点火车速
-                obd.fireDistance=dataManager.nextString();//当前行驶距离
-                var other=dataManager.nextString().split(',');
-                obd.fireLongitude=other[0];                 //经度
-                obd.fireLatitude=other[1];                  //纬度
-                obd.fireDirection=other[2];                 //方向
-                obd.fireLocationTime=toTime(other[3]);              //定位时间
-                obd.fireLocationType=other[4];              //定位方式(1-基站定位,2-GPS定位)
-                obd.lastUpdateTime=lastUpdateTime;
-                var sql="insert into t_obd_drive set ?";
-                dao.executeBySql([sql],[obd],function(){
-                    console.log("成功创建行驶信息(点火):"+JSON.stringify(obd));
-                    cb();
-                });
+        dao.findBySql(sql,[tripId,obdCode],function(info){
+            if(info.err){
+                throw info.err;
             }
             else{
-                console.log("行程信息已经存在");
-                cb();
+                var rows=info.data;
+                if(rows.length===0){
+                    var obd={};
+                    obd.obdCode=obdCode;
+                    obd.tripId=tripId;
+                    obd.vid=vid;
+                    obd.vin=vin;
+                    obd.carStatus=1;
+                    obd.fireTime=receiveTime;
+                    obd.firingVoltage=dataManager.nextString(); //点火电压
+                    obd.fireSpeed=dataManager.nextString();     //点火车速
+                    obd.fireDistance=dataManager.nextString();//当前行驶距离
+                    var other=dataManager.nextString().split(',');
+                    obd.fireLongitude=other[0];                 //经度
+                    obd.fireLatitude=other[1];                  //纬度
+                    obd.fireDirection=other[2];                 //方向
+                    obd.fireLocationTime=toTime(other[3]);              //定位时间
+                    obd.fireLocationType=other[4];              //定位方式(1-基站定位,2-GPS定位)
+                    obd.lastUpdateTime=lastUpdateTime;
+                    var sql="insert into t_obd_drive set ?";
+                    dao.executeBySql(sql,obd,function(err){
+                        if(err){
+                            throw err;
+                        }
+                        else{
+                            console.log("成功创建行驶信息(点火):"+JSON.stringify(obd));
+                            cb();
+                        }
+                    });
+                }
+                else{
+                    console.log("行程信息已经存在");
+                    cb();
+                }
             }
         });
     }
     //3、其他情况则更新行驶信息，需要先获取行驶信息的id
     else{
         var sql="select t.id,t.carStatus from t_obd_drive t where t.tripId=? and t.obdCode=?";
-        dao.findBySql(sql,[tripId,obdCode],function(rows){
-            if(rows.length>0){
-                var id=rows[0].id;
-                var carStatus=rows[0].carStatus;
-                if(dataType===0x02){
-                    //2、获取当前行驶详细信息
-                    var driveDetail=[];
-                    var detailCount=dataManager.nextWord();            //车况信息个数
+        dao.findBySql(sql,[tripId,obdCode],function(info){
+            if(info.err){
+                throw info.err;
+            }
+            else{
+                var rows=info.data;
+                if(rows.length>0){
+                    var id=rows[0].id;
+                    var carStatus=rows[0].carStatus;
+                    if(dataType===0x02){
+                        //2、获取当前行驶详细信息
+                        var driveDetail=[];
+                        var detailCount=dataManager.nextWord();            //车况信息个数
 
-                    for(var i=0;i<detailCount;i++){
-                        var id=dataManager.nextWord();;             //ID
-                        var value=get401ValueByID(id);
-                        driveDetail.push({id:id,value:value});
+                        for(var i=0;i<detailCount;i++){
+                            var id=dataManager.nextWord();;             //ID
+                            var value=get401ValueByID(id);
+                            driveDetail.push({id:id,value:value});
+                        }
+                        var sql="insert into t_drive_detail set ?";
+                        var args={
+                            obdCode:obdCode,
+                            obdDriveId:id,
+                            detail:JSON.stringify(driveDetail),
+                            createTime:new Date()
+                        };
+                        if(carStatus>1){
+                            dao.insertBySql(sql,args,function(info){
+                                if(info.err){
+                                    throw err;
+                                }
+                                else{
+                                    console.log("车辆行驶详情保存成功:"+JSON.stringify(info));
+                                    cb();
+                                }
+                            });
+                        }
+                        else{
+                            var sqlDrive="update t_obd_drive set ? where id=?";
+                            var argsDrive=[{carStatus:2,lastUpdateTime:lastUpdateTime},id];
+                            dao.executeBySqls([sql,sqlDrive],[args,argsDrive],function(info){
+                                if(info.err){
+                                    throw err;
+                                }
+                                else{
+                                    console.log("成功更新行驶信息(行驶中):"+JSON.stringify(info));
+                                    cb();
+                                }
+                            });
+                        }
                     }
-                    var sql="insert into t_drive_detail set ?";
-                    var args={
-                        obdCode:obdCode,
-                        obdDriveId:id,
-                        detail:JSON.stringify(driveDetail),
-                        createTime:new Date()
-                    };
-                    if(carStatus>1){
-                        dao.insertBySql(sql,args,function(info,detail){
-                            detail.id=info.insertId;
-                            console.log("车辆行驶详情保存成功:"+JSON.stringify(detail));
-                            cb();
+                    else if(dataType===3){
+                        //--熄火
+                        //-----本次行程数据小计
+                        var runTime=dataManager.nextWord();            //发动机运行时间
+                        var currentMileage=dataManager.nextLong();     //本次驾驶行驶里程
+                        var currentAvgOilUsed=dataManager.nextWord();  //本次驾驶平均油耗
+                        var mileage=dataManager.nextLong();            //累计行驶里程
+                        var avgOilUsed=dataManager.nextWord();         //累计平均油耗
+                        //-----本行程车速分组统计
+                        var speedGroup=[];              //本行程车速分组统计(JSON)
+                        var groupCount=dataManager.nextByte();
+                        for(var i=0;i<groupCount;i++){
+                            var speed=dataManager.nextByte();
+                            var time=dataManager.nextWord();
+                            var distance=dataManager.nextLong();
+                            speedGroup.push({speed:speed,time:time,distance:distance});
+                        }
+                        //-----驾驶习惯统计
+                        var speedingTime=dataManager.nextWord();       //超速行驶时间
+                        var speedUp=dataManager.nextWord();            //急加速次数
+                        var speedDown=dataManager.nextWord();          //急减速次数
+                        var sharpTurn=dataManager.nextLong();          //急转弯次数
+                        var speedMax=dataManager.nextByte();           //最高车速
+                        //-----熄火定位信息
+                        var flameOutSpeed=dataManager.nextString();          //熄火车速
+                        var flameOutDistance=dataManager.nextString(); //熄火时行驶距离
+                        var other=dataManager.nextString().split(',');
+                        var flameOutLongitude=other[0];      //熄火时经度
+                        var flameOutLatitude=other[1];       //熄火时纬度
+                        var flameOutDirection=other[2];      //熄火时方向
+                        var flameOutLocationTime=toTime(other[3]);   //熄火时定位时间
+                        var flameOutLocationType=other[4];   //熄火时定位方式(1-基站定位,2-GPS定位)
+                        var sql="update t_obd_drive set ? where id=?";
+                        var args=[{
+                            runTime:runTime,
+                            currentMileage:currentMileage,
+                            currentAvgOilUsed:currentAvgOilUsed,
+                            mileage:mileage,
+                            avgOilUsed:avgOilUsed,
+                            speedGroup:JSON.stringify(speedGroup),
+                            speedingTime:speedingTime,
+                            speedUp:speedUp,
+                            speedDown:speedDown,
+                            sharpTurn:sharpTurn,
+                            speedMax:speedMax,
+                            flameOutSpeed:flameOutSpeed,
+                            flameOutDistance:flameOutDistance,
+                            flameOutLongitude:flameOutLongitude,
+                            flameOutLatitude:flameOutLatitude,
+                            flameOutDirection:flameOutDirection,
+                            flameOutLocationTime:flameOutLocationTime,
+                            flameOutLocationType:flameOutLocationType,
+                            carStatus:3,
+                            flameOutTime:receiveTime,
+                            lastUpdateTime:lastUpdateTime
+                        },id];
+                        dao.executeBySql(sql,args,function(info){
+                            if(info.err){
+                                throw err;
+                            }
+                            else{
+                                console.log("成功更新行驶信息(熄火):"+JSON.stringify(info));
+                                cb();
+                            }
+                        });
+                    }
+                    else if(dataType===4){
+                        var flameOutVoltage=dataManager.nextString();        //熄火时蓄电池电压
+                        var sql="update t_obd_drive set ? where id=?";
+                        var args=[{
+                            flameOutVoltage:flameOutVoltage,
+                            carStatus:4,
+                            lastUpdateTime:lastUpdateTime
+                        },id];
+                        dao.executeBySql(sql,args,function(info){
+                            if(info.err){
+                                throw err;
+                            }
+                            else{
+                                console.log("成功更新行驶信息(行程结束):"+JSON.stringify(info));
+                                cb();
+                            }
                         });
                     }
                     else{
-                        var sqlDrive="update t_obd_drive set ? where id=?";
-                        var argsDrive=[{carStatus:2,lastUpdateTime:lastUpdateTime},id];
-                        dao.executeBySql([sql,sqlDrive],[args,argsDrive],function(){
-                            console.log("成功更新行驶信息(行驶中):"+JSON.stringify(argsDrive));
-                            console.log("车辆行驶详情保存成功:"+JSON.stringify(args));
-                            cb();
+                        var sql="update t_obd_drive set ? where id=?";
+                        var args=[{
+                            carStatus:5,
+                            lastUpdateTime:lastUpdateTime
+                        },id];
+                        dao.executeBySql(sql,args,function(info){
+                            if(info.err){
+                                throw err;
+                            }
+                            else{
+                                console.log("成功更新行驶信息(异常):"+JSON.stringify(info));
+                                cb();
+                            }
                         });
                     }
                 }
-                else if(dataType===3){
-                    //--熄火
-                    //-----本次行程数据小计
-                    var runTime=dataManager.nextWord();            //发动机运行时间
-                    var currentMileage=dataManager.nextLong();     //本次驾驶行驶里程
-                    var currentAvgOilUsed=dataManager.nextWord();  //本次驾驶平均油耗
-                    var mileage=dataManager.nextLong();            //累计行驶里程
-                    var avgOilUsed=dataManager.nextWord();         //累计平均油耗
-                    //-----本行程车速分组统计
-                    var speedGroup=[];              //本行程车速分组统计(JSON)
-                    var groupCount=dataManager.nextByte();
-                    for(var i=0;i<groupCount;i++){
-                        var speed=dataManager.nextByte();
-                        var time=dataManager.nextWord();
-                        var distance=dataManager.nextLong();
-                        speedGroup.push({speed:speed,time:time,distance:distance});
-                    }
-                    //-----驾驶习惯统计
-                    var speedingTime=dataManager.nextWord();       //超速行驶时间
-                    var speedUp=dataManager.nextWord();            //急加速次数
-                    var speedDown=dataManager.nextWord();          //急减速次数
-                    var sharpTurn=dataManager.nextLong();          //急转弯次数
-                    var speedMax=dataManager.nextByte();           //最高车速
-                    //-----熄火定位信息
-                    var flameOutSpeed=dataManager.nextString();          //熄火车速
-                    var flameOutDistance=dataManager.nextString(); //熄火时行驶距离
-                    var other=dataManager.nextString().split(',');
-                    var flameOutLongitude=other[0];      //熄火时经度
-                    var flameOutLatitude=other[1];       //熄火时纬度
-                    var flameOutDirection=other[2];      //熄火时方向
-                    var flameOutLocationTime=toTime(other[3]);   //熄火时定位时间
-                    var flameOutLocationType=other[4];   //熄火时定位方式(1-基站定位,2-GPS定位)
-                    var sql="update t_obd_drive set ? where id=?";
-                    var args=[{
-                        runTime:runTime,
-                        currentMileage:currentMileage,
-                        currentAvgOilUsed:currentAvgOilUsed,
-                        mileage:mileage,
-                        avgOilUsed:avgOilUsed,
-                        speedGroup:JSON.stringify(speedGroup),
-                        speedingTime:speedingTime,
-                        speedUp:speedUp,
-                        speedDown:speedDown,
-                        sharpTurn:sharpTurn,
-                        speedMax:speedMax,
-                        flameOutSpeed:flameOutSpeed,
-                        flameOutDistance:flameOutDistance,
-                        flameOutLongitude:flameOutLongitude,
-                        flameOutLatitude:flameOutLatitude,
-                        flameOutDirection:flameOutDirection,
-                        flameOutLocationTime:flameOutLocationTime,
-                        flameOutLocationType:flameOutLocationType,
-                        carStatus:3,
-                        flameOutTime:receiveTime,
-                        lastUpdateTime:lastUpdateTime
-                    },id];
-                    dao.executeBySql([sql],[args],function(){
-                        console.log("成功更新行驶信息(熄火):"+JSON.stringify(args));
-                        cb();
-                    });
-                }
-                else if(dataType===4){
-                    var flameOutVoltage=dataManager.nextString();        //熄火时蓄电池电压
-                    var sql="update t_obd_drive set ? where id=?";
-                    var args=[{
-                        flameOutVoltage:flameOutVoltage,
-                        carStatus:4,
-                        lastUpdateTime:lastUpdateTime
-                    },id];
-                    dao.executeBySql([sql],[args],function(){
-                        console.log("成功更新行驶信息(行程结束):"+JSON.stringify(args));
-                        cb();
-                    });
-                }
                 else{
-                    var sql="update t_obd_drive set ? where id=?";
-                    var args=[{
-                        carStatus:5,
-                        lastUpdateTime:lastUpdateTime
-                    },id];
-                    dao.executeBySql(sql,[args],function(){
-                        console.log("成功更新行驶信息(异常):"+JSON.stringify(args));
-                        cb();
-                    });
+                    console.log("车辆行驶信息丢失,无法找到[OBDCode:"+obdCode+"][TripId:"+tripId+"]对应的行程信息");
+                    cb();
                 }
-            }
-            else{
-                console.log("车辆行驶信息丢失,无法找到[OBDCode:"+obdCode+"][TripId:"+tripId+"]对应的行程信息");
-                cb();
             }
         });
     }
@@ -462,23 +507,32 @@ function packetProcess_1602(dataBuffer,cb) {
         obdAlarm.faultInfo=dataManager.nextString();
     }
     var sql="insert into t_obd_alarm set ?";
-    dao.insertBySql(sql,obdAlarm,function(info,alarm){
-        alarm.id=info.insertId;
-        console.log("成功创建报警信息:"+JSON.stringify(alarm));
-        if(alarm.alarmType===0x02){
-            sql="insert into t_remind set ?";
-            var remind={
-                obdCode:obdCode,
-                remindType:1,
-                remindStatus:1,
-                createTime:createTime
-            };
-            dao.insertBySql(sql,remind,function(info,remindInserted){
-                remindInserted.id=info.insertId;
-                console.log("成功创建碰撞提醒信息:"+JSON.stringify(remindInserted));
-            });
+    dao.insertBySql(sql,obdAlarm,function(info){
+        if(info.err){
+            throw err;
         }
-        cb();
+        else{
+            var alarm=info.data;
+            console.log("成功创建报警信息:"+JSON.stringify(alarm));
+            cb();
+            if(alarm.alarmType===0x02){
+                sql="insert into t_remind set ?";
+                var remind={
+                    obdCode:obdCode,
+                    remindType:1,
+                    remindStatus:1,
+                    createTime:createTime
+                };
+                dao.insertBySql(sql,remind,function(info){
+                    if(info.err){
+                        throw err;
+                    }
+                    else{
+                        console.log("成功创建碰撞提醒信息:"+JSON.stringify(info));
+                    }
+                });
+            }
+        }
     });
 }
 
@@ -636,39 +690,45 @@ function packetProcess_1603(dataBuffer,cb) {
 
     var sql="select t.id,t.brand,t.series,t.modelYear,t.engineType," +
         "t.disp,t.initCode from t_car t where t.obd_code=?";
-    dao.findBySql(sql,obdCode,function(rows) {
-        //3、如果找到了则校验传入的OBD信息和数据库中的OBD信息，若不同则更新
-        if(rows.length>0){
-            var obd=rows[0];
-            var obdInfo=get1603Default();
-            obdInfo.carUpdateCount=0x05;            //车辆信息更新数量(0x00或0x05)
-            obdInfo.vid=obd.id;                     //vid
-            obdInfo.brand=obd.brand;                //品牌
-            obdInfo.series=obd.series;              //系列
-            obdInfo.modelYear=obd.modelYear;        //年款
-            obdInfo.engineType=obd.engineType;     //发动机类型
-            obdInfo.engineDisplacement=obd.disp;    //发动机排量
-            obdInfo.initCode=obd.initCode;         //恢复出厂序列号
-            cb(get1603Response(obdInfo));
+    dao.findBySql(sql,obdCode,function(info) {
+        if(info.err){
+            throw err;
         }
-        //4、如果不存在则创建一个新的OBD，并写入默认数据
         else{
-            console.log("无法识别的ObdCode:"+obdCode);
-            /*obdInfo=get1603Default();
-            obdInfo.obdCode=obdCode;
-            obdInfo.tripId=tripId;
-            obdInfo.vid=vid;
-            obdInfo.vin=vin;
-            obdInfo.hardwareVersion=hardwareVersion;
-            obdInfo.firmwareVersion=firmwareVersion;
-            obdInfo.softwareVersion=softwareVersion;
-            obdInfo.diagnosisType=diagnosisType;
-            obdInfo.initCode=initCode;
-            var sql="insert into t_obd_info set ?";
-            dao.executeBySql([sql],[obdInfo],function(err,rows,fields){
-                if(err)throw err;
-                console.log("添加成功:"+JSON.stringify(obdInfo));
-            });*/
+            //3、如果找到了则校验传入的OBD信息和数据库中的OBD信息，若不同则更新
+            var rows=info.data;
+            if(rows.length>0){
+                var obd=rows[0];
+                var obdInfo=get1603Default();
+                obdInfo.carUpdateCount=0x05;            //车辆信息更新数量(0x00或0x05)
+                obdInfo.vid=obd.id;                     //vid
+                obdInfo.brand=obd.brand;                //品牌
+                obdInfo.series=obd.series;              //系列
+                obdInfo.modelYear=obd.modelYear;        //年款
+                obdInfo.engineType=obd.engineType;     //发动机类型
+                obdInfo.engineDisplacement=obd.disp;    //发动机排量
+                obdInfo.initCode=obd.initCode;         //恢复出厂序列号
+                cb(get1603Response(obdInfo));
+            }
+            //4、如果不存在则创建一个新的OBD，并写入默认数据
+            else{
+                console.log("无法识别的ObdCode:"+obdCode);
+                /*obdInfo=get1603Default();
+                 obdInfo.obdCode=obdCode;
+                 obdInfo.tripId=tripId;
+                 obdInfo.vid=vid;
+                 obdInfo.vin=vin;
+                 obdInfo.hardwareVersion=hardwareVersion;
+                 obdInfo.firmwareVersion=firmwareVersion;
+                 obdInfo.softwareVersion=softwareVersion;
+                 obdInfo.diagnosisType=diagnosisType;
+                 obdInfo.initCode=initCode;
+                 var sql="insert into t_obd_info set ?";
+                 dao.executeBySql([sql],[obdInfo],function(err,rows,fields){
+                 if(err)throw err;
+                 console.log("添加成功:"+JSON.stringify(obdInfo));
+                 });*/
+            }
         }
     });
 }
