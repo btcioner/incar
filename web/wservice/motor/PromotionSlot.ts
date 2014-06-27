@@ -201,6 +201,7 @@ module Service {
                     var tm : Date = null;
                     try{
                         tm = new Date(Date.parse(result[0].tm));
+                        // tm -= 8*3600*1000; // 时区调整
                         cb(null, tm);
                     }
                     catch(ex){

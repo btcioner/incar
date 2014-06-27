@@ -5,6 +5,7 @@
 'use strict';
 
 var dao=require("../core/dataAccess/dao");
+var findPool = require('../config/db');
 
 exports = module.exports = function(service) {
     service.post.enroll = userEnroll;
@@ -12,7 +13,7 @@ exports = module.exports = function(service) {
 function getUserInfo(wx){
     var sql="select * from t_account where wx_oid like ?";
     dao.findBySql(sql,['%'+wx+'%'],function(rows){
-        if(rows.length>0){
+                if(rows.length>0){
             return rows[0];
         }
         else{
@@ -79,7 +80,7 @@ function userEnroll(req, res) {
             return;
         }
 
-        var sql="select id from t_4s where appid=?";
+        var sql="select id, openid from t_4s where wx_app_id=?";
         dao.findBySql(sql,[appid],function(rows){
             if(rows.length>0){
                 var s4id=rows[0].id;
@@ -89,22 +90,31 @@ function userEnroll(req, res) {
                     wx_oid:openId+':'+ rows[0].openid,
                     phone:phone,
                     nick:nickName,
-                    s4_id:s4id
+                    s4_id:s4id,
+                    tel_pwd:"000000000000"
                 };
                 sql="insert into t_account set ?";
-                dao.insertBySql(sql,user,function(err,info){
-                    if(err){
-                        res.send({status:'failed',message:'添加账户失败'});
+                var pool = findPool();
+                pool.query(sql, [user], function(ex, result){
+                    if(ex){
+                        res.json({status:'failed',message:'添加账户失败'});
+                        return;
                     }
-                    var accountId=info.insertId;
-                    res.send({status:'success',accountId:accountId});
+
+                    var accountId=result.insertId;
+                    user.id = result.insertId;
+                    req.body.user = user;
+
+                    carEnroll(req,res, function(ex){
+                        if(ex) { res.json(ex); return; }
+                        res.json({status:'success',accountId:accountId});
+                    });
                 });
             }
             else{
-                res.send({status:'failed',message:'无法识别的appid'});
+                res.json({status:'failed',message:'无法识别的appid'});
             }
         });
-        carEnroll(req,res);
     }else{
         var params=req.body;
         var username=params.name;
@@ -144,13 +154,9 @@ function userEnroll(req, res) {
     }
 }
 //车辆登记
-function carEnroll(req,res){
+function carEnroll(req,res, cb){
     var params=req.body;
-    var temp=params.user.split('@');
-    var openId=temp[0];
-    var openId4S=temp[1];
-    var wx=openId+":"+openId4S
-    var obdCode=params.obdCode;
+    var obdCode=params.obd_code;
     var brand=params.brandCode;
     var series=params.seriesCode;
     var modelYear=params.modelYear;
@@ -161,10 +167,13 @@ function carEnroll(req,res){
     ageDate.setYear(ageDate.getFullYear()-age);
     var disp=params.disp;
     var engine_type=params.engine_type;
-    var user=getUserInfo(wx);
+    var user=params.user;
+
+    if(!user) console.error("===>传入的参数缺少user!!!");
+
     //var s4Id=user.s4_id;
-    var sql="select id from t_car where obd_code=?";
-    dao.findBySql(sql,[obdCode],function(rows){
+    var sql="select id from t_car where obd_code=? and s4_id=?";
+    dao.findBySql(sql,[obdCode, user.s4_id],function(rows){
         if(rows.length>0){
             var id=rows[0].id;
             var car={
@@ -177,16 +186,38 @@ function carEnroll(req,res){
                 disp:disp,
                 mileage:mileage,
                 age:ageDate,
-                engine_type:engine_type,
+                engineType:engine_type,
                 created_date:new Date()
             };
             sql="update t_car set ? where id=?";
-            dao.executeBySql(sql,[car,id],function(){
-                console.log("更新成功");
+            var pool = findPool();
+            pool.query(sql, [car,id], function(ex, result){
+                if(ex){
+                    console.log(ex);
+                    if(cb) cb(ex);
+                    else res.json(ex);
+                    return;
+                }
+
+                // 建立t_car_user;
+                var sql = "INSERT t_car_user(s4_id,acc_id,car_id,user_type) values(?,?,?,?)";
+                pool.query(sql, [user.s4_id, user.id, id, 1], function(ex, result){
+                    if(ex) {
+                        console.log(ex);
+                        if(cb) cb(ex);
+                        else res.json(ex);
+                        return;
+                    }
+
+                    console.log("更新成功");
+                    if(cb) { cb(null); }
+                    else res.json({status:"ok"});
+                });
             });
         }
         else{
-            res.write({status:'failed',message:'OBD不存在'});
+            if(cb) { cb({status:'failed',message:'OBD不存在'}); return; }
+            res.send({status:'failed',message:'OBD不存在'});
         }
     });
 }

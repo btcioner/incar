@@ -48,7 +48,7 @@ function deviceCtrl($scope, $http)
 
     //首次请求数据库数据
     GetFirstPageInfo(false);//get fist driveData for first page；
-
+    getInits4();
     function GetFirstPageInfo(flag)
     {
          $scope.tips="";
@@ -60,6 +60,13 @@ function deviceCtrl($scope, $http)
 //          }).error(function(data){
 //                alert("请求无响应");
 //         })
+    }
+
+    function getInits4()
+    {
+        $http.get(baseurl+'4s').success(function(data){
+            $scope.s4s_all = data.s4s;
+        });
     }
 
     //筛选条件
@@ -197,7 +204,7 @@ function deviceCtrl($scope, $http)
     $scope.ModifyConfrim = function(sim_number,obd_code)
     {
         $scope.changeId = 1;
-        $scope.postData={sim_number:sim_number};
+        $scope.postData={sim_number:sim_number,s4_id:$scope.deviceDetail.s4_id};
         getAjaxLink(baseurl + 'obd/'+obd_code,$scope.postData,"put",6);
 //        $http.put(baseurl + 'obd/'+obd_code,$scope.postData).success(function(data){
 //

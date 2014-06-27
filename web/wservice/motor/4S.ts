@@ -458,7 +458,7 @@ module Service{
                     task.end();
                 });
 
-                var sqlB = util.format(sql, "COUNT(C.*) count");
+                var sqlB = util.format(sql, "COUNT(*) count");
                 dac.query(sqlB, args, (ex, result)=>{
                     task.B = { ex:ex, result:result };
                     task.finished++;

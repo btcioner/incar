@@ -237,7 +237,7 @@ module Service{
             "\tFROM t_car C\n" +
             "\tLEFT OUTER JOIN t_4s S ON C.s4_id = S.id\n" +
             "\tLEFT OUTER JOIN t_car_dictionary D ON C.brand = D.brandCode and C.series = D.seriesCode\n" +
-            "\tLEFT OUTER JOIN t_car_user U ON C.id = U.acc_id and C.s4_id = U.s4_id and U.user_type = 1\n"+
+            "\tLEFT OUTER JOIN t_car_user U ON C.id = U.car_id and C.s4_id = U.s4_id and U.user_type = 1\n"+
             "\tLEFT OUTER JOIN t_account A ON A.id = U.acc_id and A.s4_id = U.s4_id\n"+
             "\tWHERE obd_code = ?";
         var args = [req.params.obd_code];
