@@ -58,7 +58,7 @@
                                 <span>当前状态:</span>{{ trial.bookingStatus | trial_status_name }}
                             </div>
                             <div class="col-xs-12">
-                                <span>当前操作</span><span ng-click="model.cancel(trial)" >{{ trial.bookingStatus | trial_status_op }}</span>
+                                <span>当前操作:</span><span ng-click="model.cancel(trial)" style="color:darkred">{{ trial.bookingStatus | trial_status_op }}</span>
                             </div>
                         </div>
                     </div>
