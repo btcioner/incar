@@ -149,8 +149,8 @@ function saveToHistory(dataBuffer,tag){
     history.content=toString0X(dataBuffer);
     history.receiveDate=new Date();
     var sql="insert into t_obd_history set ?";
-    dao.executeBySql(sql,history,function(err){
-        if(err){
+    dao.executeBySql(sql,history,function(info){
+        if(info.err){
             console.log("创建历史信息失败:"+err);
         }
         else{
@@ -249,8 +249,7 @@ function packetProcess_1601(dataBuffer,cb) {
     var vid=dataManager.nextString();                   //vid
     var vin=dataManager.nextString();                   //VIN码
     var rt=dataManager.nextString();
-    var receiveTime=toTime(rt);           //当前时间
-    console.log(rt+'\n'+receiveTime);
+    var receiveTime=toTime(rt);                         //当前时间
     var lastUpdateTime=getDateTimeStamp(null);
     var dataType=dataManager.nextByte();                //数据包类型
     //2、如果是发动机启动则创建一条新的行驶信息
