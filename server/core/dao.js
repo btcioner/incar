@@ -5,7 +5,7 @@
 var db = require('./db');
 
 var findBySql=function(sql,args,callback){
-    console.log("开始查询："+sql);
+    console.log("开始查询："+sql+'  '+args);
     var connection=db().getConnection(function(err,connection){
         if(err){
             console.log("获得connection出现错误:"+err);
@@ -58,6 +58,7 @@ exports.findBySqlForPage=function(sql,args,cb,page,pageSize){
 };
 //通过SQL添加数据，可以得到自动增长的ID
 exports.insertBySql=function(sql,args,callback){
+    console.log("开始执行："+sql+'  '+args);
     var connection=db().getConnection(function(err,connection){
         if(err){
             console.log("获得connection出现错误:"+err);
@@ -80,6 +81,7 @@ exports.insertBySql=function(sql,args,callback){
 };
 //通过SQL修改或删除
 exports.executeBySql=function(sql,args,callback){
+    console.log("开始执行："+sql+'  '+args);
     var connection=db().getConnection(function(err,connection){
         if(err){
             console.log("获得connection出现错误:"+err);
