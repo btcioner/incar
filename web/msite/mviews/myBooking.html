@@ -46,13 +46,13 @@
                                 <span>提交日期:</span>{{ trial.ts.substr(2,8) }}
                             </div>
                             <div class="col-xs-5">
-                                <span>提交时间:</span>{{ trial.ts.substr(11,5) }}
+                                <span>时间:</span>{{ trial.ts.substr(11,5) }}
                             </div>
                             <div class="col-xs-7">
                                 <span>预约日期:</span>{{ trial.bookingtime.substr(2,8) }}
                             </div>
                             <div class="col-xs-5">
-                                <span>预约时间:</span>{{ trial.bookingtime.substr(11,5) }}
+                                <span>时间:</span>{{ trial.bookingtime.substr(11,5) }}
                             </div>
                             <div class="col-xs-7">
                                 <span>当前状态:</span>{{ trial.bookingStatus | trial_status_name }}
