@@ -16,9 +16,9 @@ function toTime(str){
     var dt=new Date(str);
     var min=new Date('1970-01-02 00:00:00');
     if(dt>min){
-        return dt;
+        return getDateTimeStamp(dt);
     }
-    return min;
+    return getDateTimeStamp(min);
 }
 function sendToMessageServer(dataBuffer,commandWord){
     console.log("接收到短信回复："+commandWord+"\n");
