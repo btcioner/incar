@@ -455,9 +455,12 @@ exports.markTags= function(req,res){
         "select t.id from t_tag t inner join t_tag_group tg on tg.id=t.groupId and tg.type>0)"];
     var args=[[carId]];
     for(var i=0;i<tags.length;i++){
-        sqlList.push("insert into t_car_tag set ?");
-        args.push({car_id:carId,tag_id:tags[i]});
+        if(tags[i]){
+            sqlList.push("insert into t_car_tag set ?");
+            args.push({car_id:carId,tag_id:tags[i]});
+        }
     }
+    console.log(tagStr);
     console.log(sqlList);
     console.log(args);
     dao.executeBySql(sqlList,args,function(){
