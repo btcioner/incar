@@ -36,28 +36,28 @@
                 <div class="panel panel-info">
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-xs-7">
+                            <div class="col-xs-6">
                                 <span>预约项目:</span>{{trial.work_type}}
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-xs-6">
                                 <span>车辆:</span>{{trial.seriesName}}
                             </div>
-                            <div class="col-xs-7">
+                            <div class="col-xs-6">
                                 <span>提交日期:</span>{{ trial.ts.substr(2,8) }}
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-xs-6">
                                 <span>时间:</span>{{ trial.ts.substr(11,5) }}
                             </div>
-                            <div class="col-xs-7">
+                            <div class="col-xs-6">
                                 <span>预约日期:</span>{{ trial.bookingtime.substr(2,8) }}
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-xs-6">
                                 <span>时间:</span>{{ trial.bookingtime.substr(11,5) }}
                             </div>
-                            <div class="col-xs-7">
+                            <div class="col-xs-6">
                                 <span>当前状态:</span>{{ trial.bookingStatus | trial_status_name }}
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-xs-6">
                                 <span>当前操作:</span><span ng-click="model.cancel(trial)" >{{ trial.bookingStatus | trial_status_op }}</span>
                             </div>
                         </div>
