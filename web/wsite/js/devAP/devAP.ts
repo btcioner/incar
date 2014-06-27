@@ -59,7 +59,7 @@ module devAP {
         // 被测试的页面
         public pages = [
             { title: "行车手册", url: "/msite/page_xcsc.html" },
-            { title: "发现-我的预约", url: "/msite/myBooking.html" } ];
+            { title: "发现-我的预约", url: "/msite/myBooking.html?user=o1fUut3BkIo8XM6-8HG-3ORAtvls" /*模拟微信的openid*/ } ];
 
         private _lskURL = "devAPurl";
         public url = "http://192.168.88.123:51234/4sStore/devAP.html";
