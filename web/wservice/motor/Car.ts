@@ -216,7 +216,7 @@ module Service{
                     if(ex) { res.json(new TaskException(-1, "查询车辆使用者失败", ex)); return; }
                     var dtos = DTOBase.ExtractDTOs(users);
                     // pwd不返回给客户
-                    dtos.forEach((dto)=>{
+                    dtos.forEach((dto:any)=>{
                         dto.pwd = undefined;
                         dto.tel_pwd = undefined;
                     })
