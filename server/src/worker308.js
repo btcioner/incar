@@ -486,7 +486,7 @@ function packetProcess_1602(dataBuffer,cb) {
 
 //生成要回复的报文内容并返回，回复和数据库操作异步处理
 function get1603Response(obd){
-    var responseBuffer = new Buffer(4096);
+    var responseBuffer = new Buffer(1024*10);
     dataManager.init(responseBuffer,0);
     dataManager.writeWord(0x1603);
     dataManager.writeString(getDateTimeStamp(obd.lastUpdateTime));
@@ -502,7 +502,7 @@ function get1603Response(obd){
         dataManager.writeString(obd.vid);
         dataManager.writeByte(obd.brand);
         dataManager.writeByte(obd.series);
-        dataManager.writeByte(obd.modelYear);
+        dataManager.writeByte(obd.modelYear-2000);
         dataManager.writeString(obd.engineDisplacement+obd.engineType);
     }
     //服务器配置
