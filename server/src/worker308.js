@@ -14,11 +14,9 @@ var longCmd=[0xFE03,0xFE14];
 
 function toTime(str){
     var dt=new Date(str);
-    var min=new Date('1970-01-01 09:00:00');
-    if((dt.getSeconds()===str.substring(str.length-2))){
-        if(dt>min){
-            return dt;
-        }
+    var min=new Date('1970-01-02 00:00:00');
+    if(dt>min){
+        return dt;
     }
     return min;
 }
@@ -245,7 +243,9 @@ function packetProcess_1601(dataBuffer,cb) {
     var tripId=dataManager.nextDoubleWord();            //Trip编号
     var vid=dataManager.nextString();                   //vid
     var vin=dataManager.nextString();                   //VIN码
-    var receiveTime=toTime(dataManager.nextString());           //当前时间
+    var rt=dataManager.nextString();
+    var receiveTime=toTime(rt);           //当前时间
+    console.log(rt+'\n'+receiveTime);
     var lastUpdateTime=getDateTimeStamp(null);
     var dataType=dataManager.nextByte();                //数据包类型
     //2、如果是发动机启动则创建一条新的行驶信息
