@@ -13,7 +13,7 @@
             <th class="tablestyle-01">车主姓名</th>
             <th class="tablestyle-02">{{careDetail.cust_nick}}</th>
             <th class="tablestyle-01">联系电话
-            <th class="tablestyle-02">{{careDetail.phone}}</th>
+            <th class="tablestyle-02">{{careDetail.cust_phone}}</th>
             <th class="tablestyle-01">车牌号</th>
             <th class="tablestyle-02">{{careDetail.license}}</th>
         </tr>
@@ -181,7 +181,7 @@
         <tr class="bgcolor01">
             <th>车主</th>
             <th>联系电话</th>
-            <th>车型</th>
+            <th>系列</th>
             <th>车牌号</th>
             <th>来源渠道</th>
             <th>申请时间</th>
@@ -195,7 +195,7 @@
         <tr class="gradeX" ng-repeat="mt in careList">
             <td style="text-align: center">{{mt.cust_nick}}</td>
             <td style="text-align: center">{{mt.cust_phone}}</td>
-            <td style="text-align: center">{{mt.brand}}</td>
+            <td style="text-align: center">{{mt.carPro.series}}</td>
             <td style="text-align: center">{{mt.license}}</td>
             <td style="text-align: center">微信</td>
             <td style="text-align: center">{{mt.working_time}}</td>

@@ -8,7 +8,8 @@ angular.module("SReservationApp", [
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'ngRoute'
+    'ngRoute',
+    'mmmod'
 ]).config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.
         when('/main', {
