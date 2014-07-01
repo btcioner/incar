@@ -15,21 +15,26 @@ module wxApp {
             $scope.model = this;
         };
 
-        private search4sInfo = ()=>{
-        this.$http.post("/mservice/my4sInfo", { user: this.user_openid }, { dataType: "json"})
-            .success((data, status, headers, config)=>{
-
-                angular.forEach(data, (ad)=>{
-                    ad.brief = $(ad.brief).text().trim().substr(0, 32);
+        private search4sInfo = ()=> {
+            this.$http.post("/mservice/my4sInfo", { user: this.user_openid }, { dataType: "json"})
+                .success((data, status, headers, config)=> {
+                    angular.forEach(data, (ad)=> {
+                        ad.brief = $(ad.brief).text().trim().substr(0, 32);
+                    });
+                    this.ads = data;
+                })
+                .error((data, status, headers, config)=> {
+                    console.log(status);
                 });
-                this.ads = data;
-            })
-            .error((data, status, headers, config)=>{ console.log(status); });
-    };
+        };
 
-        private user_openid: string;
+        private jump = (id)=>{
+            window.location.href = "/msite/activityDetail.html?user=" + this.user_openid + "&id=" + id;
+        };
+
+        private user_openid:string;
         private ads = [];
-        private $http: any;
-        private $scope: any;
+        private $http:any;
+        private $scope:any;
     }
 }
