@@ -29,13 +29,18 @@ function getActivityDetail(req, res) {
 function search(db,act_id,callback) {
     var actData={};
     var pool = db();
-    pool.query('select id,s4_id,template_id,title,brief,status,logo_url,tags,tm_announce,tm_start,tm_end  from t_activity where id=?;',[act_id],function(err,rows){
+    var sql = 'select A.id,A.s4_id,A.template_id, T.template,A.title,A.brief,A.status,A.logo_url,A.tags,A.tm_announce,A.tm_start,A.tm_end\n' +
+        'from t_activity A\n' +
+        '\tjoin t_activity_template T on A.template_id = T.id\n' +
+        'where A.id=?';
+    pool.query(sql,[act_id],function(err,rows){
                 if(err)callback(err);
                 else{
                     if(rows&&rows.length==1){
                             actData.id=rows[0].id;
                             actData.s4_id=rows[0].s4_id;
                             actData.template_id=rows[0].template_id;
+                            actData.template = rows[0].template;
                             actData.title=rows[0].title;
                             actData.brief=rows[0].brief;
                             actData.awards=rows[0].awards;

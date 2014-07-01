@@ -1,109 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="wxApp">
 <head>
     <title>活动详情</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
 
-    <script  src="../mscripts/jquery-1.7.1.min.js"></script>
-    <script  src="../mscripts/car.js"></script>
+    <script src="../mscripts/jquery-2.1.1.min.js"></script>
+    <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
 
-    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
-    <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css"/>
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css"/>
+    <script src="../mscripts/angular.js"></script>
+    <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/wxapp.js"></script>
     <script>
-        var user;
-        var id;
-        function init(){
-            user=getQueryString("user");
-            id=getQueryString("id");
-            document.getElementById("returnBtn").href="/msite/my4sInfo.html?user="+user;
-            getDetail();
-        }
+        var activeDetailCtrl = new wxApp.ActiveDetailCtrl('activeDetailCtrl');
     </script>
 </head>
-<body onload="init()">
+<body ng-controller="activeDetailCtrl">
 <div id="wrap">
-    <!--main_wrap start-->
     <div id="main_wrap">
-        <!--containe_100 start--><div id="containe_100">
-        <div class="detail_titlie center"><h1 id="title">2014节油大赛招募中</h1>
-            <h6 class="text_05" id="announce" style="text-align: left">发布时间：2014-5-15   发布单位：XX4S旗舰店</h6>
-            <h6 class="text_05" id="start_end" style="text-align: left">活动时间：</h6></div>
-            <h6 class="text_05" id="act_condition" style="text-align: left">活动要求：无</h6></div>
-        <!--<div class="text_04 center">亲自体验，让数据说话!</div>
-        <div class="detai_text"><p class="text_06">2014节油大赛现已拉开帷幕。大赛倡导一种快乐的省油驾驶习惯，促进车主之间驾驶乐趣的交流，增进车主和品牌之间的凝聚力。</p><p class="text_06">本次大赛将于2014年5月-7月在全国范围内举行10场开放式道路比赛，覆盖多个重点省份和城市，并与当地主流专业媒体合作，给您带来更多惊喜体验。</p></div>
-        <div><ul class="p_title"><li class="line_img02"></li><li><span>参赛要求</span></li><li class="line_img02 float"></li></ul><div class="clear"></div></div>
-        <div class="detai_text"><p class="text_06">凡持有中华人民共和国颁发的正式驾驶执照且驾龄在2年或以上的车主均可报名参加比赛。</p></div>
-        <div><ul class="p_title"><li class="line_img02"></li><li><span>参赛要求</span></li><li class="line_img02 float"></li></ul><div class="clear"></div></div>
-        <div class="detai_text"><P class="text_06">本次大赛奖品丰厚，每场比赛的前三名有机会获得XXXX等大奖。每场比赛的冠军车主将直接晋级总决赛，更多重磅奖品等您来拿!</P></div>
-        -->
-        <div class="detai_text"><P class="text_06" id="content"></P></div>
-        <div class="button_bg" id="applyBtn">
-            <!--<a href="###" onclick="apply()"><div class="button02">我要报名</div></a>-->
+        <div id="containe_100">
+            <div class="detail_titlie center" ng-cloak>
+                <h1 id="title">{{model.act.title}}</h1>
+                <h6 class="text_05" id="announce" style="text-align: left">发布时间：{{model.act.tm_announce}}</h6><br>
+                <h6 class="text_05" style="text-align: left">发布单位：{{model.act.s4_name}}</h6><br>
+                <h6 class="text_05" id="start_end" style="text-align: left">活动时间：{{model.act.tm_start}} 至 {{model.act.tm_end}}</h6><br>
+                <h6 class="text_05" id="act_condition" style="text-align: left" ng-show="model.act.min_milage">活动要求：活动期间最小里程为{{model.act.min_milage}}</h6><br>
+                <div>
+                    <img ng-src="{{model.act.logo_url}}" alt="{{model.act.title}}">
+                </div>
+                <div class="detai_text">
+                    <p class="text_06" id="content" ng-bind-html="model.act.brief"></p>
+                </div>
+                <div class="button_bg" id="applyBtn" ng-show="model.act.template === 'ActSaveGas'">
+                    <a href="javascript:void(0)" ng-click="model.join()"><div class="button02">我要报名</div></a>
+                </div>
+                <div class="button_bg">
+                    <a id="link100" ng-href="/msite/my4sInfo.html?user={{model.user_openid}}" target="_self"><div class="button02">返回</div></a>
+                </div>
+            </div>
+            <!--containe_100 end-->
+            <div class="w10"></div>
         </div>
-        <div class="button_bg" >
-            <a href="###" id="returnBtn"><div class="button02">返回</div></a>
-        </div>
-    </div><!--containe_100 end-->
-        <div class="w10"></div>
-    </div><!--main_wrap end-->
+    </div>
 </div>
-<script>
-    function getDetail(){
-        $.ajax({
-            type: "POST",
-            url: "/mservice/getActivityDetail",
-            data: {'user':user,'id':id},
-            dataType: "json",
-            success: function (result,status) {
-                //alert("success");
-                document.getElementById("title").innerHTML=result.title;
-                var tsTemp=new Date(result.tm_announce);
-                var tsYear=tsTemp.getFullYear();
-                var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
-                var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
-                document.getElementById("announce").innerHTML="发布时间："+tsYear+"-"+tsMonth+"-"+tsDay+"&nbsp;&nbsp;&nbsp;&nbsp;发布单位："+result.s4_name;
-                var tmTemp=new Date(result.tm_start);
-                var tmYear=tmTemp.getFullYear();
-                var tmMonth=((tmTemp.getMonth()+1)>9)?(tmTemp.getMonth()+1):"0"+(tmTemp.getMonth()+1);
-                var tmDay=(tmTemp.getDate()>9)?tmTemp.getDate():"0"+tmTemp.getDate();
-                var teTemp=new Date(result.tm_end);
-                var teYear=teTemp.getFullYear();
-                var teMonth=((teTemp.getMonth()+1)>9)?(teTemp.getMonth()+1):"0"+(teTemp.getMonth()+1);
-                var teDay=(teTemp.getDate()>9)?teTemp.getDate():"0"+teTemp.getDate();
-                document.getElementById("start_end").innerHTML="活动时间："+tmYear+"-"+tmMonth+"-"+tmDay+"——"+teYear+"-"+teMonth+"-"+teDay;
-                if(!isNaN(parseInt(result.min_milage))){
-                    document.getElementById("act_condition").innerHTML="活动要求：活动期间最小里程为"+result.min_milage;
-                }
-                 document.getElementById("content").innerHTML=result.brief;
-                if(result.template_id==1) document.getElementById("applyBtn").innerHTML="<a href='###' onclick=apply('"+result.tags+"')><div class='button02'>我要报名</div></a>";
-            },
-            error:function(XMLHttpRequest, textStatus, errorThrown){
-                 alert("没有找到相关信息\n或此活动已取消！");
-                //window.location="/msite/enroll.html?user="+user;
-            }
-        });
-    }
- function apply(tags){
-     $.ajax({
-         type: "POST",
-         url: "/mservice/applyActivity",
-         data: {'user':user,'id':id,'tags':tags},
-         dataType: "json",
-         success: function (result,status) {
-             if(result.re==1){
-             alert("报名成功！");
-             window.location="/msite/myActivity.html?user="+user;
-             }else {
-                 alert("报名失败\n你已经报名或不符报名条件！");
-                 window.location="/msite/my4sInfo.html?user="+user;
-             }
-         },
-         error:function(XMLHttpRequest, textStatus, errorThrown){
-
-         }
-     });
- }
-</script>
 </body>
 </html>

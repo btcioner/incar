@@ -28,10 +28,6 @@ module wxApp {
                 });
         };
 
-        private jump = (id)=>{
-            window.location.href = "/msite/activityDetail.html?user=" + this.user_openid + "&id=" + id;
-        };
-
         private user_openid:string;
         private ads = [];
         private $http:any;
