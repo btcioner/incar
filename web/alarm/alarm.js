@@ -2,7 +2,7 @@
  * Created by LM on 14-6-15.
  */
 
-var dao=require("../core/dataAccess/dao");
+var dao=require("../config/dao");
 //碰撞模拟数据
 //AA 55 00 77 FF 89 00 05 16 02 57 46 51 30 30 30 31 31 38 31 34 00 00 00 00 12 31 35 00 57 30 4C 30 5A 43 46 36 39 33 31 30 38 33 39 31 41 00 32 30 31 34 2D 30 36 2D 31 31 20 31 36 3A 34 36 3A 35 39 00 02 30 00 30 00 45 31 31 34 2E 34 30 30 30 30 32 2C 4E 33 30 2E 34 37 38 39 30 31 2C 30 2C 32 30 31 34 2D 30 36 2D 31 31 00 31 36 3A 34 36 3A 31 30 2C 31 00 16 19
 exports.allCollideRemind=function(req,res){
@@ -38,12 +38,7 @@ exports.careCollideRemind=function(req,res){
     }
     var sql="update t_remind set remindStatus=?,careTime=? where id=?";
     var args=[2,new Date(),remindId];
-    dao.executeBySql([sql],[args],function(err){
-        if(err){
-            res.json({status:'failure'});
-        }
-        else{
-            res.json({status:'success'});
-        }
+    dao.executeBySql(sql,args,function(info){
+        res.json(info);
     });
 }
