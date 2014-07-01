@@ -19,7 +19,7 @@ module wxApp {
             this.$http.post("/mservice/my4sInfo", { user: this.user_openid }, { dataType: "json"})
                 .success((data, status, headers, config)=> {
                     angular.forEach(data, (ad)=> {
-                        ad.brief = $(ad.brief).text().trim().substr(0, 32);
+                        ad.brief = ad.brief.replace(/<[^<>]+>|&nbsp;|\s+/g, "").substr(0,32);
                     });
                     this.ads = data;
                 })
