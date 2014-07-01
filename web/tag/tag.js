@@ -126,100 +126,116 @@ exports._buildTag=function(cb){
         "left join t_obd_drive d on d.obdCode=c.obd_code " +
         "and d.fireTime>=? and d.fireTime<?";
     var args=getMonthStartAndEnd();
-    dao.findBySql(sql,args,function(rows){
-        var cars={};
-        for(var i=0;i<rows.length;i++){
-            var tagInfo=rows[i];
-            var carId=tagInfo.carId;
-            var serTag=tagInfo.serTag;
-            var chlTag=tagInfo.chlTag;
-            var ageTag=tagInfo.ageTag;
-            var milTag=tagInfo.milTag;
-            var preTag=tagInfo.preTag;
-            var timeTaeg=tagInfo.timeTag;
-            var fireWeek=tagInfo.fireWeek;
-            var carInfo=cars[carId];
-            if(!carInfo){
-                carInfo={};
-                if(serTag)carInfo.serTag='ser'+serTag;
-                if(chlTag)carInfo.chlTag='chl2';
-                if(ageTag)carInfo.ageTag=ageTag/5>0?'age5':'age'+ageTag;
-                carInfo.count=0;
-                carInfo.mileage=0;
-                carInfo.preCount=0;
-                carInfo.time1=0;
-                carInfo.time2=0;
-                carInfo.time3=0;
-                cars[carId]=carInfo;
-            }
-            carInfo.count+=fireWeek?1:null;
-            carInfo.mileage+=milTag;
-            carInfo.preCount+=preTag;
-            if(fireWeek>1&&fireWeek<7){
-                if(timeTag>=6&&timeTag<10){
-                    carInfo.time1++;
+    dao.findBySql(sql,args,function(info){
+        if(info.err){
+            throw err;
+        }
+        else{
+            var rows=info.data;
+            var cars={};
+            for(var i=0;i<rows.length;i++){
+                var tagInfo=rows[i];
+                var carId=tagInfo.carId;
+                var serTag=tagInfo.serTag;
+                var chlTag=tagInfo.chlTag;
+                var ageTag=tagInfo.ageTag;
+                var milTag=tagInfo.milTag;
+                var preTag=tagInfo.preTag;
+                var timeTaeg=tagInfo.timeTag;
+                var fireWeek=tagInfo.fireWeek;
+                var carInfo=cars[carId];
+                if(!carInfo){
+                    carInfo={};
+                    if(serTag)carInfo.serTag='ser'+serTag;
+                    if(chlTag)carInfo.chlTag='chl2';
+                    if(ageTag)carInfo.ageTag=ageTag/5>0?'age5':'age'+ageTag;
+                    carInfo.count=0;
+                    carInfo.mileage=0;
+                    carInfo.preCount=0;
+                    carInfo.time1=0;
+                    carInfo.time2=0;
+                    carInfo.time3=0;
+                    cars[carId]=carInfo;
                 }
-                else if(timeTag>=10&&timeTag<20){
-                    carInfo.time2++;
+                carInfo.count+=fireWeek?1:null;
+                carInfo.mileage+=milTag;
+                carInfo.preCount+=preTag;
+                if(fireWeek>1&&fireWeek<7){
+                    if(timeTag>=6&&timeTag<10){
+                        carInfo.time1++;
+                    }
+                    else if(timeTag>=10&&timeTag<20){
+                        carInfo.time2++;
+                    }
+                    else{
+                        carInfo.time3++;
+                    }
                 }
                 else{
                     carInfo.time3++;
                 }
             }
-            else{
-                carInfo.time3++;
-            }
-        }
-
-        sql="select t.id,t.code from t_tag t";
-        var tagMap={};
-        dao.findBySql(sql,[],function(rows){
-            var sqls=["truncate table t_car_tag"];
-            var args=[{}];
-            for(i=0;i<rows.length;i++){
-                var code=rows[i].code;
-                var tagId=rows[i].id;
-                tagMap[code]=tagId;
-            }
-            for(var key in cars){
-                var carTag=cars[key];
-                if(carTag.serTag){
-                    sqls.push("insert into t_car_tag set ?");
-                    args.push({tag_id:tagMap[carTag.serTag],car_id:key});
+            sql="select t.id,t.code from t_tag t";
+            var tagMap={};
+            dao.findBySql(sql,[],function(info){
+                if(info.err){
+                    throw err;
                 }
-                if(carTag.chlTag){
-                    sqls.push("insert into t_car_tag set ?");
-                    args.push({tag_id:tagMap[carTag.chlTag],car_id:key});
+                else{
+                    var rows=info.data;
+                    var sqls=["truncate table t_car_tag"];
+                    var args=[{}];
+                    for(i=0;i<rows.length;i++){
+                        var code=rows[i].code;
+                        var tagId=rows[i].id;
+                        tagMap[code]=tagId;
+                    }
+                    for(var key in cars){
+                        var carTag=cars[key];
+                        if(carTag.serTag){
+                            sqls.push("insert into t_car_tag set ?");
+                            args.push({tag_id:tagMap[carTag.serTag],car_id:key});
+                        }
+                        if(carTag.chlTag){
+                            sqls.push("insert into t_car_tag set ?");
+                            args.push({tag_id:tagMap[carTag.chlTag],car_id:key});
+                        }
+                        if(carTag.ageTag){
+                            sqls.push("insert into t_car_tag set ?");
+                            args.push({tag_id:tagMap[carTag.ageTag],car_id:key});
+                        }
+                        var tag=getTimeTag(carTag);
+                        if(tag!=''){
+                            sqls.push("insert into t_car_tag set ?");
+                            args.push({tag_id:tagMap[tag],car_id:key});
+                        }
+                        tag=getMilTag(carTag);
+                        if(tag!=''){
+                            sqls.push("insert into t_car_tag set ?");
+                            args.push({tag_id:tagMap[tag],car_id:key});
+                        }
+                        tag=getRateTag(carTag);
+                        if(tag!=''){
+                            sqls.push("insert into t_car_tag set ?");
+                            args.push({tag_id:tagMap[tag],car_id:key});
+                        }
+                        tag=getPreTag(carTag);
+                        if(tag!=''){
+                            sqls.push("insert into t_car_tag set ?");
+                            args.push({tag_id:tagMap[tag],car_id:key});
+                        }
+                    }
+                    dao.executeBySqls(sqls,args,function(info){
+                        if(info.err){
+                            throw err;
+                        }
+                        else{
+                            cb(info);
+                        }
+                    });
                 }
-                if(carTag.ageTag){
-                    sqls.push("insert into t_car_tag set ?");
-                    args.push({tag_id:tagMap[carTag.ageTag],car_id:key});
-                }
-                var tag=getTimeTag(carTag);
-                if(tag!=''){
-                    sqls.push("insert into t_car_tag set ?");
-                    args.push({tag_id:tagMap[tag],car_id:key});
-                }
-                tag=getMilTag(carTag);
-                if(tag!=''){
-                    sqls.push("insert into t_car_tag set ?");
-                    args.push({tag_id:tagMap[tag],car_id:key});
-                }
-                tag=getRateTag(carTag);
-                if(tag!=''){
-                    sqls.push("insert into t_car_tag set ?");
-                    args.push({tag_id:tagMap[tag],car_id:key});
-                }
-                tag=getPreTag(carTag);
-                if(tag!=''){
-                    sqls.push("insert into t_car_tag set ?");
-                    args.push({tag_id:tagMap[tag],car_id:key});
-                }
-            }
-            dao.executeBySql(sqls,args,function(err){
-                cb(err);
             });
-        });
+        }
     });
 }
 exports.buildTags=function(req,res){
@@ -246,28 +262,36 @@ exports.tagList= function(req,res){
         "where g.id in (2,3,4,5,6,7) " +
         "or g.id=1 and subStr(t.code,4,instr(t.code,'-')-4)=? " +
         "or g.id=8 and t.s4Id=? ";
-    dao.findBySql(sql,[brand,s4Id],function(rows){
-        var list={};
-        for(var i=0;i<rows.length;i++){
-            var groupId=rows[i].groupId;
-            var groupName=rows[i].groupName;
-            var tagId=rows[i].tagId;
-            var tagName=rows[i].tagName;
-            var type=rows[i].type;
-            var group=list[groupId];
-            if(group){
-                group['tags'].push({tagId:tagId,tagName:tagName});
-            }
-            else{
-                group={groupId:groupId,groupName:groupName,type:type,tags:[{tagId:tagId,tagName:tagName}]};
-                list[groupId]=group;
-            }
+    dao.findBySql(sql,[brand,s4Id],function(info){
+        if(info.err){
+            res.json(info);
         }
-        var tagList=[];
-        for(var key in list){
-            tagList.push(list[key]);
+        else{
+            var rows=info.data;
+            var list={};
+            for(var i=0;i<rows.length;i++){
+                var groupId=rows[i].groupId;
+                var groupName=rows[i].groupName;
+                var tagId=rows[i].tagId;
+                var tagName=rows[i].tagName;
+                var type=rows[i].type;
+                var group=list[groupId];
+                if(group){
+                    group['tags'].push({tagId:tagId,tagName:tagName});
+                }
+                else{
+                    group={groupId:groupId,groupName:groupName,type:type,tags:[{tagId:tagId,tagName:tagName}]};
+                    list[groupId]=group;
+                }
+            }
+            var tagList=[];
+            for(var key in list){
+                tagList.push(list[key]);
+            }
+            info.data=tagList
+            res.json(info);
         }
-        res.json(tagList);
+
     });
 }
 /**
@@ -280,27 +304,35 @@ exports.tagListSystem= function(req,res){
         "from t_tag_group g " +
         "left join t_tag t on t.groupId=g.id " +
         "where g.type=? and( g.id>1 or g.id=1 and subStr(t.code,4,instr(t.code,'-')-4)=?)";
-    dao.findBySql(sql,[0,brand],function(rows){
-        var list={};
-        for(var i=0;i<rows.length;i++){
-            var groupId=rows[i].groupId;
-            var groupName=rows[i].groupName;
-            var tagId=rows[i].tagId;
-            var tagName=rows[i].tagName;
-            var group=list[groupId];
-            if(group){
-                group['tags'].push({tagId:tagId,tagName:tagName});
-            }
-            else{
-                group={groupId:groupId,groupName:groupName,tags:[{tagId:tagId,tagName:tagName}]};
-                list[groupId]=group;
-            }
+    dao.findBySql(sql,[0,brand],function(info){
+        if(inof.err){
+            res.json(info);
         }
-        var tagList=[];
-        for(var key in list){
-            tagList.push(list[key]);
+        else{
+            var rows=info.data;
+            var list={};
+            for(var i=0;i<rows.length;i++){
+                var groupId=rows[i].groupId;
+                var groupName=rows[i].groupName;
+                var tagId=rows[i].tagId;
+                var tagName=rows[i].tagName;
+                var group=list[groupId];
+                if(group){
+                    group['tags'].push({tagId:tagId,tagName:tagName});
+                }
+                else{
+                    group={groupId:groupId,groupName:groupName,tags:[{tagId:tagId,tagName:tagName}]};
+                    list[groupId]=group;
+                }
+            }
+            var tagList=[];
+            for(var key in list){
+                tagList.push(list[key]);
+            }
+            info.data=tagList;
+            res.json(info);
         }
-        res.json(tagList);
+
     });
 }
 /**
@@ -317,28 +349,9 @@ exports.tagListCustom= function(req,res){
         "left join t_tag_group g on t.groupId=g.id " +
         "where g.type>? and t.s4Id=?";
     var args=[0,s4Id];
-    if(page&&pageSize){
-        var sqlCount="select count(t.tagId) as rowCount from ("+sql+") as t";
-        var sqlPage="select * from ("+sql+") as t limit ?,?";
-        dao.findBySql(sqlCount,args,function(rows){
-            if(rows.length){
-                var rowCount=rows[0]['rowCount'];
-                args.push((page-1)*pageSize);
-                args.push(pageSize);
-                dao.findBySql(sqlPage,args,function(rows){
-                    res.json({status:'success',rowCount:rowCount,data:rows});
-                });
-            }
-            else{
-                res.json({status:'success',rowCount:0,data:[]});
-            }
-        });
-    }
-    else{
-        dao.findBySql(sql,args,function(rows){
-            res.json({status:'success',rowCount:rows.length,data:rows});
-        });
-    }
+    dao.findBySqlForPage(sql,args,function(info){
+        res.json(info);
+    },(page-1)*pageSize,pageSize);
 }
 /**
  * 通过标签及用户信息查询
@@ -354,7 +367,6 @@ exports.searchForUsers= function(req,res){
     var series=query.series;
     var page=parseInt(query.page);
     var pageSize=parseInt(query['pageSize']);
-
     var sql="select distinct c.id as carId,c.obd_code as obdCode," +
         "c.series as series,c.brand as brand," +
         "d.series as seriesName,d.brand as brandName," +
@@ -365,7 +377,6 @@ exports.searchForUsers= function(req,res){
         "left join t_account u on cu.acc_id=u.id " +
         "left join t_car_tag ct on ct.car_id=c.id " +
         "left join t_car_dictionary d on d.brandCode=c.brand and d.seriesCode=c.series " +
-        //"left join (select l.car_id from t_work_log l ) l on l.car_id=c.id " +
         "where c.s4_id=?";
     var args=[s4Id];
     if(tagId){
@@ -392,28 +403,9 @@ exports.searchForUsers= function(req,res){
         sql+=" and c.series=?";
         args.push(series);
     }
-    if(page&&pageSize){
-        var sqlCount="select count(t.carId) as rowCount from ("+sql+") as t";
-        var sqlPage="select * from ("+sql+") as t limit ?,?";
-        dao.findBySql(sqlCount,args,function(rows){
-            if(rows.length){
-                var rowCount=rows[0]['rowCount'];
-                args.push((page-1)*pageSize);
-                args.push(pageSize);
-                dao.findBySql(sqlPage,args,function(rows){
-                    res.json({status:'success',rowCount:rowCount,data:rows});
-                });
-            }
-            else{
-                res.json({status:'success',rowCount:0,data:[]});
-            }
-        });
-    }
-    else{
-        dao.findBySql(sql,args,function(rows){
-            res.json({status:'success',rowCount:rows.length,data:rows});
-        });
-    }
+    dao.findBySqlForPage(sql,args,function(info){
+        res.json(info);
+    },(page-1)*pageSize,pageSize);
 }
 /**
  * 查询某车的标签
@@ -425,23 +417,30 @@ exports.getTagsByCarId= function(req,res){
         "left join t_tag_group tg on tg.id=t.groupId " +
         "left join t_car_tag ct on ct.tag_id=t.id " +
         "where ct.car_id=?";
-    dao.findBySql(sql,[carId],function(rows){
-        var type0=[];
-        var type1=[];
-        for(var i=0;i<rows.length;i++){
-            var type=rows[i].tagType;
-            var tagId=rows[i].tagId;
-            var tagName=rows[i].tagName;
-            if(type===0){
-                type0.push({tagId:tagId,tagName:tagName});
-            }
-            else{
-                type1.push({tagId:tagId,tagName:tagName});
-            }
+    dao.findBySql(sql,[carId],function(info){
+        if(info.err){
+            res.json(info);
         }
-        var list={systemTag:type0,customTag:type1};
-        console.log(list);
-        res.json(list);
+        else{
+            var rows=info.data;
+            var type0=[];
+            var type1=[];
+            for(var i=0;i<rows.length;i++){
+                var type=rows[i].tagType;
+                var tagId=rows[i].tagId;
+                var tagName=rows[i].tagName;
+                if(type===0){
+                    type0.push({tagId:tagId,tagName:tagName});
+                }
+                else{
+                    type1.push({tagId:tagId,tagName:tagName});
+                }
+            }
+            var list={systemTag:type0,customTag:type1};
+            info.data=list;
+            res.json(info);
+        }
+
     });
 }
 /**
@@ -460,8 +459,8 @@ exports.markTags= function(req,res){
             args.push({car_id:carId,tag_id:tags[i]});
         }
     }
-    dao.executeBySql(sqlList,args,function(){
-        res.json({status:'success'});
+    dao.executeBySqls(sqlList,args,function(info){
+        res.json(info);
     });
 }
 /**
@@ -493,10 +492,8 @@ exports.addTag= function(req,res){
         createTime:createTime,
         creator:creator
     };
-    dao.insertBySql(sql,args,function(info,tag){
-        tag.id=info.insertId;
-        console.log("成功添加标签:"+JSON.stringify(tag));
-        res.json({status:'success'});
+    dao.insertBySql(sql,args,function(info){
+        res.json(info);
     });
 }
 /**
@@ -506,8 +503,8 @@ exports.delTag= function(req,res){
     var tagId=req.params['tagId'];
     var sqlList=["delete from t_tag where id=?","delete from t_car_tag where tag_id=?"];
     var args=[[tagId],[tagId]];
-    dao.executeBySql(sqlList,args,function(){
-        res.json({status:'success'});
+    dao.executeBySqls(sqlList,args,function(info){
+        res.json(info);
     });
 }
 

@@ -15,16 +15,17 @@ var dataSet = JSON.stringify({obdInfo:{
 }});
 var dataGet = JSON.stringify([0xFE05,0xFE06,0xFE07,0xFE08,
     0xFE09,0xFE0A,0xFE0B,0xFE0C,0xFE1C,0xFE1D]);
-var data=dataSet;
+var data='';
 //13871574583 21
 //18476363151 深圳
 //13427778006 深圳
 //13007196492 北京
+//18476363151 INCAR0001
 var opt = {
     method: "POST",
     host: "localhost",
     port: 1234,
-    path: "/message/send/13871574583/"+0x1623,
+    path: "/message/send/18476363151/"+0x1621,
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)
