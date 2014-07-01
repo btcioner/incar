@@ -9650,5 +9650,5 @@ function initDrive(obdCode,month,day){
 
 //initCarDictionary();
 //initDriveDictionary();
-initTag();
+//initTag();
 //initDrive("10010021",6,25);
