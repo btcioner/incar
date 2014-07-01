@@ -87,7 +87,7 @@ function receive1621(dataBuffer){
     var vid=dataManager.nextString();               //vid
     var vin=dataManager.nextString();               //VIN码
     var faultLevel=dataManager.nextByte();          //故障等级
-    var faultCount=dataManager.nextWord();          //故障个数
+    var faultCount=dataManager.nextByte();          //故障个数
     var fault=[];
     for(var i=0;i<faultCount;i++){
         var code=dataManager.nextString();             //故障码
