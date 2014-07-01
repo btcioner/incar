@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS t_obd_drive(
     tripId int COMMENT '行程标识',
     vid varchar(20) COMMENT '车辆标识',
     vin varchar(20) COMMENT '发动机标识',
-    receiveTime timestamp COMMENT '接收数据时间',
 
     fireTime timestamp COMMENT '点火时间',
     firingVoltage varchar(30) COMMENT '点火电压',
