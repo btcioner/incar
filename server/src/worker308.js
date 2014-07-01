@@ -299,7 +299,7 @@ function packetProcess_1601(dataBuffer,cb) {
     }
     //3、其他情况则更新行驶信息，需要先获取行驶信息的id
     else{
-        var sql="select t.id,t.carStatus from t_obd_drive t where t.tripId=? and t.obdCode=?";
+        var sql="select t.id as driveId,t.carStatus from t_obd_drive t where t.tripId=? and t.obdCode=?";
         dao.findBySql(sql,[tripId,obdCode],function(info){
             if(info.err){
                 throw info.err;
@@ -307,7 +307,7 @@ function packetProcess_1601(dataBuffer,cb) {
             else{
                 var rows=info.data;
                 if(rows.length>0){
-                    var id=rows[0].id;
+                    var driveId=rows[0].driveId;
                     var carStatus=rows[0].carStatus;
                     if(dataType===0x02){
                         //2、获取当前行驶详细信息
@@ -322,7 +322,7 @@ function packetProcess_1601(dataBuffer,cb) {
                         var sql="insert into t_drive_detail set ?";
                         var args={
                             obdCode:obdCode,
-                            obdDriveId:id,
+                            obdDriveId:driveId,
                             detail:JSON.stringify(driveDetail),
                             createTime:new Date()
                         };
@@ -342,6 +342,7 @@ function packetProcess_1601(dataBuffer,cb) {
                             var argsDrive=[{carStatus:2,lastUpdateTime:lastUpdateTime},id];
                             dao.executeBySqls([sql,sqlDrive],[args,argsDrive],function(info){
                                 if(info.err){
+                                    console.log(info);
                                     throw err;
                                 }
                                 else{
