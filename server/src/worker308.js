@@ -676,7 +676,7 @@ function get1603Default(){
 
 
         uploadInterval:120,             //行驶中上传数据间隔时间
-        uploadParamId:[0x0101,0x0102,0x0103,0x0104,0x0105,0x0106,0x0107,0x0108],             //行驶中上传数据参数Id，参考4.01和4.02
+        uploadParamId:[0x0101,0x0102,0x0103,0x0104,0x0106,0x0107,0x0108],             //行驶中上传数据参数Id，参考4.01和4.02
 
         updateId:"0.0.0"                //软件升级Id
     };
