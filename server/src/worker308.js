@@ -556,7 +556,16 @@ function get1603Response(obd){
         dataManager.writeByte(obd.brand);
         dataManager.writeByte(obd.series);
         dataManager.writeByte(obd.modelYear-2000);
-        dataManager.writeString(obd.engineDisplacement+obd.engineType);
+        var edNum=Math.round(parseFloat(obd.engineDisplacement)*10)/10;
+        var ed=edNum.toString().split(".");
+        var edStr='0.0';
+        if(ed&&ed.length===1){
+            edStr = ed[0]+".0";
+        }
+        else if(ed.length>1){
+            edStr=edNum.toString();
+        }
+        dataManager.writeString(edStr+obd.engineType);
     }
     //服务器配置
     dataManager.writeByte(obd.serverConfigCount);
