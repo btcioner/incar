@@ -615,15 +615,15 @@ function get1603Response(obd){
         }
     }
     //运行中数据
-    var runtimeCount;       //运行中数据更新数量(0x00或0x02，暂时只支持0x00)
+
     var uploadInterval;     //行驶中上传数据间隔时间
-    var uploadParamId=[];   //行驶中上传数据参数Id，参考4.01和4.02
-    dataManager.writeByte(obd.runtimeCount);
-    if(obd.runtimeCount>0x00){
+    var uploadParamId=obd.uploadParamId;   //行驶中上传数据参数Id，参考4.01和4.02
+    var runtimeCount=uploadParamId?uploadParamId.length:0;
+    dataManager.writeByte(runtimeCount);
+    if(runtimeCount>0){
         dataManager.writeWord(obd.uploadInterval);
-        var upArray =obd.uploadParamId.split(',');
-        for(var i=0;i<upArray.length;i++){
-            dataManager.writeWord(parseInt(upArray[i]));
+        for(var i=0;i<runtimeCount;i++){
+            dataManager.writeWord(uploadParamId[i]);
         }
     }
 
@@ -673,9 +673,9 @@ function get1603Default(){
         closeAfterFlameOut:0x00B4,      //熄火后关闭时间点
         voltageThreshold:"120,153",     //熄火后电池电压阀值
 
-        runtimeCount:0x02,              //运行中数据更新数量(0x00或0x02，暂时只支持0x00)
+
         uploadInterval:120,             //行驶中上传数据间隔时间
-        uploadParamId:"12",//行驶中上传数据参数Id，参考4.01和4.02
+        uploadParamId:[12],             //行驶中上传数据参数Id，参考4.01和4.02
 
         updateId:"0.0.0"                //软件升级Id
     };
