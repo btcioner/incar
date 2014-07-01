@@ -4,22 +4,11 @@
 
 'use strict';
 
-var dao=require("../core/dataAccess/dao");
+var dao=require("../config/dao");
 var findPool = require('../config/db');
 
 exports = module.exports = function(service) {
     service.post.enroll = userEnroll;
-}
-function getUserInfo(wx){
-    var sql="select * from t_account where wx_oid like ?";
-    dao.findBySql(sql,['%'+wx+'%'],function(rows){
-                if(rows.length>0){
-            return rows[0];
-        }
-        else{
-            return null;
-        }
-    });
 }
 //验证微信用户是否存在账户
 function userCheck(req,res){
@@ -28,10 +17,21 @@ function userCheck(req,res){
     var openId=temp[0];
     var openId4S=temp[1];
     var wx=openId+":"+openId4S
-    var user=getUserInfo(wx);
-    var accountId=user?user.accountId:null;
-   // res.write({status:'success',accountId:accountId});
-    return user?true:false;
+    var sql="select * from t_account where wx_oid like ?";
+    dao.findBySql(sql,['%'+wx+'%'],function(info){
+        if(info.err){
+            res.json({status:'failure',result:false});
+        }
+        else{
+            if(info.data.length>0){
+                res.json({status:'success',result:true,user:info.data[0]});
+            }
+            else{
+                res.json({status:'success',result:false});
+            }
+        }
+    });
+
 }
 //通过已有账户信息登录，并和当前微信用户绑定
 function userLogin(req,res){
@@ -42,27 +42,37 @@ function userLogin(req,res){
     var password=params.password;
     var wx=openId+"-"+openId4S
     var sql="select id,wx_oid from t_account where name=? and pwd=?";
-    dao.findBySql(sql,[username,password],function(rows){
-        if(rows.length>0){
-            var id=rows[0].id;
-            var oldWX=rows[0].wx_oid;
-            var newWX=oldWX?oldWX+';'+wx:wx;
-            sql="update t_account set ? where id=?";
-            dao.executeBySql(sql,[{wx_oid:newWX},id],function(err){
-                if(err){
-                    res.wirte({status:'failed',message:'无法完成当前账户与微信账户的绑定'});
-                }
-                res.wirte({status:'success',accountId:id});
-            });
+    dao.findBySql(sql,[username,password],function(info){
+        if(info.err){
+            res.json(info);
         }
         else{
-            res.wirte({status:'failed',message:'登录失败'});
+            var rows=info.data;
+            if(rows.length>0){
+                var id=rows[0].id;
+                var oldWX=rows[0].wx_oid;
+                var newWX=oldWX?oldWX+';'+wx:wx;
+                sql="update t_account set ? where id=?";
+                dao.executeBySql(sql,[{wx_oid:newWX},id],function(info){
+                    if(info.err){
+                        info.message='无法完成当前账户与微信账户的绑定';
+                        res.json(info);
+                    }
+                    else{
+                        info.accountId=id;
+                        res.json(info);
+                    }
+                });
+            }
+            else{
+                info.message='登录失败';
+                res.json(info);
+            }
         }
     });
 }
 //登记或修改（设置）账号
 function userEnroll(req, res) {
-    console.log(req.body);
     if(!userCheck(req, res)){
         var params=req.body;
         var username=params.name;
@@ -75,44 +85,48 @@ function userEnroll(req, res) {
         var appid = params.appid;
 
         if(!appid) {
-            console.log("没有传入参数appid");
-            res.send("没有传入参数appid");
+            res.json({status:'failure',message:"没有传入参数appId"});
             return;
         }
 
         var sql="select id, openid from t_4s where wx_app_id=?";
-        dao.findBySql(sql,[appid],function(rows){
-            if(rows.length>0){
-                var s4id=rows[0].id;
-                var user={
-                    name:username,
-                    pwd:password,
-                    wx_oid:openId+':'+ rows[0].openid,
-                    phone:phone,
-                    nick:nickName,
-                    s4_id:s4id,
-                    tel_pwd:"000000000000"
-                };
-                sql="insert into t_account set ?";
-                var pool = findPool();
-                pool.query(sql, [user], function(ex, result){
-                    if(ex){
-                        res.json({status:'failed',message:'添加账户失败'});
-                        return;
-                    }
-
-                    var accountId=result.insertId;
-                    user.id = result.insertId;
-                    req.body.user = user;
-
-                    carEnroll(req,res, function(ex){
-                        if(ex) { res.json(ex); return; }
-                        res.json({status:'success',accountId:accountId});
-                    });
-                });
+        dao.findBySql(sql,[appid],function(info){
+            if(info.err){
+                res.json(info);
             }
             else{
-                res.json({status:'failed',message:'无法识别的appid'});
+                var rows=info.data;
+                if(rows.length>0){
+                    var s4id=rows[0].id;
+                    var user={
+                        name:username,
+                        pwd:password,
+                        wx_oid:openId+':'+ rows[0].openid,
+                        phone:phone,
+                        nick:nickName,
+                        s4_id:s4id,
+                        tel_pwd:"000000000000"
+                    };
+                    sql="insert into t_account set ?";
+                    dao.insertBySql(sql,user,function(info){
+                        if(info.err){
+                            info.message='添加账户失败';
+                            res.json(info);
+                        }
+                        else{
+                            var accountId=info.data.id;
+                            user.id = accountId;
+                            req.body.user = user;
+                            carEnroll(req,res, function(ex){
+                                if(ex) { res.json(ex); return; }
+                                res.json({status:'success',accountId:accountId});
+                            });
+                        }
+                    });
+                }
+                else{
+                    res.json({status:'failure',message:'无法识别的appid'});
+                }
             }
         });
     }else{
@@ -126,29 +140,41 @@ function userEnroll(req, res) {
         var nickName=params.nick;
 
         var sql="select id from t_4s where openid=?";
-        dao.findBySql(sql,[openId4S],function(rows){
-            if(rows.length>0){
-                var s4id=rowsp[0].id;
-                var user={
-                    name:username,
-                    pwd:password,
-                    wx_oid:openId+':'+openId4S,
-                    phone:phone,
-                    nick:nickName,
-                    s4_id:s4id
-                };
-                sql="update t_account set ? where wx_oid=?";
-                dao.insertBySql(sql,[user,user.wx_oid],function(err,info){
-                    if(err){
-                        res.write({status:'failed',message:'修改账户失败'});
-                    }
-                    var accountId=info.insertId;
-                    res.wirte({status:'success',accountId:accountId});
-                });
+        dao.findBySql(sql,[openId4S],function(info){
+            if(info.err){
+                res.json(info);
             }
             else{
-                res.wirte({status:'failed',message:'无法识别的4SOpenId'});
+                var rows=info.data;
+                if(rows.length>0){
+                    var s4id=rowsp[0].id;
+                    var user={
+                        name:username,
+                        pwd:password,
+                        wx_oid:openId+':'+openId4S,
+                        phone:phone,
+                        nick:nickName,
+                        s4_id:s4id
+                    };
+                    sql="update t_account set ? where wx_oid=?";
+                    dao.insertBySql(sql,[user,user.wx_oid],function(info){
+                        if(info.err){
+                            info.message='修改账户失败';
+                            res.json(info);
+                        }
+                        else{
+                            res.json(info);
+                        }
+                    });
+                }
+                else{
+                    info.message='无法识别的4SOpenId';
+                    info.status='failure';
+                    res.json(info);
+                }
             }
+
+
         });
         carEnroll(req,res);
     }
@@ -173,52 +199,59 @@ function carEnroll(req,res, cb){
 
     //var s4Id=user.s4_id;
     var sql="select id from t_car where obd_code=? and s4_id=?";
-    dao.findBySql(sql,[obdCode, user.s4_id],function(rows){
-        if(rows.length>0){
-            var id=rows[0].id;
-            var car={
-                s4_id:user.s4_id,
-                brand:brand,
-                series:series,
-                modelYear:modelYear,
-                license:license,
-                act_type:1,
-                disp:disp,
-                mileage:mileage,
-                age:ageDate,
-                engineType:engine_type,
-                created_date:new Date()
-            };
-            sql="update t_car set ? where id=?";
-            var pool = findPool();
-            pool.query(sql, [car,id], function(ex, result){
-                if(ex){
-                    console.log(ex);
-                    if(cb) cb(ex);
-                    else res.json(ex);
-                    return;
-                }
-
-                // 建立t_car_user;
-                var sql = "INSERT t_car_user(s4_id,acc_id,car_id,user_type) values(?,?,?,?)";
-                pool.query(sql, [user.s4_id, user.id, id, 1], function(ex, result){
-                    if(ex) {
+    dao.findBySql(sql,[obdCode, user.s4_id],function(info){
+        if(info.err){
+            res.json(res);
+        }
+        else{
+            var rows=info.data;
+            if(rows.length>0){
+                var id=rows[0].id;
+                var car={
+                    s4_id:user.s4_id,
+                    brand:brand,
+                    series:series,
+                    modelYear:modelYear,
+                    license:license,
+                    act_type:1,
+                    disp:disp,
+                    mileage:mileage,
+                    age:ageDate,
+                    engineType:engine_type,
+                    created_date:new Date()
+                };
+                sql="update t_car set ? where id=?";
+                var pool = findPool();
+                pool.query(sql, [car,id], function(ex, result){
+                    if(ex){
                         console.log(ex);
                         if(cb) cb(ex);
                         else res.json(ex);
                         return;
                     }
 
-                    console.log("更新成功");
-                    if(cb) { cb(null); }
-                    else res.json({status:"ok"});
+                    // 建立t_car_user;
+                    var sql = "INSERT t_car_user(s4_id,acc_id,car_id,user_type) values(?,?,?,?)";
+                    pool.query(sql, [user.s4_id, user.id, id, 1], function(ex, result){
+                        if(ex) {
+                            console.log(ex);
+                            if(cb) cb(ex);
+                            else res.json(ex);
+                            return;
+                        }
+
+                        console.log("更新成功");
+                        if(cb) { cb(null); }
+                        else res.json({status:"ok"});
+                    });
                 });
-            });
+            }
+            else{
+                if(cb) { cb({status:'failed',message:'OBD不存在'}); return; }
+                res.send({status:'failed',message:'OBD不存在'});
+            }
         }
-        else{
-            if(cb) { cb({status:'failed',message:'OBD不存在'}); return; }
-            res.send({status:'failed',message:'OBD不存在'});
-        }
+
     });
 }
 //车辆注销

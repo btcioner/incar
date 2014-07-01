@@ -2,7 +2,7 @@
  * Created by LM on 14-2-28.
  */
 'use strict';
-var db = require('../../config/db');
+var db = require('db');
 
 var findBySql=function(sql,args,callback){
     console.log("开始查询："+sql+'  '+args);
