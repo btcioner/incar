@@ -1,16 +1,33 @@
 <!DOCTYPE>
-<html>
+<html ng-app="wxApp">
 <head>
     <title>我的活动</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script  src="../mscripts/car.js"></script>
+    <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
+    <link href="../mstyles/bootstrap-3.1.1.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        body{
+            padding-top: 20px;
+        }
+        .panel-body{
+            background-color: #f1d69e;
+        }
+        .panel-body span{
+            color:#bf8b1d;
+        }
+    </style>
+    <script src="../mscripts/angular.js"></script>
+    <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/wxapp.js"></script>
 
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
     <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
     <script>
+
         var  user;
         var s4_id;
         var s4_openid;
@@ -21,10 +38,14 @@
             searchUser();
             //searchActivity();
         }
+
+        var myActivityCtrl = new wxApp.MyActivityCtrl('myActivityCtrl');
     </script>
 </head>
 
-<body onload="init()">
+<body onload="init()" ng-controller="myActivityCtrl">
+<div>{{model.url}}</div>
+<hr>
 <div id="wrap">
     <!--pagename start--><div id="pagename"></div><!--pagename end-->
     <!--containe_100 start--><div id="containe_100">
