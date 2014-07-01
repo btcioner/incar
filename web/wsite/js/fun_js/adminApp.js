@@ -4,9 +4,10 @@
 
 // use ng-view for redirct load different page
 angular.module("AdminApp", [
-    'ngResource',
-    'ngSanitize',
-    'ngRoute'
+            'ngResource',
+            'ngSanitize',
+            'ngRoute',
+            'mmmod'
     ]).config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.
         when('/main', {
@@ -42,7 +43,9 @@ angular.module("AdminApp", [
         });
       //  $locationProvider.html5Mode(true);
 
-}).controller("adminCtrl",function($scope,$http){
+}).controller("adminCtrl",function($scope,$http, jlVV){
+      //  alert(jlVV.foo("dsdfdfd"));
+
         if($.cookie("nick") != "" && $.cookie("nick") != null)
         {
             $("#body_id").css("display","block");

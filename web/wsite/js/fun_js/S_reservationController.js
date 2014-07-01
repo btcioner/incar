@@ -2,7 +2,7 @@
  * Created by Liz on 14-2-27.
  */
    //保养预约
-   function s_reservationCtrl($scope, $http,$routeParams){
+   function s_reservationCtrl($scope, $http,$routeParams,carProperties){
 
     $scope.reservationDiv = true;
     $scope.applyOperDiv = false;
@@ -37,21 +37,44 @@
         $scope.tips = "";
         $scope.randomTime = new Date();
         $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
+            $scope.careList = data.works;
+            if(data.status =="ok")
+            {
             if(data.works.length > 0)
             {
-                for(var i=0;i< data.works.length;i++)
+                for(var i=0;i<$scope.careList.length;i++)
                 {
-                     data.works[i].working_time =  $.changeDate(data.works[i].working_time);
-                     data.works[i].created_time =  $.changeDate(data.works[i].created_time);
-                     data.works[i].updated_time =  $.changeDate(data.works[i].updated_time);
-                     data.works[i].step = $.changeWorkStatus(data.works[i].step);
+                    $scope.careList[i].working_time =  $.changeDate($scope.careList[i].working_time);
+                    $scope.careList[i].created_time =  $.changeDate($scope.careList[i].created_time);
+                    $scope.careList[i].updated_time =  $.changeDate($scope.careList[i].updated_time);
+                    $scope.careList[i].step = $.changeWorkStatus($scope.careList[i].step);
+                    if($scope.careList[i].step == "applied")
+                    {
+//                        data.works[i].series = carProperties.getSeries(data.works[i].json_args.series);
+//
+//                        carProperties.notify(function(){
+//                           data.works[i].series = carProperties.getSeries(data.works[i].json_args.series);
+//                        });
+//                         $http.get(baseurl+"brand/"+$scope.careList[i].json_args.brand+"/series/"+$scope.careList[i].json_args.series).success(function(data1){
+//
+//                             if(data1.status == "ok")
+//                             {
+//                                 alert(i);
+//                                 $scope.careList[i-1].carPro = data1.series;
+//                                 $scope.careList[i-1].step = $.changeWorkStatus($scope.careList[i-1].step);
+//                             }
+//                         })
+                     }
+
                 }
+
+                PagingInfo(data.totalCount);
             }
             else{
                 $scope.tips="暂无数据";
             }
-            $scope.careList = data.works;
-            PagingInfo(data.totalCount);
+            }
+
         }).error(function(data){
                 alert("请求无响应");
         });
@@ -152,9 +175,13 @@
               }
               break;
           case "reject":
+              $scope.jj_reason = "";
               $scope.rejectReason = true;
               break;
           case "done":
+              $scope.care_items = "";
+              $scope.care_cost="";
+              $scope.begin_time="";
               $scope.ReservationInfo = true;
               break;
           case "abort":

@@ -152,6 +152,7 @@ function s_repairCtrl($scope, $http,$routeParams){
                 }
                 break;
             case "reject":
+                $scope.jj_reason = "";
                 $scope.rejectReason = true;
                 break;
 

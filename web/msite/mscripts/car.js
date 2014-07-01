@@ -15,6 +15,7 @@ function weixinShareFriend(title,desc,link,imgUrl){
 
 //分享到朋友圈
 function weixinShareTimeline(title,desc,link,imgUrl){
+    if(!WeixinJSBridge) return;
     WeixinJSBridge.on('menu:share:timeline', function(argv){
         WeixinJSBridge.invoke('shareTimeline',{
             "img_url":imgUrl,

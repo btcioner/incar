@@ -340,7 +340,7 @@ function getCarbonData(db, obdCode, startDatetime, endDatetime, callback) {
         else {
             if (rows) {
                 callback(null, rows.map(function(item, idx){
-                    var carbonResult = (item.fuelTotal * 2.24);
+                    var carbonResult = (item.fuelTotal * 2.24)/100;
                     if (!! carbonResult) {
                         carbonResult = carbonResult.toFixed(2);
                     }

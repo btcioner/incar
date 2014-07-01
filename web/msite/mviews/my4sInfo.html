@@ -1,86 +1,48 @@
 <!DOCTYPE>
-<html>
+<html ng-app="wxApp">
 <head>
     <title>活动列表页面</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
 
-    <script  src="../mscripts/jquery-1.7.1.min.js"></script>
-    <script  src="../mscripts/car.js"></script>
+    <script src="../mscripts/jquery-1.7.1.min.js"></script>
+    <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
 
-    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
-    <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
-    <script>
-        var user;
-        function init(){
-            user=getQueryString("user");
-            searchActivity();
-        }
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css"/>
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css"/>
+
+    <script src="../mscripts/angular.js"></script>
+    <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/wxapp.js"></script>
+    <script type="text/javascript">
+        var my4sInfoCtrl = new wxApp.My4sInfoCtrl('my4sInfoCtrl');
     </script>
 </head>
 
-<body onload="init()">
+<body ng-controller="my4sInfoCtrl">
 <div id="wrap">
-    <!--main_wrap start-->
     <div id="main_wrap">
-        <!--containe_100 start--><div id="containe_100">
-        <ul id="actContent">
-            <!--活动项box01 start-->
-            <!--<a href="###"><li>
-            <div class="listbox01">
-                <div class="imgbox02a float"><img src="../mimages/img_05.png" width="80" height="70" /></div>
-                <div class="icon_6a float"></div>
-                <div class="mainbox01 float"><h1>春百特惠大酬宾</h1><p class="text_05">活动时间：2014-06-07至2014-07-07<br />为期一个月的优惠活动开始啦。为期一个月的优惠活动开始啦......</p></div>
-                <div class="clear"></div>
-            </div>
-        </li></a>-->
-            <!--活动项box01 end-->
-            <!--活动项box02 start--><!--活动项box02 end-->
-        </ul>
-    </div><!--containe_100 end-->
+        <div id="containe_100">
+            <ul id="actContent" ng-repeat="ad in model.ads">
+                <li>
+                    <a ng-href="/msite/activityDetail.html?user={{model.user_openid}}&id={{ad.id}}" target="_self">
+                        <div class="listbox01">
+                            <div class="imgbox02a float"><img ng-src="{{ad.logo_url}}" width="80" height="70"/></div>
+                            <div class="icon_6a float"></div>
+                            <div class="mainbox01 float">
+                                <h1>{{ad.title}}</h1>
+                                <span class="text_05">活动发布时间：{{ad.tm_announce.substr(0, 10)}}<br>
+                                    {{ad.brief}}
+                                </span>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
         <div class="w10"></div>
-    </div><!--main_wrap end-->
+    </div>
 </div>
-<script>
-    function searchActivity(){
-        $.ajax({
-            type: "POST",
-            url: "/mservice/my4sInfo",
-            data: {'user':user},
-            dataType: "json",
-            success: function (result,status) {
-                //alert("lengh:"+result.length);
-               var str="";
-               for(var i=0;i<result.length;i++){
-                   var tsTemp=new Date(result[i].tm_announce);
-                   var tsMonth=((tsTemp.getMonth()+1)>9)?(tsTemp.getMonth()+1):"0"+(tsTemp.getMonth()+1);
-                   var tsDay=(tsTemp.getDate()>9)?tsTemp.getDate():"0"+tsTemp.getDate();
-                   //var tsDate=tsMonth +"/"+tsDay;
-                   //var tsHour=(tsTemp.getHours()>9)?tsTemp.getHours():"0"+tsTemp.getHours();
-                   //var tsMin= (tsTemp.getMinutes()>9)?tsTemp.getMinutes():"0"+tsTemp.getMinutes();
-                   //var tsTime=tsHour+":"+tsMin;
-                   var actStart=tsMonth +"/"+tsDay;
-                   var content=result[i].brief.substring(0,20);
-                   str+='<a href="activityDetail.html?user='+user+'&id='+result[i].id+'"><li>' +
-                           '<div class="listbox01">' +
-                              '<div class="imgbox02a float"><img src="'+result[i].logo_url+'" width="80" height="70" /></div>' +
-                              '<div class="icon_6a float"></div>' +
-                              '<div class="mainbox01 float">' +
-                                      '<h1>'+result[i].title+'</h1>' +
-                                      '<p class="text_05">活动发布时间：'+actStart+'<br />'+content+'......</p></div>' +
-                                      '<div class="clear"></div>' +
-                              '</div>' +
-                          '</li></a>';
-               }
-                //alert("str:"+str);
-                document.getElementById("actContent").innerHTML=str;
-            },
-            error:function(XMLHttpRequest, textStatus, errorThrown){
-                //alert("您还未注册或未绑定OBD信息\n请先注册账号！");
-                //window.location="/msite/enroll.html?user="+user;
-            }
-        });
-    }
-</script>
 </body>
 </html>

@@ -9,3 +9,6 @@ declare var angular:{
     isDefined: (value:any)=>boolean;
     forEach: (value:any, cb:(obj:any)=>any)=>any;
 };
+
+// jquery声明
+declare var $:any;

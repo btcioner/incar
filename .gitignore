@@ -1,6 +1,7 @@
 */node_modules/
 .idea/workspace.xml
 .idea/dictionaries/
+server/nohup.out
 web/components/
 web/.tmp/
 web/dist/
