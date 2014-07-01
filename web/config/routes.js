@@ -4,11 +4,9 @@
 var siteCommon = require('../sitecommon');
 var msite = require('./msite');
 var wsite = require('./wsite');
-//var wsCar=require('../wservice/car');
-var wsOBD=require('../wservice/obd');
-var obdMessage=require('../wservice/obdMessage');
 var wservice = require('../wservice/motor');
 var mservice = require('../mservice/mservice');
+var msgService=require('../message/message');
 var tagService=require('../tag/tag');
 var alarmService=require('../alarm/alarm');
 /** 
@@ -22,11 +20,10 @@ module.exports = function(app) {
     app.delete('/wservice/car/:id', wsCar.delete);
     app.post('/wservice/car', wsCar.add);
     app.put('/wservice/car/:id', wsCar.update);*/
-    //OBD绑定/注册
-    app.put('/wservice/obd/work/:channel', wsOBD.bindOBD);
+
     //短信
-    app.post('/wservice/message/obdTestSend/:obdCode', obdMessage.obdTestSend);
-    app.post('/wservice/message/obdTestReceive/:obdCode', obdMessage.obdTestReceive);
+    app.post('/message/obdTestSend/:obdCode', msgService.obdTestSend);
+    app.post('/message/obdTestReceive/:obdCode', msgService.obdTestReceive);
 
     // Routes for wsite service
     var authCheck = [wservice.CheckAuthority];

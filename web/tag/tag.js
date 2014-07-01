@@ -1,7 +1,7 @@
 /**
  * Created by LM on 14-5-27.
  */
-var dao=require("../core/dataAccess/dao");
+var dao=require("../config/dao");
 /**
  * 获得里程标签Code
  * @param car
