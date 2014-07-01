@@ -7,255 +7,64 @@
 
     <script src="../mscripts/jquery-1.7.1.min.js"></script>
     <script src="../mscripts/car.js"></script>
-
     <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
-    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css"/>
-    <link href="../mstyles/color.css" rel="stylesheet" type="text/css"/>
+    <link href="../mstyles/bootstrap-3.1.1.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        body{
+            padding-top: 20px;
+        }
+        .panel-body{
+            background-color: #f1d69e;
+        }
+        .panel-body span{
+            color:#bf8b1d;
+        }
+    </style>
 
-    <script src="../mscripts/angular.min.js"></script>
+    <script src="../mscripts/angular.js"></script>
     <script src="../mscripts/angular-resource.min.js"></script>
     <script src="../mscripts/wxapp.js"></script>
     <script>
-        var obd_code, license;//车牌号
         var myBookingCtrl = new wxApp.MyBookingCtrl("myBookingCtrl");
-        function init() {
-            user = getQueryString("user");
-            searchUser();
-        }
     </script>
 </head>
 
-<body onload="init()" ng-controller="myBookingCtrl">
-    <span>{{model.tag}}</span>
-<hr>
-<input id="wx_oid" type="hidden" value="123">
-
-<div id="wrap">
-    <!--pagename start-->
-    <div id="pagename"></div>
-    <!--pagename end-->
-    <!--containe_100 start-->
-    <div id="containe_100">
-        <!---表头 start-->
-        <div class="tablehead01">
-            <ul>
-                <li class="icon"><span>预&nbsp;&nbsp;约<br/>项&nbsp;&nbsp;目</span></li>
-                <li><span>预&nbsp;&nbsp;约<br/>车&nbsp;&nbsp;辆</span></li>
-                <li><span>提&nbsp;&nbsp;交<br/>时&nbsp;&nbsp;间</span></li>
-                <li><span>预&nbsp;&nbsp;约<br/>时&nbsp;&nbsp;间</span></li>
-                <li><span>当&nbsp;&nbsp;前<br/>状&nbsp;&nbsp;态</span></li>
-                <li><span>当&nbsp;&nbsp;前<br/>操&nbsp;&nbsp;作</span></li>
-            </ul>
-            <div class="clear"></div>
+<body ng-controller="myBookingCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-md-4" ng-repeat="trial in model.my_works | orderBy:'bookingtime':true">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-7">
+                                <span>预约项目:</span>{{trial.work_type}}
+                            </div>
+                            <div class="col-xs-5">
+                                <span></span>{{trial.seriesName}}
+                            </div>
+                            <div class="col-xs-7">
+                                <span>提交日期:</span>{{ trial.ts.substr(2,8) }}
+                            </div>
+                            <div class="col-xs-5">
+                                <span></span>{{ trial.ts.substr(11,5) }}
+                            </div>
+                            <div class="col-xs-7">
+                                <span>预约日期:</span>{{ trial.bookingtime.substr(2,8) }}
+                            </div>
+                            <div class="col-xs-5">
+                                <span></span>{{ trial.bookingtime.substr(11,5) }}
+                            </div>
+                            <div class="col-xs-12">
+                                <span>当前状态:</span>{{ trial.bookingStatus | trial_status_name }}
+                            </div>
+                            <div class="col-xs-12">
+                                <span>当前操作:</span><span ng-click="model.cancel(trial)" style="color:darkred">{{ trial.bookingStatus | trial_status_op }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!---表头 end-->
-        <!--我的预约表体 start-->
-        <div>
-            <ul class="tablebox01" id="bookContent">
-                <!--我的预约表行 start-->
-
-                <!--
-                <li>
-                <ul class="rows01">
-                    <li class="icon"><span class="icon_5a"></span></li>
-                    <li><span class="text_04">鄂A88888</span></li>
-                    <li><span>14/05/29<br />10:30</span></li>
-                    <li><span>14/05/30<br />10:30</span></li>
-                    <li><span class="text_04">新申请</span></li>
-                    <li><span class="text_04"><a href="###">取消</a></span></li>
-                </ul>
-            </li>
-            -->
-                <!--我的预约表行 end-->
-
-            </ul>
-            <div class="clear"></div>
-        </div>
-        <!--我的预约表体 end-->
     </div>
-    <!--containe_100 end-->
-</div>
-<script>
-    function searchUser() {
-        $.ajax({
-            type: "POST",
-            url: "/mservice/infoConfig",
-            data: {'user': user},
-            dataType: "json",
-            success: function (result, status) {
-                //alert("success");
-                searchTrialrun(result.wx_oid, result.license);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                //alert("您还未注册或未绑定OBD信息\n请先注册账号！");
-                //window.location="/msite/enroll.html?user="+user;
-            }
-        });
-    }
-    //获取试驾预约数据
-    function searchTrialrun(wx_oid, license) {
-        $.ajax({
-            type: "POST",
-            url: "/mservice/myTrialrun",
-            data: {'user': user, 'wx_oid': wx_oid},
-            dataType: "json",
-            success: function (result, status) {
-                var strTemp = "";
-                for (var i = 0; i < result.length; i++) {
-                    var rowLabel;
-                    var rowColor;
-                    //判断奇偶行
-                    if (i % 2 == 0) {
-                        rowLabel = "rows01";
-                        rowColor = "icon_5a";
-                    }
-                    else {
-                        rowLabel = "rows02";
-                        rowColor = "icon_5b";
-                    }
-                    //判断申请状态
-                    var status = "";
-                    if (result[i].bookingStatus == 1) status = "待确认";
-                    else if (result[i].bookingStatus == 2) status = "被拒绝";
-                    else if (result[i].bookingStatus == 3) status = "已批准";
-                    else if (result[i].bookingStatus == 4) status = "已取消";
-                    else status = "无效";
-                    //申请提交时间
-                    var tsTemp = new Date(result[i].ts);
-                    var tsMonth = ((tsTemp.getMonth() + 1) > 9) ? (tsTemp.getMonth() + 1) : "0" + (tsTemp.getMonth() + 1);
-                    var tsDay = (tsTemp.getDate() > 9) ? tsTemp.getDate() : "0" + tsTemp.getDate();
-                    var tsDate = tsMonth + "/" + tsDay;
-                    var tsHour = (tsTemp.getHours() > 9) ? tsTemp.getHours() : "0" + tsTemp.getHours();
-                    var tsMin = (tsTemp.getMinutes() > 9) ? tsTemp.getMinutes() : "0" + tsTemp.getMinutes();
-                    var tsTime = tsHour + ":" + tsMin;
-                    //申请试驾时间
-                    var trTemp = new Date(result[i].bookingtime);
-                    var trMonth = ((trTemp.getMonth() + 1) > 9) ? (trTemp.getMonth() + 1) : "0" + (trTemp.getMonth() + 1);
-                    var trDay = (trTemp.getDate() > 9) ? trTemp.getDate() : "0" + trTemp.getDate();
-                    var trialrunDate = trMonth + "/" + trDay;
-                    var trHour = (trTemp.getHours() > 9) ? trTemp.getHours() : "0" + trTemp.getHours();
-                    var trMin = (trTemp.getMinutes() > 9) ? trTemp.getMinutes() : "0" + trTemp.getMinutes();
-                    var trialrunTime = trHour + ":" + trMin;
-                    strTemp += '<li>' +
-                            '<ul class=' + rowLabel + '>' +
-                            '<li class="icon"><span class=' + rowColor + '></span></li>' +
-                            '<li><span class="text_04">' + result[i].seriesName + '</span></li>' +
-                            '<li><span>' + tsDate + '<br />' + tsTime + '</span></li>' +
-                            '<li><span>' + trialrunDate + '<br />' + trialrunTime + '</span></li>' +
-                            '<li><span class="text_04" id=tState' + i + '>' + status + '</span></li>' +
-                            '<li><span class="text_04"><a href="###" onclick="cancelTrialrun(' + result[i].id + ',tState' + i + ')">取消</a></span></li>' +
-                            '</ul>' +
-                            '</li>';
-                }
-                document.getElementById("bookContent").innerHTML = strTemp;
-                searchBook(wx_oid, license);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-            }
-        });
-    }
-    //取消试驾预约
-    function cancelTrialrun(id, sid) {
-        var con = confirm("您确定要取消这个试驾预约吗？");
-        if (con) {
-            $.ajax({
-                type: "POST",
-                url: "/mservice/cancelTrialrun",
-                data: {'id': id},
-                dataType: "json",
-                success: function (result, status) {
-                    alert("预约已取消！");
-                    //window.location="http://???.chinacloudapp.cn/msite/getCodeForBook.html";
-                    document.getElementById(sid).innerHTML = "已取消";
-                }
-            });
-        } else {
-            return;
-        }
-    }
-    function searchBook(wx_oid, license) {
-        var sid = wx_oid.split(":");
-        $.ajax({
-            type: "POST",
-            url: "/mservice/myBooking",
-            data: {'user': user, 'sid': sid[1]},
-            dataType: "json",
-            success: function (result, status) {
-                //alert(result.length);
-                var strTemp = "";
-                for (var i = 0; i < result.length; i++) {
-                    var rowLabel;
-                    var rowColor;
-                    //判断奇偶行
-                    if (i % 2 == 0) {
-                        rowLabel = "rows01";
-                        rowColor = "icon_4a";
-                    }
-                    else {
-                        rowLabel = "rows02";
-                        rowColor = "icon_4b";
-                    }
-                    //判断申请状态
-                    var status = "";
-                    if (result[i].bookingStatus == 1) status = "待确认";
-                    else if (result[i].bookingStatus == 2) status = "被拒绝";
-                    else if (result[i].bookingStatus == 3) status = "已批准";
-                    else if (result[i].bookingStatus == 4) status = "已取消";
-                    else status = "无效";
-                    //申请提交时间
-                    var tsTemp = new Date(result[i].ts);
-                    var tsMonth = ((tsTemp.getMonth() + 1) > 9) ? (tsTemp.getMonth() + 1) : "0" + (tsTemp.getMonth() + 1);
-                    var tsDay = (tsTemp.getDate() > 9) ? tsTemp.getDate() : "0" + tsTemp.getDate();
-                    var tsDate = tsMonth + "/" + tsDay;
-                    var tsHour = (tsTemp.getHours() > 9) ? tsTemp.getHours() : "0" + tsTemp.getHours();
-                    var tsMin = (tsTemp.getMinutes() > 9) ? tsTemp.getMinutes() : "0" + tsTemp.getMinutes();
-                    var tsTime = tsHour + ":" + tsMin;
-                    //申请试驾时间
-                    var trTemp = new Date(result[i].bookingtime);
-                    var trMonth = ((trTemp.getMonth() + 1) > 9) ? (trTemp.getMonth() + 1) : "0" + (trTemp.getMonth() + 1);
-                    var trDay = (trTemp.getDate() > 9) ? trTemp.getDate() : "0" + trTemp.getDate();
-                    var trialrunDate = trMonth + "/" + trDay;
-                    var trHour = (trTemp.getHours() > 9) ? trTemp.getHours() : "0" + trTemp.getHours();
-                    var trMin = (trTemp.getMinutes() > 9) ? trTemp.getMinutes() : "0" + trTemp.getMinutes();
-                    var trialrunTime = trHour + ":" + trMin;
-                    strTemp += '<li>' +
-                            '<ul class=' + rowLabel + '>' +
-                            '<li class="icon"><span class=' + rowColor + '></span></li>' +
-                            '<li><span class="text_04">' + license + '</span></li>' +
-                            '<li><span>' + tsDate + '<br />' + tsTime + '</span></li>' +
-                            '<li><span>' + trialrunDate + '<br />' + trialrunTime + '</span></li>' +
-                            '<li><span class="text_04" id=bState' + i + '>' + status + '</span></li>' +
-                            '<li><span class="text_04"><a href="###" onclick="cancelBook(' + result[i].id + ',bState' + i + ')">取消</a></span></li>' +
-                            '</ul>' +
-                            '</li>';
-                }
-                document.getElementById("bookContent").innerHTML += strTemp;
-
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-            }
-        });
-    }
-    function cancelBook(id, sid) {
-        var con = confirm("您确定要取消这个保养预约吗？");
-        if (con) {
-            $.ajax({
-                type: "POST",
-                url: "/mservice/cancelSlotBooking",
-                data: {'id': id},
-                dataType: "json",
-                success: function (result, status) {
-                    alert("预约已取消!");
-                    //window.location="http://???.chinacloudapp.cn/msite/getCodeForBook.html";
-                    document.getElementById(sid).innerHTML = "已取消";
-                }
-            });
-        } else {
-            return;
-        }
-    }
-</script>
 </body>
 </html>
