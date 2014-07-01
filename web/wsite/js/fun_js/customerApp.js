@@ -162,11 +162,11 @@ function s_statisticsCtrl($scope,$http)
         $scope.carOwnerCount = data.rowCount;
     })
     //微信端
-    $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?tagId=1&t="+$scope.randomTime).success(function(data){
+    $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?tagId=526&t="+$scope.randomTime).success(function(data){
         $scope.weixinCount = data.rowCount;
     })
     //手机端
-    $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?tagId=2&t="+$scope.randomTime).success(function(data){
+    $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?tagId=525&t="+$scope.randomTime).success(function(data){
         $scope.appCount = data.rowCount;
     })
 }

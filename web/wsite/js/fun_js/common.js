@@ -5,62 +5,9 @@
  */
 var baseurl="/wservice/";
 var randomTime = new Date();
+
+
 (function($){
-
-
-
-    //删除cookie里面的东西
-//    $.del4sCookie = function()
-//    {
-//        $.cookie("nick","");
-//        $.cookie("s4_id","");
-//        $.cookie("brand_id","");
-//    }
-//    $.getAjaxLink = function(url,query,type)
-//    {
-//        var tempData = {};
-//        if($.cookie("nick") != "")
-//        {
-//            $.ajax({
-//                url: url,
-//                type: type,
-//                dataType: 'json',
-//                data:query,
-//                success: function(data){
-////                  return data;
-//                },
-//                error: function(data){
-//                    alert("请求无响应");
-//                }
-//           });
-//        }
-//        else{
-//            alert("登录已超时！");
-//            window.location="../login.html";
-//        }
-//    }
-    //通过Ajax异步访问。
-//            $.ajax({
-//                url: url,
-//                type: type,
-//                dataType: 'json',
-//                data:query,
-//                success: function(data){
-//                    if(data.status =="没有登录")
-//                    {
-//                        alert("登录已超时！");
-//                        window.location="../login.html";
-//                    }
-//                    else{
-//                        $scope.$apply(function () {
-//                         getIndexData(id,data);
-//                        });
-//                    }
-//                },
-//                error: function(data){
-//                    alert("请求无响应");
-//                }
-//            });
 
     $.getUrlParam = function(name)
     {
