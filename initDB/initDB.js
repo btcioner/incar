@@ -26,6 +26,30 @@ function getRandomTime(year,month,day){
 function initDriveDictionary(){
     var argsArray=[];
     argsArray.push({
+        code:0x0101,
+        unit:"秒",
+        tip:"电压",
+        description:"蓄电池电压",
+        valueMin:0,
+        valueMax:18,
+        fmt:"%1.f"
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    argsArray.push({
         code:0x0000,
         unit:"伏特",
         tip:"电压",
