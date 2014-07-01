@@ -31,7 +31,7 @@
 
 <body ng-controller="myBookingCtrl">
     <div class="container-fluid">
-        <div class="row">
+        <div class="row ng-cloak" ng-cloak>
             <div class="col-xs-12 col-md-4" ng-repeat="trial in model.my_works | orderBy:'bookingtime':true">
                 <div class="panel panel-info">
                     <div class="panel-body">
