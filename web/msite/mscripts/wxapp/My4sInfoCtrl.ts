@@ -10,11 +10,25 @@ module wxApp {
             this.user_openid = $location.search().user;
             this.$http = $http;
             this.$scope = $scope;
+            this.search4sInfo();
 
             $scope.model = this;
         };
 
+        private search4sInfo = ()=>{
+        this.$http.post("/mservice/my4sInfo", { user: this.user_openid }, { dataType: "json"})
+            .success((data, status, headers, config)=>{
+
+                angular.forEach(data, (ad)=>{
+                    ad.brief = $(ad.brief).text().trim().substr(0, 20);
+                });
+                this.ads = data;
+            })
+            .error((data, status, headers, config)=>{ console.log(status); });
+    };
+
         private user_openid: string;
+        private ads = [];
         private $http: any;
         private $scope: any;
     }
