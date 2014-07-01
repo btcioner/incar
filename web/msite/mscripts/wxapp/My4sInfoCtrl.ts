@@ -20,7 +20,7 @@ module wxApp {
             .success((data, status, headers, config)=>{
 
                 angular.forEach(data, (ad)=>{
-                    ad.brief = $(ad.brief).text().trim().substr(0, 20);
+                    ad.brief = $(ad.brief).text().trim().substr(0, 32);
                 });
                 this.ads = data;
             })
