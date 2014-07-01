@@ -12,7 +12,6 @@ module wxApp {
             this.$scope = $scope;
 
             $scope.model = this;
-            $scope.url = $location.url();
         };
 
         private user_openid: string;
