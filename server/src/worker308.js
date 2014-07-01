@@ -25,8 +25,8 @@ function sendToMessageServer(dataBuffer,commandWord){
     var dataJson={dataString:dataBuffer};
     var opt = {
         method: "POST",
-        host: "localhost",
-        port: 1234,
+        host: "lahmyyc2014.vicp.cc",
+        port: 48928,
         path: "/message/receive/"+commandWord,
         headers: {
             "Content-Type": "application/json",
