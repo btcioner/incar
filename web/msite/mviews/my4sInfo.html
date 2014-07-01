@@ -1,16 +1,23 @@
 <!DOCTYPE>
-<html>
+<html ng-app="wxApp">
 <head>
     <title>活动列表页面</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script  src="../mscripts/car.js"></script>
+    <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
+    <link href="../mstyles/bootstrap-3.1.1.css" rel="stylesheet" type="text/css"/>
 
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
     <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
+
+    <script src="../mscripts/angular.js"></script>
+    <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/wxapp.js"></script>
     <script>
+        var my4sInfoCtrl = new wxApp.My4sInfoCtrl('my4sInfoCtrl');
         var user;
         function init(){
             user=getQueryString("user");
@@ -19,7 +26,9 @@
     </script>
 </head>
 
-<body onload="init()">
+<body onload="init()" ng-controller="my4sInfoCtrl">
+    <span>{{url}}</span>
+<hr>
 <div id="wrap">
     <!--main_wrap start-->
     <div id="main_wrap">
