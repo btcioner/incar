@@ -9,11 +9,11 @@ var mysql = require('mysql');
 exports = module.exports = function() {
     if (! global.poolInCar) {
 
-        var host = process.env.MySQLHost || '114.215.172.92';
-        var user = process.env.MySQLUser || 'incarapp';
-        var pwd = process.env.MySQLPwd || 'nodejs4WMQ';
+        var host = process.env.INCAR_MySQLHost || '114.215.172.92';
+        var user = process.env.INCAR_MySQLUser || 'incarapp';
+        var pwd = process.env.INCAR_MySQLPwd || 'nodejs4WMQ';
 
-        var dbname = process.env.MySQLDatabase || 'incar';
+        var dbname = process.env.INCAR_MySQLDatabase || 'incar';
 
         global.poolInCar = mysql.createPool({
             host: host,

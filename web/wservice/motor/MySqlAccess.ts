@@ -9,7 +9,7 @@ module Service{
         export function RetrievePool() : any{
             var poolInCar = findPool();
 
-            if(process.env.TraceSQL){
+            if(process.env.INCAR_TraceSQL){
                 if(!poolInCar.TraceCount){
                     poolInCar.TraceCount = 1;
                     poolInCar.queryRawFn = poolInCar.query;

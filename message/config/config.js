@@ -16,6 +16,6 @@ module.exports = {
     root: rootPath,
     // 不要使用硬编码的域名,我们会有多个域名,分别部署 正式product/过渡staging/开发dev版本
     // baseUrl: 'http://xxxx.chinacloudapp.cn',
-    port: process.env.PORT || 1234
+    port: process.env.INCAR_PORT || 1234
 };
 
