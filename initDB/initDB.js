@@ -28,27 +28,66 @@ function initDriveDictionary(){
     argsArray.push({
         code:0x0101,
         unit:"秒",
-        tip:"电压",
-        description:"蓄电池电压",
+        tip:"本行程行驶时间",
+        description:"本行程行驶时间",
         valueMin:0,
-        valueMax:18,
-        fmt:"%1.f"
+        valueMax:65535,
+        fmt:"%s"
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    argsArray.push({
+        code:0x0102,
+        unit:"米",
+        tip:"本行程行驶距离",
+        description:"本行程行驶距离",
+        valueMin:0,
+        valueMax:65535,
+        fmt:"%s"
+    });
+    argsArray.push({
+        code:0x0103,
+        unit:"ml",
+        tip:"本行程耗油量",
+        description:"本行程耗油量",
+        valueMin:0,
+        valueMax:65535,
+        fmt:"%s"
+    });
+    argsArray.push({
+        code:0x0104,
+        unit:"L/100km",
+        tip:"本行程平均油耗",
+        description:"本行程平均油耗",
+        valueMin:0,
+        valueMax:65535,
+        fmt:"%s"
+    });
+    argsArray.push({
+        code:0x0106,
+        unit:"km",
+        tip:"累计行驶距离",
+        description:"累计行驶距离",
+        valueMin:0,
+        valueMax:65535,
+        fmt:"%s"
+    });
+    argsArray.push({
+        code:0x0107,
+        unit:"L",
+        tip:"累计耗油量",
+        description:"累计耗油量",
+        valueMin:0,
+        valueMax:65535,
+        fmt:"%s"
+    });
+    argsArray.push({
+        code:0x0108,
+        unit:"L/100km",
+        tip:"累计平均油耗",
+        description:"累计平均油耗",
+        valueMin:0,
+        valueMax:65535,
+        fmt:"%s"
+    });
     argsArray.push({
         code:0x0000,
         unit:"伏特",
@@ -1914,9 +1953,8 @@ function initDriveDictionary(){
     });
 
     for(var i=0;i<argsArray.length;i++){
-        dao.insertBySql("insert into t_drive_dictionary set ?",argsArray[i],function(info,carDic){
-            carDic.id=info.insertId;
-            console.log("成功创建车况字典信息:"+JSON.stringify(carDic));
+        dao.insertBySql("insert into t_drive_dictionary set ?",argsArray[i],function(info){
+            console.log("成功创建车况字典信息:"+JSON.stringify(info));
         });
     }
 }
@@ -5592,9 +5630,8 @@ function initCarDictionary(){
         manufacturer:""
     });
     for(var i=0;i<argsArray.length;i++){
-        dao.insertBySql("insert into t_car set ?",argsArray[i],function(info,carInfo){
-            carInfo.id=info.insertId;
-            console.log(carInfo);
+        dao.insertBySql("insert into t_car set ?",argsArray[i],function(info){
+            console.log(info);
         });
     }
 };
@@ -5690,9 +5727,9 @@ function initDrive(){
         driveArray.push(drive);
     }
     for(i=0;i<driveArray.length;i++){
-        dao.insertBySql(sql,driveArray[i],function(info,drive){
+        dao.insertBySql(sql,driveArray[i],function(info){
             detailArray=[];
-            var driveId=drive.id=info.insertId;
+            var driveId=drive.id=info.data.insertId;
             console.log("成功添加行车数据"+driveId+"--"+JSON.stringify(drive));
             var fireTime=drive.fireTime;
             var flameOutTime=drive.flameOutTime;
@@ -5709,7 +5746,7 @@ function initDrive(){
             if(i===driveCount){
                 for(var k=0;k<detailArray.length;k++){
                     dao.insertBySql(sqlDetail,[detailArray[k]],function(info){
-                        console.log("成功添加车况数据"+info.insertId);
+                        console.log("成功添加车况数据"+info);
                     });
                 }
             }
@@ -9390,9 +9427,8 @@ function initCarDictionary(){
     });
 
     for(var i=0;i<argsArray.length;i++){
-        dao.insertBySql("insert into t_car_dictionary set ?",argsArray[i],function(info,carDic){
-            carDic.id=info.insertId;
-            console.log("成功创建车辆字典信息:"+JSON.stringify(carDic));
+        dao.insertBySql("insert into t_car_dictionary set ?",argsArray[i],function(info){
+            console.log("成功创建车辆字典信息:"+JSON.stringify(info));
         });
     }
 }
@@ -9400,11 +9436,12 @@ function initTag(){
     //车系
     var sqlGroup="insert into t_tag_group set ?";
     var argsGroup={id:1,name:"车系",description:"车系",type:0};
-    dao.insertBySql(sqlGroup,argsGroup,function(info,group){
-        var groupId=group.id=info.insertId;
+    dao.insertBySql(sqlGroup,argsGroup,function(info){
+        var groupId=group.id=info.data.id;
         console.log("成功添加车系分组："+JSON.stringify(group));
         var sql="select * from t_car_dictionary";
-        dao.findBySql(sql,[],function(rows){
+        dao.findBySql(sql,[],function(info){
+            var rows=info.data;
             for(var i=0;i<rows.length;i++){
                 var cd=rows[i];
                 var code='ser'+cd.brandCode+'-'+cd.seriesCode;
@@ -9421,9 +9458,8 @@ function initTag(){
                     creator:'柳明'
                 };
                 sql="insert into t_tag set ?";
-                dao.insertBySql(sql,tag,function(info,args){
-                    args.id=info.insertId;
-                    console.log("成功添加车系标签："+JSON.stringify(args));
+                dao.insertBySql(sql,tag,function(info){
+                    console.log("成功添加车系标签："+JSON.stringify(info));
                 });
             }
         });
@@ -9432,26 +9468,23 @@ function initTag(){
     var sqlGroup="insert into t_tag_group set ?";
     var argsGroup={id:2,name:"用途",description:"标识车是商用还是家用",type:0};
     var sqlTag="insert into t_tag set ?";
-    dao.insertBySql(sqlGroup,argsGroup,function(info,group){
-        var groupId=group.id=info.insertId;
+    dao.insertBySql(sqlGroup,argsGroup,function(info){
         console.log("成功添加用途分组："+JSON.stringify(group));
         var argsTag=[
             {code:'useTo1',name:"商用",description:"商业用车",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0},
             {code:'useTo2',name:"家用",description:"家庭用车",active:1,groupId:2,createTime:new Date(),creator:'柳明',s4Id:0}
         ];
         for(var i=0;i<argsTag.length;i++){
-            dao.insertBySql(sqlTag,argsTag[i],function(info,args){
-                args.id=info.insertId;
-                console.log("成功添加用途标签："+JSON.stringify(args));
+            dao.insertBySql(sqlTag,argsTag[i],function(info){
+                console.log("成功添加用途标签："+JSON.stringify(info));
             });
         }
     });
     //用车频率
     var sqlGroup="insert into t_tag_group set ?";
     var argsGroup={id:3,name:"用车频率",description:"用来描述车主的用车频率",type:0};
-    dao.insertBySql(sqlGroup,argsGroup,function(info,group){
-        var groupId=group.id=info.insertId;
-        console.log("成功添加用车频率分组："+JSON.stringify(group));
+    dao.insertBySql(sqlGroup,argsGroup,function(info){
+        console.log("成功添加用车频率分组："+JSON.stringify(info));
         var argsTag=[
             {code:'rate1',name:"极低",description:"很少很少",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
             {code:'rate2',name:"低",description:"很少",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0},
@@ -9459,9 +9492,8 @@ function initTag(){
             {code:'rate4',name:"高",description:"很多",active:1,groupId:3,createTime:new Date(),creator:'柳明',s4Id:0}
         ];
         for(var i=0;i<argsTag.length;i++){
-            dao.insertBySql(sqlTag,argsTag[i],function(info,args){
-                args.id=info.insertId;
-                console.log("成功添加用车频率标签："+JSON.stringify(args));
+            dao.insertBySql(sqlTag,argsTag[i],function(info){
+                console.log("成功添加用途标签："+JSON.stringify(info));
             });
         }
     });
@@ -9477,9 +9509,8 @@ function initTag(){
             {code:'pre3',name:"豪放",description:"豪放",active:1,groupId:4,createTime:new Date(),creator:'柳明',s4Id:0}
         ];
         for(var i=0;i<argsTag.length;i++){
-            dao.insertBySql(sqlTag,argsTag[i],function(info,args){
-                args.id=info.insertId;
-                console.log("成功添加驾驶偏好标签："+JSON.stringify(args));
+            dao.insertBySql(sqlTag,argsTag[i],function(info){
+                console.log("成功添加用途标签："+JSON.stringify(info));
             });
         }
     });

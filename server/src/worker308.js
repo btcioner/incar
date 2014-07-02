@@ -26,7 +26,7 @@ function sendToMessageServer(dataBuffer,commandWord){
     var opt = {
         method: "POST",
         host: "lahmyyc2014.vicp.cc",
-        port: 48928,
+        port: 30919,
         path: "/message/receive/"+commandWord,
         headers: {
             "Content-Type": "application/json",
@@ -407,7 +407,7 @@ function packetProcess_1601(dataBuffer,cb) {
                             carStatus:3,
                             flameOutTime:receiveTime,
                             lastUpdateTime:lastUpdateTime
-                        },id];
+                        },driveId];
                         dao.executeBySql(sql,args,function(info){
                             if(info.err){
                                 throw err;
@@ -645,16 +645,16 @@ function get1603Default(){
         carUpdateCount:0x00,            //车辆信息更新数量(0x00或0x05)
 
         serverConfigCount:0x05,         //网络参数更新数量(0x00-0x05)
-        addressParam:"114.215.172.92",  //获取参数数据地址
-        portParam:9005,                 //获取参数数据端口
-        addressUpload:"114.215.172.92", //主动上传数据地址
-        portUpload:9005,                //主动上传数据端口
-        addressAlarm:"114.215.172.92",  //报警数据上传地址
-        portAlarm:9005,                 //报警数据上传端口
-        addressMessage:"114.215.172.92",//短信回复数据地址
-        portMessage:9005,               //短信回复数据端口
-        addressLocation:"114.215.172.92",//定位数据地址
-        portLocation:9005,              //定位数据端口
+        addressParam:"lahmyyc2014.vicp.cc",  //获取参数数据地址
+        portParam:48928,                 //获取参数数据端口
+        addressUpload:"lahmyyc2014.vicp.cc", //主动上传数据地址
+        portUpload:48928,                //主动上传数据端口
+        addressAlarm:"lahmyyc2014.vicp.cc",  //报警数据上传地址
+        portAlarm:48928,                 //报警数据上传端口
+        addressMessage:"lahmyyc2014.vicp.cc",//短信回复数据地址
+        portMessage:48928,               //短信回复数据端口
+        addressLocation:"lahmyyc2014.vicp.cc",//定位数据地址
+        portLocation:48928,              //定位数据端口
 
         speedGroup:"1,45,90,255",       //车速分段统计
 
