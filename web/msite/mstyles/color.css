@@ -14,6 +14,17 @@ h1 {
 .text_06 {
 	color: #666;
 }
+.text_09 {
+	color: #FFF;
+	background-color: #c2973c;
+}
+.text_10 {
+	color: #CDA95F;
+}
+.text_10:hover   {
+	color: #8F6F2C;
+}
+
 .button01,.button02 {
 	color: #FFF;
 }.button01 {
