@@ -651,7 +651,7 @@ module Service{
             var sql : string;
             if(isNaN(tpl_id)) sql = "SELECT * FROM t_activity_template WHERE template = ? and s4_id=?";
             else sql = "SELECT * FROM t_activity_template WHERE id = ? and s4_id=?";
-            
+
             var dac = MySqlAccess.RetrievePool();
             dac.query(sql, [tpl_id, this.dto.id], (ex, result)=>{
                 if(ex) { cb(new TaskException(-1, "查询活动模版失败", ex), null); return; }
