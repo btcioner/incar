@@ -9,11 +9,11 @@ var mysql = require('mysql');
 exports = module.exports = function() {
     if (! global.poolInCar) {
 
-        var host = process.env.MySQLHost || '42.159.152.121';
-        var user = process.env.MySQLUser || 'incarapp';
-        var pwd = process.env.MySQLPwd || 'nodejs4WMQ';
+        var host = process.env.INCAR_MySQLHost || '42.159.152.121';
+        var user = process.env.INCAR_MySQLUser || 'incarapp';
+        var pwd = process.env.INCAR_MySQLPwd || 'nodejs4WMQ';
 
-        var dbname = process.env.MySQLDatabase || 'incar';
+        var dbname = process.env.INCAR_MySQLDatabase || 'incar';
 
         global.poolInCar = mysql.createPool({
             host: host,
@@ -34,7 +34,7 @@ exports = module.exports = function() {
             pool.query("SELECT id FROM t_4s LIMIT 1", null, function(ex, result){});
         }, 120*1000);
 
-        if(process.env.TraceSQL)
+        if(process.env.INCAR_TraceSQL)
             console.info("设置环境变量TraceSQL=false即可关闭SQL输出");
         else
             console.info("设置环境变量TraceSQL=true可以开启SQL输出");

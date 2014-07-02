@@ -26,6 +26,6 @@ function ConfigBaseURL(){
 module.exports = {
     root: rootPath,
     baseUrl: ConfigBaseURL(),
-    port: process.env.PORT || 80
+    port: process.env.INCAR_PORT || 80
 };
 

@@ -181,6 +181,10 @@ var menuObject={
 };
 wxMenu.defineTasks = function(tickTasks, callback) {
     //console.log("menu begins");
+    if(process.env.NODE_ENV === 'development'){
+        console.warn("Disable register wechat menu in development config");
+        return;
+    }
     menuBuilder(tickTasks, menuObject, callback);
 };
 wxMenu.textMsgRepliers = [];

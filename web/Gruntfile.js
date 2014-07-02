@@ -29,7 +29,7 @@ module.exports = function (grunt) {
     },
     express: {
       options: {
-        port: process.env.PORT || 80
+        port: process.env.INCAR_PORT || 80
       },
       dev: {
         options: {
