@@ -465,6 +465,7 @@ function createChart() {
         element: document.getElementById('fuel_y_axis')
     });
     fuel_graph.render();
+
     var carbon_graph = new Rickshaw.Graph({
         element: document.getElementById("carbon_chart"),
         renderer: 'line',
@@ -479,6 +480,7 @@ function createChart() {
         element: document.getElementById('carbon_y_axis')
     });
     carbon_graph.render();
+
     var drive_graph = new Rickshaw.Graph({
         element: document.getElementById("drive_chart"),
         renderer: 'line',
@@ -504,7 +506,6 @@ function dochart(result){
     else{
         fuelChartData = fuelChartDataDemo;
     }
-
     document.getElementById("fuel_chart").innerHTML = "";
     document.getElementById("fuel_y_axis").innerHTML = "";
 
@@ -515,13 +516,14 @@ function dochart(result){
     else{
         carbonChartData = carbonChartDataDemo;
     }
-
     document.getElementById("carbon_chart").innerHTML = "";
     document.getElementById("carbon_y_axis").innerHTML = "";
 
     if (result.behaviorData.length > 1) {
         behaviorChartData = driveChartDataConvert(result.behaviorData);
     }
+    document.getElementById("drive_chart").innerHTML = "";
+    document.getElementById("drive_y_axis").innerHTML = "";
 
     createChart();
     pieChart(result.intervalSpeed.slow, result.intervalSpeed.middle, result.intervalSpeed.high);
