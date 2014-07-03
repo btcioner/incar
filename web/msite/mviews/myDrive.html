@@ -494,6 +494,8 @@ function createChart() {
 
 function dochart(result){
     if (result.fuelData.length > 1) {
+        // 单位转换
+        for(var i in result.fuelData) result.fuelData[i].fuel = myDriveCtrl.$filter("l_per_100km")(result.fuelData[i].fuel);
         fuelChartData = fuelChartDataConvert(result.fuelData);
     }
 
@@ -501,8 +503,10 @@ function dochart(result){
     document.getElementById("fuel_y_axis").innerHTML = "";
 
     if (result.carbonData.length > 1) {
+        for(var i in result.carbonData) result.carbonData[i].carbon = myDriveCtrl.$filter("kg")(result.carbonData[i].carbon);
         carbonChartData = carbonChartDataConvert(result.carbonData);
     }
+
     document.getElementById("carbon_chart").innerHTML = "";
     document.getElementById("carbon_y_axis").innerHTML = "";
 
