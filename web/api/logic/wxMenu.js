@@ -266,14 +266,14 @@ wxMenu.onClick['MY4S.MANUAL'] = function(message, session, next) {
     });
 };
 wxMenu.onClick['MY4S.CONTACT'] = function(message, session, next) {
-    my4S.contact(message.FromUserName, message.ToUserName,session, function(err, result,pic){
+    my4S.contact(message.FromUserName, message.ToUserName,session, function(err, result, pic){
         if (err) {
             return next(err);
         }
         return next(null, [{
             title: '联系我们',
             description: result,
-            picurl: 'http://114.215.172.92/data/upload/27919-s052cc.jpg',
+            picurl: url.resolve(config.baseUrl, pic),
             url: ''  /**  url.resolve(config.baseUrl, "msite/???.html?user=") + message.FromUserName + '@' + message.ToUserName **/
         }]);
     });
