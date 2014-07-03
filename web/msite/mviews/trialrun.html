@@ -173,18 +173,15 @@
         postData.bookTime = document.getElementById("end").value;
         var args = JSON.stringify({'brand': brand, 'series': series});
         postData.args = args;
-        alert("开始提交");
         $.ajax({
             type: "POST",
             url: "/mservice/trialrun",
             data: postData,
             dataType: "json",
             success: function (result, status) {
-                alert("提交成功");
                 window.location.href = "/msite/trialResult.html?state=1";
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("连接失败\n请检查网络连接是否正常");
                 window.location.href = "/msite/trialResult.html?state=0";
             }
         });
