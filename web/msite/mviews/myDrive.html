@@ -100,28 +100,31 @@
         var behaviorChartData;
         var today;
         //本地数据，用于演示
-        fuelChartData = [
+        fuelChartDataDemo = [
             {data: [
-                {x: 0, y: 3.128},
-                {x: 1, y: 7.345},
-                {x: 2, y: 7.467},
-                {x: 3, y: 7.098},
-                {x: 4, y: 7.761},
-                {x: 5, y: 7.257 }
+                {x: 0, y: 0.0},
+                {x: 1, y: 0.0},
+                {x: 2, y: 0.0},
+                {x: 3, y: 0.0},
+                {x: 4, y: 0.0},
+                {x: 5, y: 0.0}
             ],
                 color: "#c05020"}
         ];
-        carbonChartData = [
+        fuelChartData = fuelChartDataDemo;
+
+        carbonChartDataDemo = [
             {data: [
-                {x: 0, y: 1},
-                {x: 1, y: 1},
-                {x: 2, y: 1},
-                {x: 3, y: 1},
-                {x: 4, y: 1},
-                {x: 5, y: 1 }
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 2, y: 0},
+                {x: 3, y: 0},
+                {x: 4, y: 0},
+                {x: 5, y: 0}
             ],
                 color: "#c05020"}
         ];
+        carbonChartData = carbonChartDataDemo;
         //页面加载初始化
         function init() {
             user = getQueryString("user");
@@ -498,6 +501,9 @@ function dochart(result){
         for(var i in result.fuelData) result.fuelData[i].fuel = myDriveCtrl.$filter("l_per_100km")(result.fuelData[i].fuel);
         fuelChartData = fuelChartDataConvert(result.fuelData);
     }
+    else{
+        fuelChartData = fuelChartDataDemo;
+    }
 
     document.getElementById("fuel_chart").innerHTML = "";
     document.getElementById("fuel_y_axis").innerHTML = "";
@@ -505,6 +511,9 @@ function dochart(result){
     if (result.carbonData.length > 1) {
         for(var i in result.carbonData) result.carbonData[i].carbon = myDriveCtrl.$filter("kg")(result.carbonData[i].carbon);
         carbonChartData = carbonChartDataConvert(result.carbonData);
+    }
+    else{
+        carbonChartData = carbonChartDataDemo;
     }
 
     document.getElementById("carbon_chart").innerHTML = "";
