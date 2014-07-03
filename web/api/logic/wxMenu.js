@@ -273,7 +273,7 @@ wxMenu.onClick['MY4S.CONTACT'] = function(message, session, next) {
         return next(null, [{
             title: '联系我们',
             description: result,
-            picurl: pic,
+            picurl: 'http://114.215.172.92/data/upload/27919-s052cc.jpg',
             url: ''  /**  url.resolve(config.baseUrl, "msite/???.html?user=") + message.FromUserName + '@' + message.ToUserName **/
         }]);
     });
