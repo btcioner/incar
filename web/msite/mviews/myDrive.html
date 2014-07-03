@@ -175,7 +175,7 @@
             <div class="boxstyle01_1"><span>最近一次行驶</span></div>
             <div class="boxstyle02" ng-show="model.driveData">
                 <ul>
-                    <li>平均油耗为：<span>{{ model.driveData.fuelDataLastTime.fuel | l_per_100km }} 升/百公里</span></li>
+                    <li>平均油耗为：<span>{{ model.driveData.fuelDataLastTime.fuel | l_per_100km | number }} 升/百公里</span></li>
                     <li>行驶里程数：<span>{{ model.driveData.fuelDataLastTime.mileage | km }} 公里</span></li>
                     <li>耗&nbsp;&nbsp;油&nbsp;&nbsp;量为：<span>{{ model.driveData.fuelDataLastTime.totalFuel | l | number}} 升</span></li>
                 </ul>
@@ -206,7 +206,7 @@
             <div class="boxstyle01_1"><span>本时间段行驶</span></div>
             <div class="boxstyle02" ng-show="model.driveData">
                 <ul>
-                    <li>平均油耗为：<span>{{model.driveData.fuelDataLastInterval.fuel | l_per_100km}} 升/百公里</span></li>
+                    <li>平均油耗为：<span>{{model.driveData.fuelDataLastInterval.fuel | l_per_100km | number}} 升/百公里</span></li>
                     <li>行驶里程数：<span>{{model.driveData.fuelDataLastInterval.mileage | km }} 公里</span></li>
                     <li>耗&nbsp;&nbsp;油&nbsp;&nbsp;量为：<span>{{model.driveData.fuelDataLastInterval.totalFuel | l | number}} 升</span></li>
                 </ul>

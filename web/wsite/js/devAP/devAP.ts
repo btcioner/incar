@@ -58,6 +58,7 @@ module devAP {
 
         // 被测试的页面
         public pages = [
+            { title: "我的车-行车分析", url: "/msite/myDrive.html?user=o1fUut3BkIo8XM6-8HG-3ORAtvls@gh_895980ee6356" /*模拟微信的openid*/ },
             { title: "我的车-行车分析[wmq@stagging]", url: "/msite/myDrive.html?user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI@gh_2ca6120e0ed0" /*模拟微信的openid*/ },
             { title: "我的车-行车手册", url: "/msite/page_xcsc.html" },
             { title: "我的4S-资讯活动[wmq@stagging]", url: "/msite/my4sInfo.html?user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI@gh_2ca6120e0ed0" /*模拟微信的openid*/ },
