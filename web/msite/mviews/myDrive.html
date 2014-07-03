@@ -633,7 +633,8 @@ behaviorChartData = [
         value = Math.round(parseFloat(value) * 10) / 10;
         if (value.toString().indexOf(".") < 0)
             value = value.toString() + ".0";
-        return value;
+
+        return Number(value);
     }
 </script>
 </body>
