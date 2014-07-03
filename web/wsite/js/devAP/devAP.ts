@@ -36,8 +36,8 @@ module devAP {
 
             // 模拟微信用户
             var wx_oid_wmq_dev = "user=o1fUut3BkIo8XM6-8HG-3ORAtvls@gh_895980ee6356";
-            // var wx_oid_wmq_staging = "user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI@gh_2ca6120e0ed0";
-            var wx_oid_wmq_staging = "user=oAPKMuJssQAohcEgKyKkcRDUDiAw@gh_2ca6120e0ed0";
+            var wx_oid_wmq_staging = "user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI@gh_2ca6120e0ed0";
+            var wx_oid_xgh_staging = "user=oAPKMuJssQAohcEgKyKkcRDUDiAw@gh_2ca6120e0ed0";
 
             for(var i in this.pagesDev){
                 this.pagesDev[i].url += wx_oid_wmq_dev;
