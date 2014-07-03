@@ -18,7 +18,7 @@ function trialrun(req, res) {
     submitTrialrun(db, postData,function(err, data) {
         if (err) { res.send(err); }
         else {
-           res.send(200);
+           res.json(200, "okay");
         }
     });
 }
