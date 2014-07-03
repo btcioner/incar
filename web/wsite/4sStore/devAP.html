@@ -35,7 +35,14 @@
         </div>
         <div class="col-xs-12 col-md-4">
             <ul class="list-group">
-                <li class="list-group-item" ng-repeat="page in model.pages">
+                <li class="list-group-item" ng-repeat="page in model.pagesDev">
+                    <a ng-href="{{page.url}}">{{page.title}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="page in model.pagesStaging">
                     <a ng-href="{{page.url}}">{{page.title}}</a>
                 </li>
             </ul>
