@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS t_drive_detail(
     id int auto_increment,
     obdCode varchar(20),
     obdDriveId int,
-    detail varchar(3000),
+    detail varchar(8000),
     createTime timestamp,
     primary key (id));
 
