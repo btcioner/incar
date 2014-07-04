@@ -11,7 +11,8 @@ var http = require("http");
 var byteCmd=[0xFE01,0xFE04,0xFE16,0xF913807970E17,0xFE19];
 var wordCmd=[0xFE06,0xFE08,0xFE0A,0xFE0C,0xFE0D,0xFE0E,0xFE0F,0xFE11,0xFE12,0xFE1A];
 var longCmd=[0xFE03,0xFE14];
-
+var messageServerAddress="lahmyyc2014.vicp.cc";
+var messageServerPort=30919;
 function toTime(str){
     var dt=new Date(str);
     var min=new Date('1970-01-02 00:00:00');
@@ -20,30 +21,39 @@ function toTime(str){
     }
     return getDateTimeStamp(min);
 }
-function sendToMessageServer(dataBuffer,commandWord){
-    console.log("接收到短信回复："+commandWord+"\n");
+function sendToMessageServer(dataBuffer,commandWord,cb){
+    console.log("接收到"+commandWord.toString(16)+"短信回复,开始连接短信服务器：");
     var dataJson={dataString:dataBuffer};
-    try{
-        var opt = {
-            method: "POST",
-            host: "lahmyyc2014.vicp.cc",
-            port: 30919,
-            path: "/message/receive/"+commandWord,
-            headers: {
-                "Content-Type": "application/json",
-                "Content-Length":Buffer.byteLength(JSON.stringify(dataJson))
-            }
-        };
-        var req = http.request(opt, function (serverFeedback) {
-            console.log(serverFeedback.statusCode+'状态');
+    var opt = {
+        method: "POST",
+        host: messageServerAddress,
+        port: messageServerPort,
+        path: "/message/receive/"+commandWord,
+        headers: {
+            "Content-Type": "application/json",
+            "Content-Length":Buffer.byteLength(JSON.stringify(dataJson))
+        }
+    };
+    var req = http.request(opt, function (res) {
+        console.log("短信服务器连接成功,"+commandWord.toString(16)+"数据发送完毕,状态码："+res.statusCode);
+        res.setEncoding('utf8');
+        res.on('data', function (data) {
+            var result=JSON.parse(data);
+            console.log("收到短信服务器回复,"+JSON.stringify(result));
 
+            if(result&&result.status=='success'){
+                cb();
+            }
+            else{
+                console.log(result.status);
+            }
         });
-        req.write(JSON.stringify(dataJson));
-        req.end();
-    }
-    catch(err){
-        console.log('短信服务器连接失败'+err);
-    }
+    });
+    req.on('error', function(e) {
+        console.log('连接短信服务器失败:'+e);
+    });
+    req.write(JSON.stringify(dataJson));
+    req.end();
 }
 
 /**
@@ -97,8 +107,7 @@ function packetProcess(packetInput,tag,cb) {
         packetProcess_160A(dataBuffer,saveAndReturn);
     }
     if(commandWord>=0x1621&&commandWord<=0x16E0){
-        sendToMessageServer(dataBuffer,commandWord);
-        saveAndReturn();
+        sendToMessageServer(dataBuffer,commandWord,saveAndReturn);
     }
     if(commandWord===0x9502){
         saveAndReturn();
@@ -645,7 +654,7 @@ function get1603Default(){
 
         fireOffCount:0x03,              //熄火后信息更新数量(0x00或0x03)
         criticalVoltage:115,            //关机临界电压
-        closeAfterFlameOut:0x000A,      //熄火后关闭时间点
+        closeAfterFlameOut:0x001E,      //熄火后关闭时间点
         voltageThreshold:"120,153",     //熄火后电池电压阀值
 
 
