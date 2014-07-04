@@ -18,7 +18,7 @@ function ConfigBaseURL(){
     if(process.env.NODE_ENV === 'development')
         url = 'http://linuxsuse.chinacloudapp.cn'; // 当前开发环境AZURE-LINUX-SUSE, 以后切换到dev.incars.com.cn上
     else if(process.env.NODE_ENV === 'staging')
-        url = 'http://114.215.172.92'; // 等备案OKAY后就切换为demo.incars.com.cn
+        url = 'http://114.215.172.92'; // 等备案OKAY后就切换为staging.incars.com.cn
 
     return url;
 }
