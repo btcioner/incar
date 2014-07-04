@@ -36,7 +36,7 @@ exports.findBySqlForPage=function(sql,args,cb,page,pageSize){
                 cb(info);
             }
             else if(info.data.length>0){
-                var rowCount=rows[0]['rowCount'];
+                var rowCount=info.data[0]['rowCount'];
                 args.push((page-1)*pageSize);
                 args.push(pageSize);
                 findBySql(sqlPage,args,function(info){

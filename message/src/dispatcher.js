@@ -245,7 +245,8 @@ exports.receiveMessageResponse=function(req,res){
             returnJson = receive1625(bf);
             break;
     }
-    console.log(returnJson);
+    console.log('短信数据解析完毕：'+JSON.stringify(returnJson));
+    res.json({status:'success'});
     /*var dataJson={dataString:returnJson};
     var opt = {
         method: "POST",

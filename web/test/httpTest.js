@@ -26,6 +26,8 @@ var req = http.request(opt, function(res) {
         console.log('BODY: ' + chunk);
     });
 });
-
+req.on('error', function(e) {
+    console.log('problem with request: ' + e.message);
+});
 req.write(data);
 req.end();
