@@ -34,15 +34,12 @@ function sendToMessageServer(dataBuffer,commandWord){
                 "Content-Length":Buffer.byteLength(JSON.stringify(dataJson))
             }
         };
-        var req = http.request(opt, function (serverFeedback) {
-            console.log(serverFeedback.statusCode+'状态');
-
-        });
+        var req = http.request(opt, function (serverFeedback) {});
         req.write(JSON.stringify(dataJson));
         req.end();
     }
     catch(err){
-        console.log('短信服务器连接失败'+err);
+        console.log(err);
     }
 }
 
@@ -51,6 +48,43 @@ function sendToMessageServer(dataBuffer,commandWord){
  */
 
 
+
+// Default node environment to development
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+
+// Bind process IPC events
+process.on('message', function(msg, objectHandle) {
+    var dataBuffer = new Buffer(msg.dataPacket);
+    var mark=msg.tag;
+    if (msg['type'] === 'command') {
+        if (msg.command == 'stop') {
+            console.log('Work308(' + process.pid + ')OBD('+mark+'):进程结束...');
+            process.exit();
+        }
+    }
+    if (msg['type'] === 'dataPacket') {
+        console.log('Work308(' + process.pid + ')OBD('+mark+'):开始解析数据包...');
+        packetProcess(msg.dataPacket,msg.tag,function(dataPacketResponse){
+            if (!! dataPacketResponse) {
+                process.send({
+                    'type': 'response',
+                    'tag': msg.tag,
+                    'response': dataPacketResponse
+                });
+            } else {
+                console.log('Work308(' + process.pid + ')OBD('+mark+'):解析数据包失败...');
+            }
+        });
+    }
+});
+process.on('error',function(err){
+    process.stdout(function(){});
+});
+
+/*
+ *  Utility functions
+ */
 function getOBDSuccess(cmd){
     var responseBuffer = new Buffer(16);
     var offset = 0;
@@ -619,16 +653,16 @@ function get1603Default(){
         carUpdateCount:0x00,            //车辆信息更新数量(0x00或0x05)
 
         serverConfigCount:0x05,         //网络参数更新数量(0x00-0x05)
-        addressParam:"114.215.172.92",  //获取参数数据地址
-        portParam:9005,                 //获取参数数据端口
-        addressUpload:"114.215.172.92", //主动上传数据地址
-        portUpload:9005,                //主动上传数据端口
-        addressAlarm:"114.215.172.92",  //报警数据上传地址
-        portAlarm:9005,                 //报警数据上传端口
-        addressMessage:"114.215.172.92",//短信回复数据地址
-        portMessage:9005,               //短信回复数据端口
-        addressLocation:"114.215.172.92",//定位数据地址
-        portLocation:9005,              //定位数据端口
+        addressParam:"lahmyyc2014.vicp.cc",  //获取参数数据地址
+        portParam:48928,                 //获取参数数据端口
+        addressUpload:"lahmyyc2014.vicp.cc", //主动上传数据地址
+        portUpload:48928,                //主动上传数据端口
+        addressAlarm:"lahmyyc2014.vicp.cc",  //报警数据上传地址
+        portAlarm:48928,                 //报警数据上传端口
+        addressMessage:"lahmyyc2014.vicp.cc",//短信回复数据地址
+        portMessage:48928,               //短信回复数据端口
+        addressLocation:"lahmyyc2014.vicp.cc",//定位数据地址
+        portLocation:48928,              //定位数据端口
 
         speedGroup:"1,45,90,255",       //车速分段统计
 
