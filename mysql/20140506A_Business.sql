@@ -18,11 +18,20 @@ CREATE TABLE IF NOT EXISTS t_4s(
     wx_app_name VARCHAR(64) COMMENT '微信公众平台接口用户标识',
     wx_app_id VARCHAR(64) COMMENT '微信公众平台接口调用凭据AppId',
     wx_app_secret VARCHAR(128) COMMENT '微信公众平台接口调用凭据AppSecret',
-    wx_redirect_url VARCHAR(256) COMMENT '微信公众平台授权回调地址',
+    wx_oauth_addr VARCHAR(256) COMMENT '微信公众平台授权回调域名或IP地址',
     wx_status TINYINT NOT NULL DEFAULT '1' COMMENT '服务状态 0-禁用 1-启用',
 
     INDEX IX_4S_NAME(name)
 );
+
+-- 更新数据库里对应的条目
+-- 闻风多奇 wx87f6a395b821f071; 闻风多奇咨询 wx5de0018d8c7b0b0d
+UPDATE t_4s S
+    JOIN (SELECT 'wx87f6a395b821f071' AS wx_app_id,'114.215.172.92' AS wx_oauth_addr UNION
+          SELECT 'wx5de0018d8c7b0b0d','linuxsuse.chinacloudapp.cn') T
+          ON S.wx_app_id = T.wx_app_id
+SET S.wx_oauth_addr = T.wx_oauth_addr
+WHERE S.wx_oauth_addr <> T.wx_oauth_addr OR S.wx_oauth_addr is null;
 
 CREATE TABLE IF NOT EXISTS t_account(
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '用户帐号唯一ID',
