@@ -1,9 +1,6 @@
 /**
  * Created by Jesse Qu on 5/8/14.
  */
-
-'use strict';
-
 var mysql = require('mysql');
 var config = require('../../config/config');
 var db = require('../../config/db');
@@ -40,18 +37,20 @@ exports = module.exports = function(tickTasks, menuObject, callback) {
         if (err) { return callback(err, null); }
         if (rows) {
             rows.forEach(function(element, index, array){
-                tickTasks.enqueueTask(function() {
-                    var api = new WXAPI(element.appId, element.appSecret);
+                if(element.appName && element.appSecret) {
+                    tickTasks.enqueueTask(function () {
+                        var api = new WXAPI(element.appId, element.appSecret);
 
-                    api.createMenu(resolveUrl(menuObject, element.wx_oauth_addr), function(err, result){
-                        if (err) {
-                            console.log('4s store: '+element.name+' weixin menu initial error.   4s store id :'+element.id+'\n' + err + '\n');
-                        }
-                        else {
-                            console.log('Weixin menu was newly defined for "' + element.name + '" to ' + element.wx_oauth_addr +  ' !!!\n');
-                        }
+                        api.createMenu(resolveUrl(menuObject, element.wx_oauth_addr), function (err, result) {
+                            if (err) {
+                                console.warn('4s store: ' + element.name + ' weixin menu initial error.   4s store id :' + element.id + ' ---> ' + err);
+                            }
+                            else {
+                                console.info('Weixin menu was newly defined for "\033[32m' + element.name + '\033[0m" to \033[32m' + element.wx_oauth_addr + '\033[0m !!!');
+                            }
+                        });
                     });
-                });
+                }
             });
             return callback(null, tickTasks);
         }
