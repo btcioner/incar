@@ -178,7 +178,7 @@ module Service {
 
                         console.log(util.format("特价工位下次调度时间:%s",tmA));
                         var cron:any = require('cron');
-                        if(this._jobIdle) this._jobIdle.stop();
+                        if(this._jobIdle){ this._jobIdle.stop(); this._jobIdle = null; }
                         if(this._jobNext) this._jobNext.stop();
                         this._jobNext = new cron.CronJob(tmA, ()=>{
                             schedulerPS.start();
@@ -262,6 +262,9 @@ module Service {
 
         // 保险
         private KeepWatch(){
+            // _objIdle已经工作中,不需要再次启动一次
+            if(this._jobIdle) return;
+
             var cron:any = require('cron');
             this._jobIdle = new cron.CronJob("00 */10 * * * *", ()=>{
                 schedulerPS.start();
