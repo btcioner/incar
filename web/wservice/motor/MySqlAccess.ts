@@ -60,7 +60,7 @@ module Service{
         export function TraceSQL(sql:string, args:any, sn:number, tmStart:Date, tmEnd?:Date, result?:any):string{
             var sqlfull = mysql.format(sql, args);
             var strTM = util.format("%s-%s-%s %s:%s:%s",
-                tmStart.getFullYear(), tmStart.getMonth(), tmStart.getDate(),
+                tmStart.getFullYear(), tmStart.getMonth() + 1, tmStart.getDate(),
                 tmStart.getHours(), tmStart.getMinutes(), tmStart.getSeconds());
             if(tmEnd){
                 var tmSpan = tmEnd.getTime() - tmStart.getTime();
