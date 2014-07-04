@@ -73,26 +73,48 @@ function getCarInfo(db, callback){
                             report.license=rows[0].license;
                             report.obd_code=rows[0].obd_code;
                             report.brand=rows[0].brand;
-                            getBrandName(db,rows[0].brand,function(err,data){
-                                //console.log("-----"+data);
-                                if(err) callback(err);
-                                else if(data)
-                                    report.brandName=data;
-                                else callback(new Error('brandName is null'));
-                            });
                             report.series=rows[0].series;
-                            getSeriesName(db,rows[0].brand,rows[0].series,function(err,data){
-                                if(err) callback(err);
-                                else if(data)
-                                    report.seriesName=data;
-                                else callback(new Error('seriesName is null'));
-                            });
                             report.modelYear=rows[0].modelYear;
                             report.disp=rows[0].disp;
                             report.mileage=rows[0].mileage;
                             report.age=rows[0].age;
                             report.engine_type=rows[0].engineType;
-                            callback(null, 1);
+
+                            var task = { finished: 0 };
+                            task.begin = function(){
+                                getBrandName(db, rows[0].brand, function(err, data){
+                                    task.finished++;
+                                    task.A = {err:err, data:data};
+                                    task.end();
+                                });
+                                getSeriesName(db,rows[0].brand,rows[0].series,function(err,data){
+                                    task.finished++;
+                                    task.B = {err:err, data:data};
+                                    task.end();
+                                });
+                            };
+                            task.end = function(){
+                                if(task.finished < 2) return;
+                                // 这里2个方法一定已经都返回了
+                                if(task.A.err) callback(task.A.err);
+                                else if(task.B.err) callback(task.B.err);
+                                else{
+                                    if(task.A.data) report.brandName=task.A.data;
+                                    else{
+                                        callback(new Error('brandName is null'));
+                                        return;
+                                    }
+                                    if(task.B.data) report.seriesName=task.B.data;
+                                    else{
+                                        callback(new Error('seriesName is null'));
+                                        return;
+                                    }
+                                    // 成功了!
+                                    callback(null, 1);
+                                }
+                            };
+                            task.begin();
+
                         } else { callback(new Error('zero of multiple rows returned for obd_code from car_info table.')); }
                     }
                 });
@@ -105,8 +127,11 @@ function getBrandName(db,brandCode,callback){
     pool.query('select brand from t_car_dictionary where brandCode=?;',[brandCode],function(err,rows){
         if(err) {callback(err)}
         else{
-            callback(null,rows[0].brand);
-             }
+            if(rows.length > 0)
+                callback(null,rows[0].brand);
+            else
+                callback("empty set");
+        }
     });
 }
 function getSeriesName(db,brandCode,seriesCode,callback){
@@ -114,7 +139,10 @@ function getSeriesName(db,brandCode,seriesCode,callback){
     pool.query('select series from t_car_dictionary where brandCode=? and seriesCode=?;',[brandCode,seriesCode],function(err,rows){
         if(err) callback(err);
         else{
-            callback(null,rows[0].series);
+            if(rows.length > 0)
+                callback(null,rows[0].series);
+            else
+                callback("empty set");
          }
     });
 }

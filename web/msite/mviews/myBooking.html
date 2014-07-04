@@ -6,20 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
 
     <script src="../mscripts/jquery-1.7.1.min.js"></script>
-    <script src="../mscripts/car.js"></script>
     <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
-    <link href="../mstyles/bootstrap-3.1.1.css" rel="stylesheet" type="text/css"/>
-    <style type="text/css">
-        body{
-            padding-top: 20px;
-        }
-        .panel-body{
-            background-color: #f1d69e;
-        }
-        .panel-body span{
-            color:#bf8b1d;
-        }
-    </style>
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
 
     <script src="../mscripts/angular.js"></script>
     <script src="../mscripts/angular-resource.min.js"></script>
@@ -30,41 +20,23 @@
 </head>
 
 <body ng-controller="myBookingCtrl">
-    <div class="container-fluid">
-        <div class="row ng-cloak" ng-cloak>
-            <div class="col-xs-12 col-md-4" ng-repeat="trial in model.my_works | orderBy:'bookingtime':true">
-                <div class="panel panel-info">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-7">
-                                <span>预约项目:</span>{{trial.work_type}}
-                            </div>
-                            <div class="col-xs-5">
-                                <span></span>{{trial.seriesName}}
-                            </div>
-                            <div class="col-xs-7">
-                                <span>提交日期:</span>{{ trial.ts.substr(2,8) }}
-                            </div>
-                            <div class="col-xs-5">
-                                <span></span>{{ trial.ts.substr(11,5) }}
-                            </div>
-                            <div class="col-xs-7">
-                                <span>预约日期:</span>{{ trial.bookingtime.substr(2,8) }}
-                            </div>
-                            <div class="col-xs-5">
-                                <span></span>{{ trial.bookingtime.substr(11,5) }}
-                            </div>
-                            <div class="col-xs-12">
-                                <span>当前状态:</span>{{ trial.bookingStatus | trial_status_name }}
-                            </div>
-                            <div class="col-xs-12">
-                                <span>当前操作:</span><span ng-click="model.cancel(trial)" style="color:darkred">{{ trial.bookingStatus | trial_status_op }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="wrap">
+        <!--pagename start--><div id="pagename">我的预约</div><!--pagename end-->
+        <!--main_wrap start-->
+        <div id="main_wrap">
+            <!--containe_250 start-->
+            <div id="containe_250" ng-cloak class="ng-cloak">
+            <!--基本信息contentbox start-->
+                <div class="contentbox" ng-repeat="trial in model.my_works | orderBy:'bookingtime':true">
+                    <div class="columnname"><div class="text_09">{{trial.work_type}}</div><div><a href="javascript:void(0)" class="text_10" ng-click="model.cancel(trial)">{{ trial.bookingStatus | trial_status_op }}</a></div></div>
+                    <div class="content"><ul><li class="text_08">预约车辆：</li><li>{{trial.seriesName}}</li></ul><div class="clear"></div></div>
+                    <div class="content"><ul><li class="text_08">提交日期：</li><li>{{ trial.ts.substr(0,16) }}</li></ul><div class="clear"></div></div>
+                    <div class="content"><ul><li class="text_08">预约日期：</li><li>{{ trial.bookingtime.substr(0,16) }}</li></ul><div class="clear"></div></div>
+                    <div class="content"><ul><li class="text_08">当前状态：</li><li>{{ trial.bookingStatus | trial_status_name }}</li></ul><div class="clear"></div></div>
+                </div><!--基本信息contentbox end-->
+
+            </div><!--containe_250 end-->
+        </div><!--main_wrap end-->
     </div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-#regsitercontaine {
+#regsitercontaine,#containe_250 {
 	background-image: url(../mimages/line_img.png);
 	background-repeat: repeat-y;
 	background-position: 9px;
@@ -8,21 +8,21 @@
 	/* [disabled]background-color: #C9C; */
 	/* [disabled]padding-top: 14px; */
 }
-#regsitercontaine .contentbox {
+#regsitercontaine .contentbox,#containe_250 .contentbox {
 	background-image: url(../mimages/icon_02.png);
 	background-repeat: no-repeat;
 	background-position: left 20px;
 	padding-left: 25px;
 	padding-top: 20px;
 }
-#regsitercontaine .contentbox .columnname {
+#regsitercontaine .contentbox .columnname,#containe_250 .contentbox .columnname {
 	background-image: url(../mimages/icon_03.png);
 	background-repeat: no-repeat;
 	background-position: left top;
 	padding-left: 10px;
 	height: 18px;
 }
-#regsitercontaine .contentbox .columnname div {
+#regsitercontaine .contentbox .columnname div{
 	height: 18px;
 	padding-right: 10px;
 	padding-left: 10px;
@@ -30,22 +30,34 @@
 	color: #FFF;
 	line-height: 18px;
 	width: 50px;
+	display: inline-block;
 }
-#regsitercontaine .contentbox .content  {
+#containe_250 .contentbox .columnname div {
+	height: 18px;
+	padding-right: 10px;
+	padding-left: 10px;
+	line-height: 18px;
+	min-width:50px;
+	_width:50px;
+	display: inline-block;
+}
+#regsitercontaine .contentbox .content ,#containe_250 .contentbox .content {
 	padding-left: 10px;
 }
 
-#regsitercontaine .contentbox .content li {
+#regsitercontaine .contentbox .content li,#containe_250 .contentbox .content li {
 	float: left;
 	list-style-type: none;
 	/* [disabled]background-color: #0CF; */
 	height: 24px;
 	line-height: 22px;
 }
-#regsitercontaine .contentbox .content {
+#regsitercontaine .contentbox .content{
 	padding-top: 10px;
 }
+#containe_250 .contentbox .content{
 
+}
 #regsitercontaine .contentbox .content li input {
 	height: 18px;
 }

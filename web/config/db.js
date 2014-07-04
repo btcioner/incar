@@ -5,6 +5,7 @@
 "use strict";
 
 var mysql = require('mysql');
+var util = require('util');
 
 exports = module.exports = function() {
     if (! global.poolInCar) {
@@ -15,13 +16,15 @@ exports = module.exports = function() {
 
         var dbname = process.env.INCAR_MySQLDatabase || 'incar';
 
-        global.poolInCar = mysql.createPool({
+        var args = {
             host: host,
             user: user,
             password: pwd,
             database: dbname,
             timezone: '0000'
-        });
+        };
+        global.poolInCar = mysql.createPool(args);
+        console.log(util.format("MySQL: %s@%s/%s", args.user, args.host, args.database));
 
         // 不知什么原因,每过几分钟,客户端就会lost connection
         // 临时解决办法,每过一段时间,随便发点什么给数据库
@@ -35,9 +38,9 @@ exports = module.exports = function() {
         }, 120*1000);
 
         if(process.env.INCAR_TraceSQL)
-            console.info("设置环境变量TraceSQL=false即可关闭SQL输出");
+            console.info("设置环境变量INCAR_TraceSQL=false即可关闭SQL输出");
         else
-            console.info("设置环境变量TraceSQL=true可以开启SQL输出");
+            console.info("设置环境变量INCAR_TraceSQL=true可以开启SQL输出");
     }
     return global.poolInCar;
 };

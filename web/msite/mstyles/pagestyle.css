@@ -126,7 +126,15 @@ a.text_07 {
 	padding-right: 5px;
 	padding-bottom: 2px;
 }
+.text_08 {
+	letter-spacing: 8px;
+}
+.text_09 {
 
+}
+.text_10 {
+
+}
 .icon_4a ,.icon_4b,.icon_5a,.icon_5b{
 	background-repeat: no-repeat;
 	background-position: center;
@@ -237,6 +245,8 @@ a.text_07 {
 
 #wrap {
 	width: 100%;
+	min-height:435px;
+	_height:435px;
 }
 #wrap #pagename {
 	font-weight: bold;

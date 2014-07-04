@@ -33,6 +33,18 @@ module devAP {
 
             // qrcode
             this.makeQRCode(this.url, $sce);
+
+            // 模拟微信用户
+            var wx_oid_wmq_dev = "user=o1fUut3BkIo8XM6-8HG-3ORAtvls@gh_895980ee6356";
+            var wx_oid_wmq_staging = "user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI@gh_2ca6120e0ed0";
+            var wx_oid_xgh_staging = "user=oAPKMuJssQAohcEgKyKkcRDUDiAw@gh_2ca6120e0ed0";
+
+            for(var i in this.pagesDev){
+                this.pagesDev[i].url += wx_oid_wmq_dev;
+            }
+            for(var i in this.pagesStaging){
+                this.pagesStaging[i].url += wx_oid_wmq_staging;
+            }
         };
 
         private makeQRCode = (text:string, $sce:any)=>{
@@ -57,17 +69,26 @@ module devAP {
         };
 
         // 被测试的页面
-        public pages = [
-            { title: "行车手册", url: "/msite/page_xcsc.html" },
-            { title: "我的车-行车分析[wmq@stagging]", url: "/msite/myDrive.html?user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI@gh_2ca6120e0ed0" /*模拟微信的openid*/ },
-            { title: "我的4S-资讯活动[wmq@stagging]", url: "/msite/my4sInfo.html?user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI@gh_2ca6120e0ed0" /*模拟微信的openid*/ },
-            { title: "发现-我的预约", url: "/msite/myBooking.html?user=o1fUut3BkIo8XM6-8HG-3ORAtvls" /*模拟微信的openid*/ },
-            { title: "发现-我的活动", url: "/msite/myActivity.html?user=o1fUut3BkIo8XM6-8HG-3ORAtvls" /*模拟微信的openid*/ },
-            { title: "发现-我的活动[wmq@stagging]", url: "/msite/myActivity.html?user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI" /*模拟微信的openid*/ }
+        public pagesDev = [
+            { title: "我的车-行车分析[wmq@dev]", url: "/msite/myDrive.html?" },
+            { title: "我的车-行车手册", url: "/msite/page_xcsc.html?" },
+            { title: "我的4S-试乘试驾[wmq@dev]", url: "/msite/trialrun.html?"  },
+            { title: "我的4S-资讯活动[wmq@dev]", url: "/msite/my4sInfo.html?" },
+            { title: "发现-我的预约[wmq@dev]", url: "/msite/myBooking.html?" },
+            { title: "发现-我的活动[wmq@dev]", url: "/msite/myActivity.html?" },
+        ];
+
+        public pagesStaging = [
+            { title: "我的车-行车分析[wmq@stagging]", url: "/msite/myDrive.html?" },
+            { title: "我的车-行车手册", url: "/msite/page_xcsc.html?" },
+            { title: "我的4S-试乘试驾[wmq@stagging]", url: "/msite/trialrun.html?" },
+            { title: "我的4S-资讯活动[wmq@stagging]", url: "/msite/my4sInfo.html?" },
+            { title: "发现-我的预约[wmq@stagging]", url: "/msite/myBooking.html?" },
+            { title: "发现-我的活动[wmq@stagging]", url: "/msite/myActivity.html?" }
         ];
 
         private _lskURL = "devAPurl";
-        public url = "http://192.168.88.123:51234/4sStore/devAP.html";
+        public url = "http://114.215.172.92:80/4sStore/devAP.html";
         public img_qrcode:string;
 
         private $sce:any;

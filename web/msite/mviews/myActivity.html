@@ -5,21 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
-    <script  src="../mscripts/jquery-1.7.1.min.js"></script>
-    <script  src="../mscripts/car.js"></script>
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
     <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
-    <link href="../mstyles/bootstrap-3.1.1.css" rel="stylesheet" type="text/css"/>
-    <style type="text/css">
-        body{
-            padding-top: 20px;
-        }
-        .panel-body{
-            background-color: #f1d69e;
-        }
-        .panel-body span{
-            color:#bf8b1d;
-        }
-    </style>
+
+    <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script src="../mscripts/angular.js"></script>
     <script src="../mscripts/angular-resource.min.js"></script>
     <script src="../mscripts/wxapp.js"></script>
@@ -29,23 +20,25 @@
 </head>
 
 <body ng-controller="myActivityCtrl">
-<div class="container-fluid">
-    <div class="row ng-cloak" ng-cloak>
-        <div class="col-xs-12 col-md-4" ng-repeat="act in model.activities">
-            <div class="panel panel-info">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            活动名称:<span>{{act.title}}</span><br>
-                            发布时间:<span>{{act.tm_announce}}</span><br>
-                            活动状态:<span>{{act.status | act_status_name}}</span><br>
-                            我的状态:<span>{{act.myStatus | act_my_status_name}}</span><br>
-                        </di
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="wrap">
+    <!--pagename start-->
+    <div id="pagename">我的活动</div>
+    <!--pagename end-->
+
+    <!--main_wrap start-->
+    <div id="main_wrap">
+        <!--containe_250 start-->
+        <div id="containe_250" ng-cloak class="ng-cloak">
+            <!--基本信息contentbox start-->
+            <div class="contentbox" ng-repeat="act in model.activities">
+                <div class="columnname"><div class="text_09">{{act.title}}</div></div>
+                <div class="content"><ul><li class="text_08">发布日期：</li><li>{{act.tm_announce}}</li></ul><div class="clear"></div></div>
+                <div class="content"><ul><li class="text_08">活动状态：</li><li>{{act.status | act_status_name}}</li></ul><div class="clear"></div></div>
+                <div class="content"><ul><li class="text_08">我的状态：</li><li>{{act.myStatus | act_my_status_name}}</li></ul><div class="clear"></div></div>
+            </div><!--基本信息contentbox end-->
+
+        </div><!--containe_250 end-->
+    </div><!--main_wrap end-->
 </div>
 </body>
 </html>
