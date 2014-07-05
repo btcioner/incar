@@ -18,9 +18,12 @@ module wxApp{
                     console.error("缺少app_id");
                     return;
                 }
+                var raw = this._$location.absUrl();
+                var idx = raw.indexOf("/", 7);
+                var base = raw.substr(0, idx);
                 var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + args.app_id +
-                    "&redirect_uri=" + this._$location.path() +
-                    "&response_type=code&scope=snsapi_base";
+                    "&redirect_uri=" + encodeURIComponent(base + this._$location.path()) +
+                    "&response_type=code&scope=snsapi_base#wechat_redirect";
                 window.location.href = url;
             }
         }
