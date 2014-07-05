@@ -19,7 +19,7 @@ module wxApp{
                     return;
                 }
                 var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + args.app_id +
-                    "&redirect_uri=" + this._$location.url() +
+                    "&redirect_uri=" + this._$location.path() +
                     "&response_type=code&scope=snsapi_base";
                 window.location.href = url;
             }
