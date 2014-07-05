@@ -62,7 +62,6 @@ module Service{
             args.push(name2[1]);
         }
         var pool = global.poolInCar;
-        console.log(util.format("pool: all-%d free-%d queue:%d", pool._allConnections.length, pool._freeConnections.length, pool._connectionQueue.length));
         dac.query(sql, args,
             (err, result)=>{
                 if(!err){
