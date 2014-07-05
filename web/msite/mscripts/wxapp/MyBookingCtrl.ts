@@ -30,7 +30,15 @@ module wxApp{
         private init = ($scope, $location, $http) => {
             this.$http = $http;
             this.user_openid = $location.search().user;
-            this.searchUser($http, $scope);
+            if(this.user_openid) {
+                // 已经获取了open_id, 查询数据
+                this.searchUser($http, $scope);
+            }
+            else{
+                // 尚未得到open_id
+                var wxoa = new WXOAuth($location);
+                wxoa.findUserOpenId();
+            }
 
             $scope.model = this;
         };
