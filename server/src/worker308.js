@@ -40,12 +40,12 @@ function sendToMessageServer(dataBuffer,commandWord,cb){
         res.on('data', function (data) {
             var result=JSON.parse(data);
             console.log("收到短信服务器回复,"+JSON.stringify(result));
-
             if(result&&result.status=='success'){
                 cb();
             }
             else{
-                console.log(result.status);
+                console.log(commandWord.toString(16)+"的短信数据到客户端时传输失败,正在重发");
+                //sendToMessageServer(dataBuffer,commandWord,cb);
             }
         });
     });
@@ -681,8 +681,8 @@ function packetProcess_1603(dataBuffer,cb) {
 
 
     var sql="select t.id,t.brand,t.series,t.modelYear,t.engineType," +
-        "t.disp,t.initCode from t_car t where t.obd_code=?";
-    dao.findBySql(sql,obdCode,function(info) {
+        "t.disp,t.initCode from t_car t where t.obd_code=? and t.act_type=?";
+    dao.findBySql(sql,[obdCode,1],function(info) {
         if(info.err){
             throw err;
         }
@@ -704,7 +704,7 @@ function packetProcess_1603(dataBuffer,cb) {
             }
             //4、如果不存在则创建一个新的OBD，并写入默认数据
             else{
-                console.log("无法识别的ObdCode:"+obdCode);
+                console.log("ObdCode:"+obdCode+"不存在或还未激活");
                 /*obdInfo=get1603Default();
                  obdInfo.obdCode=obdCode;
                  obdInfo.tripId=tripId;
