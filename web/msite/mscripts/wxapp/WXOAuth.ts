@@ -19,7 +19,7 @@ module wxApp{
                     return;
                 }
 
-                var redirect = "http://"+ this._$location.host() + ":" + this._$location.port() + this._$location.path();
+                var redirect = "http://"+ this._$location.host() + this._$location.path();
                 var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + args.app_id +
                     "&redirect_uri=" + encodeURIComponent(redirect) +
                     "&response_type=code&scope=snsapi_base&state=" + args.app_id + "#wechat_redirect";
