@@ -246,7 +246,7 @@ exports.receiveMessageResponse=function(req,res){
             break;
     }
     console.log('短信数据解析完毕：'+JSON.stringify(returnJson));
-    res.json({status:'success'});
+    res.json({status:'success',data:returnJson});
     /*var dataJson={dataString:returnJson};
     var opt = {
         method: "POST",

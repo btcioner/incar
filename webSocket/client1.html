@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>测试1621</title>
+    <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.0.4.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <script type="text/javascript">
+        var socket;
+        var firstConnect = true;
+
+        function connect() {
+            if(firstConnect) {
+                socket = io.connect('http://localhost:4321');
+                socket.on('message', function(data){ message(data); });
+                socket.on('connect', function(){ status_update("Connected to Server"); });
+                socket.on('disconnect', function(){ status_update("Disconnected from Server"); });
+                socket.on('reconnect', function(){ status_update("Reconnected to Server"); });
+                socket.on('reconnecting', function( nextRetry ){ status_update("Reconnecting in "
+                        + nextRetry + " seconds"); });
+                socket.on('reconnect_failed', function(){ message("Reconnect Failed"); });
+
+                firstConnect = false;
+            } else {
+                socket.reconnect();
+            }
+        }
+
+        function disconnect() {
+            socket.disconnect();
+        }
+
+        function message(data) {
+            document.getElementById('message').innerHTML = "Server says: " + data;
+        }
+
+        function status_update(txt){
+            document.getElementById('status').innerHTML = txt;
+        }
+
+        function esc(msg){
+            return msg.replace(/</g,'<').replace(/>/g, '>');
+        }
+
+        function send() {
+            socket.send("Hello Server!");
+        };
+    </script>
+</head>
+<body>
+    <h1>Socket.io Test</h1>
+    <div><p id="status">Waiting for input</p></div>
+    <div><p id="message"></p></div>
+    <button id="connect" onClick='connect()'/>Connect</button>
+    <button id="disconnect" onClick='disconnect()'>Disconnect</button>
+    <button id="send" onClick='send()'/>Send Message</button>
+</body>
+</html>
