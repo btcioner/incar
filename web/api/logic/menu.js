@@ -10,19 +10,22 @@ var url = require('url');
 exports = module.exports = function(tickTasks, menuObject, callback) {
 
     // resolve url based on the wx_oauth_addr
-    var resolveUrl = function(mo, baseSite){
+    var resolveUrl = function(mo, baseSite, app_id){
         // clone mo
         var mx = JSON.parse(JSON.stringify(mo));
         // process url
-        if(baseSite){
-            var baseUrl = "http://" + baseSite;
-            for(var i in mx.button){
-                var btn = mx.button[i];
-                for(var j in btn.sub_button){
-                    var sub = btn.sub_button[j];
-                    if(sub.url){
-                        sub.url = url.resolve(baseUrl, sub.url);
-                    }
+        var baseUrl = "http://" + baseSite;
+        for(var i in mx.button){
+            var btn = mx.button[i];
+            for(var j in btn.sub_button){
+                var sub = btn.sub_button[j];
+                if(sub.url){
+                    // append app_id
+                    if(sub.url.indexOf('?') === -1) sub.url += '?';
+                    if(sub.url.indexOf('?') < sub.url.length-1) sub.url += '&';
+                    sub.url += 'app_id=' + app_id;
+                    // prefix base url
+                    if(baseSite && sub.url.toLowerCase().indexOf('http://') !== 0) sub.url = url.resolve(baseUrl, sub.url);
                 }
             }
         }
@@ -37,11 +40,11 @@ exports = module.exports = function(tickTasks, menuObject, callback) {
         if (err) { return callback(err, null); }
         if (rows) {
             rows.forEach(function(element, index, array){
-                if(element.appName && element.appSecret) {
+                if(element.appId && element.appSecret) {
                     tickTasks.enqueueTask(function () {
                         var api = new WXAPI(element.appId, element.appSecret);
 
-                        api.createMenu(resolveUrl(menuObject, element.wx_oauth_addr), function (err, result) {
+                        api.createMenu(resolveUrl(menuObject, element.wx_oauth_addr, element.appId), function (err, result) {
                             if (err) {
                                 console.warn('4s store: ' + element.name + ' weixin menu initial error.   4s store id :' + element.id + ' ---> ' + err);
                             }
