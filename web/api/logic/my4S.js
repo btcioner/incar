@@ -10,7 +10,8 @@ var manual = require('./manual');
 
 var my4S = {};
 
-my4S.onBookingMessages = function(message, session, callback) {
+my4S.onBookingMessages = function(message, req, callback) {
+    var session = req.wxsession;
     var idx = parseInt(message.Content);
     if (! session.slotData) {
         session.textMsgReplierIndex = null;
@@ -39,8 +40,9 @@ my4S.onBookingMessages = function(message, session, callback) {
     });
 };
 
-my4S.onManualMessages = function(message, session, callback) {
-    manual.retrieve(message.Content, function(err, msg){
+my4S.onManualMessages = function(message, req, callback) {
+    var session = req.wxsession;
+    manual.retrieve(message.Content, req, function(err, msg){
         if (err) { return callback({type: 'text', content: '您输入的关键字未搜索到任何手册条目。我们会继续努力持续扩大手册的内容的。'}); }
         return callback(msg);
     });

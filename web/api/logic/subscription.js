@@ -11,7 +11,7 @@ var WXAPI = require('../weixin').API;
 
 var subscription = {};
 
-subscription.subscribe = function(message, next) {
+subscription.subscribe = function(message, req, next) {
 
     var tpl = [
         '欢迎您的关注！\n',
@@ -25,11 +25,11 @@ subscription.subscribe = function(message, next) {
         title: '',
         description: compiled({}),
         picurl: '',
-        url: config.baseUrl + '/msite/enroll.html?user=' + message.FromUserName + '@' + message.ToUserName
+        url: 'http://' + req.headers.host + '/msite/enroll.html?user=' + message.FromUserName + '@' + message.ToUserName
     }]);
 };
 
-subscription.unsubscribe = function(message, next) {
+subscription.unsubscribe = function(message, req, next) {
     return next(null, [{
         title: '',
         description: '',
