@@ -79,7 +79,7 @@ var menuObject={
                         {
                             "type":"view",
                             "name":"我的预约",
-                            "url": "msite/getCodeForBook.html"
+                            "url": "msite/myBooking.html"
                         },
                         {
                             "type":"view",
