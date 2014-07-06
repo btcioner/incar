@@ -6,19 +6,25 @@ module wxApp{
             this._$location = $location;
         }
 
-        public findUserOpenId = ()=>{
+        public findUserOpenId = (cb:(oid)=>void)=>{
+            if(!args.app_id) {
+                console.error("缺少app_id");
+                return;
+            }
+
             var args = this._$location.search();
             var wx_code = args.code;
             if(wx_code){
-                alert(wx_code);
+                // 用CODE换取用户的open_id
+                var $injector = angular.injector(['wxApp']);
+                var $http = $injector.get('$http');
+                var postData = { app_id: args.app_id, code: wx_code };
+                $http.post('/mservice/getOpenid' ,postData)
+                    .success((data, status, headers, config)=>{ cb(data); })
+                    .error((data, status, headers, config)=>{ console.error(status); });
             }
             else{
                 // 获取CODE
-                if(!args.app_id) {
-                    console.error("缺少app_id");
-                    return;
-                }
-
                 var redirect = "http://"+ this._$location.host() + this._$location.path();
                 var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + args.app_id +
                     "&redirect_uri=" + encodeURIComponent(redirect) +

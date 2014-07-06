@@ -37,7 +37,9 @@ module wxApp{
             else{
                 // 尚未得到open_id
                 var wxoa = new WXOAuth($location);
-                wxoa.findUserOpenId();
+                wxoa.findUserOpenId((oid)=>{
+                    alert(oid);
+                });
             }
 
             $scope.model = this;
