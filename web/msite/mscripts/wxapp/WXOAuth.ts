@@ -15,7 +15,10 @@ module wxApp{
                 var $http = $injector.get('$http');
                 var postData = { app_id: args.state, code: wx_code };
                 $http.post('/mservice/getOpenid' ,postData)
-                    .success((data, status, headers, config)=>{ cb(data); })
+                    .success((data, status, headers, config)=>{
+                        data.app_id = args.state;
+                        cb(data);
+                    })
                     .error((data, status, headers, config)=>{ cb(status); });
             }
             else{
