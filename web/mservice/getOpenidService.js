@@ -5,7 +5,7 @@
 
 var util = require('util');
 var https = require('https');
-var pool = require('../config/db');
+var db = require('../config/db');
 
 exports = module.exports = function(service) {
     service.post.getOpenid = getOpenid;
@@ -23,6 +23,7 @@ function getOpenid(req, res) {
         return;
     }
 
+    var pool = db();
     var sql = "SELECT wx_app_secret FROM t_4s WHERE wx_app_id = ?";
     pool.query(sql, [app_id], function(ex, result){
         if(ex){
