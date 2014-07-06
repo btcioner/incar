@@ -37,8 +37,12 @@ module wxApp{
             else{
                 // 尚未得到open_id
                 var wxoa = new WXOAuth($location);
-                wxoa.findUserOpenId((oid)=>{
-                    alert(oid);
+                wxoa.findUserOpenId((data)=>{
+                    if(!data.openid) alert(data);
+                    // 已经获取了open_id,查询数据
+                    alert(data.openid);
+                    this.user_openid = 'o1fUut3BkIo8XM6-8HG-3ORAtvls';// data.openid;
+                    this.searchUser($http, $scope);
                 });
             }
 
