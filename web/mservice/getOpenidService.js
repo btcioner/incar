@@ -45,6 +45,7 @@ function getOpenid(req, res) {
 
         var url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code';
         util.format(url, req.body.app_id, result[0].wx_app_secret, code);
+        console.log(url);
         http.get(url, function(data){
             console.log(data);
             res.send(200, data);
