@@ -4,7 +4,7 @@
 'use strict';
 
 var util = require('util');
-var https = require('https');
+var http=require('./nodegrass');
 var db = require('../config/db');
 
 exports = module.exports = function(service) {
@@ -45,12 +45,9 @@ function getOpenid(req, res) {
 
         var url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code';
         util.format(url, req.body.app_id, result[0].wx_app_secret, code);
-        https.get(url, function(res2){
-            console.log(res2.statusCode);
-            res2.on('data', function(data){
-                console.log(data);
-                res.send(200, data);
-            });
+        http.get(url, function(data){
+            console.log(data);
+            res.send(200, data);
         });
     });
     return;
@@ -59,7 +56,7 @@ function getOpenid(req, res) {
     var code=postData.code;
     var myurl=postData.url;
 
-    var http=require('./nodegrass');
+
     http.get(myurl, function(data) {
 
              console.log(data);
