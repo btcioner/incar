@@ -3,13 +3,12 @@
  */
 'use strict';
 
-var util = require('util');
 var http=require('./nodegrass');
 var db = require('../config/db');
 
 exports = module.exports = function(service) {
     service.post.getOpenid = getOpenid;
-}
+};
 
 function getOpenid(req, res) {
     var app_id = req.body.app_id;
@@ -48,26 +47,11 @@ function getOpenid(req, res) {
             '&secret=' + result[0].wx_app_secret +
             '&code=' + code +
             '&grant_type=authorization_code';
-        console.log(url);
         http.get(url, function(data){
-            console.log(data);
             res.send(200, data);
         });
     });
-    return;
-
-    var postData = req.body;
-    var code=postData.code;
-    var myurl=postData.url;
-
-
-    http.get(myurl, function(data) {
-
-             console.log(data);
-            //process.stdout.write(d);
-               res.send(data);
-        });
-    }
+}
 
 
 

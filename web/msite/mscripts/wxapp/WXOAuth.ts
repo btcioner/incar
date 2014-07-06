@@ -6,7 +6,7 @@ module wxApp{
             this._$location = $location;
         }
 
-        public findUserOpenId = (cb:(oid)=>void)=>{
+        public findUserOpenId = (cb:(data)=>void)=>{
             var args = this._$location.search();
             var wx_code = args.code;
             if(wx_code){
@@ -16,7 +16,7 @@ module wxApp{
                 var postData = { app_id: args.state, code: wx_code };
                 $http.post('/mservice/getOpenid' ,postData)
                     .success((data, status, headers, config)=>{ cb(data); })
-                    .error((data, status, headers, config)=>{ console.error(status); });
+                    .error((data, status, headers, config)=>{ cb(status); });
             }
             else{
                 if(!args.app_id) {
