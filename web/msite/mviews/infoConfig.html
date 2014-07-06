@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html>
+<html ng-app="wxApp">
 <head>
     <title>个人设置</title>
     <meta charset="utf-8">
@@ -14,9 +14,13 @@
     <!--<link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">-->
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
     <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
-
-
+    <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
+    <script src="../mscripts/angular.js"></script>
+    <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/wxapp.js"></script>
     <script type="text/javascript">
+        var infoConfigCtrl = new wxApp.InfoConfigCtrl('infoConfigCtrl');
+
         var user;//用户openId
         var appid; // wx_app_id
         var today;//当天日期
@@ -26,8 +30,8 @@
             //获取当前日期，初始化日期控件
             today = new Date();
             //获取user的微信openId
-            user=getQueryString("user");
-            appid=getQueryString("appid");
+            user=infoConfigCtrl.user_openid;
+            appid=infoConfigCtrl.app_id;
             //alert(user);
             //查询用户信息，预先写入文本框
             searchUser();
@@ -83,7 +87,7 @@
 
     </script>
 </head>
-<body onLoad="init()" style="padding: 2">
+<body style="padding: 2" ng-controller="infoConfigCtrl">
 <div id="wrap">
      <!--main_wrap start-->
     <div id="main_wrap">
