@@ -74,7 +74,7 @@ var menuObject={
                         {
                             "type":"view",
                             "name":"我的活动",
-                            "url": "msite/getCodeForActivity.html"
+                            "url": "msite/myActivity.html"
                         },
                         {
                             "type":"view",
