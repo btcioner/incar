@@ -8,7 +8,7 @@ var wxToken = require('./logic/wxToken');
 
 var api = {};
 
-function defaultTextMsgReplier(message, session, callback) {
+function defaultTextMsgReplier(message, req, callback) {
     return callback({type: 'text', content: '您没有激活任何命令，或您的回复已经过期！'});
 }
 
@@ -34,12 +34,12 @@ api.onTextMsg = function(message, req, res, next) {
     var repliedMsg;
     var indexer = req.wxsession.textMsgReplierIndex;
     if (indexer !== null && indexer !== undefined && indexer !== '' && (wxMenu.textMsgRepliers[indexer])) {
-        wxMenu.textMsgRepliers[indexer](message, req.wxsession, function(repliedMsg){
+        wxMenu.textMsgRepliers[indexer](message, req, function(repliedMsg){
             return res.reply(repliedMsg);
         });
     }
     else {
-        defaultTextMsgReplier(message, req.wxsession, function(repliedMsg){
+        defaultTextMsgReplier(message, req, function(repliedMsg){
             res.reply(repliedMsg);
         });
     }
@@ -72,20 +72,20 @@ api.onEventMsg = function(message, req, res, next) {
 
     switch (message.Event) {
         case 'subscribe':
-            subscription.subscribe(message, function(err, result){
+            subscription.subscribe(message, req, function(err, result){
                 if (err) { next(err); }
                 else { res.reply(result); }
             });
             break;
         case 'unsubscribe':
-            subscription.unsubscribe(message, function(err, result){
+            subscription.unsubscribe(message, req, function(err, result){
                 if (err) { next(err); }
                 else { res.reply(result); }
             });
             break;
         case 'CLICK':
             if (typeof wxMenu.onClick[message.EventKey] === "function") {
-                wxMenu.onClick[message.EventKey](message, req.wxsession, function(err, result){
+                wxMenu.onClick[message.EventKey](message, req, function(err, result){
                     if (err) { next(err); }
                     else { res.reply(result); }
                 });

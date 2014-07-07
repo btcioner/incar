@@ -33,7 +33,21 @@ module wxApp {
             this.user_openid = $location.search().user;
             this.$http = $http;
             this.$scope = $scope;
-            this.searchUser();
+
+            if(this.user_openid){
+                // have gotten the open_id
+                this.searchUser();
+            }
+            else{
+                // 尚未得到open_id
+                var wxoa = new WXOAuth($location);
+                wxoa.findUserOpenId((data)=>{
+                    if(!data.openid) alert(data);
+                    // 已经获取了open_id,查询数据
+                    this.user_openid = data.openid;
+                    this.searchUser();
+                });
+            }
 
             $scope.model = this;
         };

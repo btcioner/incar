@@ -1,180 +1,97 @@
-
 <!DOCTYPE html>
-<html>
+<html ng-app="wxApp">
 <head>
     <title>个人设置</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script  src="../mscripts/car.js"></script>
 
     <script src="../mscripts/sha1.js"></script>
-    <script  src="../mscripts/jquery.mobile.min.js"></script>
+    <!--script  src="../mscripts/jquery.mobile.min.js"></script-->
     <!--<link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">-->
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
     <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
-
-
+    <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
+    <script src="../mscripts/angular.min.js"></script>
+    <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/wxapp.js"></script>
     <script type="text/javascript">
-        var user;//用户openId
-        var appid; // wx_app_id
-        var today;//当天日期
-        var wx_oid;
-      //页面加载初始化
-        function init(){
-            //获取当前日期，初始化日期控件
-            today = new Date();
-            //获取user的微信openId
-            user=getQueryString("user");
-            appid=getQueryString("appid");
-            //alert(user);
-            //查询用户信息，预先写入文本框
-            searchUser();
-
-            //获取汽车品牌、车型数据
-             initCarBrand();
-            //
-            document.getElementById("user").value=user;
-            //document.getElementById("obd_code").value="WFQ00013044";
-            document.getElementById("owner_flag").value=1;
-            //document.getElementById("enroll_time").value=today;
-
-        }
-
-        //提交注册数据
-        function update(){
-            var postData = {};
-            postData.user = user+'@'+wx_oid.split(":")[1];
-            postData.name = document.getElementById("name").value;//用户名
-            postData.obd_code = document.getElementById("obd_code").value;
-            postData.brand= document.getElementById("brand").value;
-            postData.series= document.getElementById("series").value;
-            postData.modelYear= document.getElementById("modelYear").value;
-            postData.nick= document.getElementById("nick").value;
-            postData.phone= document.getElementById("phone").value;
-            postData.license= document.getElementById("license").value;
-            postData.mileage= document.getElementById("mileage").value;
-            postData.engine_type= document.getElementById("engine_type").value;
-            postData.disp= document.getElementById("disp").value;
-            postData.age= document.getElementById("age").value;
-            postData.last_login_time = today;//最后登录时间
-            //检查密码是否修改
-            if(document.getElementById('password').value.trim()!=''){
-                if(document.getElementById('password').value!=document.getElementById('pwdagain').value) {alert("密码不一致");return;}
-                else  postData.password =hex_sha1(document.getElementById("password").value);
-            }
-            $.ajax({
-                type: "POST",
-                url: "/mservice/enroll",
-                data: postData,
-                dataType: "text",
-                success: function (result,status) {
-                    alert("修改成功");
-                    // document.getElementById("Tip").innerHTML=result;
-                    //关闭微信浏览器
-                    WeixinJSBridge.call('closeWindow');
-                },
-                error:function(XMLHttpRequest, textStatus, errorThrown){
-                    alert("修改失败\n请检查OBD Id是否正确");
-                }
-            });
-        }
-
+        var infoConfigCtrl = new wxApp.InfoConfigCtrl('infoConfigCtrl');
     </script>
 </head>
-<body onLoad="init()" style="padding: 2">
+<body ng-controller="infoConfigCtrl" style="padding: 2" >
 <div id="wrap">
      <!--main_wrap start-->
     <div id="main_wrap">
         <!--regsitercontaine start--><div id="regsitercontaine">
         <!--基本信息contentbox start--><div class="contentbox">
         <div class="columnname"><div>基本信息</div></div>
-        <div class="content"><ul><li>用&nbsp;&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;&nbsp;名：</li><li><input type="text" id="name" name="name" readonly="readonly" class="w132"/></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>OBD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ID：</li><li><input type="text" id="obd_code" name="obd_code" class="w132" /></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</li><li><input type="password" id="password" name="password" class="w132"/></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>重&nbsp;复&nbsp;密&nbsp;码&nbsp;：</li><li><input type="password" id="pwdagain" name="pwdagain" class="w132" /></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>用&nbsp;&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;&nbsp;名：</li><li><input type="text" id="name" name="name" readonly="readonly" class="w132" ng-model="model.userCfg.name"/></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>OBD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ID：</li><li><input type="text" id="obd_code" name="obd_code" class="w132" ng-model="model.userCfg.obd_code"/></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</li><li><input type="password" id="password" name="password" class="w132" ng-model="model.pwd"/></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>重&nbsp;复&nbsp;密&nbsp;码&nbsp;：</li><li><input type="password" id="pwdagain" name="pwdagain" class="w132" ng-model="model.pwd2" /></li></ul><div class="clear"></div></div>
     </div><!--基本信息contentbox end-->
         <!--车主信息contentbox start--><div class="contentbox">
         <div class="columnname"><div>车主信息</div></div>
-        <div class="content"><ul><li>车&nbsp;主&nbsp;姓&nbsp;名&nbsp;：</li><li><input type="text" id="nick" name="nick" class="w132"/></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>联&nbsp;系&nbsp;电&nbsp;话&nbsp;：</li><li><input type="text" id="phone" name="phone" class="w132"/></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;牌&nbsp;&nbsp;&nbsp;&nbsp;号：</li><li><input type="text" id="license" name="license" class="w132"/></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>车&nbsp;主&nbsp;姓&nbsp;名&nbsp;：</li><li><input type="text" id="nick" name="nick" class="w132" ng-model="model.userCfg.nick"/></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>联&nbsp;系&nbsp;电&nbsp;话&nbsp;：</li><li><input type="text" id="phone" name="phone" class="w132" ng-model="model.userCfg.phone"/></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;牌&nbsp;&nbsp;&nbsp;&nbsp;号：</li><li><input type="text" id="license" name="license" class="w132" ng-model="model.userCfg.license"/></li></ul><div class="clear"></div></div>
     </div><!--车主信息contentbox end-->
         <!--汽车信息contentbox start--><div class="contentbox">
         <div class="columnname"><div>汽车信息</div></div>
-        <div class="content"><ul><li>汽&nbsp;车&nbsp;品&nbsp;牌&nbsp;：</li><li><input type="text" id="brand" name="brand" class="w132"/></li></ul><div class="clear"></div></div>
+        <div class="content">
+            <ul>
+                <li>汽&nbsp;车&nbsp;品&nbsp;牌&nbsp;：</li>
+                <li><input type="text" id="brand" name="brand" class="w132" ng-model="model.brand_name"/></li>
+            </ul>
+            <div class="clear"></div>
+        </div>
         <div class="content" style="display: none"><ul><li>汽&nbsp;车&nbsp;品&nbsp;牌&nbsp;*：</li><li><select></select></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>系&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列：</li><li><select id="series" name="series" class="w132"></select></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;款：</li><li><input type="text" id="modelYear" name="modelYear" class="w132"/></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>当&nbsp;前&nbsp;里&nbsp;程&nbsp;：</li><li><input type="text" id="mileage" name="mileage" class="w132" /></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>发动机类型：</li><li><select id="engine_type" name="engine_type" class="w137" ><option value="-1" id="seleEngine">请选择</option><option value="S">自然吸气</option><option value="T">涡轮增压</option></select></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>排&nbsp;&nbsp;&nbsp;&nbsp;气&nbsp;&nbsp;&nbsp;&nbsp;量：</li><li><input type="text" id="disp" name="disp" class="w132"/></li></ul><div class="clear"></div></div>
-        <div class="content"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</li><li><select  id="age" name="age" class="w137" >
-            <option value="-1" id="seleAge">请选择</option>
-            <option value="0">1年以下</option>
-            <option value="1">1-2年</option>
-            <option value="2">2-3年</option>
-            <option value="3">3-4年</option>
-            <option value="4">4-5年</option>
-            <option value="5">大于5年</option>
-        </select></li></ul><div class="clear"></div></div>
+        <div class="content">
+            <ul>
+                <li>系&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列：</li>
+                <li>
+                    <select name="series" class="w132" ng-model="model.mySeries" ng-options="s.series_name for s in model.seriesData">
+                        <option value="">--请选择--</option>
+                    </select>
+                </li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        <div class="content"><ul><li>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;款：</li><li><input type="text" id="modelYear" name="modelYear" class="w132" ng-model="model.userCfg.modelYear"/></li></ul><div class="clear"></div></div>
+        <div class="content"><ul><li>当&nbsp;前&nbsp;里&nbsp;程&nbsp;：</li><li><input type="text" id="mileage" name="mileage" class="w132" ng-model="model.userCfg.mileage"/></li></ul><div class="clear"></div></div>
+        <div class="content">
+            <ul>
+                <li>发动机类型：</li>
+                <li>
+                    <select id="engine_type" name="engine_type" class="w137" ng-model="model.eng_type" ng-options="t for t in model.eng_types">
+                        <option value="" >请选择</option>
+                    </select>
+                </li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        <div class="content"><ul><li>排&nbsp;&nbsp;&nbsp;&nbsp;气&nbsp;&nbsp;&nbsp;&nbsp;量：</li><li><input type="text" id="disp" name="disp" class="w132" ng-model="model.userCfg.disp"/></li></ul><div class="clear"></div></div>
+        <div class="content">
+            <ul>
+                <li>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</li>
+                <li>
+                    <select  id="age" name="age" class="w137" ng-model="model.age" ng-options="age for age in model.ages">
+                        <option value="-1">--请选择--</option>
+                    </select>
+                </li>
+            </ul>
+            <div class="clear"></div>
+        </div>
     </div><!--汽车信息contentbox end-->
     </div><!--regsitercontaine end-->
-        <!--regsiterbutton start--><div id="regsiterbutton"><a href="#" class="button01" onclick="update()">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</a></div><!--regsiterbutton end-->
+        <!--regsiterbutton start-->
+        <div id="regsiterbutton">
+            <a href="#" class="button01" ng-click="model.update()">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</a>
+        </div><!--regsiterbutton end-->
     </div><!--main_wrap end-->
 </div>
-<script>
-    function searchUser(){
-         $.ajax({
-            type: "POST",
-            url: "/mservice/infoConfig",
-            data: {'user':user},
-            dataType: "json",
-            success: function (result,status) {
-                //alert("success");
-              document.getElementById('name').value=result.name;
-              //document.getElementById('password').value=result.name;
-              //document.getElementById('username').value=result.name;
-              document.getElementById('obd_code').value=result.obd_code;
-              //document.getElementById('seleBrand').innerHTML=result.brandName;
-              //document.getElementById('seleBrand').value=result.brand;
-              //document.getElementById('seleSeries').innerHTML=result.seriesName;
-             // document.getElementById('seleSeries').value=result.series;
-             // document.getElementById('seleModelYear').innerHTML=result.modelYear;
-              wx_oid=result.wx_oid;
-              document.getElementById('modelYear').value='20'+result.modelYear;
-              document.getElementById('license').value=result.license;
-              document.getElementById('mileage').value=result.mileage;
-              document.getElementById('disp').value=result.disp;
-              document.getElementById('phone').value=result.phone;
-              document.getElementById('nick').value=result.nick;
-              document.getElementById('seleEngine').value=result.engine_type;
-              if(result.engine_type=='T')document.getElementById('seleEngine').innerHTML='涡轮增压';
-              else document.getElementById('seleEngine').innerHTML='自然吸气';
-            },
-            error:function(XMLHttpRequest, textStatus, errorThrown){
-                alert("您还未注册或未绑定OBD信息\n请先注册账号！");
-                window.location="/msite/enroll.html?user="+user+"&appid="+appid;
-            }
-        });
-    }
- function initCarBrand(){
-     $.ajax({
-         type: "POST",
-         url: "/mservice/brandData",
-         data: {'user':user},
-         dataType: "json",
-         success:function(data){
-               document.getElementById('brand').value=data.brand;
-                 var str='<option value="-1">请选择</option>';
-                 for(var i=0;i<data.seriesData.length;i++){
-                     str+='<option value="'+data.seriesData[i].seriesCode+'">'+data.seriesData[i].series+'</option> '
-                 }
-                 document.getElementById('series').innerHTML=str;
-              }
-     });
- }
-</script>
 </body>
 </html>

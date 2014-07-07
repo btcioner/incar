@@ -16,7 +16,7 @@ function trimString(strInput) {
     return str.slice(0, i + 1);
 }
 
-manual.retrieve = function(keyword, callback) {
+manual.retrieve = function(keyword, req, callback) {
     var pool = this.db();
     var pattern = '%'+ trimString(keyword) + '%';
     var sqlWithParameters = 'select title, description, filename from t_manual_content where keyword like ?;';
@@ -28,7 +28,7 @@ manual.retrieve = function(keyword, callback) {
             var itemB = {};
             itemA.title = rows[0].title;
             itemA.description = rows[0].description;
-            var imgurl = config.baseUrl + '/data/manual/' + rows[0].filename;
+            var imgurl = 'http://' + req.headers.host + '/data/manual/' + rows[0].filename;
             if(rows[0].filename && rows[0].filename.slice(0, 7).toLowerCase() === 'http://')
                 imgurl = rows[0].filename;
             itemA.picurl = imgurl;

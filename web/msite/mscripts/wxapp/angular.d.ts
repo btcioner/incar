@@ -5,6 +5,7 @@ declare var angular:{
         config:any;
         filter:(name:string, factory:()=>any)=>any;
     };
+    injector: (dependencies:Array<any>)=>any;
     isUndefined: (value:any)=>boolean;
     isDefined: (value:any)=>boolean;
     forEach: (value:any, cb:(obj:any)=>any)=>any;

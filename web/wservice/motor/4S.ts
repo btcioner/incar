@@ -67,7 +67,10 @@ module Service{
         if(isStringNotEmpty(data.description)) dto.description = data.description;
         if(isStringNotEmpty(data.wx_login)) dto.wx_login = data.wx_login;
         if(isStringNotEmpty(data.wx_pwd)) dto.wx_pwd = data.wx_pwd;
-        if(isStringNotEmpty(data.wx_en_name)) dto.wx_en_name = data.wx_en_name;
+        if(isStringNotEmpty(data.wx_app_name)) dto.wx_app_name = data.wx_app_name;
+        if(isStringNotEmpty(data.wx_app_id)) dto.wx_app_id = data.wx_app_id;
+        if(isStringNotEmpty(data.wx_app_secret)) dto.wx_app_secret = data.wx_app_secret;
+        if(isStringNotEmpty(data.wx_oauth_addr)) dto.wx_oauth_addr = data.wx_oauth_addr;
         if(!isNaN(data.wx_status)) dto.wx_status = data.wx_status;
         if(!isNaN(data.brand)) dto.brand = data.brand;
         if(isStringNotEmpty(data.address)) dto.address = data.address;
@@ -126,7 +129,10 @@ module Service{
         if(isStringNotEmpty(data.description)) dto.description = data.description;
         if(isStringNotEmpty(data.wx_login)) dto.wx_login = data.wx_login;
         if(isStringNotEmpty(data.wx_pwd)) dto.wx_pwd = data.wx_pwd;
-        if(isStringNotEmpty(data.wx_en_name)) dto.wx_en_name = data.wx_en_name;
+        if(isStringNotEmpty(data.wx_app_name)) dto.wx_app_name = data.wx_app_name;
+        if(isStringNotEmpty(data.wx_app_id)) dto.wx_app_id = data.wx_app_id;
+        if(isStringNotEmpty(data.wx_app_secret)) dto.wx_app_secret = data.wx_app_secret;
+        if(isStringNotEmpty(data.wx_oauth_addr)) dto.wx_oauth_addr = data.wx_oauth_addr;
         if(!isNaN(data.wx_status)) dto.wx_status = data.wx_status;
         if(!isNaN(data.brand)) dto.brand = data.brand;
         if(isStringNotEmpty(data.logo_url)) dto.logo_url = data.logo_url;
