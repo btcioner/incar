@@ -94,7 +94,7 @@ angular.module("SCustomerApp", [
         {
             $scope.randomTime = new Date();
             $http.get("/tag/tagListSystem/"+ $.cookie("brand_id")+"?t="+$scope.randomTime).success(function(data){
-                $scope.tagsGroup = data;
+                $scope.tagsGroup = data.data;
                 for(var i=0;i<$scope.tagsGroup.length;i++)
                 {
                     $scope.tagsGroup[i].link = "#collapseG_"+ $scope.tagsGroup[i].groupId;
@@ -111,7 +111,6 @@ angular.module("SCustomerApp", [
                     {
                         $scope.tagsGroup[i].tags[j].tagFlag = "";
                     }
-
                 }
             }).error(function(data){
                     alert("请求无响应");
