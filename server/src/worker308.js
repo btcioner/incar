@@ -530,17 +530,18 @@ function get1603Response(obd){
     //动作
     dataManager.writeByte(obd.actionCount);
     if(obd.actionCount>0x00){
-        dataManager.writeByte(obd.initCode);
-        dataManager.writeByte(obd.isCodeClear);
+        dataManager.writeByte(obd.initCode?obd.initCode:0x00);
+        dataManager.writeByte(obd.isCodeClear?obd.isCodeClear:0xF0);
     }
     //车信息
     dataManager.writeByte(obd.carUpdateCount);
     if(obd.carUpdateCount>0x00){
-        dataManager.writeString(obd.vid);
-        dataManager.writeByte(obd.brand);
-        dataManager.writeByte(obd.series);
-        dataManager.writeByte(obd.modelYear-2000);
-        var edNum=Math.round(parseFloat(obd.engineDisplacement)*10)/10;
+        dataManager.writeString(obd.vid?obd.vid:'');
+        dataManager.writeByte(obd.brand?obd.brand:0xFF);
+        dataManager.writeByte(obd.series?obd.series:0xFF);
+        dataManager.writeByte(obd.modelYear?obd.modelYear-2000:0xFF);
+        var engDisp=obd.engineDisplacement?obd.engineDisplacement:0;
+        var edNum=Math.round(parseFloat(engDisp)*10)/10;
         var ed=edNum.toString().split(".");
         var edStr='0.0';
         if(ed&&ed.length===1){
@@ -549,7 +550,7 @@ function get1603Response(obd){
         else if(ed.length>1){
             edStr=edNum.toString();
         }
-        dataManager.writeString(edStr+obd.engineType);
+        dataManager.writeString(edStr+obd.engineType?obd.engineType:'L');
     }
     //服务器配置
     dataManager.writeByte(obd.serverConfigCount);
@@ -691,6 +692,8 @@ function packetProcess_1603(dataBuffer,cb) {
             var rows=info.data;
             if(rows.length>0){
                 var obd=rows[0];
+                var id=obd.id;
+
                 var obdInfo=get1603Default();
                 obdInfo.carUpdateCount=0x05;            //车辆信息更新数量(0x00或0x05)
                 obdInfo.vid=obd.id;                     //vid
