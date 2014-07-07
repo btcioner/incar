@@ -164,10 +164,10 @@ function customerCtrl($scope, $http){
         $scope.openid="";
         $scope.customerListDiv = false;
         $scope.customerAddDiv = true;
-        $scope.wx_oauth_addr = "";
-        $scope.wx_app_id  ="";
-        $scope.wx_app_name = "";
-        $scope.wx_app_secret = "";
+//        $scope.wx_oauth_addr = "";
+//        $scope.wx_app_id  ="";
+//        $scope.wx_app_name = "";
+//        $scope.wx_app_secret = "";
     }
 
    //新增确定
@@ -176,8 +176,7 @@ function customerCtrl($scope, $http){
         var sha1_password =hex_sha1($scope.password);//SHA1进行加密
         $scope.postData={"name":$scope.comName,"class":"4S","status":1,"city":$scope.city,"admin_pwd":sha1_password,
             "admin_name":$scope.account,"admin_nick":$scope.admin_nick,"admin_phone":$scope.admin_phone,"openid":$scope.openid,
-            brand:$scope.brand_id,short_name:$scope.short_name,wx_oauth_addr:$scope.wx_oauth_addr,wx_app_name:$scope.wx_app_name,
-            wx_app_id:$scope.wx_app_id,wx_app_secret:$scope.wx_app_secret};
+            brand:$scope.brand_id,short_name:$scope.short_name};
         getAjaxLink(baseurl + 'cmpx/4s',$scope.postData,"post",4);
 
     }

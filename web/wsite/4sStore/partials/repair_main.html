@@ -68,10 +68,14 @@
                             <th class="tablestyle-01">预约时间</th>
                             <th class="tablestyle-02">{{triesDetail.working_time}}</th>
                             <th class="tablestyle-01">操作时间</th>
-                            <th class="tablestyle-02"><button class='btn btn-success'  ng-click='OperationChild("approve");'>确认</button>
+                            <th class="tablestyle-02" ng-show="newApplyOper"><button class='btn btn-success'  ng-click='OperationChild("approve");'>确认</button>
                                 &nbsp;&nbsp;&nbsp;<button class='btn btn-success'  ng-click='OperationChild("reject");'>拒绝</button></th>
                             </th>
+                            <th  class="tablestyle-02" ng-show="completeOper"><button class='btn btn-success'  ng-click='OperationChild("cancel");'>取消</button>&nbsp;&nbsp;&nbsp;
+                                <button class='btn btn-success'  ng-click='OperationChild("abort")'>未到店</button>&nbsp;&nbsp;&nbsp;
+                                <button class='btn btn-success'  ng-click='OperationChild("done")'>已完成</button></th>
                         </tr>
+
                         </thead>
                     </table>
                 </div>
@@ -88,6 +92,22 @@
                         <div class="button_box01">
                             <button type="button" style="margin-right:40px;"  class="btn btn-large btn-success" ng-click="confirm(2);">确&nbsp;&nbsp;定</button>
                             <button type="button"  class="btn btn-large btn-danger"   ng-click="cancel(2)">取&nbsp;&nbsp;消</button>
+                        </div><!--button_box01 start-->
+                    </form>
+                </div>
+                <div class="widget-content nopadding mar_t_14" ng-show="remarkDiv">
+                    <form class="form-horizontal formstyle_box03">
+                        <div class="control-group w_44 fl" >
+                            <label class="control-label pad_l20 w_100">备注：</label>
+                            <div class="controls pad_t_b_10">
+                                <textarea ng-model="remark" style="width:300px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <!--button_box01 start-->
+                        <div class="button_box01">
+                            <button type="button" style="margin-right:40px;"  class="btn btn-large btn-success" ng-click="confirm(1);">确&nbsp;&nbsp;定</button>
+                            <button type="button"  class="btn btn-large btn-danger"   ng-click="cancel(1)">取&nbsp;&nbsp;消</button>
                         </div><!--button_box01 start-->
                     </form>
                 </div>
@@ -123,6 +143,10 @@
                         <tr ng-show="reasonTr">
                             <th class="tablestyle-01">拒绝原因</th>
                             <th class="tablestyle-02" colspan="5">{{triesDetail.json_args.reason}}</th>
+                        </tr>
+                        <tr ng-show="diffDiv">
+                            <th class="tablestyle-01">备注</th>
+                            <th class="tablestyle-02" colspan='5' rowspan='2'>{{triesDetail.json_args.reason}}</th>
                         </tr>
                         </thead>
                     </table>
