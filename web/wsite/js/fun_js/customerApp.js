@@ -122,7 +122,7 @@ angular.module("SCustomerApp", [
                     alert("请求无响应");
             })
         }
-        $scope.changeLeftbar = function(id)
+        $scope.changeLeftbar = function(id,len,groupId)
         {
             for(var i=0;i<8;i++)
             {
@@ -134,6 +134,24 @@ angular.module("SCustomerApp", [
                     $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
                 }
             }
+            for(var i=1;i<len+1;i++)
+            {
+                $("#a_"+groupId+"_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+            }
+        }
+        $scope.changeLeftSmallBar = function(id,len,groupId)
+        {
+            $scope.randomTime = new Date();
+              for(var i=1;i<len+1;i++)
+              {
+                 if(i==id)
+                 {
+                     $("#a_"+groupId+"_"+i).removeClass().addClass("btn btn-menu sidebar_a_s");
+                 }
+                 else{
+                     $("#a_"+groupId+"_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+                 }
+              }
         }
 
         //注销

@@ -40,6 +40,7 @@ angular.module("SActivityApp", [
         });
   //  $locationProvider.html5Mode(true);
 }).controller("mainCtrl",function($scope,$http){
+        $scope.randomTime = new Date();
         if($.cookie("nick_4s") != "" && $.cookie("nick_4s") != null)
         {
             $scope.nickName = $.cookie("nick_4s");//保存登录进来用户的nick
@@ -49,6 +50,7 @@ angular.module("SActivityApp", [
         }
         $scope.changeLeftbar = function(id)
         {
+            $scope.randomTime = new Date();
             for(var i=1;i<5;i++)
             {
                 if(i==id)
@@ -87,7 +89,7 @@ function s_statisticsCtrl($scope,$http)
           }).error(function(data){
               alert("请求无响应!");
           })
-     $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity?status=2&t="+$scope.randomTime)
+     $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/ActSaveGas/activity?status=2&t="+$scope.randomTime)
           .success(function(data){
               $scope.saveFuelCount = data.totalCount;
             }).error(function(data){

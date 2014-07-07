@@ -49,7 +49,7 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     {
         $scope.tips="";
         $scope.randomTime = new Date();
-        $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity?page="+$scope.currentPage+"&pagesize="+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
+        $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/ActSaveGas/activity?page="+$scope.currentPage+"&pagesize="+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.activities.length ==0)
@@ -181,8 +181,7 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
         var tagArr = tags.split(",");
         $scope.randomTime = new Date();
         $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/"+ $.cookie("brand_id")+"?t="+$scope.randomTime).success(function(data){
-
-            $scope.tagsGroup = data;
+            $scope.tagsGroup = data.data;
             for(var i=0;i<$scope.tagsGroup.length;i++)
             {
                 for(var j=0;j<$scope.tagsGroup[i].tags.length;j++)
@@ -244,7 +243,7 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
         getAllChooseTag();
         $scope.postData={title:$scope.title,brief:editor.html(),tm_announce:$scope.tm_announce,tm_start:$scope.tm_start,
         tm_end:$scope.tm_end,min_milage:$scope.min_milage,logo_url:$scope.logo_url,tags:$scope.tags};
-        $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity",$scope.postData).success(function(data){
+        $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/ActSaveGas/activity",$scope.postData).success(function(data){
             if(data.status == "ok")
             {
                alert("添加成功!");
@@ -556,8 +555,8 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
                 getCustomTagList();
                 $scope.randomTime = new Date();
                 $http.get('/tag/getTagsByCarId/'+$scope.cusDetail.ref_car_id+"?t="+$scope.randomTime).success(function(data){
-                    $scope.systemTag = data.systemTag;
-                    $scope.customTag = data.customTag;
+                    $scope.systemTag = data.data.systemTag;
+                    $scope.customTag = data.data.customTag;
                     for(var i=0;i<$scope.customTags.length;i++)
                     {
                         var flag = false;

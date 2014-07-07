@@ -47,6 +47,7 @@ angular.module("SReservationApp", [
         }
         $scope.changeLeftbar = function(id)
         {
+            $scope.randomTime = new Date();
             for(var i=1;i<3;i++)
             {
                 if(i==id)
