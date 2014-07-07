@@ -23,7 +23,7 @@ module wxApp{
             }
             else{
                 if(!args.app_id) {
-                    console.error("缺少app_id");
+                    cb('缺少app_id或用户未同意授权访问');
                     return;
                 }
                 // 获取CODE
