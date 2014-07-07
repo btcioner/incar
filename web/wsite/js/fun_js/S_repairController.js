@@ -55,6 +55,7 @@ function s_repairCtrl($scope, $http,$routeParams){
         }).error(function(data){
                 alert("请求无响应");
             })
+        $scope.queryString="";
     }
 
 //   //下拉框选择

@@ -37,6 +37,7 @@ angular.module("SReservationApp", [
         });
        // $locationProvider.html5Mode(true);
 }).controller("mainCtrl",function($scope,$http){
+        $scope.randomTime = new Date();
         if($.cookie("nick_4s") != "" && $.cookie("nick_4s") != null)
         {
             $scope.nickName = $.cookie("nick_4s");//保存登录进来用户的nick
@@ -54,6 +55,27 @@ angular.module("SReservationApp", [
                 }
                 else{
                     $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
+                }
+            }
+            if(id==1)
+            {
+                for(var i=1;i<7;i++)
+                {
+                    $("#a_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+                }
+            }
+        }
+        $scope.changeLeftSmallBar = function(id)
+        {
+            $scope.randomTime = new Date();
+            for(var i=1;i<7;i++)
+            {
+                if(i==id)
+                {
+                    $("#a_"+i).removeClass().addClass("btn btn-menu sidebar_a_s");
+                }
+                else{
+                    $("#a_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
                 }
             }
         }

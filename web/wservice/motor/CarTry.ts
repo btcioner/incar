@@ -217,11 +217,11 @@ module Work{
             });
         }
 
-        //
-        cancel(req,res){
-            console.log("balla");
-            res.send(200,"~~~~");
-        }
+        //取消试驾申请
+//        cancel(req,res){
+//            console.log("balla");
+//            res.send(200,"~~~~");
+//        }
 
         // 拒绝试驾申请
         reject(req, res){

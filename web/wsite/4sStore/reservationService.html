@@ -31,12 +31,12 @@
                     </div>
                     <div class="collapse accordion-body" id="collapseGOne">
                         <div class="widget-content" style="text-align: right;padding:0">
-                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/applied">新申请</a>
-                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/rejected">已拒绝</a>
-                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/approved">已确认</a>
-                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/done">已完成</a>
-                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/aborted">未到店</a>
-                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/cancelled">已取消</a>
+                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/applied?t={{randomTime}}" id="a_1" ng-click="changeLeftSmallBar(1)"><font>新申请</font></a>
+                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/rejected?t={{randomTime}}" id="a_2" ng-click="changeLeftSmallBar(2)"><font>已拒绝</font></a>
+                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/approved?t={{randomTime}}" id="a_3" ng-click="changeLeftSmallBar(3)"><font>已确认</font></a>
+                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/done?t={{randomTime}}" id="a_4" ng-click="changeLeftSmallBar(4)"><font>已完成</font></a>
+                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/aborted?t={{randomTime}}" id="a_5" ng-click="changeLeftSmallBar(5)"><font>未到店</font></a>
+                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGOne/cancelled?t={{randomTime}}" id="a_6" ng-click="changeLeftSmallBar(6)"><font>已取消</font></a>
                         </div>
                     </div>
                 </div>
@@ -46,9 +46,9 @@
                             <h5>试乘试驾</h5>
                         </a></div>
                     </div>
-                    <div class="collapse accordion-body" id="collapseGTwo" >
+                    <div class="collapse accordion-body" id="collapseGTwo">
                         <div class="widget-content" style="text-align: right;padding:0">
-                            <a class="btn btn-menu" style="width: 100%;" href="#collapseGTwo/applied">新申请</a>
+                            <a class="btn btn-menu" style="width: 100%;" href = "#collapseGTwo/applied">新申请</a>
                             <a class="btn btn-menu" style="width: 100%;" href = "#collapseGTwo/rejected">已拒绝</a>
                             <a class="btn btn-menu" style="width: 100%;" href = "#collapseGTwo/approved">已确认</a>
                         </div>
