@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="../mstyles/jqm-datebox.min.css">
     <!--日期控件资源结束  -->
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css"/>
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css"/>
     <link href="../mstyles/menustyle.css" rel="stylesheet" type="text/css"/>
     <script src="../mscripts/highcharts.js"></script>
     <!--<script  src="../mscripts/exporting.js"></script>-->
@@ -139,10 +140,10 @@
     <div id="menu_box">
         <!--ULmenu start-->
         <ul class="menu">
-            <li><a id="menu_icon1" href="###" class="menu_icon1b">油&nbsp;&nbsp;&nbsp;&nbsp;耗</a></li>
-            <li><a id="menu_icon2" href="###" class="menu_icon2a">碳排放量</a></li>
-            <li><a id="menu_icon3" href="###" class="menu_icon3a">驾驶偏好</a></li>
-            <li><a id="menu_icon4" href="###" class="menu_icon4a">速段统计</a></li>
+            <li><a id="menu_icon1" href="###" class="menu_icon1b"><span class="nostyle01">油&nbsp;&nbsp;&nbsp;&nbsp;耗</span></a></li>
+            <li><a id="menu_icon2" href="###" class="menu_icon2a"><span class="nostyle01">碳排放量</span></a></li>
+            <li><a id="menu_icon3" href="###" class="menu_icon3a"><span class="nostyle01">驾驶偏好</span></a></li>
+            <li><a id="menu_icon4" href="###" class="menu_icon4a"><span class="nostyle01">速段统计</span></a></li>
         </ul>
         <!--ULmenu end-->
         <div class="clear"></div>
@@ -153,13 +154,13 @@
     <!--datebox_01 start-->
     <div id="datebox_01" style="padding-left: 8px;">
         <ul style="width:100%">
-            <li style="width: 10% ;float: left;margin-top: 16px; text-align: right">开始</li>
+            <li style="width: 10% ;float: left;margin-top: 16px; text-align: right;text-shadow:none;">开始：</li>
             <li style="width: 35%;float: left"><input name="start" class="w108" type="date"
                                                       data-options='{"mode":"flipbox"}' data-role="datebox" id="start"
                                                       style="vertical-align:middle;"
                                                       ng-model="model.tmStart" ng-change="model.onDateChanged()"/></li>
 
-            <li style="width: 10%;float: left;margin-top: 16px;margin-left: 10px;text-align: right">结束</li>
+            <li style="width: 10%;float: left;margin-top: 16px;margin-left: 10px;text-align: right;text-shadow:none;">结束：</li>
             <li style="width: 35%;float: left"><input name="end" class="w108" type="date" data-options='{"mode":"flipbox"}'
                                                       data-role="datebox" id="end" style="vertical-align:middle;"
                                                       ng-model="model.tmEnd" ng-change="model.onDateChanged()"/></li>
@@ -172,15 +173,13 @@
     <!--mainbox1油耗内容 star-->
     <div id="mainbox1">
         <!--文字部分区1 start-->
-        <br>
-
         <div>
-            <div class="boxstyle01_1"><span>最近一次行驶</span></div>
+            <div class="boxstyle01"><span style="text-shadow:none;">最近一次行驶</span></div>
             <div class="boxstyle02" ng-show="model.driveData">
                 <ul>
-                    <li>平均油耗为：<span>{{ model.driveData.fuelDataLastTime.fuel | l_per_100km | number }} 升/百公里</span></li>
-                    <li>行驶里程数：<span>{{ model.driveData.fuelDataLastTime.mileage | km }} 公里</span></li>
-                    <li>耗&nbsp;&nbsp;油&nbsp;&nbsp;量为：<span>{{ model.driveData.fuelDataLastTime.totalFuel | l | number}} 升</span></li>
+                    <li style="text-shadow:none;">平均油耗为：<span>{{ model.driveData.fuelDataLastTime.fuel | l_per_100km | number }} 升/百公里</span></li>
+                    <li style="text-shadow:none;">行驶里程数：<span>{{ model.driveData.fuelDataLastTime.mileage | km }} 公里</span></li>
+                    <li style="text-shadow:none;">耗&nbsp;&nbsp;油&nbsp;&nbsp;量为：<span>{{ model.driveData.fuelDataLastTime.totalFuel | l | number}} 升</span></li>
                 </ul>
             </div>
             <img src="/mimages/loading.gif" ng-hide="model.driveData" style="width:30px;height:30px;">
@@ -190,12 +189,12 @@
         <div class="h18"></div>
         <!--文字部分区2 start-->
         <!--<div>
-        <div class="boxstyle01_1">本周行驶</div>
+        <div class="boxstyle01" style="text-shadow:none;">本周行驶</div>
         <div class="boxstyle02">
           <ul>
-          <li>平均油耗为：<span id="weekFuel">7.2升/百公里</span></li>
-          <li>行驶里程数：<span id="weekMiles">216.0公里</span></li>
-          <li>耗&nbsp;&nbsp;油&nbsp;&nbsp;量为：<span id="weekTotalFuel">18.70升</span></li>
+          <li style="text-shadow:none;">平均油耗为：<span id="weekFuel">7.2升/百公里</span></li>
+          <li style="text-shadow:none;">行驶里程数：<span id="weekMiles">216.0公里</span></li>
+          <li style="text-shadow:none;">耗&nbsp;&nbsp;油&nbsp;&nbsp;量为：<span id="weekTotalFuel">18.70升</span></li>
           </ul>
         </div>
         <div class="clear"></div>
@@ -206,12 +205,12 @@
         <div class="h18"></div>
         <!--文字部分区3 start-->
         <div>
-            <div class="boxstyle01_1"><span>本时间段行驶</span></div>
+            <div class="boxstyle01"><span style="text-shadow:none;">本时间段行驶</span></div>
             <div class="boxstyle02" ng-show="model.driveData">
                 <ul>
-                    <li>平均油耗为：<span>{{model.driveData.fuelDataLastInterval.fuel | l_per_100km | number}} 升/百公里</span></li>
-                    <li>行驶里程数：<span>{{model.driveData.fuelDataLastInterval.mileage | km }} 公里</span></li>
-                    <li>耗&nbsp;&nbsp;油&nbsp;&nbsp;量为：<span>{{model.driveData.fuelDataLastInterval.totalFuel | l | number}} 升</span></li>
+                    <li style="text-shadow:none;">平均油耗为：<span>{{model.driveData.fuelDataLastInterval.fuel | l_per_100km | number}} 升/百公里</span></li>
+                    <li style="text-shadow:none;">行驶里程数：<span>{{model.driveData.fuelDataLastInterval.mileage | km }} 公里</span></li>
+                    <li style="text-shadow:none;">耗&nbsp;&nbsp;油&nbsp;&nbsp;量为：<span>{{model.driveData.fuelDataLastInterval.totalFuel | l | number}} 升</span></li>
                 </ul>
             </div>
             <img src="/mimages/loading.gif" ng-hide="model.driveData" style="width:30px;height:30px;">
@@ -226,8 +225,8 @@
             </div>
             <div id="fule_note"
                  style="text-align:center;margin-top: 20px;vertical-align: middle;margin-top: 215px;margin-left: 30px">
-                <div style="text-align: left;width: 49%;float: left">{{model.tmStart}}</div>
-                <div style="text-align: right;width: 49%;float: left">{{model.tmEnd}}</div>
+                <div style="text-align: left;width: 49%;float: left;text-shadow:none;">{{model.tmStart}}</div>
+                <div style="text-align: right;width: 49%;float: left;text-shadow:none;">{{model.tmEnd}}</div>
             </div>
         </div>
         <!--imgbox01图片区1 end-->
@@ -236,7 +235,7 @@
     <!--mainbox2碳排放内容 star-->
     <div id="mainbox2" style="display:none;">
         <!--文字部分区1 start-->
-        <div class="text_01" style="text-align: left;padding-left: 20px" ng-show="model.driveData">
+        <div class="text_01" style="text-align: left;padding-left: 20px;text-shadow:none;" ng-show="model.driveData">
             <span>最近一次</span>行驶碳排放参考量为：<span>{{model.driveData.carbonDataLastTime.carbon | kg | number}} kg</span><br/>
             <!--<span>本周</span>行驶碳排放参考量为：<span id="weekCarbon">24kg</span><br />-->
             <span>本时间段</span>行驶碳排放参考量为：<span>{{model.driveData.carbonDataLastInterval.carbon | kg | number}} kg</span>
@@ -251,8 +250,8 @@
             </div>
             <div id="carbon_note"
                  style="text-align:center;margin-top: 20px;vertical-align: middle;margin-top: 215px;margin-left: 30px">
-                <div style="text-align: left;width: 49%;float: left">{{model.tmStart}}</div>
-                <div style="text-align: right;width: 49%;float: left">{{model.tmEnd}}</div>
+                <div style="text-align: left;width: 49%;float: left;text-shadow:none;">{{model.tmStart}}</div>
+                <div style="text-align: right;width: 49%;float: left;text-shadow:none;">{{model.tmEnd}}</div>
                 <br>
             </div>
         </div>
@@ -263,12 +262,12 @@
     <div id="mainbox3" style="display:none;">
         <!--文字部分区1 start-->
         <div>
-            <div class="boxstyle01_1"><span>最近一次行驶</span></div>
+            <div class="boxstyle01"><span style="text-shadow:none;">最近一次行驶</span></div>
             <div class="boxstyle02" ng-show="model.driveData">
                 <ul>
-                    <li>急转弯次数：<span>{{model.driveData.behaviorDataLatestTime.turnLatestTime}}</span></li>
-                    <li>急加速次数：<span>{{model.driveData.behaviorDataLatestTime.speedupLatestTime}}</span></li>
-                    <li>急减速次数：<span>{{model.driveData.behaviorDataLatestTime.speeddownLatestTime}}</span></li>
+                    <li style="text-shadow:none;">急转弯次数：<span>{{model.driveData.behaviorDataLatestTime.turnLatestTime}}</span></li>
+                    <li style="text-shadow:none;">急加速次数：<span>{{model.driveData.behaviorDataLatestTime.speedupLatestTime}}</span></li>
+                    <li style="text-shadow:none;">急减速次数：<span>{{model.driveData.behaviorDataLatestTime.speeddownLatestTime}}</span></li>
                 </ul>
             </div>
             <img src="/mimages/loading.gif" ng-hide="model.driveData" style="width:30px;height:30px;">
@@ -279,12 +278,12 @@
         <!--文字部分区2 start<!--
        <!--
        <div>
-        <div class="boxstyle01_1">本周行驶</div>
+        <div class="boxstyle01" style="text-shadow:none;">本周行驶</div>
         <div class="boxstyle02">
           <ul>
-          <li>急转弯次数：<span id="weekTurn"></span></li>
-          <li>急加速次数：<span id="weekSpeedup"></span></li>
-          <li>急减速次数：<span id="weekSpeeddown"></span></li>
+          <li style="text-shadow:none;">急转弯次数：<span id="weekTurn"></span></li>
+          <li style="text-shadow:none;">急加速次数：<span id="weekSpeedup"></span></li>
+          <li style="text-shadow:none;">急减速次数：<span id="weekSpeeddown"></span></li>
           </ul>
         </div>
         <div class="clear"></div>
@@ -295,12 +294,12 @@
         <br>
 
         <div>
-            <div class="boxstyle01_1"><span>本时间段行驶</span></div>
+            <div class="boxstyle01"><span style="text-shadow:none;">本时间段行驶</span></div>
             <div class="boxstyle02" ng-show="model.driveData">
                 <ul>
-                    <li>急转弯次数：<span>{{model.driveData.behaviorDataInterval.turnInterval}}</span></li>
-                    <li>急加速次数：<span>{{model.driveData.behaviorDataInterval.speedupInterval}}</span></li>
-                    <li>急减速次数：<span>{{model.driveData.behaviorDataInterval.speeddownInterval}}</span></li>
+                    <li style="text-shadow:none;">急转弯次数：<span>{{model.driveData.behaviorDataInterval.turnInterval}}</span></li>
+                    <li style="text-shadow:none;">急加速次数：<span>{{model.driveData.behaviorDataInterval.speedupInterval}}</span></li>
+                    <li style="text-shadow:none;">急减速次数：<span>{{model.driveData.behaviorDataInterval.speeddownInterval}}</span></li>
                 </ul>
             </div>
             <img src="/mimages/loading.gif" ng-hide="model.driveData" style="width:30px;height:30px;">
@@ -314,16 +313,16 @@
                 <div id="drive_chart"></div>
             </div>
             <div id="note" style="text-align:center;vertical-align: middle;margin-top: 190px;margin-left: 30px">
-                <div style="text-align: left;width: 49%;float: left">{{model.tmStart}}</div>
-                <div style="text-align: right;width: 49%;float: left">{{model.tmEnd}}</div>
+                <div style="text-align: left;width: 49%;float: left;text-shadow:none;">{{model.tmStart}}</div>
+                <div style="text-align: right;width: 49%;float: left;text-shadow:none;">{{model.tmEnd}}</div>
                 <br>
 
                 <div style="width: 10px;background:#c05020;height: 5px;float: left;margin-top: 5px;margin-left: 20px"></div>
-                <div style="float: left;margin-left: 10px;margin-right: 20px">急加速</div>
+                <div style="float: left;margin-left: 10px;margin-right: 20px;text-shadow:none;">急加速</div>
                 <div style="width: 10px;background:#30c020;height: 5px;float: left;margin-top: 5px"></div>
-                <div style="float: left;margin-left: 10px;margin-right: 20px">急减速</div>
+                <div style="float: left;margin-left: 10px;margin-right: 20px;text-shadow:none;">急减速</div>
                 <div style="width: 10px;background:#6060c0;height: 5px;float: left;margin-top: 5px"></div>
-                <div style="float: left;margin-left: 10px;margin-right: 20px">急转弯</div>
+                <div style="float: left;margin-left: 10px;margin-right: 20px;text-shadow:none;">急转弯</div>
             </div>
         </div>
         <!--imgbox01图片区1 end-->
@@ -335,12 +334,12 @@
         <br>
 
         <div>
-            <div class="boxstyle01_2"><span>最近一次行驶</span></div>
+            <div class="boxstyle01"><span style="text-shadow:none;">最近一次行驶</span></div>
             <div class="boxstyle02" ng-show="model.driveData">
                 <ul>
-                    <li>时速45公里以下行驶里程<span>{{model.driveData.lastSpeed.slow | km}}</span> 公里</li>
-                    <li>时速45到90公里行驶里程<span>{{model.driveData.lastSpeed.middle | km}}</span> 公里</li>
-                    <li>时速90公里以上<span>{{model.driveData.lastSpeed.high | km}}</span> 公里</li>
+                    <li style="text-shadow:none;">时速45公里以下行驶里程<span>{{model.driveData.lastSpeed.slow | km}}</span> 公里</li>
+                    <li style="text-shadow:none;">时速45到90公里行驶里程<span>{{model.driveData.lastSpeed.middle | km}}</span> 公里</li>
+                    <li style="text-shadow:none;">时速90公里以上<span>{{model.driveData.lastSpeed.high | km}}</span> 公里</li>
                 </ul>
             </div>
             <img src="/mimages/loading.gif" ng-hide="model.driveData" style="width:30px;height:30px;">
@@ -350,12 +349,12 @@
         <div class="h18"></div>
         <!--文字部分区2 start-->
         <!--<div>
-         <div class="boxstyle01_2">本周行驶</div>
+         <div class="boxstyle01" style="text-shadow:none;">本周行驶</div>
          <div class="boxstyle02">
            <ul>
-               <li>时速45公里以下行驶里程<span id="weekSlowSpeed"></span>公里;</li>
-               <li>时速45到90公里行驶里程<span id="weekMiddleSpeed"></span>公里;</li>
-               <li>时速90公里以上<span id="weekHighSpeed"></span>公里</li>
+               <li style="text-shadow:none;">时速45公里以下行驶里程<span id="weekSlowSpeed"></span>公里;</li>
+               <li style="text-shadow:none;">时速45到90公里行驶里程<span id="weekMiddleSpeed"></span>公里;</li>
+               <li style="text-shadow:none;">时速90公里以上<span id="weekHighSpeed"></span>公里</li>
            </ul>
          </div>
          <div class="clear"></div>
@@ -366,12 +365,12 @@
         <br>
 
         <div>
-            <div class="boxstyle01_2"><span>本时间段行驶</span></div>
+            <div class="boxstyle01"><span style="text-shadow:none;">本时间段行驶</span></div>
             <div class="boxstyle02" ng-show="model.driveData">
                 <ul>
-                    <li>时速45公里以下行驶里程<span>{{model.driveData.intervalSpeed.slow | km}}</span> 公里</li>
-                    <li>时速45到90公里行驶里程<span>{{model.driveData.intervalSpeed.middle | km}}</span> 公里</li>
-                    <li>时速90公里以上<span>{{model.driveData.intervalSpeed.high | km}}</span> 公里</li>
+                    <li style="text-shadow:none;">时速45公里以下行驶里程<span>{{model.driveData.intervalSpeed.slow | km}}</span> 公里</li>
+                    <li style="text-shadow:none;">时速45到90公里行驶里程<span>{{model.driveData.intervalSpeed.middle | km}}</span> 公里</li>
+                    <li style="text-shadow:none;">时速90公里以上<span>{{model.driveData.intervalSpeed.high | km}}</span> 公里</li>
                 </ul>
             </div>
             <img src="/mimages/loading.gif" ng-hide="model.driveData" style="width:30px;height:30px;">
@@ -465,7 +464,6 @@ function createChart() {
         element: document.getElementById('fuel_y_axis')
     });
     fuel_graph.render();
-
     var carbon_graph = new Rickshaw.Graph({
         element: document.getElementById("carbon_chart"),
         renderer: 'line',
@@ -480,7 +478,6 @@ function createChart() {
         element: document.getElementById('carbon_y_axis')
     });
     carbon_graph.render();
-
     var drive_graph = new Rickshaw.Graph({
         element: document.getElementById("drive_chart"),
         renderer: 'line',
@@ -635,7 +632,6 @@ behaviorChartData = [
         value = Math.round(parseFloat(value) * 10) / 10;
         if (value.toString().indexOf(".") < 0)
             value = value.toString() + ".0";
-
         return Number(value);
     }
 </script>
