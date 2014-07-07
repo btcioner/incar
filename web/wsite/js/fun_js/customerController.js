@@ -164,6 +164,10 @@ function customerCtrl($scope, $http){
         $scope.openid="";
         $scope.customerListDiv = false;
         $scope.customerAddDiv = true;
+        $scope.wx_oauth_addr = "";
+        $scope.wx_app_id  ="";
+        $scope.wx_app_name = "";
+        $scope.wx_app_secret = "";
     }
 
    //新增确定
@@ -172,7 +176,8 @@ function customerCtrl($scope, $http){
         var sha1_password =hex_sha1($scope.password);//SHA1进行加密
         $scope.postData={"name":$scope.comName,"class":"4S","status":1,"city":$scope.city,"admin_pwd":sha1_password,
             "admin_name":$scope.account,"admin_nick":$scope.admin_nick,"admin_phone":$scope.admin_phone,"openid":$scope.openid,
-            brand:$scope.brand_id,short_name:$scope.short_name};
+            brand:$scope.brand_id,short_name:$scope.short_name,wx_oauth_addr:$scope.wx_oauth_addr,wx_app_name:$scope.wx_app_name,
+            wx_app_id:$scope.wx_app_id,wx_app_secret:$scope.wx_app_secret};
         getAjaxLink(baseurl + 'cmpx/4s',$scope.postData,"post",4);
 
     }
@@ -206,8 +211,11 @@ function customerCtrl($scope, $http){
     //修改确认
     $scope.modifyConfirm = function(oneCustomerInfo){
        $scope.oneCustomerInfo = oneCustomerInfo;
-       $scope.postData={"name":$scope.oneCustomerInfo.name,"class":"4S","status":1,"openid":"","city":$scope.oneCustomerInfo.city,short_name:$scope.oneCustomerInfo.short_name,brand:$scope.oneCustomerInfo.brand};
-       $scope.postData1={"nick":$scope.oneCustomerInfo.admin_nick,"phone":$scope.oneCustomerInfo.admin_phone};
+       $scope.postData={"name":$scope.oneCustomerInfo.name,"class":"4S","status":1,"openid":$scope.oneCustomerInfo.openid,"city":$scope.oneCustomerInfo.city,
+                        short_name:$scope.oneCustomerInfo.short_name,brand:$scope.oneCustomerInfo.brand,wx_oauth_addr:$scope.oneCustomerInfo.wx_oauth_addr,
+                        wx_app_id:$scope.oneCustomerInfo.wx_app_id,wx_app_name:$scope.oneCustomerInfo.wx_app_name,wx_app_secret:$scope.oneCustomerInfo.wx_app_secret};
+       $scope.postData1={"nick":$scope.oneCustomerInfo.admin_nick,"phone":$scope.oneCustomerInfo.admin_phone}
+
        getAjaxLink(baseurl + '4s/'+$scope.id,$scope.postData,"put",2);
     }
 
