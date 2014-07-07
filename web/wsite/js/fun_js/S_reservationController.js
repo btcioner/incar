@@ -2,7 +2,7 @@
  * Created by Liz on 14-2-27.
  */
    //保养预约
-   function s_reservationCtrl($scope, $http,$routeParams,carProperties){
+   function s_reservationCtrl($scope, $http,$routeParams){
 
     $scope.reservationDiv = true;
     $scope.applyOperDiv = false;
@@ -109,10 +109,14 @@
     //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
+        if($routeParams.id!=null)
+        {
+            $scope.queryString = "&step="+$routeParams.id;
+        }
         if($scope.ownerNick=="")$scope.ownerNick="";
         if($scope.ownerLicense=="")$scope.ownerLicense="";
         if($scope.work_time_begin=="")$scope.work_time_begin="";
-        $scope.queryString = "&cust_nick="+$scope.ownerNick+"&license="+$scope.ownerLicense+"&working_time_begin="+$scope.work_time_begin;
+        $scope.queryString += "&cust_nick="+$scope.ownerNick+"&license="+$scope.ownerLicense+"&working_time_begin="+$scope.work_time_begin;
         GetFirstPageInfo();
     }
     //get paging param info
@@ -186,7 +190,7 @@
               break;
           case "abort":
               if(confirm("是否确定未到店?")){
-                  $scope.postData = {op:"abort",reason:"到了时间没来"};
+                  $scope.postData = {op:"abort",reason:$scope.jj_reason};
                   $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                       if(data.status=="ok")
                       {

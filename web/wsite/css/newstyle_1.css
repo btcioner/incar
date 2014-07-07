@@ -128,6 +128,15 @@ body{
 	background-position: bottom;
 	height: 45px;
 }
+.sidebar_a_s {
+    background-image: url(../img/sidebar_bg.png);
+    background-repeat: repeat-x;
+    background-position: bottom;
+    height: 30px;
+}
+.sidebar_a_s font{
+    color: #FFF;
+}
 .sidebar_a h5 {
 	color: #FFF;
 }
@@ -139,7 +148,10 @@ body{
 	color: #666;
 	height: 45px;
 }
-
+.sidebar_b_s {
+    color: #666;
+    height: 30px;
+}
 
 .bgcolor01 {
 	background-color: #EEE;

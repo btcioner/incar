@@ -164,6 +164,10 @@ function customerCtrl($scope, $http){
         $scope.openid="";
         $scope.customerListDiv = false;
         $scope.customerAddDiv = true;
+//        $scope.wx_oauth_addr = "";
+//        $scope.wx_app_id  ="";
+//        $scope.wx_app_name = "";
+//        $scope.wx_app_secret = "";
     }
 
    //新增确定
@@ -206,8 +210,11 @@ function customerCtrl($scope, $http){
     //修改确认
     $scope.modifyConfirm = function(oneCustomerInfo){
        $scope.oneCustomerInfo = oneCustomerInfo;
-       $scope.postData={"name":$scope.oneCustomerInfo.name,"class":"4S","status":1,"openid":"","city":$scope.oneCustomerInfo.city,short_name:$scope.oneCustomerInfo.short_name,brand:$scope.oneCustomerInfo.brand};
-       $scope.postData1={"nick":$scope.oneCustomerInfo.admin_nick,"phone":$scope.oneCustomerInfo.admin_phone};
+       $scope.postData={"name":$scope.oneCustomerInfo.name,"class":"4S","status":1,"openid":$scope.oneCustomerInfo.openid,"city":$scope.oneCustomerInfo.city,
+                        short_name:$scope.oneCustomerInfo.short_name,brand:$scope.oneCustomerInfo.brand,wx_oauth_addr:$scope.oneCustomerInfo.wx_oauth_addr,
+                        wx_app_id:$scope.oneCustomerInfo.wx_app_id,wx_app_name:$scope.oneCustomerInfo.wx_app_name,wx_app_secret:$scope.oneCustomerInfo.wx_app_secret};
+       $scope.postData1={"nick":$scope.oneCustomerInfo.admin_nick,"phone":$scope.oneCustomerInfo.admin_phone}
+
        getAjaxLink(baseurl + '4s/'+$scope.id,$scope.postData,"put",2);
     }
 
