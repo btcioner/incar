@@ -109,9 +109,7 @@
                     postData.phone=$('#phone').val();
                     postData.mileage=$('#mileage').val();
                     postData.carType=document.getElementById("carType").value;
-                    alert(carTypeValue);
                     postData.args=JSON.stringify({'brand':brand,'series':carTypeValue});
-                    alert( postData.args);
                     postData.acc_id=acc_id;
                     //alert("33333333");
                     if(bookDate<=today) {alert("预约时间错误！");return;}
@@ -162,15 +160,15 @@
                             document.getElementById('phone').value=result.phone;
                             document.getElementById('ownerName').value=result.nick;
                             brand=result.brand;
-                            setSeries();
+                            setSeries(result.series);
                         },
                         error:function(XMLHttpRequest, textStatus, errorThrown){
                             //alert("连接失败\n请检查网络连接是否正常");
-                            setSeries();
+                            setSeries(result.series);
                         }
                     });
                 }
-    function setSeries(){
+    function setSeries(sCode){
         $.ajax({
             type: "POST",
             url: "/mservice/getSeries",
@@ -179,10 +177,16 @@
             success:function(result,status){
               var str="<option value='-1'>请选择</option>";
               for(var i=0;i<result.length;i++){
-                  str+="<option value='"+result[i].seriesCode+"'>"+result[i].series+"</option>";
+                  var selected = '';
+                  str+="<option "+selected+" value='"+result[i].seriesCode+"'>"+result[i].series+"</option>";
               }
                 //alert(str);
                document.getElementById("carType").innerHTML=str;
+                if(sCode){
+                    $('#carType').val(sCode);
+                    $('#carType').selectmenu("refresh");
+                }
+
             }
         });
 
