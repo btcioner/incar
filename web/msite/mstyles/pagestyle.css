@@ -235,7 +235,7 @@ a.text_07 {
 
 
 #wrap {
-	width: 320px;
+	width: 100%;
 	min-height:435px;
 	_height:435px;
 	background-repeat: repeat-x;
