@@ -38,6 +38,8 @@
         $scope.randomTime = new Date();
         $http.get(baseurl+'organization/'+$.cookie("s4_id")+'/work/care?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             $scope.careList = data.works;
+            if(updateBrandSeries) updateBrandSeries();
+
             if(data.status =="ok")
             {
             if(data.works.length > 0)
@@ -373,6 +375,52 @@
                 $scope.applyOperDiv = false;
         }
     }
+
+    function updateBrandSeries(){
+        if($scope.cacheReady && $scope.careList){
+            // var series_name = $scope.cacheBS['<brand_code>']['<series_code>'];
+        }
+    }
+
+
+    $http.get('/wservice/brand/', null)
+        .success(function(data, status){
+            if(data.status === 'ok'){
+                // the cache
+                $scope.cacheBS = {};
+                $scope.cacheCount = 0;
+                $scope.cacheReady = false;
+
+                for(var i=0;i<data.brands.length;i++){
+                    var brand_code = data.brands[i].brandCode;
+                    $scope.cacheBS[brand_code.toString()] = {};
+
+                    $http.get('/wservice/brand/'+ brand_code + '/series')
+                        .success(function(data2, status2){
+                            if(data2.status === 'ok'){
+                                $scope.cacheCount++;
+                                // build cache
+                                for(var j=0;j<data2.series.length;j++){
+                                    var x = data2.series[j];
+                                    $scope.cacheBS[x.brandCode][x.seriesCode] = x.series;
+                                }
+                            }
+                            if($scope.cacheCount === data.brands.length){
+                                $scope.cacheReady = true;
+                                updateBrandSeries();
+                            }
+                        })
+                        .error(function(){
+                            $scope.cacheCount++;
+                            if($scope.cacheCount === data.brands.length){
+                                $scope.cacheReady = true;
+                                updateBrandSeries();
+                            }
+                        });
+                }
+            }
+        })
+        .error(function(data, status){ console.error(status); });
 
 //    $scope.ReservationTab = function(id)
 //    {
