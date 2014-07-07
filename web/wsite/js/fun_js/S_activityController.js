@@ -35,7 +35,7 @@
         {
             $scope.tips="";
             $scope.randomTime = new Date();
-            $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/2/activity?page="+$scope.currentPage+"&pagesize="+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
+            $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/ActAd/activity?page="+$scope.currentPage+"&pagesize="+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
                 if(data.status == "ok")
                 {
                     if(data.activities.length ==0)
@@ -121,7 +121,7 @@
             $scope.randomTime = new Date();
             $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/"+ $.cookie("brand_id")+"?t="+$scope.randomTime).success(function(data){
 
-                $scope.tagsGroup = data;
+                $scope.tagsGroup = data.data;
                 for(var i=0;i<$scope.tagsGroup.length;i++)
                 {
                     for(var j=0;j<$scope.tagsGroup[i].tags.length;j++)
@@ -155,7 +155,7 @@
     {
         getAllChooseTag();
         $scope.postData={title:$scope.title,brief:editor.html(),logo_url:$scope.logo_url,tags:$scope.tags};
-        $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/2/activity",$scope.postData).success(function(data){
+        $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/ActAd/activity",$scope.postData).success(function(data){
             if(data.status == "ok")
             {
                 alert("添加成功!");

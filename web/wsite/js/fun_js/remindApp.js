@@ -35,6 +35,7 @@ angular.module("SMaintainApp", [
         });
        // $locationProvider.html5Mode(true);
 }).controller("mainCtrl",function($scope,$http){
+        $scope.randomTime = new Date();
         if($.cookie("nick_4s") != "" && $.cookie("nick_4s") != null)
         {
             $scope.nickName = $.cookie("nick_4s");//保存登录进来用户的nick
@@ -44,6 +45,7 @@ angular.module("SMaintainApp", [
         }
         $scope.changeLeftbar = function(id)
         {
+            $scope.randomTime = new Date();
             for(var i=1;i<3;i++)
             {
                 if(i==id)
@@ -52,6 +54,49 @@ angular.module("SMaintainApp", [
                 }
                 else{
                     $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
+                }
+            }
+            if(id==1)
+            {
+                for(var i=1;i<3;i++)
+                {
+                    $("#a_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+                }
+            }
+            else if(id==2)
+            {
+                for(var i=1;i<3;i++)
+                {
+                    $("#b_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+                }
+            }
+
+        }
+        $scope.changeLeftSmallBar = function(id)
+        {
+            $scope.randomTime = new Date();
+            for(var i=1;i<3;i++)
+            {
+                if(i==id)
+                {
+                    $("#a_"+i).removeClass().addClass("btn btn-menu sidebar_a_s");
+                }
+                else{
+                    $("#a_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+                }
+            }
+        }
+        $scope.changeLeftSmallBar_1 = function(id)
+        {
+            $scope.randomTime = new Date();
+            for(var i=1;i<3;i++)
+            {
+                if(i==id)
+                {
+                    $("#b_"+i).removeClass().addClass("btn btn-menu sidebar_a_s");
+                }
+                else{
+                    $("#b_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
                 }
             }
         }

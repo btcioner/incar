@@ -17,7 +17,7 @@
 
 <div id="content">
     <div id="content-header">
-        <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">提醒管理</a></div>
+        <div id="breadcrumb"> <a href="index_main.html" target="main" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a> <a href="" class="">提醒管理</a></div>
     </div>
     <div class="row-fluid">
         <!--左侧box start--><div class="left_box">
@@ -31,8 +31,8 @@
                     </div>
                     <div class="collapse accordion-body" id="collapseGOne">
                         <div class="widget-content" style="text-align: right;padding:0">
-                            <a  class="btn btn-menu" style="width: 100%;" href="#collapseGOne/newremind">新提醒</a>
-                            <a  class="btn btn-menu" style="width: 100%;" href="#collapseGOne/alCare">已关怀</a>
+                            <a  class="btn btn-menu" style="width: 100%;" href="#collapseGOne/newremind?t={{randomTime}}" id="a_1" ng-click="changeLeftSmallBar(1)"><font>新提醒</font></a>
+                            <a  class="btn btn-menu" style="width: 100%;" href="#collapseGOne/alCare?t={{randomTime}}" id="a_2" ng-click="changeLeftSmallBar(2)"><font>已关怀</font></a>
                         </div>
                     </div>
                 </div>
@@ -44,8 +44,8 @@
                     </div>
                     <div class="collapse accordion-body" id="collapseGTwo">
                         <div class="widget-content" style="text-align: right;padding:0">
-                            <a  class="btn btn-menu" style="width: 100%;" href="#collapseGTwo/1">新提醒</a>
-                            <a  class="btn btn-menu" style="width: 100%;" href="#collapseGTwo/2">已关怀</a>
+                            <a  class="btn btn-menu" style="width: 100%;" href="#collapseGTwo/1?t={{randomTime}}" id="b_1" ng-click="changeLeftSmallBar_1(1)"><font>新提醒</font></a>
+                            <a  class="btn btn-menu" style="width: 100%;" href="#collapseGTwo/2?t={{randomTime}}" id="b_2" ng-click="changeLeftSmallBar_1(2)"><font>已关怀</font></a>
                         </div>
                     </div>
                 </div>
