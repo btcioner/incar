@@ -51,9 +51,33 @@
                           </div>
                       </div>
                       <div class="control-group w_44 fl" >
-                          <label class="control-label pad_l20 w_100">微信服务号：</label>
+                      <label class="control-label pad_l20 w_100">微信服务号：</label>
+                      <div class="controls pad_t_b_10">
+                          <input type="text" class="span11"  ng-model="openid" style="width:260px;"  />
+                      </div>
+                  </div>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">微信接口用户标识：</label>
                           <div class="controls pad_t_b_10">
-                              <input type="text" class="span11"  ng-model="openid" style="width:260px;"  />
+                              <input type="text" class="span11" ng-model="wx_app_name" style="width:260px;"  />
+                          </div>
+                      </div>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">微信接口调用凭据AppId：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11" ng-model="wx_app_id" style="width:260px;"  />
+                          </div>
+                      </div>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">微信接口调用凭据AppSecret：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11" ng-model="wx_app_secret" style="width:260px;"  />
+                          </div>
+                      </div>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">授权回调页面域名：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11"  ng-model="wx_oauth_addr" style="width:260px;"  />
                           </div>
                       </div>
                       <div class="control-group w_44 fl" >
@@ -63,11 +87,12 @@
                           </div>
                       </div>
                       <div class="control-group w_44 fl" >
-                          <label class="control-label pad_l20 w_100">联系电话：</label>
-                          <div class="controls pad_t_b_10">
-                              <input type="text" class="span11"  ng-model="admin_phone" style="width:260px;"/>
-                          </div>
+                      <label class="control-label pad_l20 w_100">联系电话：</label>
+                      <div class="controls pad_t_b_10">
+                          <input type="text" class="span11"  ng-model="admin_phone" style="width:260px;"/>
                       </div>
+                  </div>
+
                       <div class="clearfix"></div>
                       <!--button_box01 start-->
                       <div class="button_box01">
@@ -122,6 +147,30 @@
                           <label class="control-label pad_l20 w_100">微信服务号：</label>
                           <div class="controls pad_t_b_10">
                               <input type="text" class="span11" ng-model="oneCustomerInfo.openid" style="width:260px;"  />
+                          </div>
+                      </div>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">微信接口用户标识：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11" ng-model="oneCustomerInfo.wx_app_name" style="width:260px;"  />
+                          </div>
+                      </div>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">微信接口调用凭据AppId：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11" ng-model="oneCustomerInfo.wx_app_id" style="width:260px;"  />
+                          </div>
+                      </div>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">微信接口调用凭据AppSecret：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11" ng-model="oneCustomerInfo.wx_app_secret" style="width:260px;"  />
+                          </div>
+                      </div>
+                      <div class="control-group w_44 fl" >
+                          <label class="control-label pad_l20 w_100">授权回调页面域名：</label>
+                          <div class="controls pad_t_b_10">
+                              <input type="text" class="span11"  ng-model="oneCustomerInfo.wx_oauth_addr" style="width:260px;"  />
                           </div>
                       </div>
                       <div class="control-group w_44 fl" >
