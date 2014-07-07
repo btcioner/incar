@@ -305,7 +305,7 @@ exports.tagListSystem= function(req,res){
         "left join t_tag t on t.groupId=g.id " +
         "where g.type=? and( g.id>1 or g.id=1 and subStr(t.code,4,instr(t.code,'-')-4)=?)";
     dao.findBySql(sql,[0,brand],function(info){
-        if(inof.err){
+        if(info.err){
             res.json(info);
         }
         else{
