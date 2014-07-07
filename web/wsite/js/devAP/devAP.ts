@@ -72,6 +72,7 @@ module devAP {
         public pagesDev = [
             { title: "我的车-行车分析[wmq@dev]", url: "/msite/myDrive.html?" },
             { title: "我的车-行车手册", url: "/msite/page_xcsc.html?" },
+            { title: "我的4S-预约保养[wmq@dev]", url: "/msite/booking.html?"  },
             { title: "我的4S-试乘试驾[wmq@dev]", url: "/msite/trialrun.html?"  },
             { title: "我的4S-资讯活动[wmq@dev]", url: "/msite/my4sInfo.html?" },
             { title: "发现-我的预约[wmq@dev]", url: "/msite/myBooking.html?" },
@@ -82,6 +83,7 @@ module devAP {
         public pagesStaging = [
             { title: "我的车-行车分析[wmq@stagging]", url: "/msite/myDrive.html?" },
             { title: "我的车-行车手册", url: "/msite/page_xcsc.html?" },
+            { title: "我的4S-预约保养[wmq@stagging]", url: "/msite/booking.html?"  },
             { title: "我的4S-试乘试驾[wmq@stagging]", url: "/msite/trialrun.html?" },
             { title: "我的4S-资讯活动[wmq@stagging]", url: "/msite/my4sInfo.html?" },
             { title: "发现-我的预约[wmq@stagging]", url: "/msite/myBooking.html?" },
