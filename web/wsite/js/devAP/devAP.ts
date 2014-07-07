@@ -76,6 +76,7 @@ module devAP {
             { title: "我的4S-资讯活动[wmq@dev]", url: "/msite/my4sInfo.html?" },
             { title: "发现-我的预约[wmq@dev]", url: "/msite/myBooking.html?" },
             { title: "发现-我的活动[wmq@dev]", url: "/msite/myActivity.html?" },
+            { title: "发现-设置[wmq@dev]", url: "/msite/infoConfig.html?" }
         ];
 
         public pagesStaging = [
@@ -84,7 +85,8 @@ module devAP {
             { title: "我的4S-试乘试驾[wmq@stagging]", url: "/msite/trialrun.html?" },
             { title: "我的4S-资讯活动[wmq@stagging]", url: "/msite/my4sInfo.html?" },
             { title: "发现-我的预约[wmq@stagging]", url: "/msite/myBooking.html?" },
-            { title: "发现-我的活动[wmq@stagging]", url: "/msite/myActivity.html?" }
+            { title: "发现-我的活动[wmq@stagging]", url: "/msite/myActivity.html?" },
+            { title: "发现-设置[wmq@stagging]", url: "/msite/infoConfig.html?" }
         ];
 
         private _lskURL = "devAPurl";
