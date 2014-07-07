@@ -94,7 +94,7 @@
           success: function (result,status) {
               var seriesStr="<option>请选择</option>";
               for(var i=0;i<result.length;i++){
-                  seriesStr+="<option>"+result[i].series+"</option>"
+                  seriesStr+="<option value="+ result[i].seriesCode +">"+result[i].series+"</option>"
               }
               document.getElementById('seriesName').innerHTML=seriesStr;
           },
@@ -115,6 +115,8 @@
         postData.seriesName=document.getElementById("seriesName").value;
         postData.bookDate=document.getElementById("start").value;
         postData.bookTime=document.getElementById("end").value;
+
+        var series = $('#seriesName').val();
         var args=JSON.stringify({'brand':brand,'series':series});
         postData.args=args;
         //alert("开始提交");
