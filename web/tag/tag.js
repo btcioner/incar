@@ -364,6 +364,7 @@ exports.searchForUsers= function(req,res){
     var userPhone=query.userPhone;
     var license=query.license;
     var brand=query.brand;
+    var groupId=query.groupId;
     var series=query.series;
     var page=parseInt(query.page);
     var pageSize=parseInt(query['pageSize']);
@@ -376,6 +377,7 @@ exports.searchForUsers= function(req,res){
         "left join t_car_user cu on cu.car_id=c.id " +
         "left join t_account u on cu.acc_id=u.id " +
         "left join t_car_tag ct on ct.car_id=c.id " +
+        "left join t_tag t on t.id=ct.tag_id " +
         "left join t_car_dictionary d on d.brandCode=c.brand and d.seriesCode=c.series " +
         "where c.s4_id=?";
     var args=[s4Id];
@@ -383,6 +385,18 @@ exports.searchForUsers= function(req,res){
         sql+=" and ct.tag_id=?";
         args.push(tagId);
     }
+    else{
+        if(groupId){
+            if(groupId===-1){
+                sql+=" and ct.tag_id is null";
+            }
+            else{
+                sql+=" and t.groupId=?";
+                args.push(groupId);
+            }
+        }
+    }
+
     if(nickName){
         sql+=" and u.nick like ?";
         args.push("%"+nickName+"%");
