@@ -15,11 +15,7 @@ function slotBooking(req, res) {
     var self = this;
     var postData = req.body;
     //console.log(postData);
-    postData.bookingDate = new Date(Date.parse(postData.bookingDate));
-    postData.timeSlot=new Date( postData.bookingDate);
-    postData.timeSlot.setHours(postData.bookingTime.split(":")[0],postData.bookingTime.split(":")[1]);
-    delete postData.bookingDate;
-    delete postData.bookingTime;
+    postData.timeSlot= postData.bookingDate + ' ' + postData.timeSlot;
     console.log(postData);
 
     getOrgId(self.db, postData.user.split('@')[0], function(err, orgId) {

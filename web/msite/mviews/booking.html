@@ -101,6 +101,7 @@
                     if(carTypeValue=='-1'||carTypeValue==null){alert("请选择车型");return;}
                     bookDate=document.getElementById("start").value;
                     bookTime=document.getElementById("end").value;
+
                     postData.user=user;
                     postData.nick=$('#ownerName').val();
                     postData.bookingDate=bookDate;
