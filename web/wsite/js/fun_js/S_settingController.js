@@ -22,7 +22,10 @@ function s_systemCtrl($scope, $http){
     $scope.modify = function()
     {
         $("#formId_edit2").ajaxForm(function(data){
-
+//            $scope.$apply(function () {
+                $("#loading").css("display","none");
+                $("#loaded").css("display","block");
+//            });
             $scope.s4.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
 
@@ -32,17 +35,22 @@ function s_systemCtrl($scope, $http){
     //保存修改
     $scope.modifyConfirm = function()
     {
-        $http.put(baseurl + "4s/"+ $.cookie("s4_id"),$scope.s4).success(function(data){
-           if(data.status == "ok")
-           {
-               alert("修改成功!");
-               GetFirstPageInfo();
-               $scope.modifyDiv = false;
-               $scope.settingListDiv = true;
-           }
-        }).error(function(data){
-                alert("请求无响应！");
-        });
+        if($("#loading").css("display")=="block"){
+            alert("正在上传，请稍后提交...");
+        }
+         else{
+            $http.put(baseurl + "4s/"+ $.cookie("s4_id"),$scope.s4).success(function(data){
+               if(data.status == "ok")
+               {
+                   alert("修改成功!");
+                   GetFirstPageInfo();
+                   $scope.modifyDiv = false;
+                   $scope.settingListDiv = true;
+               }
+            }).error(function(data){
+                    alert("请求无响应！");
+            });
+        }
     }
 
     //返回or取消
@@ -56,4 +64,6 @@ function s_systemCtrl($scope, $http){
             break;
         }
     }
+
+
 }
