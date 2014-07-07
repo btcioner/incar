@@ -177,14 +177,19 @@ var randomTime = new Date();
 //预览图片
 function changeImg(file,plugId,formId,preId,imgId)
 {
+
     var filepath = $("#"+plugId).val();
     var extStart=filepath.lastIndexOf(".");
     var ext=filepath.substring(extStart,filepath.length).toUpperCase();
     if(ext!=".BMP"&&ext!=".PNG"&&ext!=".JPG"&&ext!=".JPEG"){
         alert("图片限于bmp,png,jpeg,jpg格式");
         $("#"+plugId).val("");
+
     }
     else{
+        $("#loaded").css("display","none");
+        $("#loading").css("display","block");
+
         var MAXWIDTH  = 260;
         var MAXHEIGHT = 180;
         var div = document.getElementById(preId);
