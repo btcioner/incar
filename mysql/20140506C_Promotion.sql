@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS t_slot_booking(
     channel VARCHAR(32) NOT NULL COMMENT '申请渠道 weixin mobileApp website telephone',
     channel_specific VARCHAR(256) COMMENT '申请渠道指定信息',
 
-    booking_time timestamp NOT NULL COMMENT '预约申请时间',
+    booking_time DATETIME NOT NULL COMMENT '预约申请时间',
     booking_status TINYINT NOT NULL DEFAULT '0' COMMENT '预约申请状态 0-无效 1-已申请待确认 2-被拒 3-成功批准 4-被取消',
 
     tc VARCHAR(256) COMMENT '记录操作用户名',
