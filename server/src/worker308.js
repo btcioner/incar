@@ -539,7 +539,22 @@ function get1603Response(obd){
         dataManager.writeString(obd.vid?obd.vid:'');
         dataManager.writeByte(obd.brand?obd.brand:0xFF);
         dataManager.writeByte(obd.series?obd.series:0xFF);
-        dataManager.writeByte(obd.modelYear?obd.modelYear-2000:0xFF);
+        var my=obd.modelYear;
+        if(obd.modelYear){
+            if(obd.modelYear>=2000){
+                my=obd.modelYear-2000;
+            }
+            else if(obd.modelYear>=0&&obd.modelYear<=15){
+                my=obd.modelYear;
+            }
+            else{
+                my=0xFF;
+            }
+        }
+        else{
+            my=0xFF;
+        }
+        dataManager.writeByte(my);
         var engDisp=obd.engineDisplacement?obd.engineDisplacement:0;
         var edNum=Math.round(parseFloat(engDisp)*10)/10;
         var ed=edNum.toString().split(".");
