@@ -49,7 +49,7 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     {
         $scope.tips="";
         $scope.randomTime = new Date();
-        $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity?page="+$scope.currentPage+"&pagesize="+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
+        $http.get(baseurl +"4s/"+$.cookie("s4_id")+"/template/ActSaveGas/activity?page="+$scope.currentPage+"&pagesize="+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
             if(data.status == "ok")
             {
                 if(data.activities.length ==0)
@@ -151,9 +151,13 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     $scope.add = function()
     {
         initAddData();
+        $("#loading_0").css("display","none");
+        $("#loaded_0").css("display","none");
         $("#imghead").attr("src","../../data/200x200.jpg");
         $("#edit_pro_img").val("");
         $("#formId_edit2").ajaxForm(function(data){
+            $("#loading_0").css("display","none");
+            $("#loaded_0").css("display","block");
             $scope.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
 
@@ -181,8 +185,7 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
         var tagArr = tags.split(",");
         $scope.randomTime = new Date();
         $http.get("/tag/tagList/"+ $.cookie("s4_id")+"/"+ $.cookie("brand_id")+"?t="+$scope.randomTime).success(function(data){
-
-            $scope.tagsGroup = data;
+            $scope.tagsGroup = data.data;
             for(var i=0;i<$scope.tagsGroup.length;i++)
             {
                 for(var j=0;j<$scope.tagsGroup[i].tags.length;j++)
@@ -241,24 +244,25 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     $scope.AddConfirm = function()
     {
 //      获取编辑器里面的内容 alert(editor.html());
-        getAllChooseTag();
-        $scope.postData={title:$scope.title,brief:editor.html(),tm_announce:$scope.tm_announce,tm_start:$scope.tm_start,
-        tm_end:$scope.tm_end,min_milage:$scope.min_milage,logo_url:$scope.logo_url,tags:$scope.tags};
-        $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/1/activity",$scope.postData).success(function(data){
-            if(data.status == "ok")
-            {
-               alert("添加成功!");
-               GetFirstPageInfo();
-               $scope.matchListDiv = true;
-               $scope.matchAddDiv = false;
-            }
-        }).error(function(data){
-                alert("请求无响应");
-        })
-        editor.remove();
-//        $scope.matchListDiv = true;
-//        $scope.matchAddDiv = false;
-
+        if($("#loading_0").css("display")=="block"){
+            alert("正在上传，请稍后提交...");
+        }else{
+            getAllChooseTag();
+            $scope.postData={title:$scope.title,brief:editor.html(),tm_announce:$scope.tm_announce,tm_start:$scope.tm_start,
+            tm_end:$scope.tm_end,min_milage:$scope.min_milage,logo_url:$scope.logo_url,tags:$scope.tags};
+            $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/ActSaveGas/activity",$scope.postData).success(function(data){
+                if(data.status == "ok")
+                {
+                   alert("添加成功!");
+                   GetFirstPageInfo();
+                   $scope.matchListDiv = true;
+                   $scope.matchAddDiv = false;
+                }
+            }).error(function(data){
+                    alert("请求无响应");
+            })
+            editor.remove();
+        }
     }
    //预览
     $scope.preview = function(id,index)
@@ -284,7 +288,12 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
        switch(fm_status)
        {
            case 1:
+               $("#loading_1").css("display","none");
+               $("#loaded_1").css("display","none");
+               $("#imghead1").attr("src","../../"+$scope.fuleMatchDetail.logo_url);
                $("#formId_edit3").ajaxForm(function(data){
+                   $("#loading_1").css("display","none");
+                   $("#loaded_1").css("display","block");
                    $scope.fuleMatchDetail.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
                });
                KindEditor.ready(function(K) {
@@ -402,21 +411,25 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     //修改确认
     $scope.modifyConfirm = function()
     {
-        getAllChooseTag();
-        $scope.fuleMatchDetail.tags = $scope.tags;
-        $scope.fuleMatchDetail.brief = editor.html();
-        $http.put(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+$scope.fuleMatchDetail.id,$scope.fuleMatchDetail).success(function(data){
-            if(data.status == "ok")
-            {
-                alert("修改成功!");
-                GetFirstPageInfo();
-                editor.remove();
-                $scope.matchListDiv = true;
-                $scope.matchModifyDiv = false;
-            }
-        }).error(function(data){
-                alert("请求无响应");
-            })
+        if($("#loading_1").css("display")=="block"){
+            alert("正在上传，请稍后提交...");
+        }else{
+            getAllChooseTag();
+            $scope.fuleMatchDetail.tags = $scope.tags;
+            $scope.fuleMatchDetail.brief = editor.html();
+            $http.put(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+$scope.fuleMatchDetail.id,$scope.fuleMatchDetail).success(function(data){
+                if(data.status == "ok")
+                {
+                    alert("修改成功!");
+                    GetFirstPageInfo();
+                    editor.remove();
+                    $scope.matchListDiv = true;
+                    $scope.matchModifyDiv = false;
+                }
+            }).error(function(data){
+                    alert("请求无响应");
+                })
+        }
     }
     //取消
     $scope.cancelMatch = function(fm_id,index)
@@ -556,8 +569,8 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
                 getCustomTagList();
                 $scope.randomTime = new Date();
                 $http.get('/tag/getTagsByCarId/'+$scope.cusDetail.ref_car_id+"?t="+$scope.randomTime).success(function(data){
-                    $scope.systemTag = data.systemTag;
-                    $scope.customTag = data.customTag;
+                    $scope.systemTag = data.data.systemTag;
+                    $scope.customTag = data.data.customTag;
                     for(var i=0;i<$scope.customTags.length;i++)
                     {
                         var flag = false;

@@ -25,9 +25,7 @@ function trialrun(req, res) {
 
 function submitTrialrun(db, postData,callback) {
     var pool = db();
-    var temp=postData.bookTime.split(":");
-    postData.bookDate=new Date(postData.bookDate);
-    postData.bookDate.setHours(temp[0],temp[1]);
+    postData.bookDate= postData.bookDate + " " +postData.bookTime;
     pool.query('insert into  t_trialrun (wx_oid,acc_id,bookingtime,seriesName,name,phone,bookStatus,tc,ts,channel) values(?,?,?,?,?,?,1,?,now(), "wechat");',
         [postData.wx_oid,postData.acc_id,postData.bookDate,postData.seriesName,postData.name,postData.phone,''],function(err,rows){
         if(err){callback(err);}

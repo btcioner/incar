@@ -94,7 +94,7 @@ angular.module("SCustomerApp", [
         {
             $scope.randomTime = new Date();
             $http.get("/tag/tagListSystem/"+ $.cookie("brand_id")+"?t="+$scope.randomTime).success(function(data){
-                $scope.tagsGroup = data;
+                $scope.tagsGroup = data.data;
                 for(var i=0;i<$scope.tagsGroup.length;i++)
                 {
                     $scope.tagsGroup[i].link = "#collapseG_"+ $scope.tagsGroup[i].groupId;
@@ -111,7 +111,6 @@ angular.module("SCustomerApp", [
                     {
                         $scope.tagsGroup[i].tags[j].tagFlag = "";
                     }
-
                 }
             }).error(function(data){
                     alert("请求无响应");
@@ -123,7 +122,7 @@ angular.module("SCustomerApp", [
                     alert("请求无响应");
             })
         }
-        $scope.changeLeftbar = function(id)
+        $scope.changeLeftbar = function(id,len,groupId)
         {
             for(var i=0;i<8;i++)
             {
@@ -135,6 +134,24 @@ angular.module("SCustomerApp", [
                     $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
                 }
             }
+            for(var i=1;i<len+1;i++)
+            {
+                $("#a_"+groupId+"_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+            }
+        }
+        $scope.changeLeftSmallBar = function(id,len,groupId)
+        {
+            $scope.randomTime = new Date();
+              for(var i=1;i<len+1;i++)
+              {
+                 if(i==id)
+                 {
+                     $("#a_"+groupId+"_"+i).removeClass().addClass("btn btn-menu sidebar_a_s");
+                 }
+                 else{
+                     $("#a_"+groupId+"_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+                 }
+              }
         }
 
         //注销

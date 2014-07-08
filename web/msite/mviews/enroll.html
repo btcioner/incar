@@ -15,7 +15,7 @@
    <!-- <link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">-->
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
     <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
-
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
 <style >
         .textfield{
             height:26px; font-size:16px;padding: 0;
@@ -108,10 +108,14 @@
           data: postData,
           dataType: "text",
           success: function (result,status) {
-              alert("注册成功");
+              if(result && result.status === 'success')
+                alert('注册成功');
+              else
+                  alert(JSON.stringify(result));
               // document.getElementById("Tip").innerHTML=result;
               //关闭微信浏览器
-              WeixinJSBridge.call('closeWindow');
+              if(WeixinJSBridge)
+                WeixinJSBridge.call('closeWindow');
            },
           error:function(XMLHttpRequest, textStatus, errorThrown){
               alert("注册失败\n请检查OBD Id是否正确");

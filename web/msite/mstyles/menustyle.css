@@ -1,25 +1,19 @@
 #wrap #menu_box {
-	background-color: #c2973c;
-	background-image: url(../mimages/menu_shadow.jpg);
 	background-repeat: repeat-x;
 	background-position: bottom;
 	height: 60px;
 	border-top-width: 2px;
 	border-top-style: solid;
-	border-top-color: #a97300;
 }
 #wrap #menu_box ul {
-	/* [disabled]background-color: #CC0; */
 	display: block;
 	width: 100%;
 	height: 58px;
-
 }
 
 #wrap #menu_box ul li{
 	float: left;
 	list-style-type: none;
-	/* [disabled]background-color: #6CC; */
 	display: block;
 	width: 25%;
 	text-align: center;
@@ -37,39 +31,26 @@
 	border-left-width: 1px;
 	border-right-style: solid;
 	border-left-style: solid;
-	border-right-color: #aa7300;
-	border-left-color: #e9a006;
 }
 .menu_icon1a,.menu_icon2a,.menu_icon3a,.menu_icon4a {
-	color: #875c00;
 }
 .menu_icon1b,.menu_icon2b,.menu_icon3b,.menu_icon4b {
-	color: #FFF;
-	background-color: #be8b1d;
 }
 .menu_icon1a {
-	background-image: url(../mimages/menu_icon1a.png);
 }
 .menu_icon2a {
-	background-image: url(../mimages/menu_icon2a.png);
 }
 
 .menu_icon3a {
-	background-image: url(../mimages/menu_icon3a.png);
 }
 .menu_icon4a {
-	background-image: url(../mimages/menu_icon4a.png);
 }
 
 .menu_icon1b {
-	background-image: url(../mimages/menu_icon1b.png);
 }
 .menu_icon2b {
-	background-image: url(../mimages/menu_icon2b.png);
 }
 .menu_icon3b {
-	background-image: url(../mimages/menu_icon3b.png);
 }
 .menu_icon4b {
-	background-image: url(../mimages/menu_icon4b.png);
 }

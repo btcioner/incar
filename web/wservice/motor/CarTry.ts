@@ -217,6 +217,12 @@ module Work{
             });
         }
 
+        //取消试驾申请
+//        cancel(req,res){
+//            console.log("balla");
+//            res.send(200,"~~~~");
+//        }
+
         // 拒绝试驾申请
         reject(req, res){
             if(this.step !== "applied") { res.json(new Service.TaskException(-1, "只有处于'已申请'状态才可以被拒绝", null)); return; }

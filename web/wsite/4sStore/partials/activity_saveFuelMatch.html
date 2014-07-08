@@ -112,8 +112,10 @@
                          </div>
                          <label class="control-label">标题图片：<br/><span class="img_textstyle01">图片要求:<br />尺寸为150px*150px，大小在100KB以内。</span></label>
                          <div class="controls">
-                             <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img"  onchange="changeImg(this,'edit_pro_img','formId_edit2','preview','imghead')"  style="width:240px;"  ng-model="logo_url"/>
+                             <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img"  onchange="changeImg(this,'edit_pro_img','formId_edit2','preview','imghead',0)"  style="width:240px;"  ng-model="logo_url"/>
                          </div>
+                         <div id="loading_0" style="display:none;margin-top: 10px;"><img src="../../data/loader.gif" />正在上传...</div>
+                         <div id="loaded_0" style="display:none;margin-top: 10px;">上传成功！</div>
                      </div>
                      <div class="control-group" >
                          <label class="control-label w_200">比赛期间是小行驶里程：(公里)</label>
@@ -248,8 +250,10 @@
                          </div>
                          <label class="control-label">标题图片：<br/ ><span class="img_textstyle01">图片要求:<br />尺寸为150px*150px，大小在100KB以内。</span></label>
                          <div class="controls">
-                             <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img1"  onchange="changeImg(this,'edit_pro_img_1','formId_edit3','preview1','imghead1')"  style="width:240px;"  ng-model="logo_url"/>
+                             <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img_1"  onchange="changeImg(this,'edit_pro_img_1','formId_edit3','preview1','imghead1',1)"  style="width:240px;" />
                          </div>
+                         <div id="loading_1" style="display:none;margin-top: 10px;"><img src="../../data/loader.gif" />正在上传...</div>
+                         <div id="loaded_1" style="display:none;margin-top: 10px;">上传成功！</div>
                      </div>
                      <div class="control-group" >
                          <label class="control-label w_200">比赛期间是小行驶里程：(公里)</label>
@@ -767,9 +771,9 @@
  <div class="widget-title">
      <ul class="nav nav-tabs" style="padding-top:6px;">
          <li class="active" id="tab_1"><a data-toggle="tab"  ng-click="detailTab(1)">保养记录</a></li>
-         <li id="tab_2"><a data-toggle="tab"  ng-click="detailTab(2)">维修记录</a></li>
+         <!--<li id="tab_2"><a data-toggle="tab"  ng-click="detailTab(2)">维修记录</a></li>-->
          <li id="tab_3"><a data-toggle="tab"  ng-click="detailTab(3)">关怀记录</a></li>
-         <li id="tab_4"><a data-toggle="tab"  ng-click="detailTab(4)">保险信息</a></li>
+         <!--<li id="tab_4"><a data-toggle="tab"  ng-click="detailTab(4)">保险信息</a></li>-->
          <li id="tab_5"><a data-toggle="tab"  ng-click="detailTab(5)">行车记录</a></li>
          <li id="tab_6"><a data-toggle="tab"  ng-click="detailTab(6)">标签</a></li>
      </ul>
@@ -883,9 +887,9 @@
              <th>品牌</th>
              <th>车系</th>
              <th>OBD编号</th>
-             <th>WIN码</th>
+             <th>VIN码</th>
              <th>点火时间</th>
-             <th>行驶里程</th>
+             <th>本次行驶里程(km)</th>
              <th>状态</th>
              <th>操作</th>
          </tr>
@@ -899,7 +903,7 @@
              <td id="tdc">{{device.obdCode}}</td>
              <td id="tdc">{{device.vin}}</td>
              <td id="tdc">{{device.fireTime}}</td>
-             <td id="tdc">{{device.currentMileage}}</td>
+             <td id="tdc">{{device.mileage}}</td>
              <td id="tdc">{{device.carStatus}}</td>
              <td id="tdc">
                  <a class="btn btn-info btn-mini" ng-click="GetDriveDetail(device.obdCode,device.id,$index);">查看</a>
@@ -970,15 +974,14 @@
              <th class="tablestyle-02">{{driveDetail.speedGroup[1].time}}秒，{{driveDetail.speedGroup[1].distance}}米</th>
              <th class="tablestyle-01">45-90速段里程</th>
              <th class="tablestyle-02">{{driveDetail.speedGroup[2].time}}秒，{{driveDetail.speedGroup[2].distance}}米</th>
-             <th class="tablestyle-01">熄火时间</th>
-             <th class="tablestyle-02">{{driveDetail.flameOutTime}}</th>
+             <th class="tablestyle-01">90以上速段里程</th>
+             <th class="tablestyle-02">{{driveDetail.speedGroup[3].time}}秒，{{driveDetail.speedGroup[3].distance}}米</th>
          </tr>
          <tr>
-
+             <th class="tablestyle-01">熄火时间</th>
+             <th class="tablestyle-02">{{driveDetail.flameOutTime}}</th>
              <th class="tablestyle-01">熄火后电压</th>
              <th class="tablestyle-02">{{driveDetail.flameOutVoltage}}</th>
-             <th class="tablestyle-01"></th>
-             <th class="tablestyle-02"></th>
              <th class="tablestyle-01"></th>
              <th class="tablestyle-02"></th>
              <th class="tablestyle-01"></th>

@@ -4,7 +4,7 @@
 <head>
     <title>预约保养</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script  src="../mscripts/car.js"></script>
@@ -18,6 +18,7 @@
 
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
     <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css"/>
     <style scoped>
          .textfield{
 			  height:26px; font-size:16px;
@@ -35,11 +36,11 @@
         <!--containe_280 start--><div id="containe_280">
         <div class="img_01"></div>
         <!--预约保养表单contentboxstyle01 start--><div class="contentboxstyle01" id="bookStatus">
-        <div class="formstyle01"><ul><li>车主姓名*：</li><li><input name="ownerName" id="ownerName" type="text" class="w190" /></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li>联系电话*：</li><li><input name="phone" id="phone" type="text" class="w190" /></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li>车&nbsp;&nbsp;牌&nbsp;&nbsp;号*：</li><li><input name="license" id="license" type="text" class="w190" /></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li>预约日期*：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="width: 11.2em;min-height: 1.4em"/></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li>预约时间*：</li><li><select id="end" name="end" class="w190"  style="width: 100%;min-height: 1.4em;width: 15em">
+        <div class="formstyle01"><ul><li style="text-shadow:none;">车主姓名*：</li><li><input name="ownerName" id="ownerName" type="text" class="w190" /></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">联系电话*：</li><li><input name="phone" id="phone" type="text" class="w190" /></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">车&nbsp;&nbsp;牌&nbsp;&nbsp;号*：</li><li><input name="license" id="license" type="text" class="w190" /></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">预约日期*：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="width: 11.2em;min-height: 1.4em"/></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">预约时间*：</li><li><select id="end" name="end" class="w190"  style="width: 100%;min-height: 1.4em;width: 15em">
                                                                     <option>9:00</option>
                                                                     <option>9:30</option>
                                                                     <option>10:00</option>
@@ -56,12 +57,12 @@
                                                                     <option>16:30</option>
                                                                     <option>17:00</option>
                                                                  </select></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型*：</li><li><select name="carType" id="carType" class="w190" ><option value="-1"></option></select></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li>当前里程*：</li><li><input name="mileage" id="mileage" type="text" class="w190" /></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型*：</li><li><select name="carType" id="carType" class="w190" ><option value="-1"></option></select></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">当前里程*：</li><li><input name="mileage" id="mileage" type="text" class="w190" /></li></ul><div class="clear"></div></div>
     </div><!--预约保养表单contentboxstyle01 end-->
     </div><!--containe_280 end-->
         <div class="w10"></div>
-        <!--regsiterbutton start--><div id="regsiterbutton"><span class="text_02">*号为必填项</span><br /><a href="#" class="button01" onclick="submitBooking()">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</a></div><!--regsiterbutton end-->
+        <!--regsiterbutton start--><div id="regsiterbutton"><span class="text_02" style="text-shadow:none;">*号为必填项</span><br /><a href="#" class="button01" onclick="submitBooking()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
     </div><!--main_wrap end-->
 </div>
             <script>
@@ -100,6 +101,7 @@
                     if(carTypeValue=='-1'||carTypeValue==null){alert("请选择车型");return;}
                     bookDate=document.getElementById("start").value;
                     bookTime=document.getElementById("end").value;
+
                     postData.user=user;
                     postData.nick=$('#ownerName').val();
                     postData.bookingDate=bookDate;
@@ -108,9 +110,7 @@
                     postData.phone=$('#phone').val();
                     postData.mileage=$('#mileage').val();
                     postData.carType=document.getElementById("carType").value;
-                    alert(carTypeValue);
                     postData.args=JSON.stringify({'brand':brand,'series':carTypeValue});
-                    alert( postData.args);
                     postData.acc_id=acc_id;
                     //alert("33333333");
                     if(bookDate<=today) {alert("预约时间错误！");return;}
@@ -161,15 +161,15 @@
                             document.getElementById('phone').value=result.phone;
                             document.getElementById('ownerName').value=result.nick;
                             brand=result.brand;
-                            setSeries();
+                            setSeries(result.series);
                         },
                         error:function(XMLHttpRequest, textStatus, errorThrown){
                             //alert("连接失败\n请检查网络连接是否正常");
-                            setSeries();
+                            setSeries(result.series);
                         }
                     });
                 }
-    function setSeries(){
+    function setSeries(sCode){
         $.ajax({
             type: "POST",
             url: "/mservice/getSeries",
@@ -178,10 +178,16 @@
             success:function(result,status){
               var str="<option value='-1'>请选择</option>";
               for(var i=0;i<result.length;i++){
-                  str+="<option value='"+result[i].seriesCode+"'>"+result[i].series+"</option>";
+                  var selected = '';
+                  str+="<option "+selected+" value='"+result[i].seriesCode+"'>"+result[i].series+"</option>";
               }
                 //alert(str);
                document.getElementById("carType").innerHTML=str;
+                if(sCode){
+                    $('#carType').val(sCode);
+                    $('#carType').selectmenu("refresh");
+                }
+
             }
         });
 

@@ -34,13 +34,17 @@
                     <div class="control-group" style="border-top-width:0px;" >
                         <div style="float: left;" id="preview">
                             <img src="../../{{s4.logo_url}}" id="imghead" style="width:120px;height:120px; padding:15px 20px 5px 5px;" />
+
                         </div>
+
                         <label class="control-label">图片：<br/ ><span class="img_textstyle01">图片要求:<br />尺寸为150px*150px，大小在100KB以内。</span></label>
                         <div class="controls">
-                            <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img"  onchange="changeImg(this,'edit_pro_img','formId_edit2','preview','imghead')"  style="width:240px;"  ng-model="logo_url"/>
+                            <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img"  onchange="changeImg(this,'edit_pro_img','formId_edit2','preview','imghead',0)"  style="width:240px;"  />
                         </div>
-                        <div id="showPicME"></div>
+                        <div id="loading_0" style="display:none;margin-top: 10px;"><img src="../../data/loader.gif" />正在上传...</div>
+                        <div id="loaded_0" style="display:none;margin-top: 10px;">上传成功！</div>
                     </div>
+
                 </div><!--mainrightbox end-->
                 <div class="clearfix"></div>
             </div><!--horizontal_box01 end-->

@@ -62,7 +62,7 @@
                           <th class="tablestyle-01">累计平均油耗</th>
                           <th class="tablestyle-02">{{driveDetail.avgOilUsed}}</th>
                           <th class="tablestyle-01">累计行驶里程</th>
-                          <th class="tablestyle-02">{{driveDetail.mileage}}</th>
+                          <th class="tablestyle-02">{{driveDetail.currentMileage}}</th>
                       </tr>
                       <tr>
                           <th class="tablestyle-01">1速段里程</th>
@@ -71,14 +71,14 @@
                           <th class="tablestyle-02">{{driveDetail.speedGroup[1].time}}秒，{{driveDetail.speedGroup[1].distance}}米</th>
                           <th class="tablestyle-01">45-90速段里程</th>
                           <th class="tablestyle-02">{{driveDetail.speedGroup[2].time}}秒，{{driveDetail.speedGroup[2].distance}}米</th>
-                          <th class="tablestyle-01">熄火时间</th>
-                          <th class="tablestyle-02">{{driveDetail.flameOutTime}}</th>
+                          <th class="tablestyle-01">90以上速段里程</th>
+                          <th class="tablestyle-02">{{driveDetail.speedGroup[3].time}}秒，{{driveDetail.speedGroup[3].distance}}米</th>
                       </tr>
                       <tr>
+                          <th class="tablestyle-01">熄火时间</th>
+                          <th class="tablestyle-02">{{driveDetail.flameOutTime}}</th>
                           <th class="tablestyle-01">熄火后电压</th>
                           <th class="tablestyle-02">{{driveDetail.flameOutVoltage}}</th>
-                          <th class="tablestyle-01"></th>
-                          <th class="tablestyle-02"></th>
                           <th class="tablestyle-01"></th>
                           <th class="tablestyle-02"></th>
                           <th class="tablestyle-01"></th>
@@ -206,9 +206,9 @@
                         <th>品牌</th>
                         <th>车系</th>
                         <th>OBD编号</th>
-                        <th>WIN码</th>
+                        <th>VIN码</th>
                         <th>点火时间</th>
-                        <th>行驶里程</th>
+                        <th>本次行驶里程(km)</th>
                         <th>状态</th>
                         <th>操作</th>
                     </tr>

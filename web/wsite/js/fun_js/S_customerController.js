@@ -285,8 +285,8 @@ function s_customerCtrl($scope, $http,$routeParams){
                 getCustomTagList();
                 $scope.randomTime = new Date();
                 $http.get('/tag/getTagsByCarId/'+$scope.cusDetail.carId+"?t="+$scope.randomTime).success(function(data){
-                   $scope.systemTag = data.systemTag;
-                   $scope.customTag = data.customTag;
+                   $scope.systemTag = data.data.systemTag;
+                   $scope.customTag = data.data.customTag;
                     for(var i=0;i<$scope.customTags.length;i++)
                     {
                         var flag = false;

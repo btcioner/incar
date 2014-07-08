@@ -73,7 +73,7 @@ function userLogin(req,res){
 }
 //登记或修改（设置）账号
 function userEnroll(req, res) {
-    if(!userCheck(req, res)){
+    if(true /* 这种方法根本无法验证  !userCheck(req, res)*/){
         var params=req.body;
         var username=params.name;
         var password=params.password;
@@ -129,54 +129,6 @@ function userEnroll(req, res) {
                 }
             }
         });
-    }else{
-        var params=req.body;
-        var username=params.name;
-        var password=params.password;
-        var temp=params.user.split('@');
-        var openId=temp[0];
-        var openId4S=temp[1];
-        var phone=params.phone;
-        var nickName=params.nick;
-
-        var sql="select id from t_4s where openid=?";
-        dao.findBySql(sql,[openId4S],function(info){
-            if(info.err){
-                res.json(info);
-            }
-            else{
-                var rows=info.data;
-                if(rows.length>0){
-                    var s4id=rowsp[0].id;
-                    var user={
-                        name:username,
-                        pwd:password,
-                        wx_oid:openId+':'+openId4S,
-                        phone:phone,
-                        nick:nickName,
-                        s4_id:s4id
-                    };
-                    sql="update t_account set ? where wx_oid=?";
-                    dao.insertBySql(sql,[user,user.wx_oid],function(info){
-                        if(info.err){
-                            info.message='修改账户失败';
-                            res.json(info);
-                        }
-                        else{
-                            res.json(info);
-                        }
-                    });
-                }
-                else{
-                    info.message='无法识别的4SOpenId';
-                    info.status='failure';
-                    res.json(info);
-                }
-            }
-
-
-        });
-        carEnroll(req,res);
     }
 }
 //车辆登记
