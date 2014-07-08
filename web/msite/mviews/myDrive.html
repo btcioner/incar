@@ -153,16 +153,13 @@
     <div class="clear"></div>
 
     <!--datebox_01 start-->
-    <div id="datebox_01" style="padding-left: 8px;">
+    <div id="datebox_01" style="padding: 0px 8px;">
         <ul style="width:100%">
-            <li style="width: 10% ;float: left;margin-top: 16px; text-align: right;text-shadow:none;">开始：</li>
-            <li style="width: 35%;float: left"><input name="start" class="w108" type="date"
+            <li style="width: 48%;float: left;"><input name="start" class="w108" type="date"
                                                       data-options='{"mode":"flipbox"}' data-role="datebox" id="start"
                                                       style="vertical-align:middle;"
                                                       ng-model="model.tmStart" ng-change="model.onDateChanged()"/></li>
-
-            <li style="width: 10%;float: left;margin-top: 16px;margin-left: 10px;text-align: right;text-shadow:none;">结束：</li>
-            <li style="width: 35%;float: left"><input name="end" class="w108" type="date" data-options='{"mode":"flipbox"}'
+            <li style="width: 48%;float: right"><input name="end" class="w108" type="date" data-options='{"mode":"flipbox"}'
                                                       data-role="datebox" id="end" style="vertical-align:middle;"
                                                       ng-model="model.tmEnd" ng-change="model.onDateChanged()"/></li>
         </ul>
