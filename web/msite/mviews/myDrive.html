@@ -522,6 +522,9 @@ function dochart(result){
 
     createChart();
     pieChart(result.intervalSpeed.slow, result.intervalSpeed.middle, result.intervalSpeed.high);
+    var colorBG = $('#wrap').css('background-color');
+    $('svg>rect').attr('fill', colorBG);
+
 }
 
 //将传回的数据转换为图表控件所需格式
