@@ -30,7 +30,15 @@ function cancel(db,id,callback) {
         [id],function(err,rows){
             if(err){callback(err);}
             else{
-                callback(null,1);
+                var sql = "UPDATE t_work SET step = 'cancelled', json_args = ? WHERE id = ? and step in ('applied', 'approved')";
+                pool.query(sql, [id], function(ex, result){
+                    if(ex) { callback(ex); return; }
+                    else{
+                        // NEED LOG
+                        // sql = "INSERT t_work_log(work_id, work, step, json_args) VALUES(?,?,?,?)"
+                        callback(null,1);
+                    }
+                });
             }
         });
 }
