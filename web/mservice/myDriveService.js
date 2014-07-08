@@ -559,10 +559,10 @@ function getSpeedForInterval(db, obdCode, startDatetime, endDatetime,callback){
                 var high=0;
                 var speedJson={};
                 for(var i=0;i<rows.length;i++){
-                    var speedJsonArray=eval("("+rows[0].speedGroup+")");
-                    slow+=speedJsonArray[0].distance;
-                    middle+=speedJsonArray[1].distance;
-                    high+=speedJsonArray[2].distance;
+                    var speedJsonArray=eval("("+rows[i].speedGroup+")");
+                    slow+=speedJsonArray[0].distance + speedJsonArray[1].distance;
+                    middle+=speedJsonArray[2].distance;
+                    high+=speedJsonArray[3].distance;
                 }
                 speedJson.slow=slow;
                 speedJson.middle=middle;
