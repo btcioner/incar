@@ -88,7 +88,6 @@ module wxApp {
                 mileage: this.userCfg.mileage,
                 disp: this.userCfg.disp
             };
-            alert(this.user_openid);
             //判断所有的数据不为空和为有效数据
 
             if (postData.name == "") {
@@ -164,7 +163,7 @@ module wxApp {
 
             this.$http.post('/mservice/enroll', postData)
                 .success((data, status, headers, config)=>{
-                    if(status == "success")
+                    if(data.status == "success")
                     {
                         alert(this.printWord);
                         if(WeixinJSBridge){
@@ -173,7 +172,7 @@ module wxApp {
                     }
                     else
                     {
-                        alert(status);
+                        alert(data.status);
                     }
                 })
                 .error((data, status, headers, config)=>{
