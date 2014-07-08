@@ -2,43 +2,9 @@
 module wxApp {
     export class MyActivityCtrl{
         constructor(ctrlName:string) {
-            requirejs.config({baseUrl:'/mscripts'});
-            requirejs(['angular-route'], ()=>{
-                // 向angular注册控制器
-                _module.controller(ctrlName, ['$scope', '$location', '$http', '$route',this.init]);
-                // 向angular注册过滤器
-                this.registFilters();
-                // bootstrap
-                angular.element(document).ready(function() {
-                    angular.bootstrap(document, [_wxAppName]);
-                });
-            });
-        }
+            // 向angular注册控制器
+            _module.controller(ctrlName, ['$scope', '$location', '$http', this.init]);
 
-        private init = ($scope, $location, $http, $route) => {
-            this.user_openid = $location.search().user;
-            this.$http = $http;
-            this.$scope = $scope;
-
-            if(this.user_openid){
-                // have gotten the open_id
-                this.searchUser();
-            }
-            else{
-                // 尚未得到open_id
-                var wxoa = new WXOAuth($location);
-                wxoa.findUserOpenId((data)=>{
-                    if(!data.user_openid) alert(data);
-                    // 已经获取了open_id,查询数据
-                    this.user_openid = data.user_openid;
-                    this.searchUser();
-                });
-            }
-
-            $scope.model = this;
-        };
-
-        private registFilters = ()=>{
             // 注册filter
             _module.filter('act_status_name', ()=>{
                 return (input)=>{
@@ -61,6 +27,29 @@ module wxApp {
                     return status_name;
                 };
             });
+        }
+
+        private init = ($scope, $location, $http) => {
+            this.user_openid = $location.search().user;
+            this.$http = $http;
+            this.$scope = $scope;
+
+            if(this.user_openid){
+                // have gotten the open_id
+                this.searchUser();
+            }
+            else{
+                // 尚未得到open_id
+                var wxoa = new WXOAuth($location);
+                wxoa.findUserOpenId((data)=>{
+                    if(!data.openid) alert(data);
+                    // 已经获取了open_id,查询数据
+                    this.user_openid = data.user_openid;
+                    this.searchUser();
+                });
+            }
+
+            $scope.model = this;
         };
 
         private searchUser = () => {
