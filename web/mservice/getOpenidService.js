@@ -55,6 +55,8 @@ function getOpenid(req, res) {
             console.error('--------3.data.s4_openid---->' + result[0].openid);
             console.error('--------4.data.s4_openid---->' + data.s4_openid);
             console.error('--------5.data.s4_openid---->' + data.openid);
+            console.error('--------6.data.s4_openid---->' + data);
+            console.error('--------7.data.s4_openid---->' + JSON.stringify(data));
             res.send(200, data);
         });
     });
