@@ -69,6 +69,7 @@ module wxApp {
             this.$http.post("/mservice/myActivity", { user: this.user_openid, s4_id: this.s4_id, acc_id: this.acc_id}, { dataType: "json"})
                 .success((data, status, headers, config)=>{
                     this.activities = data;
+                    console.log(data);
                 })
                 .error((data, status, headers, config)=>{ alert("未找到您参加的活动"); });
         };
