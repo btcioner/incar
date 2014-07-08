@@ -335,8 +335,8 @@
             <div class="boxstyle01"><span style="text-shadow:none;">最近一次行驶</span></div>
             <div class="boxstyle02" ng-show="model.driveData">
                 <ul>
-                    <li style="text-shadow:none;">时速45公里以下行驶里程<span>{{model.driveData.lastSpeed.slow | km}}</span> 公里</li>
-                    <li style="text-shadow:none;">时速45到90公里行驶里程<span>{{model.driveData.lastSpeed.middle | km}}</span> 公里</li>
+                    <li style="text-shadow:none;">时速45公里以下<span>{{model.driveData.lastSpeed.slow | km}}</span> 公里</li>
+                    <li style="text-shadow:none;">时速45到90公里<span>{{model.driveData.lastSpeed.middle | km}}</span> 公里</li>
                     <li style="text-shadow:none;">时速90公里以上<span>{{model.driveData.lastSpeed.high | km}}</span> 公里</li>
                 </ul>
             </div>
@@ -350,8 +350,8 @@
          <div class="boxstyle01" style="text-shadow:none;">本周行驶</div>
          <div class="boxstyle02">
            <ul>
-               <li style="text-shadow:none;">时速45公里以下行驶里程<span id="weekSlowSpeed"></span>公里;</li>
-               <li style="text-shadow:none;">时速45到90公里行驶里程<span id="weekMiddleSpeed"></span>公里;</li>
+               <li style="text-shadow:none;">时速45公里以下<span id="weekSlowSpeed"></span>公里;</li>
+               <li style="text-shadow:none;">时速45到90公里<span id="weekMiddleSpeed"></span>公里;</li>
                <li style="text-shadow:none;">时速90公里以上<span id="weekHighSpeed"></span>公里</li>
            </ul>
          </div>
@@ -366,8 +366,8 @@
             <div class="boxstyle01"><span style="text-shadow:none;">本时间段行驶</span></div>
             <div class="boxstyle02" ng-show="model.driveData">
                 <ul>
-                    <li style="text-shadow:none;">时速45公里以下行驶里程<span>{{model.driveData.intervalSpeed.slow | km}}</span> 公里</li>
-                    <li style="text-shadow:none;">时速45到90公里行驶里程<span>{{model.driveData.intervalSpeed.middle | km}}</span> 公里</li>
+                    <li style="text-shadow:none;">时速45公里以下<span>{{model.driveData.intervalSpeed.slow | km}}</span> 公里</li>
+                    <li style="text-shadow:none;">时速45到90公里<span>{{model.driveData.intervalSpeed.middle | km}}</span> 公里</li>
                     <li style="text-shadow:none;">时速90公里以上<span>{{model.driveData.intervalSpeed.high | km}}</span> 公里</li>
                 </ul>
             </div>
