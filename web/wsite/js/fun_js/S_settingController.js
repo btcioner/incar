@@ -13,6 +13,7 @@ function s_systemCtrl($scope, $http){
         $scope.randomTime = new Date();
          $http.get(baseurl + "4s/"+ $.cookie("s4_id")+"?t="+$scope.randomTime).success(function(data){
             $scope.s4 = data.s4;
+            $("#imghead").attr("src","../../"+$scope.s4.logo_url);
          }).error(function(data){
            alert("请求无响应！");
         });
@@ -21,10 +22,13 @@ function s_systemCtrl($scope, $http){
     //修改
     $scope.modify = function()
     {
+        $("#imghead").attr("src","../../"+$scope.s4.logo_url);
+        $("#loading_0").css("display","none");
+        $("#loaded_0").css("display","none");
         $("#formId_edit2").ajaxForm(function(data){
 //            $scope.$apply(function () {
-                $("#loading").css("display","none");
-                $("#loaded").css("display","block");
+                $("#loading_0").css("display","none");
+                $("#loaded_0").css("display","block");
 //            });
             $scope.s4.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
@@ -35,7 +39,7 @@ function s_systemCtrl($scope, $http){
     //保存修改
     $scope.modifyConfirm = function()
     {
-        if($("#loading").css("display")=="block"){
+        if($("#loading_0").css("display")=="block"){
             alert("正在上传，请稍后提交...");
         }
          else{
@@ -61,6 +65,7 @@ function s_systemCtrl($scope, $http){
             case 1:
                 $scope.modifyDiv = false;
                 $scope.settingListDiv = true;
+                GetFirstPageInfo();
             break;
         }
     }

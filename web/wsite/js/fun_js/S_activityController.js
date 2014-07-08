@@ -89,9 +89,13 @@
     $scope.add = function()
     {
         initAddData();
+        $("#loading_0").css("display","none");
+        $("#loaded_0").css("display","none");
         $("#imghead").attr("src","../../data/200x200.jpg");
         $("#edit_pro_img").val("");
         $("#formId_edit2").ajaxForm(function(data){
+            $("#loading_0").css("display","none");
+            $("#loaded_0").css("display","block");
             $scope.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
 
@@ -153,20 +157,24 @@
         //添加确认
     $scope.addConfirm = function()
     {
-        getAllChooseTag();
-        $scope.postData={title:$scope.title,brief:editor.html(),logo_url:$scope.logo_url,tags:$scope.tags};
-        $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/ActAd/activity",$scope.postData).success(function(data){
-            if(data.status == "ok")
-            {
-                alert("添加成功!");
-                GetFirstPageInfo();
-                $scope.newsListDiv = true;
-                $scope.newsAddDiv = false;
-            }
-        }).error(function(data){
-                alert("请求无响应");
-        })
-        editor.remove();
+        if($("#loading_0").css("display")=="block"){
+            alert("正在上传，请稍后提交...");
+        }else{
+            getAllChooseTag();
+            $scope.postData={title:$scope.title,brief:editor.html(),logo_url:$scope.logo_url,tags:$scope.tags};
+            $http.post(baseurl +"4s/"+$.cookie("s4_id")+"/template/ActAd/activity",$scope.postData).success(function(data){
+                if(data.status == "ok")
+                {
+                    alert("添加成功!");
+                    GetFirstPageInfo();
+                    $scope.newsListDiv = true;
+                    $scope.newsAddDiv = false;
+                }
+            }).error(function(data){
+                    alert("请求无响应");
+            })
+            editor.remove();
+        }
     }
 
         //获取所有已选择的标签
@@ -189,10 +197,14 @@
    //修改按钮
     $scope.modify = function(id)
     {
-        $scope.checkboxId_1 = false;
-        $scope.logo_url = "";
         $scope.activityDetail = $scope.activityList[id];
+        $scope.checkboxId_1 = false;
+        $("#loading_1").css("display","none");
+        $("#loaded_1").css("display","none");
+        $("#imghead1").attr("src","../../"+$scope.activityDetail.logo_url);
         $("#formId_edit3").ajaxForm(function(data){
+            $("#loading_1").css("display","none");
+            $("#loaded_1").css("display","block");
             $scope.activityDetail.logo_url = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
         KindEditor.ready(function(K) {
@@ -221,21 +233,25 @@
     //修改确认
     $scope.modifyConfirm = function()
     {
-        getAllChooseTag();
-        $scope.activityDetail.tags = $scope.tags;
-        $scope.activityDetail.brief = editor.html();
-        $http.put(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+$scope.activityDetail.id,$scope.activityDetail).success(function(data){
-            if(data.status == "ok")
-            {
-                alert("修改成功!");
-                GetFirstPageInfo();
-                editor.remove();
-                $scope.newsListDiv = true;
-                $scope.newsModifyDiv = false;
-            }
-        }).error(function(data){
-                alert("请求无响应");
-        })
+        if($("#loading_1").css("display")=="block"){
+            alert("正在上传，请稍后提交...");
+        }else{
+            getAllChooseTag();
+            $scope.activityDetail.tags = $scope.tags;
+            $scope.activityDetail.brief = editor.html();
+            $http.put(baseurl +"4s/"+$.cookie("s4_id")+"/activity/"+$scope.activityDetail.id,$scope.activityDetail).success(function(data){
+                if(data.status == "ok")
+                {
+                    alert("修改成功!");
+                    GetFirstPageInfo();
+                    editor.remove();
+                    $scope.newsListDiv = true;
+                    $scope.newsModifyDiv = false;
+                }
+            }).error(function(data){
+                    alert("请求无响应");
+            })
+        }
     }
     //预览
     $scope.preview = function(id)
@@ -312,12 +328,14 @@
 
     $scope.gotoBack = function(id)
     {
+        GetFirstPageInfo();
         switch(id)
         {
             case 1:
                 editor.remove();
                 $scope.newsListDiv = true;
                 $scope.newsAddDiv = false;
+
                 break;
             case 2:
                 editor.remove();
