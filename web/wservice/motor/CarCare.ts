@@ -456,7 +456,11 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "中止申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    res.json({status:"ok"});
+                                    sql = "UPDATE t_slot_booking SET booking_status = 6 WHERE id = ?";
+                                    dac.query(sql, [this.work_ref_id], (ex, result)=>{
+                                        if(ex) { res.json(new Service.TaskException(-1, "微信状态修改失败", ex)); return;}
+                                        res.json({status:"ok"});
+                                    });
                                 }
                             });
                         }
@@ -504,7 +508,11 @@ module Work{
                                 dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                     if(ex) {res.json(new Service.TaskException(-1, "完成保养成功,但记录日志失败", ex)); return; }
                                     else{
-                                        res.json({status:"ok"});
+                                        sql = "UPDATE t_slot_booking SET booking_status = 5 WHERE id=?";
+                                        dac.query(sql, [this.work_ref_id], (ex, result)=>{
+                                            if(ex) { res.json(new Service.TaskException(-2, '微信状态修改失败', ex)); return; }
+                                            else res.json({status:"ok"});
+                                        });
                                     }
                                 });
                             }

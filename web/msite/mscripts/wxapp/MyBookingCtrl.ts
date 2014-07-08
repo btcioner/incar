@@ -15,6 +15,8 @@ module wxApp{
                     else if (input == 2) status_name = "被拒绝";
                     else if (input == 3) status_name = "已批准";
                     else if (input == 4) status_name = "已取消";
+                    else if (input == 5) status_name = "已完成";
+                    else if (input == 6) status_name = "未到店";
                     return status_name;
                 };
             });
