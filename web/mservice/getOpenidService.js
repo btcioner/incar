@@ -50,14 +50,9 @@ function getOpenid(req, res) {
             '&code=' + code +
             '&grant_type=authorization_code';
         http.get(url, function(data){
-            console.error('--------2.data.s4_openid---->' + result[0].openid);
-            data.s4_openid = result[0].openid;
-            console.error('--------3.data.s4_openid---->' + result[0].openid);
-            console.error('--------4.data.s4_openid---->' + data.s4_openid);
-            console.error('--------5.data.s4_openid---->' + data.openid);
-            console.error('--------6.data.s4_openid---->' + data);
-            console.error('--------7.data.s4_openid---->' + JSON.stringify(data));
-            res.send(200, data);
+            var data2 = JSON.parse(data);
+            data2.s4_openid = result[0].openid;
+            res.send(200, data2);
         });
     });
 }
