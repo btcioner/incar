@@ -45,7 +45,7 @@ create table IF NOT EXISTS `t_trialrun`(
    `phone` varchar(20) COMMENT '电话，已注册用户可从t_account读出',
     channel VARCHAR(32) NOT NULL COMMENT '申请渠道 weixin mobileApp website telephone',
     channel_specific VARCHAR(256) COMMENT '申请渠道指定信息',
-   `bookStatus` int(4) DEFAULT '0' COMMENT '预约状态：0-无效 1-已申请待确认 2-被拒 3-成功批准 4-被取消 ',
+   `bookStatus` int(4) DEFAULT '0' COMMENT '预约状态：0-无效 1-已申请待确认 2-被拒 3-成功批准 4-被取消 5-已完成 6-未到店 ',
 
    tc VARCHAR(32) COMMENT '记录操作用户名',
    ts timestamp COMMENT '记录操作时间戳',

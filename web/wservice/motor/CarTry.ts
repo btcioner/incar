@@ -208,7 +208,11 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "试驾申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    res.json({status:"ok"});
+                                    sql = "UPDATE t_trialrun SET bookStatus = 3 WHERE id = ?";
+                                    dac.query(sql, [this.work_ref_id], (ex, result)=>{
+                                        if(ex) { res.json(new Service.TaskException(-2, "修改微信试驾状态失败", ex)); return; }
+                                        else res.json({status:"ok"});
+                                    });
                                 }
                             });
                         }
@@ -247,7 +251,11 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "拒绝申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    res.json({status:"ok"});
+                                    sql = "UPDATE t_trialrun SET bookStatus = 2 WHERE id = ?";
+                                    dac.query(sql, [this.work_ref_id], (ex, result)=>{
+                                        if(ex) { res.json(new Service.TaskException(-2, "修改微信试驾状态失败", ex)); return; }
+                                        else res.json({status:"ok"});
+                                    });
                                 }
                             });
                         }
@@ -285,7 +293,11 @@ module Work{
                                 dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                     if(ex) {res.json(new Service.TaskException(-1, "完成试驾成功,但记录日志失败", ex)); return; }
                                     else{
-                                        res.json({status:"ok"});
+                                        sql = "UPDATE t_trialrun SET bookStatus = 5 WHERE id = ?";
+                                        dac.query(sql, [this.work_ref_id], (ex, result)=>{
+                                            if(ex) { res.json(new Service.TaskException(-2, "修改微信试驾状态失败", ex)); return; }
+                                            else res.json({status:"ok"});
+                                        });
                                     }
                                 });
                             }
