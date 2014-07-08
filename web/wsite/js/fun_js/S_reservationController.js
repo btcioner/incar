@@ -378,12 +378,11 @@
 
     function updateBrandSeries(){
         if($scope.cacheReady && $scope.careList){
-            // var series_name = $scope.cacheBS['<brand_code>']['<series_code>'];
             for(var i=0;i<$scope.careList.length;i++){
                 var care = $scope.careList[i];
                 if(care.json_args && care.json_args.brand && care.json_args.series){
                     try{
-                        care.series_name = $scope.cacheBS[care.json_args.brand][care.json_args.series];
+                        care.series_name = window.cacheBS[care.json_args.brand][care.json_args.series];
 //                        console.log(care.json_args);
 //                        console.log(care.series_name);
                     }
@@ -395,44 +394,51 @@
     }
 
 
-    $http.get('/wservice/brand/', null)
-        .success(function(data, status){
-            if(data.status === 'ok'){
-                // the cache
-                $scope.cacheBS = {};
-                $scope.cacheCount = 0;
-                $scope.cacheReady = false;
+    if(!window.cacheBS) {
+        $http.get('/wservice/brand/', null)
+            .success(function (data, status) {
+                if (data.status === 'ok') {
+                    // the cache
+                    window.cacheBS = {};
+                    $scope.cacheCount = 0;
+                    $scope.cacheReady = false;
 
-                for(var i=0;i<data.brands.length;i++){
-                    var brand_code = data.brands[i].brandCode;
-                    $scope.cacheBS[brand_code.toString()] = {};
+                    for (var i = 0; i < data.brands.length; i++) {
+                        var brand_code = data.brands[i].brandCode;
+                        window.cacheBS[brand_code.toString()] = {};
 
-                    $http.get('/wservice/brand/'+ brand_code + '/series')
-                        .success(function(data2, status2){
-                            if(data2.status === 'ok'){
-                                $scope.cacheCount++;
-                                // build cache
-                                for(var j=0;j<data2.series.length;j++){
-                                    var x = data2.series[j];
-                                    $scope.cacheBS[x.brandCode][x.seriesCode] = x.series;
+                        $http.get('/wservice/brand/' + brand_code + '/series')
+                            .success(function (data2, status2) {
+                                if (data2.status === 'ok') {
+                                    $scope.cacheCount++;
+                                    // build cache
+                                    for (var j = 0; j < data2.series.length; j++) {
+                                        var x = data2.series[j];
+                                        window.cacheBS[x.brandCode][x.seriesCode] = x.series;
+                                    }
                                 }
-                            }
-                            if($scope.cacheCount === data.brands.length){
-                                $scope.cacheReady = true;
-                                updateBrandSeries();
-                            }
-                        })
-                        .error(function(){
-                            $scope.cacheCount++;
-                            if($scope.cacheCount === data.brands.length){
-                                $scope.cacheReady = true;
-                                updateBrandSeries();
-                            }
-                        });
+                                if ($scope.cacheCount === data.brands.length) {
+                                    $scope.cacheReady = true;
+                                    updateBrandSeries();
+                                }
+                            })
+                            .error(function () {
+                                $scope.cacheCount++;
+                                if ($scope.cacheCount === data.brands.length) {
+                                    $scope.cacheReady = true;
+                                    updateBrandSeries();
+                                }
+                            });
+                    }
                 }
-            }
-        })
-        .error(function(data, status){ console.error(status); });
+            })
+            .error(function (data, status) {
+                console.error(status);
+            });
+    }
+    else{
+        $scope.cacheReady = true;
+    }
 
 //    $scope.ReservationTab = function(id)
 //    {

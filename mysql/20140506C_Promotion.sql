@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS t_slot_booking(
     storeId INT UNSIGNED NOT NULL COMMENT '组织ID、4S店ID',
 
     slot_location VARCHAR(64) COMMENT '工位物理空间信息',
-    slot_time timestamp NOT NULL COMMENT '工位时间信息',
+    slot_time DATETIME NOT NULL COMMENT '工位时间信息',
 
     promotion_id INT UNSIGNED COMMENT '是否是某次营销优惠活动中的，如是，这里填写活动中的PromotionSlotID，如不是则为NULL。',
 
