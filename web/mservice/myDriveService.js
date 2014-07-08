@@ -516,9 +516,9 @@ function getSpeedForLastTime(db, obdCode, callback){
             if (rows && rows.length === 1) {
                 var speedJsonArray=eval("("+rows[0].speedGroup+")");
                 var speedJson={};
-                speedJson.slow=speedJsonArray[0].distance;
-                speedJson.middle=speedJsonArray[1].distance;
-                speedJson.high=speedJsonArray[2].distance;
+                speedJson.slow=speedJsonArray[0].distance + speedJsonArray[1].distance;
+                speedJson.middle=speedJsonArray[2].distance;
+                speedJson.high=speedJsonArray[3].distance;
                 return callback(null, speedJson);
             } else { return callback(new Error('multiple rows returned for speed data of lasted time.')); }
         }
@@ -535,10 +535,10 @@ function getSpeedForLastWeek(db, obdCode, callback){
                 var high=0;
                 var speedJson={};
                 for(var i=0;i<rows.length;i++){
-                    var speedJsonArray=eval("("+rows[0].speedGroup+")");
-                    slow+=speedJsonArray[0].distance;
-                    middle+=speedJsonArray[1].distance;
-                    high+=speedJsonArray[2].distance;
+                    var speedJsonArray=eval("("+rows[i].speedGroup+")");
+                    slow+=speedJsonArray[0].distance + speedJsonArray[1].distance;
+                    middle+=speedJsonArray[2].distance;
+                    high+=speedJsonArray[3].distance;
                 }
                 speedJson.slow=slow;
                 speedJson.middle=middle;
