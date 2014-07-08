@@ -14,14 +14,14 @@ exports = module.exports = function(service) {
 
 function myBooking(req, res) {
     var postData = req.body;
-    console.log(postData);
+    // console.log(postData);
     var db = this.db;
     var user=postData.user;
     var sid=postData.sid;
     search(db, user,sid,function(err, data) {
         if (err) { res.send(200,err); }
         else {
-            console.log(data);
+            // console.log(data);
             res.send(data);
         }
     });

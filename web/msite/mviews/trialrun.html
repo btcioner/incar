@@ -113,7 +113,7 @@
         postData.s4_id=document.getElementById("s4_id").value;
         postData.name=document.getElementById("name").value;
         postData.phone=document.getElementById("phone").value;
-        postData.seriesName=document.getElementById("seriesName").value;
+        postData.seriesName= $("#seriesName").find("option:selected").text(); // document.getElementById("seriesName").value;
         postData.bookDate=document.getElementById("start").value;
         postData.bookTime=document.getElementById("end").value;
 
