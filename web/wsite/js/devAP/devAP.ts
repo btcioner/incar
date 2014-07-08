@@ -41,7 +41,7 @@ module devAP {
             var wx_oid_jl_fake = "user=oAPKMuJssQAohcEgKylkcRDUDiAw@gh_2ca6120e0ed0";
 
             for(var i in this.pagesDev){
-                this.pagesDev[i].url += wx_oid_jl_fake;
+                this.pagesDev[i].url += wx_oid_wmq_dev;
             }
             for(var i in this.pagesStaging){
                 this.pagesStaging[i].url += wx_oid_wmq_staging;

@@ -88,7 +88,7 @@ module wxApp {
                 mileage: this.userCfg.mileage,
                 disp: this.userCfg.disp
             };
-
+            alert(this.user_openid);
             //判断所有的数据不为空和为有效数据
 
             if (postData.name == "") {
