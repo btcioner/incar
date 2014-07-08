@@ -36,7 +36,6 @@ module wxApp {
         private InitCarBrand = ()=>{
             this.$http.post('/mservice/brandData', { user: this.user_openid })
                 .success((data, status, headers, config)=>{
-                    console.log(data);
                     this.brand_name = data.brand;
                     this.brand_code = data.brandCode;
                     this.brand = data.brandCode;
@@ -53,7 +52,8 @@ module wxApp {
             this.$http.post('/mservice/infoConfig', {user:this.user_openid})
                 .success((data, status, headers, config)=>{
                     this.name_sta = true;
-                    this.printWord = "修改成功";
+                    this.printWord = "修改成功!";
+                    this.flag = "update";
                     this.userCfg = data;
                     this.mySeries = data.series;
                     // age
@@ -65,14 +65,15 @@ module wxApp {
                     if(data.engine_type === 'T') this.eng_type = '涡轮增压';
                     else this.eng_type = '自然吸气';
 
-//                    console.log(data);
+                    console.log(data);
                 })
                 .error((data, status, headers, config)=>{
 //                    console.log(status);
-                    this.name_sta = false;
-                    this.printWord ="创建成功";
                     alert("您还未注册或未绑定OBD信息\n请先注册账号！");
-                    this.userCfg = {name:"",nick:"",obd_code:"",modelYear:"",phone:"",license:"",mileage:"",disp:""}
+                    this.name_sta = false;
+                    this.printWord ="创建成功!";
+                    this.flag = "add";
+                    this.userCfg = {name:"",nick:"",obd_code:"",modelYear:"",phone:"",license:"",mileage:"",disp:"",id:""}
                 });
         };
 
@@ -87,10 +88,12 @@ module wxApp {
                 phone:this.userCfg.phone,
                 license:this.userCfg.license,
                 mileage: this.userCfg.mileage,
-                disp: this.userCfg.disp
+                disp: this.userCfg.disp,
+                flag:this.flag,
+                id:this.userCfg.id
             };
-            //判断所有的数据不为空和为有效数据
 
+            //判断所有的数据不为空和为有效数据
             if (postData.name == "") {
                 alert('用户名不能为空!');
                 return;
@@ -101,17 +104,32 @@ module wxApp {
                 return;
             }
             // check pwd
-            if(this.pwd || this.pwd2) {
-                if (this.pwd !== this.pwd2){
-                    alert('密码不一致');
+            if(this.flag =="update")
+            {
+                if(this.pwd || this.pwd2) {
+                    if (this.pwd !== this.pwd2){
+                        alert('密码不一致');
+                        return;
+                    }
+                    else{
+                        postData.password = hex_sha1(this.pwd);
+                    }
+                }
+            }
+            else
+            {
+                if(this.pwd || this.pwd2) {
+                    if (this.pwd !== this.pwd2){
+                        alert('密码不一致');
+                        return;
+                    }
+                    else{
+                        postData.password = hex_sha1(this.pwd);
+                    }
+                }else {
+                    alert('密码不能为空!');
                     return;
                 }
-                else{
-                    postData.password = hex_sha1(this.pwd);
-                }
-            }else {
-                alert('密码不能为空!');
-                return;
             }
             if (postData.nick == "") {
                 alert('车主姓名不能为空!');
@@ -162,6 +180,7 @@ module wxApp {
 
 //            console.log(postData);
 
+
             this.$http.post('/mservice/enroll', postData)
                 .success((data, status, headers, config)=>{
                     if(data.status == "success")
@@ -197,6 +216,7 @@ module wxApp {
         private name_sta:boolean;
         private printWord:any;
         private brand_code:any;
+        private flag:any;
 
     }
 }

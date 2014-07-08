@@ -82,7 +82,8 @@ function userEnroll(req, res) {
         var openId4S=temp[1];
         var phone=params.phone;
         var nickName=params.nick;
-
+        var flag = params.flag;
+        var id = params.id;
         if(!openId4S) {
             res.json({status:'failure',message:"user参数应该形如 oAPKMuL3dNs0NMuL3d34PpxMI@gh_2ca612000ed0"});
             return;
@@ -106,11 +107,25 @@ function userEnroll(req, res) {
                         s4_id:s4id,
                         tel_pwd:"000000000000"
                     };
-                    sql="insert into t_account set ?";
+                    if(flag == "update")
+                    {
+                        sql = "update t_account set ? where id = ?";
+                    }
+                    else if(flag == "add")
+                    {
+                       sql="insert into t_account set ?";
+                    }
                     var pool = findPool();
-                    pool.query(sql,user,function(err, info){
+                    pool.query(sql,[user,id],function(err, info){
                         if(err){
-                            res.json('添加账户失败');
+                            if(flag=="update")
+                            {
+                                res.json({status:'修改账户失败'});
+                            }
+                            else if(flag == "add")
+                            {
+                                res.json({status:'添加账户失败'});
+                            }
                         }
                         else{
                             var accountId=info.insertId;
@@ -148,7 +163,7 @@ function carEnroll(req,res, cb){
     var disp=params.disp;
     var engine_type=params.engine_type;
     var user=params.user;
-
+    var flag = params.flag;
     if(!user) console.error("===>传入的参数缺少user!!!");
 
     //var s4Id=user.s4_id;
@@ -185,8 +200,16 @@ function carEnroll(req,res, cb){
                     }
 
                     // 建立t_car_user;
-                    var sql = "INSERT t_car_user(s4_id,acc_id,car_id,user_type) values(?,?,?,?)";
-                    pool.query(sql, [user.s4_id, user.id, id, 1], function(ex, result){
+                    if(flag =="update")
+                    {
+                        user.id = params.id;
+                        var sql = "update t_car_user set s4_id=?,car_id=?,user_type=? where acc_id=?"
+                    }else if(flag=="add")
+                    {
+                       var sql = "INSERT t_car_user(s4_id,car_id,user_type,acc_id) values(?,?,?,?)";
+                    }
+
+                    pool.query(sql, [user.s4_id,  id, 1,user.id], function(ex, result){
                         if(ex) {
                             console.log(ex);
                             if(cb) cb(ex);
