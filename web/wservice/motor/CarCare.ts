@@ -474,7 +474,7 @@ module Work{
                 else{
                     var dac = Service.MySqlAccess.RetrievePool();
                     var sql = "SELECT max(D.mileage) AS max_mileage, sum(D.runtime)/60 AS sum_hour\n" +
-                        "FROM t_obd_drive D, t_car_info C WHERE C.obd_code = D.obdCode and C.id = ?\n" +
+                        "FROM t_obd_drive D, t_car C WHERE C.obd_code = D.obdCode and C.id = ?\n" +
                         "GROUP BY C.id";
                     dac.query(sql, [this.car_id], (ex, result)=>{
                         var mileage = 0, hour = 0;
@@ -530,7 +530,7 @@ module Work{
                 if (ex) { res.json(new Service.TaskException(-1, "获取操作员失败", ex)); return; }
                 else {
                     var sql = "SELECT max(D.mileage) AS max_mileage, sum(D.runtime)/60 AS sum_hour\n" +
-                        "FROM t_obd_drive D, t_car_info C WHERE C.obd_code = D.obdCode and C.id = ?\n" +
+                        "FROM t_obd_drive D, t_car C WHERE C.obd_code = D.obdCode and C.id = ?\n" +
                         "GROUP BY C.id";
                     dac.query(sql, [this.car_id], (ex, result)=>{
                         var json_args = {via:"web", reason: req.body.reason, oper: userLogin.dto.nick, care_mileage:0, care_hour:0 };
