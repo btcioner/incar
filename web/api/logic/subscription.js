@@ -25,7 +25,7 @@ subscription.subscribe = function(message, req, next) {
         title: '',
         description: compiled({}),
         picurl: '',
-        url: 'http://' + req.headers.host + '/msite/enroll.html?user=' + message.FromUserName + '@' + message.ToUserName
+        url: 'http://' + req.headers.host + '/msite/infoConfig.html?user=' + message.FromUserName + '@' + message.ToUserName
     }]);
 };
 
