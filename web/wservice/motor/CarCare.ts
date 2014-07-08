@@ -346,7 +346,7 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "保养申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    sql = "UPDATE t_slot_booking SET booking_status = 3, ts = ? WHERE id = ?";
+                                    sql = "UPDATE t_slot_booking SET booking_status = 3, tc = ? WHERE id = ?";
                                     dac.query(sql, [userLogin.dto.nick, this.work_ref_id], (ex, result)=>{
                                         if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
                                         else{
@@ -382,7 +382,7 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "拒绝申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    sql = "UPDATE t_slot_booking SET booking_status = 2, ts = ? WHERE id = ?";
+                                    sql = "UPDATE t_slot_booking SET booking_status = 2, tc = ? WHERE id = ?";
                                     dac.query(sql, [userLogin.dto.nick, this.work_ref_id], (ex, result)=>{
                                         if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
                                         else{
@@ -420,7 +420,7 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "取消申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    sql = "UPDATE t_slot_booking SET booking_status = 4, ts = ? WHERE id = ?";
+                                    sql = "UPDATE t_slot_booking SET booking_status = 4, tc = ? WHERE id = ?";
                                     dac.query(sql, [userLogin.dto.nick, this.work_ref_id], (ex, result)=>{
                                         if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
                                         else{
