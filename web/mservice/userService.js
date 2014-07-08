@@ -98,7 +98,7 @@ function userEnroll(req, res) {
                 var rows=info.data;
                 if(rows.length>0){
                     var s4id=rows[0].id;
-                    if(password != "")
+                    if(password != null && password !="")
                     {
                         var user={
                             name:username,
