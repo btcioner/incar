@@ -379,6 +379,18 @@
     function updateBrandSeries(){
         if($scope.cacheReady && $scope.careList){
             // var series_name = $scope.cacheBS['<brand_code>']['<series_code>'];
+            for(var i=0;i<$scope.careList.length;i++){
+                var care = $scope.careList[i];
+                if(care.json_args && care.json_args.brand && care.json_args.series){
+                    try{
+                        care.series_name = $scope.cacheBS[care.json_args.brand][care.json_args.series];
+//                        console.log(care.json_args);
+//                        console.log(care.series_name);
+                    }
+                    catch(ex){}
+                }
+
+            }
         }
     }
 

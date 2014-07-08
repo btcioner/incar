@@ -175,9 +175,8 @@ var randomTime = new Date();
 })(jQuery);
 
 //预览图片
-function changeImg(file,plugId,formId,preId,imgId)
+function changeImg(file,plugId,formId,preId,imgId,id)
 {
-
     var filepath = $("#"+plugId).val();
     var extStart=filepath.lastIndexOf(".");
     var ext=filepath.substring(extStart,filepath.length).toUpperCase();
@@ -187,9 +186,8 @@ function changeImg(file,plugId,formId,preId,imgId)
 
     }
     else{
-        $("#loaded").css("display","none");
-        $("#loading").css("display","block");
-
+        $("#loaded_"+id).css("display","none");
+        $("#loading_"+id).css("display","block");
         var MAXWIDTH  = 260;
         var MAXHEIGHT = 180;
         var div = document.getElementById(preId);
