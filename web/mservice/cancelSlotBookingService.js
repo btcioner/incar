@@ -30,7 +30,7 @@ function cancel(db,id,callback) {
         [id],function(err,rows){
             if(err){callback(err);}
             else{
-                var sql = "UPDATE t_work SET step = 'cancelled', json_args = ? WHERE id = ? and step in ('applied', 'approved')";
+                var sql = "UPDATE t_work SET step = 'cancelled' WHERE work_ref_id = ? and step in ('applied', 'approved')";
                 pool.query(sql, [id], function(ex, result){
                     if(ex) { callback(ex); return; }
                     else{
