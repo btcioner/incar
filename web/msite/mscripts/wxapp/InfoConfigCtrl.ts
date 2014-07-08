@@ -36,6 +36,7 @@ module wxApp {
         private InitCarBrand = ()=>{
             this.$http.post('/mservice/brandData', { user: this.user_openid })
                 .success((data, status, headers, config)=>{
+                    console.log(data);
                     this.brand_name = data.brand;
                     this.brand_code = data.brandCode;
                     this.brand = data.brandCode;
@@ -54,7 +55,7 @@ module wxApp {
                     this.name_sta = true;
                     this.printWord = "修改成功";
                     this.userCfg = data;
-                    
+                    this.mySeries = data.series;
                     // age
                     for(var i=0;i<this.ages.length;i++){
                         if(data.age === this.ages[i]) this.age = this.ages[i];
@@ -64,7 +65,7 @@ module wxApp {
                     if(data.engine_type === 'T') this.eng_type = '涡轮增压';
                     else this.eng_type = '自然吸气';
 
-                    console.log(data);
+//                    console.log(data);
                 })
                 .error((data, status, headers, config)=>{
 //                    console.log(status);
