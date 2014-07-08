@@ -1,5 +1,5 @@
 <!DOCTYPE>
-<html ng-app="wxApp">
+<html>
 <head>
     <title>我的活动</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -10,9 +10,9 @@
     <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
     <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
 
+    <script src="../mscripts/require.js"></script>
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script src="../mscripts/angular.js"></script>
-    <script src="../mscripts/angular-resource.min.js"></script>
     <script src="../mscripts/wxapp.js"></script>
     <script type="text/javascript">
         var myActivityCtrl = new wxApp.MyActivityCtrl('myActivityCtrl');
@@ -32,11 +32,16 @@
             <!--基本信息contentbox start-->
             <div class="contentbox" ng-repeat="act in model.activities">
                 <div class="columnname"><div class="text_09">{{act.title}}</div></div>
-                <div class="content"><ul><li class="text_08">发布日期：</li><li>{{act.tm_announce}}</li></ul><div class="clear"></div></div>
+                <div class="content"><ul><li class="text_08">发布日期：</li><li>{{act.tm_announce | limitTo:16}}</li></ul><div class="clear"></div></div>
                 <div class="content"><ul><li class="text_08">活动状态：</li><li>{{act.status | act_status_name}}</li></ul><div class="clear"></div></div>
                 <div class="content"><ul><li class="text_08">我的状态：</li><li>{{act.myStatus | act_my_status_name}}</li></ul><div class="clear"></div></div>
-            </div><!--基本信息contentbox end-->
 
+                <ul>
+                    <li><a ng-href="/msite/activityDetail.html?user={{model.user_openid}}&id={{act.id}}" target="_self">查看活动</a></li>
+                    <li><a href="javascript:void(0)">我的赛况</a></li>
+                    <li><a href="javascript:void(0)">活动结果</a></li>
+                </ul>
+            </div><!--基本信息contentbox end-->
         </div><!--containe_250 end-->
     </div><!--main_wrap end-->
 </div>

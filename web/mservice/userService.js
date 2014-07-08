@@ -82,15 +82,14 @@ function userEnroll(req, res) {
         var openId4S=temp[1];
         var phone=params.phone;
         var nickName=params.nick;
-        var appid = params.appid;
 
-        if(!appid) {
-            res.json({status:'failure',message:"没有传入参数appId"});
+        if(!openId4S) {
+            res.json({status:'failure',message:"user参数应该形如 oAPKMuL3dNs0NMuL3d34PpxMI@gh_2ca612000ed0"});
             return;
         }
 
-        var sql="select id, openid from t_4s where wx_app_id=?";
-        dao.findBySql(sql,[appid],function(info){
+        var sql="select id from t_4s where openid=?";
+        dao.findBySql(sql,[openId4S],function(info){
             if(info.err){
                 res.json(info);
             }
@@ -101,24 +100,27 @@ function userEnroll(req, res) {
                     var user={
                         name:username,
                         pwd:password,
-                        wx_oid:openId+':'+ rows[0].openid,
+                        wx_oid:openId+':'+ openId4S,
                         phone:phone,
                         nick:nickName,
                         s4_id:s4id,
                         tel_pwd:"000000000000"
                     };
                     sql="insert into t_account set ?";
-                    dao.insertBySql(sql,user,function(info){
-                        if(info.err){
-                            info.message='添加账户失败';
-                            res.json(info);
+                    var pool = findPool();
+                    pool.query(sql,user,function(err, info){
+                        if(err){
+                            res.json('添加账户失败');
                         }
                         else{
-                            var accountId=info.data.id;
+                            var accountId=info.insertId;
                             user.id = accountId;
                             req.body.user = user;
                             carEnroll(req,res, function(ex){
-                                if(ex) { res.json(ex); return; }
+                                if(ex) {
+                                    pool.query('DELETE FROM t_account WHERE id=?', [accountId], function(){});
+                                    res.json(ex); return;
+                                }
                                 res.json({status:'success',accountId:accountId});
                             });
                         }
@@ -135,8 +137,8 @@ function userEnroll(req, res) {
 function carEnroll(req,res, cb){
     var params=req.body;
     var obdCode=params.obd_code;
-    var brand=params.brandCode;
-    var series=params.seriesCode;
+    var brand=params.brand;
+    var series=params.series;
     var modelYear=params.modelYear;
     var license=params.license;
     var mileage=params.mileage;

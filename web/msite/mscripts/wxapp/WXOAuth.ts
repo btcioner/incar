@@ -17,6 +17,7 @@ module wxApp{
                 $http.post('/mservice/getOpenid' ,postData)
                     .success((data, status, headers, config)=>{
                         data.app_id = args.state;
+                        data.user_openid = data.openid + '@' + data.s4_openid;
                         cb(data);
                     })
                     .error((data, status, headers, config)=>{ cb(status); });
