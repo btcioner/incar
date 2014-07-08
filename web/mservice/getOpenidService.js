@@ -23,7 +23,7 @@ function getOpenid(req, res) {
     }
 
     var pool = db();
-    var sql = "SELECT wx_app_secret FROM t_4s WHERE wx_app_id = ?";
+    var sql = "SELECT openid, wx_app_secret FROM t_4s WHERE wx_app_id = ?";
     pool.query(sql, [app_id], function(ex, result){
         if(ex){
             res.send(500, ex);
@@ -48,6 +48,7 @@ function getOpenid(req, res) {
             '&code=' + code +
             '&grant_type=authorization_code';
         http.get(url, function(data){
+            data.s4_openid = result[0].openid;
             res.send(200, data);
         });
     });

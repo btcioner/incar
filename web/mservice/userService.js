@@ -82,15 +82,14 @@ function userEnroll(req, res) {
         var openId4S=temp[1];
         var phone=params.phone;
         var nickName=params.nick;
-        var appid = params.appid;
 
-        if(!appid) {
-            res.json({status:'failure',message:"没有传入参数appId"});
+        if(!openId4S) {
+            res.json({status:'failure',message:"user参数应该形如 oAPKMuL3dNs0NMuL3d34PpxMI@gh_2ca612000ed0"});
             return;
         }
 
-        var sql="select id, openid from t_4s where wx_app_id=?";
-        dao.findBySql(sql,[appid],function(info){
+        var sql="select id from t_4s where openid=?";
+        dao.findBySql(sql,[openId4S],function(info){
             if(info.err){
                 res.json(info);
             }
@@ -101,7 +100,7 @@ function userEnroll(req, res) {
                     var user={
                         name:username,
                         pwd:password,
-                        wx_oid:openId+':'+ rows[0].openid,
+                        wx_oid:openId+':'+ openId4S,
                         phone:phone,
                         nick:nickName,
                         s4_id:s4id,

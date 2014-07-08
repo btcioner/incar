@@ -25,6 +25,7 @@ module wxApp {
                     if(!data.openid) alert(data);
                     // 已经获取了open_id,查询数据
                     this.user_openid = data.openid;
+                    this.s4_openid = data.s4_openid;
                     this.app_id = data.app_id;
                     // 初始化车品牌
                     this.InitCarBrand();
@@ -127,6 +128,7 @@ module wxApp {
         };
 
         private user_openid:string;
+        private s4_openid:string;
         private app_id:string;
         private brand:number;
         private seriesData:Array<any> = [{ series:-1, series_name:'请选择'}];
