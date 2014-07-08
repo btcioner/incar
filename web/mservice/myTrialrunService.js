@@ -33,7 +33,7 @@ function search(db, user,wx_oid,callback) {
         ['%'+wx_oid+'%'],function(err,rows){
             if(err){console.log("search:"+err);callback(err);}
             else{
-                console.log("trial records:"+rows.length);
+                // console.log("trial records:"+rows.length);
                 if(rows){
                     var trialrun=new Array();
                     for(var i=0;i<rows.length;i++){
@@ -46,7 +46,7 @@ function search(db, user,wx_oid,callback) {
                         trialrun.push(data);
                         console.log(data);
                     }
-                    console.log(trialrun);
+                    // console.log(trialrun);
                     callback(null,trialrun);
                 }else callback(new Error("Trialrun data error."));
             }
