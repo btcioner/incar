@@ -98,19 +98,7 @@ function userEnroll(req, res) {
                 var rows=info.data;
                 if(rows.length>0){
                     var s4id=rows[0].id;
-                    if(flag == "update")
-                    {
-                        var user={
-                            name:username,
-                            wx_oid:openId+':'+ openId4S,
-                            phone:phone,
-                            nick:nickName,
-                            s4_id:s4id,
-                            tel_pwd:"000000000000"
-                        };
-                        sql = "update t_account set ? where id = ?";
-                    }
-                    else if(flag == "add")
+                    if(password != "")
                     {
                         var user={
                             name:username,
@@ -121,6 +109,24 @@ function userEnroll(req, res) {
                             s4_id:s4id,
                             tel_pwd:"000000000000"
                         };
+                    }
+                    else
+                    {
+                        var user={
+                            name:username,
+                            wx_oid:openId+':'+ openId4S,
+                            phone:phone,
+                            nick:nickName,
+                            s4_id:s4id,
+                            tel_pwd:"000000000000"
+                        };
+                    }
+                    if(flag == "update")
+                    {
+                        sql = "update t_account set ? where id = ?";
+                    }
+                    else if(flag == "add")
+                    {
                        sql="insert into t_account set ?";
                     }
                     var pool = findPool();
