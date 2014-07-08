@@ -164,9 +164,16 @@ module wxApp {
 
             this.$http.post('/mservice/enroll', postData)
                 .success((data, status, headers, config)=>{
-                    alert(this.printWord);
-                    if(WeixinJSBridge){
-                        WeixinJSBridge.call('closeWindow');
+                    if(status == "success")
+                    {
+                        alert(this.printWord);
+                        if(WeixinJSBridge){
+                            WeixinJSBridge.call('closeWindow');
+                        }
+                    }
+                    else
+                    {
+                        alert(status);
                     }
                 })
                 .error((data, status, headers, config)=>{
