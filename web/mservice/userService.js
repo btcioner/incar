@@ -98,21 +98,29 @@ function userEnroll(req, res) {
                 var rows=info.data;
                 if(rows.length>0){
                     var s4id=rows[0].id;
-                    var user={
-                        name:username,
-                        pwd:password,
-                        wx_oid:openId+':'+ openId4S,
-                        phone:phone,
-                        nick:nickName,
-                        s4_id:s4id,
-                        tel_pwd:"000000000000"
-                    };
                     if(flag == "update")
                     {
+                        var user={
+                            name:username,
+                            wx_oid:openId+':'+ openId4S,
+                            phone:phone,
+                            nick:nickName,
+                            s4_id:s4id,
+                            tel_pwd:"000000000000"
+                        };
                         sql = "update t_account set ? where id = ?";
                     }
                     else if(flag == "add")
                     {
+                        var user={
+                            name:username,
+                            pwd:password,
+                            wx_oid:openId+':'+ openId4S,
+                            phone:phone,
+                            nick:nickName,
+                            s4_id:s4id,
+                            tel_pwd:"000000000000"
+                        };
                        sql="insert into t_account set ?";
                     }
                     var pool = findPool();
@@ -228,7 +236,6 @@ function carEnroll(req,res, cb){
                 res.send({status:'failed',message:'OBD不存在'});
             }
         }
-
     });
 }
 //车辆注销
