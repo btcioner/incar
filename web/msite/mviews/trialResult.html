@@ -1,9 +1,10 @@
-<!DOCTYPE >
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>预约试驾</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <script src="../mscripts/jquery-2.1.1.min.js"></script>
     <script src="../mscripts/car.js"></script>
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css"/>
     <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css"/>
@@ -19,7 +20,7 @@
             <div class="img_04"></div>
             <!--预约保养表单contentboxstyle01 start-->
             <div class="contentboxstyle01">
-                <span class="text_03" id="note">您的预约申请已提交，<br/>我们会在48小时内通过微信与您联系，<br/>请您耐心等待，谢谢！</span></div>
+                <span class="text_03" id="note">您的预约申请已提交，<br/>您可以在'我的预约'中查看申请结果，<br/>请您耐心等待，谢谢！</span></div>
             <!--预约保养表单contentboxstyle01 end-->
         </div>
         <!--containe_280 end-->
@@ -28,9 +29,13 @@
     <!--main_wrap end-->
 </div>
 <script type="text/javascript">
+    window.onpopstate = function(event) {
+        window.history.back(2);
+    };
+
     var state = getQueryString("state");
     if (state == "0")
-        document.getElementById("note").innerHTML = "预约失败。<br>请检查网络连接是否正常。"
+        document.getElementById("note").innerHTML = "预约失败。<br>请检查网络连接是否正常。";
 </script>
 </body>
 </html>

@@ -57,7 +57,7 @@
     </div><!--预约试驾表单contentboxstyle01 end-->
     </div><!--containe_280 end-->
         <div class="w10"></div>
-        <!--regsiterbutton start--><div id="regsiterbutton"><a href="#" class="button01" onClick="submitTrialrun()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
+        <!--regsiterbutton start--><div id="regsiterbutton"><a href="javascript:void(0)" class="button01" onClick="submitTrialrun()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
     </div><!--main_wrap end-->
 </div>
 <script>
@@ -128,6 +128,7 @@
             dataType: "json",
             success: function (result,status) {
                 window.location="/msite/trialResult.html?state=1";
+
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("连接失败\n请检查网络连接是否正常");
