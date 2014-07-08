@@ -75,7 +75,7 @@ module wxApp {
 
         private update = ()=>{
             var postData:any = {
-                user: this.user_openid + '@' + this.userCfg.wx_oid.split(':')[1],
+                user: this.user_openid + '@' + this.s4_openid,
                 name: this.userCfg.name,
                 nick: this.userCfg.nick,
                 obd_code: this.userCfg.obd_code,
