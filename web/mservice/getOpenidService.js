@@ -42,7 +42,7 @@ function getOpenid(req, res) {
             return;
         }
 
-        console.error('--------data.s4_openid---->' + result[0].openid);
+        console.error('--------1.data.s4_openid---->' + result[0].openid);
 
         var url = 'https://api.weixin.qq.com/sns/oauth2/access_token?' +
             'appid=' + app_id +
@@ -50,8 +50,11 @@ function getOpenid(req, res) {
             '&code=' + code +
             '&grant_type=authorization_code';
         http.get(url, function(data){
+            console.error('--------2.data.s4_openid---->' + result[0].openid);
             data.s4_openid = result[0].openid;
-            console.error('--------data.s4_openid---->' + data.s4_openid);
+            console.error('--------3.data.s4_openid---->' + result[0].openid);
+            console.error('--------4.data.s4_openid---->' + data.s4_openid);
+            console.error('--------5.data.s4_openid---->' + data.openid);
             res.send(200, data);
         });
     });
