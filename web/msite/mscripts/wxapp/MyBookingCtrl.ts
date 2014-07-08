@@ -38,9 +38,9 @@ module wxApp{
                 // 尚未得到open_id
                 var wxoa = new WXOAuth($location);
                 wxoa.findUserOpenId((data)=>{
-                    if(!data.openid) alert(data);
+                    if(!data.user_openid) alert(data);
                     // 已经获取了open_id,查询数据
-                    this.user_openid = data.openid;
+                    this.user_openid = data.user_openid;
                     this.searchUser($http, $scope);
                 });
             }

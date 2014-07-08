@@ -22,11 +22,9 @@ module wxApp {
                 // 尚未得到open_id
                 var wxoa = new WXOAuth($location);
                 wxoa.findUserOpenId((data)=>{
-                    if(!data.openid) alert(data);
+                    if(!data.user_openid) alert(data);
                     // 已经获取了open_id,查询数据
-                    this.user_openid = data.openid;
-                    this.s4_openid = data.s4_openid;
-                    this.app_id = data.app_id;
+                    this.user_openid = data.user_openid;
                     // 初始化车品牌
                     this.InitCarBrand();
                     this.searchUser();
@@ -75,7 +73,7 @@ module wxApp {
 
         private update = ()=>{
             var postData:any = {
-                user: this.user_openid + '@' + this.s4_openid,
+                user: this.user_openid,
                 name: this.userCfg.name,
                 nick: this.userCfg.nick,
                 obd_code: this.userCfg.obd_code,
@@ -128,7 +126,6 @@ module wxApp {
         };
 
         private user_openid:string;
-        private s4_openid:string;
         private app_id:string;
         private brand:number;
         private seriesData:Array<any> = [{ series:-1, series_name:'请选择'}];
