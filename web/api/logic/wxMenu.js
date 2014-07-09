@@ -122,7 +122,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, req, next) {
     });
 };
 
-wxMenu.onClick['MYCAR.MAINTAIN'] = function(message, erq, next){
+wxMenu.onClick['MYCAR.MAINTAIN'] = function(message, req, next){
     next(null, [{
         title: "车况检测",
         description: "亲,正在开发中,马上就会有",
@@ -131,7 +131,7 @@ wxMenu.onClick['MYCAR.MAINTAIN'] = function(message, erq, next){
     }]);
 };
 
-wxMenu.onClick['MYCAR.COST'] = function(message, erq, next){
+wxMenu.onClick['MYCAR.COST'] = function(message, req, next){
     next(null, [{
         title: "车况检测",
         description: "亲,正在开发中,马上就会有",
