@@ -164,6 +164,8 @@ function getCarInfo(db, callback) {
                 });
             }
             else if(rows.length === 0){
+                report.mileage = 0;
+                report.license = "";
                 callback(null, 1);
             }else {
                 callback(new Error('zero of multiple rows returned for one acct user from account-car map.'));
