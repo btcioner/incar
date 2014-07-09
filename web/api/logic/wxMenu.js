@@ -107,7 +107,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, req, next) {
             next(null, [{
                 title: '行车分析',
                 description: '请向4S店购买并注册OBD获取此功能',
-                picurl: '',
+                picurl: url.resolve("http://" + req.headers.host, "data/logo.jpg"),
                 url: ''
             }]);
         }
@@ -120,6 +120,24 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, req, next) {
             }]);
         }
     });
+};
+
+wxMenu.onClick['MYCAR.MAINTAIN'] = function(message, erq, next){
+    next(null, [{
+        title: "车况检测",
+        description: "亲,正在开发中,马上就会有",
+        picurl:url.resolve("http://" + req.headers.host, "data/logo.jpg"),
+        url: ''
+    }]);
+};
+
+wxMenu.onClick['MYCAR.COST'] = function(message, erq, next){
+    next(null, [{
+        title: "车况检测",
+        description: "亲,正在开发中,马上就会有",
+        picurl:url.resolve("http://" + req.headers.host, "data/logo.jpg"),
+        url: ''
+    }]);
 };
 
 
