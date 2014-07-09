@@ -113,7 +113,7 @@ exports.tagListCustom= function(req,res){
 exports.searchForUsers= function(req,res){
     var s4Id=req.params.s4Id;
     var query=req.query;
-    var tagId=query.tagId;
+    var tagCode=query.tagCode;
     var nickName=query.nickName;
     var userPhone=query.userPhone;
     var license=query.license;
@@ -135,9 +135,9 @@ exports.searchForUsers= function(req,res){
         "left join t_car_dictionary d on d.brandCode=c.brand and d.seriesCode=c.series " +
         "where c.s4_id=?";
     var args=[s4Id];
-    if(tagId){
-        sql+=" and ct.tag_id=?";
-        args.push(tagId);
+    if(tagCode){
+        sql+=" and t.code=?";
+        args.push(tagCode);
     }
     else{
         if(groupId){
@@ -211,6 +211,7 @@ exports.getTagsByCarId= function(req,res){
 
     });
 }
+
 /**
  * 给车打标签
  */
