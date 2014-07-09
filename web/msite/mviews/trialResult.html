@@ -25,6 +25,9 @@
         </div>
         <!--containe_280 end-->
         <div class="w10"></div>
+        <div>
+            <a href="javascript:void(0)" onclick="quitwx()">关闭</a>
+        </div>
     </div>
     <!--main_wrap end-->
 </div>
@@ -33,6 +36,12 @@
     var state = getQueryString("state");
     if (state == "0")
         document.getElementById("note").innerHTML = "预约失败。<br>请检查网络连接是否正常。";
+
+    function quitwx(){
+        //关闭微信浏览器
+        if(WeixinJSBridge)
+            WeixinJSBridge.call('closeWindow');
+    }
 </script>
 </body>
 </html>
