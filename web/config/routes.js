@@ -6,9 +6,9 @@ var msite = require('./msite');
 var wsite = require('./wsite');
 var wservice = require('../wservice/motor');
 var mservice = require('../mservice/mservice');
-var msgService=require('../message/message');
-var tagService=require('../tag/tag');
-var alarmService=require('../alarm/alarm');
+var msgService=require('../obdService/message');
+var tagService=require('../obdService/tag');
+var alarmService=require('../obdService/alarm');
 /** 
  *  Application routes
  *  13007196492(联通卡)

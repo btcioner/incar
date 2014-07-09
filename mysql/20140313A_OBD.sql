@@ -11,7 +11,19 @@ CREATE TABLE IF NOT EXISTS t_obd_history(
     receiveDate timestamp,
     primary key (id));
 
-
+-- 创建车辆行程信息表
+CREATE TABLE IF NOT EXISTS t_obd_statistics(
+    id int auto_increment COMMENT '主键',
+    s4Id int COMMENT '4S店Id',
+    obdCode varchar(20) COMMENT 'OBD设备号',
+    year int COMMENT '年份',
+    month varchar(20) COMMENT '月份',
+    mileageMth int COMMENT '当月总里程',
+    countMth int COMMENT '当月总用车次数',
+    avgOilMth int COMMENT '当月平均油耗',
+    speedMth int COMMENT '当月平均车速',
+    type    tinyint COMMENT '统计类型1普通2当月小计'
+    primary key (id));
 -- 创建车辆行程信息表
 CREATE TABLE IF NOT EXISTS t_obd_drive(
     id int auto_increment COMMENT '主键',

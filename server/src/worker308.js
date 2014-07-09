@@ -352,6 +352,7 @@ function packetProcess_1601(dataBuffer,cb) {
                             var distance=dataManager.nextLong();
                             speedGroup.push({speed:speed,time:time,distance:distance});
                         }
+
                         //-----驾驶习惯统计
                         var speedingTime=dataManager.nextWord();       //超速行驶时间
                         var speedUp=dataManager.nextWord();            //急加速次数

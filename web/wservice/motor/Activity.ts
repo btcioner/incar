@@ -1,6 +1,6 @@
 /// <reference path="references.ts" />
 
-var mTag :any = require('../tag/tag');
+var mTag :any = require('../obdService/tag');
 var mMySQL:any = require('mysql');
 
 module Service{
