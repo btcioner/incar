@@ -10,7 +10,9 @@ exports.tagList= function(req,res){
     var brand=req.params.brand;
     var s4Id=req.params.s4Id;
     var sql="select g.id as groupId,g.name as groupName,g.type," +
-        "t.id as tagId,t.name as tagName " +
+        "t.id as tagId," +
+        "t.code as tagCode," +
+        "t.name as tagName " +
         "from t_tag_group g " +
         "left join t_tag t on t.groupId=g.id " +
         "where g.id in (2,3,4,5,6,7) " +
@@ -27,14 +29,15 @@ exports.tagList= function(req,res){
                 var groupId=rows[i].groupId;
                 var groupName=rows[i].groupName;
                 var tagId=rows[i].tagId;
+                var tagCode=rows[i].tagCode;
                 var tagName=rows[i].tagName;
                 var type=rows[i].type;
                 var group=list[groupId];
                 if(group){
-                    group['tags'].push({tagId:tagId,tagName:tagName});
+                    group['tags'].push({tagId:tagId,tagCode:tagCode,tagName:tagName});
                 }
                 else{
-                    group={groupId:groupId,groupName:groupName,type:type,tags:[{tagId:tagId,tagName:tagName}]};
+                    group={groupId:groupId,groupName:groupName,type:type,tags:[{tagId:tagId,tagCode:tagCode,tagName:tagName}]};
                     list[groupId]=group;
                 }
             }
@@ -54,7 +57,7 @@ exports.tagList= function(req,res){
 exports.tagListSystem= function(req,res){
     var brand=req.params.brand;
     var sql="select g.id as groupId,g.name as groupName," +
-        "t.id as tagId,t.name as tagName " +
+        "t.id as tagId,t.code as tagCode,t.name as tagName " +
         "from t_tag_group g " +
         "left join t_tag t on t.groupId=g.id " +
         "where g.type=? and( g.id>1 or g.id=1 and subStr(t.code,4,instr(t.code,'-')-4)=?)";
@@ -69,13 +72,14 @@ exports.tagListSystem= function(req,res){
                 var groupId=rows[i].groupId;
                 var groupName=rows[i].groupName;
                 var tagId=rows[i].tagId;
+                var tagCode=rows[i].tagCode;
                 var tagName=rows[i].tagName;
                 var group=list[groupId];
                 if(group){
-                    group['tags'].push({tagId:tagId,tagName:tagName});
+                    group['tags'].push({tagId:tagId,tagCode:tagCode,tagName:tagName});
                 }
                 else{
-                    group={groupId:groupId,groupName:groupName,tags:[{tagId:tagId,tagName:tagName}]};
+                    group={groupId:groupId,groupName:groupName,tags:[{tagId:tagId,tagCode:tagCode,tagName:tagName}]};
                     list[groupId]=group;
                 }
             }
@@ -97,7 +101,7 @@ exports.tagListCustom= function(req,res){
     var query=req.query;
     var page=parseInt(query['page']);
     var pageSize=parseInt(query['pageSize']);
-    var sql="select t.id as tagId,t.name as tagName," +
+    var sql="select t.id as tagId,t.code as tagCode,t.name as tagName," +
         "t.createTime as createTime,t.creator as creator " +
         "from t_tag t " +
         "left join t_tag_group g on t.groupId=g.id " +
@@ -180,7 +184,8 @@ exports.searchForUsers= function(req,res){
  */
 exports.getTagsByCarId= function(req,res){
     var carId=req.params['carId'];
-    var sql="select tg.type as tagType,t.id as tagId,t.name as tagName " +
+    var sql="select tg.type as tagType,t.id as tagId," +
+        "t.code as tagCode,t.name as tagName " +
         "from t_tag t " +
         "left join t_tag_group tg on tg.id=t.groupId " +
         "left join t_car_tag ct on ct.tag_id=t.id " +
@@ -196,12 +201,13 @@ exports.getTagsByCarId= function(req,res){
             for(var i=0;i<rows.length;i++){
                 var type=rows[i].tagType;
                 var tagId=rows[i].tagId;
+                var tagCode=rows[i].tagCode;
                 var tagName=rows[i].tagName;
                 if(type===0){
-                    type0.push({tagId:tagId,tagName:tagName});
+                    type0.push({tagId:tagId,tagCode:tagCode,tagName:tagName});
                 }
                 else{
-                    type1.push({tagId:tagId,tagName:tagName});
+                    type1.push({tagId:tagId,tagCode:tagCode,tagName:tagName});
                 }
             }
             var list={systemTag:type0,customTag:type1};
