@@ -103,7 +103,13 @@ wxMenu.onClick = [];
 wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, req, next) {
     myCar.myDriveReport(message.FromUserName, message.ToUserName, function(err, reportContent){
         if (err) {
-            next(err);
+            console.error(err);
+            next(null [{
+                title: '行车分析',
+                description: '请向4S店购买并注册OBD获取此功能',
+                picurl: null,
+                url: null
+            }]);
         }
         else {
             next(null, [{
