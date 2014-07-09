@@ -84,28 +84,28 @@
     }
 
     //改变车型自动加载车款
-    $scope.changeSeries = function()
-    {
-
-        if($scope.brand_id !="zero")
-        {
-            switch($scope.brand_id)
-            {
-                case 0:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"FJ酷路泽"},{id:2,name:"HIACE"},{id:3,name:"Siemma"},{id:4,name:"Venza威飒"}];
-                    break;
-                case 1:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"INSIGHT"},{id:2,name:"本田CR-Z"},{id:3,name:"飞度(进口)"},{id:4,name:"里程"}];
-                    break;
-                case 2:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"碧莲"},{id:2,name:"风度"},{id:3,name:"风雅"},{id:4,name:"贵士"}];
-                    break;
-                case 3:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"ASX劲炫(进口)"},{id:2,name:"LANCER"},{id:3,name:"格鲁迪(进口)"},{id:4,name:"欧蓝德(进口)"}];
-                    break;
-            }
-        }
-    }
+//    $scope.changeSeries = function()
+//    {
+//
+//        if($scope.brand_id !="zero")
+//        {
+//            switch($scope.brand_id)
+//            {
+//                case 0:
+//                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"FJ酷路泽"},{id:2,name:"HIACE"},{id:3,name:"Siemma"},{id:4,name:"Venza威飒"}];
+//                    break;
+//                case 1:
+//                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"INSIGHT"},{id:2,name:"本田CR-Z"},{id:3,name:"飞度(进口)"},{id:4,name:"里程"}];
+//                    break;
+//                case 2:
+//                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"碧莲"},{id:2,name:"风度"},{id:3,name:"风雅"},{id:4,name:"贵士"}];
+//                    break;
+//                case 3:
+//                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"ASX劲炫(进口)"},{id:2,name:"LANCER"},{id:3,name:"格鲁迪(进口)"},{id:4,name:"欧蓝德(进口)"}];
+//                    break;
+//            }
+//        }
+//    }
 
 
     //按条件筛选行车数据行车数据
@@ -147,7 +147,7 @@
       {
           case "approve":
               if(confirm("是否确定已确认?")){
-                  $scope.postData = {op:"approve"};
+                  $scope.postData = {op:"approve",};
                   $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                       if(data.status=="ok")
                       {

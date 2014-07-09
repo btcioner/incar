@@ -38,6 +38,10 @@ function s_customerCtrl($scope, $http,$routeParams){
             getCustomTagList();
             changeView(3);
         }
+        else if($routeParams.id1 == "ALL")
+        {
+               $scope.queryString ="";
+        }
         else{
                 $scope.queryString = "&groupId="+$routeParams.id1;
          }
