@@ -62,7 +62,7 @@ function getAccountInfo(db, userName, callback) {
                 // 2014世界杯德国7-1大胜巴西纪念日
                 if(rows.length === 0){
                     // 当前用户是一个仅仅关注的用户,需要由系统自动产生一个帐号
-                    pool.query("SELECT id FROM t_4s WHERE openid = ?", [s4_wx_oid], function(ex, result){
+                    pool.query("SELECT id, brand FROM t_4s WHERE openid = ?", [s4_wx_oid], function(ex, result){
                         if(ex) { callback(ex); }
                         else if(result.length === 0){ callback(new Error('没有找到匹配微信服务号的4S店')); }
                         else{
@@ -74,6 +74,7 @@ function getAccountInfo(db, userName, callback) {
                                 tel_pwd: '00000000',
                                 nick: '微信匿名用户'
                             };
+                            var s4_brand = result[0].brand;
                             pool.query("INSERT INTO t_account SET ?", [wx_user], function (ex, result) {
                                 if(ex) return callback(ex);
                                 else{
@@ -83,6 +84,7 @@ function getAccountInfo(db, userName, callback) {
                                     report.phone = null;
                                     report.nick = wx_user.name;
                                     report.wx_oid = wx_user.wx_oid;
+                                    report.brand = s4_brand;
                                     callback(null, 1);
                                 }
                             });
@@ -154,12 +156,16 @@ function getCarInfo(db, callback) {
                             };
                             task.begin();
 
-                        } else {
+                        }
+                        else {
                             callback(new Error('zero of multiple rows returned for obd_code from car_info table.'));
                         }
                     }
                 });
-            } else {
+            }
+            else if(rows.length === 0){
+                callback(null, 1);
+            }else {
                 callback(new Error('zero of multiple rows returned for one acct user from account-car map.'));
             }
         }
