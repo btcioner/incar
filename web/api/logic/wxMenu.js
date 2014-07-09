@@ -31,7 +31,7 @@ var menuObject={
                         },
                         {
                             "type":"click",
-                            "name":"远程检测",
+                            "name":"车况检测",
                             "key":"MYCAR.MAINTAIN"
                         },
                         {
