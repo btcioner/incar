@@ -67,13 +67,14 @@
                             <th class="tablestyle-02">{{triesDetail.json_args.series_name}}</th>
                             <th class="tablestyle-01">预约时间</th>
                             <th class="tablestyle-02">{{triesDetail.working_time}}</th>
-                            <th class="tablestyle-01">操作时间</th>
-                            <th class="tablestyle-02" ng-show="newApplyOper"><button class='btn btn-success'  ng-click='OperationChild("approve");'>确认</button>
+                            <th class="tablestyle-01">操作</th>
+
+                            <th class="tablestyle-02" colspan="2"><button class='btn btn-success'  ng-click='OperationChild("approve");'>确认</button>
                                 &nbsp;&nbsp;&nbsp;<button class='btn btn-success'  ng-click='OperationChild("reject");'>拒绝</button></th>
                             </th>
-                            <th  class="tablestyle-02" ng-show="completeOper"><button class='btn btn-success'  ng-click='OperationChild("cancel");'>取消</button>&nbsp;&nbsp;&nbsp;
-                                <button class='btn btn-success'  ng-click='OperationChild("abort")'>未到店</button>&nbsp;&nbsp;&nbsp;
-                                <button class='btn btn-success'  ng-click='OperationChild("done")'>已完成</button></th>
+                            <!--<th  class="tablestyle-02" ng-show="completeOper"><button class='btn btn-success'  ng-click='OperationChild("cancel");'>取消</button>&nbsp;&nbsp;&nbsp;-->
+                                <!--<button class='btn btn-success'  ng-click='OperationChild("abort")'>未到店</button>&nbsp;&nbsp;&nbsp;-->
+                                <!--<button class='btn btn-success'  ng-click='OperationChild("done")'>已完成</button></th>-->
                         </tr>
 
                         </thead>

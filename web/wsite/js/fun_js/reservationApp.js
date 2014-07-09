@@ -65,6 +65,13 @@ angular.module("SReservationApp", [
                     $("#a_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
                 }
             }
+            else if(id == 2)
+            {
+                for(var i=1;i<4;i++)
+                {
+                    $("#b_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+                }
+            }
         }
         $scope.changeLeftSmallBar = function(id)
         {
@@ -77,6 +84,20 @@ angular.module("SReservationApp", [
                 }
                 else{
                     $("#a_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+                }
+            }
+        }
+        $scope.changeLeftSmallBar_1 = function(id)
+        {
+            $scope.randomTime = new Date();
+            for(var i=1;i<4;i++)
+            {
+                if(i==id)
+                {
+                    $("#b_"+i).removeClass().addClass("btn btn-menu sidebar_a_s");
+                }
+                else{
+                    $("#b_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
                 }
             }
         }

@@ -156,16 +156,16 @@ var randomTime = new Date();
         switch(status)
         {
             case 1:
-                return "发动机点火时";
+                return "启动";
                 break;
             case 2:
-                return "发动机运行中";
+                return "行驶中";
                 break;
             case 3:
-                return "发动机熄火时";
+                return "熄火";
                 break;
             case 4:
-                return "发动机熄火后";
+                return "OBD待机";
                 break;
             case 5:
                 return "车辆不能检测";
