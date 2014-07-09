@@ -14,63 +14,63 @@ angular.module("SCustomerApp", [
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//车系
         })
-        .when('/collapseG_1/:id',{
+        .when('/collapseG_1/:id1/:id',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
-        .when('/collapseG_2',{
+        .when('/collapseG_2/:id1',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
-        .when('/collapseG_2/:id',{
+        .when('/collapseG_2/:id1/:id',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
-        .when('/collapseG_3',{
+        .when('/collapseG_3/:id1',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用车频率
         })
-        .when('/collapseG_3/:id',{
+        .when('/collapseG_3/:id1/:id',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
-        .when('/collapseG_4',{
+        .when('/collapseG_4/:id1',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//驾驶偏好
         })
-        .when('/collapseG_4/:id',{
+        .when('/collapseG_4/:id1/:id',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
-        .when('/collapseG_5',{
+        .when('/collapseG_5/:id1',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//车龄
         })
-        .when('/collapseG_5/:id',{
+        .when('/collapseG_5/:id1/:id',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
-        .when('/collapseG_6',{
+        .when('/collapseG_6/:id1',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//渠道
         })
-        .when('/collapseG_6/:id',{
+        .when('/collapseG_6/:id1/:id',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
-        .when('/collapseG_7',{
+        .when('/collapseG_7/:id1',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用车时段
         })
-        .when('/collapseG_7/:id',{
+        .when('/collapseG_7/:id1/:id',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//用途
         })
-        .when('/collapseG_X',{
+        .when('/collapseG_X/:id1',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//自定义标签
         })
-        .when('/collapseG_X/:id',{
+        .when('/collapseG_X/:id1/:id',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//自定义标签
         })
@@ -97,7 +97,7 @@ angular.module("SCustomerApp", [
                 $scope.tagsGroup = data.data;
                 for(var i=0;i<$scope.tagsGroup.length;i++)
                 {
-                    $scope.tagsGroup[i].link = "#collapseG_"+ $scope.tagsGroup[i].groupId;
+                    $scope.tagsGroup[i].link = "#collapseG_"+ $scope.tagsGroup[i].groupId+"/"+(i+1);
                     $scope.tagsGroup[i].fid = "collapseG_"+ $scope.tagsGroup[i].groupId;
 //                    if(i==0)
 //                    {
@@ -173,6 +173,7 @@ angular.module("SCustomerApp", [
 
 function s_statisticsCtrl($scope,$http)
 {
+
     $scope.countDiv = true;
     $scope.randomTime = new Date();
     $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?t"+$scope.randomTime).success(function(data){

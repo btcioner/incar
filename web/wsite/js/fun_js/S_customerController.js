@@ -28,17 +28,19 @@ function s_customerCtrl($scope, $http,$routeParams){
 
     if($routeParams.id!=null)
     {
-        if($routeParams.id == "X")
+
+            $scope.queryString = "&groupId="+$routeParams.id1+"&tagId="+$routeParams.id;
+
+    }
+    else{
+        if($routeParams.id1 == "X")
         {
             getCustomTagList();
             changeView(3);
         }
         else{
-            $scope.queryString = "&tagId="+$routeParams.id;
-        }
-    }
-    else if($routeParams.id1!=null){
-            $scope.queryString = "&groupId="+$routeParams.id;
+                $scope.queryString = "&groupId="+$routeParams.id1;
+         }
     }
 
     //获取自定义标签列表

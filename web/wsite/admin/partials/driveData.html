@@ -62,7 +62,7 @@
                           <th class="tablestyle-01">累计平均油耗</th>
                           <th class="tablestyle-02">{{driveDetail.avgOilUsed}}</th>
                           <th class="tablestyle-01">累计行驶里程</th>
-                          <th class="tablestyle-02">{{driveDetail.currentMileage}}</th>
+                          <th class="tablestyle-02">{{driveDetail.mileage}}</th>
                       </tr>
                       <tr>
                           <th class="tablestyle-01">1速段里程</th>
@@ -222,7 +222,7 @@
                         <td id="tdc">{{device.obdCode}}</td>
                         <td id="tdc">{{device.vin}}</td>
                         <td id="tdc">{{device.fireTime}}</td>
-                        <td id="tdc">{{device.mileage}}</td>
+                        <td id="tdc">{{device.currentMileage/1000}}</td>
                         <td id="tdc">{{device.carStatus}}</td>
                         <td id="tdc">
                             <a class="btn btn-info btn-mini" ng-click="GetDriveDetail(device.obdCode,device.id,$index);">查看</a>
