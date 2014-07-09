@@ -10,7 +10,7 @@ var util = require('util');
 exports = module.exports = function() {
     if (! global.poolInCar) {
 
-        var host = process.env.INCAR_MySQLHost || '42.159.152.121';
+        var host = process.env.INCAR_MySQLHost || '114.215.172.92';
         var user = process.env.INCAR_MySQLUser || 'incarapp';
         var pwd = process.env.INCAR_MySQLPwd || 'nodejs4WMQ';
 

@@ -9,22 +9,34 @@ var mservice = require('../mservice/mservice');
 var msgService=require('../obdService/message');
 var tagService=require('../obdService/tag');
 var alarmService=require('../obdService/alarm');
+var timingStaService=require('../obdService/timingStatistics');
+var travelReportService=require('../obdService/travelReport');
 /** 
  *  Application routes
  *  13007196492(联通卡)
  */
 module.exports = function(app) {
-    //车辆相关
-    /*app.get('/wservice/car', wsCar.list);
-    app.get('/wservice/car/:id', wsCar.get);
-    app.delete('/wservice/car/:id', wsCar.delete);
-    app.post('/wservice/car', wsCar.add);
-    app.put('/wservice/car/:id', wsCar.update);*/
-
+    //标签
+    app.get('/tag/tagList/:s4Id/:brand',tagService.tagList);     //获取所有标签信息(通过系列过滤)
+    app.get('/tag/tagListSystem/:brand',tagService.tagListSystem);//获取所有系统标签信息(通过系列过滤)
+    app.get('/tag/tagListCustom/:s4Id',tagService.tagListCustom);    //获取所有自定义标签信息
+    app.get('/tag/searchByTags/:tags',tagService.searchByTags); //通过标签查询车辆信息
+    app.get('/tag/getTagsByCarId/:carId',tagService.getTagsByCarId); //通过车Id查询标签信息
+    app.get('/tag/searchForUsers/:s4Id',tagService.searchForUsers);   //通过条件查询车辆信息
+    app.put('/tag/markTags',tagService.markTags);               //给指定车辆打上自定义标签
+    app.post('/tag/addTag',tagService.addTag);                  //添加自定义标签
+    app.delete('/tag/delTag/:tagId',tagService.delTag);            //删除自定义标签
+    //碰撞报警
+    app.get('/alarm/:s4Id',alarmService.allCollideRemind);      //获取碰撞提醒信息
+    app.put('/alarm/:remindId',alarmService.careCollideRemind);            //关怀碰撞提醒信息
     //短信
     app.post('/message/obdTestSend/:obdCode', msgService.obdTestSend);
     app.post('/message/obdTestReceive/:obdCode', msgService.obdTestReceive);
-
+    //定时调度
+    app.put('/timing/buildTags',timingStaService.buildTags);             //重算车辆信息并打上标签
+    app.put('/timing/buildObdByMonth',timingStaService.buildObdInfoByMonth);//OBD统计信息计算
+    //行车报告
+    app.get('/travelReport/loadTravelReport/:s4Id/:obdCode',travelReportService.loadTravelReport);//获得行车报告
     // Routes for wsite service
     var authCheck = [wservice.CheckAuthority];
 
@@ -77,19 +89,7 @@ module.exports = function(app) {
     app.post('/wservice/mobi/drivetry', wservice.Get4SDriveTry);
     app.post('/wservice/mobi/drivetry/:id/:action', wservice.Action4SDriveTry);
 
-    app.get('/tag/tagList/:s4Id/:brand',tagService.tagList);     //获取所有标签信息(通过系列过滤)
-    app.get('/tag/tagListSystem/:brand',tagService.tagListSystem);//获取所有系统标签信息(通过系列过滤)
-    app.get('/tag/tagListCustom/:s4Id',tagService.tagListCustom);    //获取所有自定义标签信息
-    app.put('/tag/buildTags',tagService.buildTags);             //重算车辆信息并打上标签
-    app.get('/tag/searchByTags/:tags',tagService.searchByTags); //通过标签查询车辆信息
-    app.get('/tag/getTagsByCarId/:carId',tagService.getTagsByCarId); //通过车Id查询标签信息
-    app.get('/tag/searchForUsers/:s4Id',tagService.searchForUsers);   //通过条件查询车辆信息
-    app.put('/tag/markTags',tagService.markTags);               //给指定车辆打上自定义标签
-    app.post('/tag/addTag',tagService.addTag);                  //添加自定义标签
-    app.delete('/tag/delTag/:tagId',tagService.delTag);            //删除自定义标签
 
-    app.get('/alarm/:s4Id',alarmService.allCollideRemind);      //获取碰撞提醒信息
-    app.put('/alarm/:remindId',alarmService.careCollideRemind);            //关怀碰撞提醒信息
 
     app.get('/wservice/cmpx/4s', authCheck, wservice.Get4SwithAdmin);
     app.post('/wservice/cmpx/4s', authCheck, wservice.Add4SwithAdmin);
