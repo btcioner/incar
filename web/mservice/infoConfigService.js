@@ -40,6 +40,9 @@ function infoConfig(req, res) {
 
 function getAccountInfo(db, userName, callback) {
     var pool = db();
+    var temp = userName.split('@');
+    var user_wx_oid = temp[0];
+    var s4_wx_oid = temp[1];
     var usrName = userName.replace('@', ':');
 
     pool.query('select id,s4_id,wx_oid,name,nick,phone from t_account where wx_oid = ?', [usrName], function (err, rows) {
@@ -56,7 +59,38 @@ function getAccountInfo(db, userName, callback) {
                 report.wx_oid = rows[0].wx_oid;
                 callback(null, 1);
             } else {
-                callback(new Error('zero of multiple rows returned for one wx user from t_account map.'));
+                // 2014世界杯德国7-1大胜巴西纪念日
+                if(rows.length === 0){
+                    // 当前用户是一个仅仅关注的用户,需要由系统自动产生一个帐号
+                    pool.query("SELECT id FROM t_4s WHERE openid = ?", [s4_wx_oid], function(ex, result){
+                        if(ex) { callback(ex); }
+                        else if(result.length === 0){ callback(new Error('没有找到匹配微信服务号的4S店')); }
+                        else{
+                            var wx_user = {
+                                s4_id: result[0].id,
+                                name: 'wx_' + user_wx_oid,
+                                pwd: '00000000',
+                                wx_oid: usrName,
+                                tel_pwd: '00000000',
+                                nick: '微信匿名用户'
+                            };
+                            pool.query("INSERT INTO t_account SET ?", [wx_user], function (ex, result) {
+                                if(ex) return callback(ex);
+                                else{
+                                    report.id = result.insertId;
+                                    report.s4_id = wx_user.s4_id;
+                                    report.name = wx_user.name;
+                                    report.phone = null;
+                                    report.nick = wx_user.name;
+                                    report.wx_oid = wx_user.wx_oid;
+                                    callback(null, 1);
+                                }
+                            });
+                        }
+                    });
+                }
+                else
+                    callback(new Error('multiple rows returned for one wx user from t_account map.'));
             }
         }
     });
