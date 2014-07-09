@@ -8,11 +8,11 @@ var mysql = require('mysql');
 function getOrgId(db, userName,sopenid, callback) {
     console.log("username:"+userName+":"+sopenid);
     var pool = db();
-    pool.query('select s4_id from t_account where wx_oid like ?;',["%"+userName+":"+sopenid+"%"], function(err, rows){
+    pool.query('select id from t_4s where openid = ? ;',[sopenid], function(err, rows){
         if (err) { callback(err); }
         else {
             if (rows && rows.length === 1) {
-                         callback(null, rows[0].s4_id);
+                         callback(null, rows[0].id);
                         } else { callback(new Error('zero or multiple rows () returned for one wx user id.')); }
                     }
             });
