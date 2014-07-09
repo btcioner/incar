@@ -107,8 +107,8 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, req, next) {
             next(null [{
                 title: '行车分析',
                 description: '请向4S店购买并注册OBD获取此功能',
-                picurl: null,
-                url: null
+                picurl: '',
+                url: ''
             }]);
         }
         else {
