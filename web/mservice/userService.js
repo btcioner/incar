@@ -82,7 +82,8 @@ function userEnroll(req, res) {
         var openId4S=temp[1];
         var phone=params.phone;
         var nickName=params.nick;
-
+        var flag = params.flag;
+        var id = params.id;
         if(!openId4S) {
             res.json({status:'failure',message:"user参数应该形如 oAPKMuL3dNs0NMuL3d34PpxMI@gh_2ca612000ed0"});
             return;
@@ -97,27 +98,58 @@ function userEnroll(req, res) {
                 var rows=info.data;
                 if(rows.length>0){
                     var s4id=rows[0].id;
-                    var user={
-                        name:username,
-                        pwd:password,
-                        wx_oid:openId+':'+ openId4S,
-                        phone:phone,
-                        nick:nickName,
-                        s4_id:s4id,
-                        tel_pwd:"000000000000"
-                    };
-                    sql="insert into t_account set ?";
-                    dao.insertBySql(sql,user,function(info){
-                        if(info.err){
-                            info.message='添加账户失败';
-                            res.json(info);
+                    if(password != null && password !="")
+                    {
+                        var user={
+                            name:username,
+                            pwd:password,
+                            wx_oid:openId+':'+ openId4S,
+                            phone:phone,
+                            nick:nickName,
+                            s4_id:s4id,
+                            tel_pwd:"000000000000"
+                        };
+                    }
+                    else
+                    {
+                        var user={
+                            name:username,
+                            wx_oid:openId+':'+ openId4S,
+                            phone:phone,
+                            nick:nickName,
+                            s4_id:s4id,
+                            tel_pwd:"000000000000"
+                        };
+                    }
+                    if(flag == "update")
+                    {
+                        sql = "update t_account set ? where id = ?";
+                    }
+                    else if(flag == "add")
+                    {
+                       sql="insert into t_account set ?";
+                    }
+                    var pool = findPool();
+                    pool.query(sql,[user,id],function(err, info){
+                        if(err){
+                            if(flag=="update")
+                            {
+                                res.json({status:'修改账户失败'});
+                            }
+                            else if(flag == "add")
+                            {
+                                res.json({status:'添加账户失败'});
+                            }
                         }
                         else{
-                            var accountId=info.data.id;
+                            var accountId=info.insertId;
                             user.id = accountId;
                             req.body.user = user;
                             carEnroll(req,res, function(ex){
-                                if(ex) { res.json(ex); return; }
+                                if(ex) {
+                                    pool.query('DELETE FROM t_account WHERE id=?', [accountId], function(){});
+                                    res.json(ex); return;
+                                }
                                 res.json({status:'success',accountId:accountId});
                             });
                         }
@@ -134,8 +166,8 @@ function userEnroll(req, res) {
 function carEnroll(req,res, cb){
     var params=req.body;
     var obdCode=params.obd_code;
-    var brand=params.brandCode;
-    var series=params.seriesCode;
+    var brand=params.brand;
+    var series=params.series;
     var modelYear=params.modelYear;
     var license=params.license;
     var mileage=params.mileage;
@@ -145,7 +177,7 @@ function carEnroll(req,res, cb){
     var disp=params.disp;
     var engine_type=params.engine_type;
     var user=params.user;
-
+    var flag = params.flag;
     if(!user) console.error("===>传入的参数缺少user!!!");
 
     //var s4Id=user.s4_id;
@@ -182,8 +214,16 @@ function carEnroll(req,res, cb){
                     }
 
                     // 建立t_car_user;
-                    var sql = "INSERT t_car_user(s4_id,acc_id,car_id,user_type) values(?,?,?,?)";
-                    pool.query(sql, [user.s4_id, user.id, id, 1], function(ex, result){
+                    if(flag =="update")
+                    {
+                        user.id = params.id;
+                        var sql = "update t_car_user set s4_id=?,car_id=?,user_type=? where acc_id=?"
+                    }else if(flag=="add")
+                    {
+                       var sql = "INSERT t_car_user(s4_id,car_id,user_type,acc_id) values(?,?,?,?)";
+                    }
+
+                    pool.query(sql, [user.s4_id,  id, 1,user.id], function(ex, result){
                         if(ex) {
                             console.log(ex);
                             if(cb) cb(ex);
@@ -202,7 +242,6 @@ function carEnroll(req,res, cb){
                 res.send({status:'failed',message:'OBD不存在'});
             }
         }
-
     });
 }
 //车辆注销

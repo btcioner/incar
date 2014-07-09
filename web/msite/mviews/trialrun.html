@@ -16,6 +16,7 @@
     <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
     <script src="../mscripts/angular.min.js"></script>
     <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/angular-route.min.js"></script>
     <script src="../mscripts/wxapp.js"></script>
 
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
@@ -56,7 +57,7 @@
     </div><!--预约试驾表单contentboxstyle01 end-->
     </div><!--containe_280 end-->
         <div class="w10"></div>
-        <!--regsiterbutton start--><div id="regsiterbutton"><a href="#" class="button01" onClick="submitTrialrun()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
+        <!--regsiterbutton start--><div id="regsiterbutton"><a href="javascript:void(0)" class="button01" onClick="submitTrialrun()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
     </div><!--main_wrap end-->
 </div>
 <script>
@@ -112,7 +113,7 @@
         postData.s4_id=document.getElementById("s4_id").value;
         postData.name=document.getElementById("name").value;
         postData.phone=document.getElementById("phone").value;
-        postData.seriesName=document.getElementById("seriesName").value;
+        postData.seriesName= $("#seriesName").find("option:selected").text(); // document.getElementById("seriesName").value;
         postData.bookDate=document.getElementById("start").value;
         postData.bookTime=document.getElementById("end").value;
 
@@ -127,6 +128,7 @@
             dataType: "json",
             success: function (result,status) {
                 window.location="/msite/trialResult.html?state=1";
+
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("连接失败\n请检查网络连接是否正常");

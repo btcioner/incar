@@ -25,19 +25,26 @@ function s_customerCtrl($scope, $http,$routeParams){
     $scope.obd_code="";
     $scope.label_name="";
     //按照传过来的参数
+
     if($routeParams.id!=null)
     {
-        if($routeParams.id == "X")
+
+            $scope.queryString = "&groupId="+$routeParams.id1+"&tagId="+$routeParams.id;
+
+    }
+    else{
+        if($routeParams.id1 == "X")
         {
             getCustomTagList();
             changeView(3);
         }
-        else{
-            $scope.queryString = "&tagId="+$routeParams.id;
+        else if($routeParams.id1 == "ALL")
+        {
+               $scope.queryString ="";
         }
-    }
-    else{
-         //  $scope.queryString = "&org_id="+ $.cookie("s4_id");
+        else{
+                $scope.queryString = "&groupId="+$routeParams.id1;
+         }
     }
 
     //获取自定义标签列表

@@ -20,15 +20,15 @@ CREATE TABLE IF NOT EXISTS t_slot_booking(
     storeId INT UNSIGNED NOT NULL COMMENT '组织ID、4S店ID',
 
     slot_location VARCHAR(64) COMMENT '工位物理空间信息',
-    slot_time timestamp NOT NULL COMMENT '工位时间信息',
+    slot_time DATETIME NOT NULL COMMENT '工位时间信息',
 
     promotion_id INT UNSIGNED COMMENT '是否是某次营销优惠活动中的，如是，这里填写活动中的PromotionSlotID，如不是则为NULL。',
 
     channel VARCHAR(32) NOT NULL COMMENT '申请渠道 weixin mobileApp website telephone',
     channel_specific VARCHAR(256) COMMENT '申请渠道指定信息',
 
-    booking_time timestamp NOT NULL COMMENT '预约申请时间',
-    booking_status TINYINT NOT NULL DEFAULT '0' COMMENT '预约申请状态 0-无效 1-已申请待确认 2-被拒 3-成功批准 4-被取消',
+    booking_time DATETIME NOT NULL COMMENT '预约申请时间',
+    booking_status TINYINT NOT NULL DEFAULT '0' COMMENT '预约申请状态 0-无效 1-已申请待确认 2-被拒 3-成功批准 4-被取消 5-已完成 6-未到店',
 
     tc VARCHAR(256) COMMENT '记录操作用户名',
     ts timestamp COMMENT '记录操作时间戳',
@@ -45,7 +45,7 @@ create table IF NOT EXISTS `t_trialrun`(
    `phone` varchar(20) COMMENT '电话，已注册用户可从t_account读出',
     channel VARCHAR(32) NOT NULL COMMENT '申请渠道 weixin mobileApp website telephone',
     channel_specific VARCHAR(256) COMMENT '申请渠道指定信息',
-   `bookStatus` int(4) DEFAULT '0' COMMENT '预约状态：0-无效 1-已申请待确认 2-被拒 3-成功批准 4-被取消 ',
+   `bookStatus` int(4) DEFAULT '0' COMMENT '预约状态：0-无效 1-已申请待确认 2-被拒 3-成功批准 4-被取消 5-已完成 6-未到店 ',
 
    tc VARCHAR(32) COMMENT '记录操作用户名',
    ts timestamp COMMENT '记录操作时间戳',

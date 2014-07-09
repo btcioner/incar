@@ -9,7 +9,7 @@ var opt = {
     port: 1234
 };
 function getSimByObdCode(obdCode,cb){
-    var sql="select sim_number as sim from t_car_info where obd_code=?";
+    var sql="select sim_number as sim from t_car where obd_code=?";
     dao.findBySql(sql,[obdCode],function(rows){
         if(rows.length>0){
             var sim=rows[0].sim;

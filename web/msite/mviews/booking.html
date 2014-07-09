@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +35,7 @@
     <div id="main_wrap">
         <!--containe_280 start--><div id="containe_280">
         <div class="img_01"></div>
-        <!--预约保养表单contentboxstyle01 start--><div class="contentboxstyle01" id="bookStatus">
+        <!--预约保养表单contentboxstyle01 start--><div class="contentboxstyle01" id="bookStatus" style="text-shadow: none;">
         <div class="formstyle01"><ul><li style="text-shadow:none;">车主姓名*：</li><li><input name="ownerName" id="ownerName" type="text" class="w190" /></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li style="text-shadow:none;">联系电话*：</li><li><input name="phone" id="phone" type="text" class="w190" /></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li style="text-shadow:none;">车&nbsp;&nbsp;牌&nbsp;&nbsp;号*：</li><li><input name="license" id="license" type="text" class="w190" /></li></ul><div class="clear"></div></div>
@@ -123,7 +123,7 @@
                             success: function (result,status) {
                                 //alert(result.fuelData.length);
                                 document.getElementById("bookStatus").innerHTML="<h2 style='text-align: center'>您的预约申请已提交，<br>"+
-                                        " 我们会在48小时内通过微信与您联系，<br>"+
+                                        "您可以在'我的预约'中查看申请结果，<br>"+
                                         "请您注意查看，谢谢！</h2>";
                                 document.getElementById("regsiterbutton").innerHTML='';
                             },

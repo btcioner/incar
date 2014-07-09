@@ -222,7 +222,7 @@
                         <td id="tdc">{{device.obdCode}}</td>
                         <td id="tdc">{{device.vin}}</td>
                         <td id="tdc">{{device.fireTime}}</td>
-                        <td id="tdc">{{device.mileage}}</td>
+                        <td id="tdc">{{device.currentMileage/1000}}</td>
                         <td id="tdc">{{device.carStatus}}</td>
                         <td id="tdc">
                             <a class="btn btn-info btn-mini" ng-click="GetDriveDetail(device.obdCode,device.id,$index);">查看</a>

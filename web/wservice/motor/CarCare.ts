@@ -346,8 +346,8 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "保养申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    sql = "UPDATE t_slot_booking SET booking_status = 3, tc = ?, ts = ? WHERE id = ?";
-                                    dac.query(sql, [userLogin.dto.nick, new Date(), this.work_ref_id], (ex, result)=>{
+                                    sql = "UPDATE t_slot_booking SET booking_status = 3, tc = ? WHERE id = ?";
+                                    dac.query(sql, [userLogin.dto.nick, this.work_ref_id], (ex, result)=>{
                                         if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
                                         else{
                                             res.json({status:"ok"});
@@ -382,8 +382,8 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "拒绝申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    sql = "UPDATE t_slot_booking SET booking_status = 2, tc = ?, ts = ? WHERE id = ?";
-                                    dac.query(sql, [userLogin.dto.nick, new Date(), this.work_ref_id], (ex, result)=>{
+                                    sql = "UPDATE t_slot_booking SET booking_status = 2, tc = ? WHERE id = ?";
+                                    dac.query(sql, [userLogin.dto.nick, this.work_ref_id], (ex, result)=>{
                                         if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
                                         else{
                                             res.json({status:"ok"});
@@ -420,8 +420,8 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "取消申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    sql = "UPDATE t_slot_booking SET booking_status = 4, tc = ?, ts = ? WHERE id = ?";
-                                    dac.query(sql, [userLogin.dto.nick, new Date(), this.work_ref_id], (ex, result)=>{
+                                    sql = "UPDATE t_slot_booking SET booking_status = 4, tc = ? WHERE id = ?";
+                                    dac.query(sql, [userLogin.dto.nick, this.work_ref_id], (ex, result)=>{
                                         if(ex){ res.json(new Service.TaskException(-1, "修改预约状态失败", ex)); return; }
                                         else{
                                             res.json({status:"ok"});
@@ -456,7 +456,11 @@ module Work{
                             dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                 if(ex) {res.json(new Service.TaskException(-1, "中止申请成功,但记录日志失败", ex)); return; }
                                 else{
-                                    res.json({status:"ok"});
+                                    sql = "UPDATE t_slot_booking SET booking_status = 6 WHERE id = ?";
+                                    dac.query(sql, [this.work_ref_id], (ex, result)=>{
+                                        if(ex) { res.json(new Service.TaskException(-1, "微信状态修改失败", ex)); return;}
+                                        res.json({status:"ok"});
+                                    });
                                 }
                             });
                         }
@@ -474,7 +478,7 @@ module Work{
                 else{
                     var dac = Service.MySqlAccess.RetrievePool();
                     var sql = "SELECT max(D.mileage) AS max_mileage, sum(D.runtime)/60 AS sum_hour\n" +
-                        "FROM t_obd_drive D, t_car_info C WHERE C.obd_code = D.obdCode and C.id = ?\n" +
+                        "FROM t_obd_drive D, t_car C WHERE C.obd_code = D.obdCode and C.id = ?\n" +
                         "GROUP BY C.id";
                     dac.query(sql, [this.car_id], (ex, result)=>{
                         var mileage = 0, hour = 0;
@@ -504,7 +508,11 @@ module Work{
                                 dac.query(sql, [this.id, this.work, this.step, this.json_args], (ex ,result)=>{
                                     if(ex) {res.json(new Service.TaskException(-1, "完成保养成功,但记录日志失败", ex)); return; }
                                     else{
-                                        res.json({status:"ok"});
+                                        sql = "UPDATE t_slot_booking SET booking_status = 5 WHERE id=?";
+                                        dac.query(sql, [this.work_ref_id], (ex, result)=>{
+                                            if(ex) { res.json(new Service.TaskException(-2, '微信状态修改失败', ex)); return; }
+                                            else res.json({status:"ok"});
+                                        });
                                     }
                                 });
                             }
@@ -530,7 +538,7 @@ module Work{
                 if (ex) { res.json(new Service.TaskException(-1, "获取操作员失败", ex)); return; }
                 else {
                     var sql = "SELECT max(D.mileage) AS max_mileage, sum(D.runtime)/60 AS sum_hour\n" +
-                        "FROM t_obd_drive D, t_car_info C WHERE C.obd_code = D.obdCode and C.id = ?\n" +
+                        "FROM t_obd_drive D, t_car C WHERE C.obd_code = D.obdCode and C.id = ?\n" +
                         "GROUP BY C.id";
                     dac.query(sql, [this.car_id], (ex, result)=>{
                         var json_args = {via:"web", reason: req.body.reason, oper: userLogin.dto.nick, care_mileage:0, care_hour:0 };

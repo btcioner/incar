@@ -84,28 +84,28 @@
     }
 
     //改变车型自动加载车款
-    $scope.changeSeries = function()
-    {
-
-        if($scope.brand_id !="zero")
-        {
-            switch($scope.brand_id)
-            {
-                case 0:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"FJ酷路泽"},{id:2,name:"HIACE"},{id:3,name:"Siemma"},{id:4,name:"Venza威飒"}];
-                    break;
-                case 1:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"INSIGHT"},{id:2,name:"本田CR-Z"},{id:3,name:"飞度(进口)"},{id:4,name:"里程"}];
-                    break;
-                case 2:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"碧莲"},{id:2,name:"风度"},{id:3,name:"风雅"},{id:4,name:"贵士"}];
-                    break;
-                case 3:
-                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"ASX劲炫(进口)"},{id:2,name:"LANCER"},{id:3,name:"格鲁迪(进口)"},{id:4,name:"欧蓝德(进口)"}];
-                    break;
-            }
-        }
-    }
+//    $scope.changeSeries = function()
+//    {
+//
+//        if($scope.brand_id !="zero")
+//        {
+//            switch($scope.brand_id)
+//            {
+//                case 0:
+//                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"FJ酷路泽"},{id:2,name:"HIACE"},{id:3,name:"Siemma"},{id:4,name:"Venza威飒"}];
+//                    break;
+//                case 1:
+//                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"INSIGHT"},{id:2,name:"本田CR-Z"},{id:3,name:"飞度(进口)"},{id:4,name:"里程"}];
+//                    break;
+//                case 2:
+//                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"碧莲"},{id:2,name:"风度"},{id:3,name:"风雅"},{id:4,name:"贵士"}];
+//                    break;
+//                case 3:
+//                    $scope.carSeries=[{id:0,name:"请选择"},{id:1,name:"ASX劲炫(进口)"},{id:2,name:"LANCER"},{id:3,name:"格鲁迪(进口)"},{id:4,name:"欧蓝德(进口)"}];
+//                    break;
+//            }
+//        }
+//    }
 
 
     //按条件筛选行车数据行车数据
@@ -147,7 +147,7 @@
       {
           case "approve":
               if(confirm("是否确定已确认?")){
-                  $scope.postData = {op:"approve"};
+                  $scope.postData = {op:"approve",};
                   $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                       if(data.status=="ok")
                       {
@@ -378,12 +378,11 @@
 
     function updateBrandSeries(){
         if($scope.cacheReady && $scope.careList){
-            // var series_name = $scope.cacheBS['<brand_code>']['<series_code>'];
             for(var i=0;i<$scope.careList.length;i++){
                 var care = $scope.careList[i];
                 if(care.json_args && care.json_args.brand && care.json_args.series){
                     try{
-                        care.series_name = $scope.cacheBS[care.json_args.brand][care.json_args.series];
+                        care.series_name = window.cacheBS[care.json_args.brand][care.json_args.series];
 //                        console.log(care.json_args);
 //                        console.log(care.series_name);
                     }
@@ -395,44 +394,51 @@
     }
 
 
-    $http.get('/wservice/brand/', null)
-        .success(function(data, status){
-            if(data.status === 'ok'){
-                // the cache
-                $scope.cacheBS = {};
-                $scope.cacheCount = 0;
-                $scope.cacheReady = false;
+    if(!window.cacheBS) {
+        $http.get('/wservice/brand/', null)
+            .success(function (data, status) {
+                if (data.status === 'ok') {
+                    // the cache
+                    window.cacheBS = {};
+                    $scope.cacheCount = 0;
+                    $scope.cacheReady = false;
 
-                for(var i=0;i<data.brands.length;i++){
-                    var brand_code = data.brands[i].brandCode;
-                    $scope.cacheBS[brand_code.toString()] = {};
+                    for (var i = 0; i < data.brands.length; i++) {
+                        var brand_code = data.brands[i].brandCode;
+                        window.cacheBS[brand_code.toString()] = {};
 
-                    $http.get('/wservice/brand/'+ brand_code + '/series')
-                        .success(function(data2, status2){
-                            if(data2.status === 'ok'){
-                                $scope.cacheCount++;
-                                // build cache
-                                for(var j=0;j<data2.series.length;j++){
-                                    var x = data2.series[j];
-                                    $scope.cacheBS[x.brandCode][x.seriesCode] = x.series;
+                        $http.get('/wservice/brand/' + brand_code + '/series')
+                            .success(function (data2, status2) {
+                                if (data2.status === 'ok') {
+                                    $scope.cacheCount++;
+                                    // build cache
+                                    for (var j = 0; j < data2.series.length; j++) {
+                                        var x = data2.series[j];
+                                        window.cacheBS[x.brandCode][x.seriesCode] = x.series;
+                                    }
                                 }
-                            }
-                            if($scope.cacheCount === data.brands.length){
-                                $scope.cacheReady = true;
-                                updateBrandSeries();
-                            }
-                        })
-                        .error(function(){
-                            $scope.cacheCount++;
-                            if($scope.cacheCount === data.brands.length){
-                                $scope.cacheReady = true;
-                                updateBrandSeries();
-                            }
-                        });
+                                if ($scope.cacheCount === data.brands.length) {
+                                    $scope.cacheReady = true;
+                                    updateBrandSeries();
+                                }
+                            })
+                            .error(function () {
+                                $scope.cacheCount++;
+                                if ($scope.cacheCount === data.brands.length) {
+                                    $scope.cacheReady = true;
+                                    updateBrandSeries();
+                                }
+                            });
+                    }
                 }
-            }
-        })
-        .error(function(data, status){ console.error(status); });
+            })
+            .error(function (data, status) {
+                console.error(status);
+            });
+    }
+    else{
+        $scope.cacheReady = true;
+    }
 
 //    $scope.ReservationTab = function(id)
 //    {

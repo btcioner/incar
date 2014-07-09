@@ -14,14 +14,14 @@ exports = module.exports = function(service) {
 
 function myBooking(req, res) {
     var postData = req.body;
-    console.log(postData);
+    // console.log(postData);
     var db = this.db;
     var user=postData.user;
     var sid=postData.sid;
     search(db, user,sid,function(err, data) {
         if (err) { res.send(200,err); }
         else {
-            console.log(data);
+            // console.log(data);
             res.send(data);
         }
     });
@@ -29,8 +29,8 @@ function myBooking(req, res) {
 
 function search(db, uid,sid,callback) {
     var pool = db();
-    pool.query('select  id,slot_time,booking_status,ts   from  t_slot_booking where channel_specific like ?;',
-        ['%'+uid+'@'+sid+'%'],function(err,rows){
+    pool.query('select  id,slot_time,booking_status,ts   from  t_slot_booking where channel_specific = ?;',
+        [uid],function(err,rows){
             if(err){callback(err);}
             else{
                 if(rows){

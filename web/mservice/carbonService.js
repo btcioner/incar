@@ -80,7 +80,7 @@ function getObdCode(db, userName, callback) {
                                 if (err) { callback(err); }
                                 else {
                                     if (rows && rows.length === 1) {
-                                        pool.query('select obd_code from t_car_info where id = ?', [rows[0].car_id], function(err, rows) {
+                                        pool.query('select obd_code from t_car where id = ?', [rows[0].car_id], function(err, rows) {
                                             if (err) { callback(err); }
                                             else {
                                                 if (rows && rows.length === 1) {
