@@ -25,6 +25,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     $scope.obd_code="";
     $scope.label_name="";
     //按照传过来的参数
+
     if($routeParams.id!=null)
     {
         if($routeParams.id == "X")
@@ -36,8 +37,8 @@ function s_customerCtrl($scope, $http,$routeParams){
             $scope.queryString = "&tagId="+$routeParams.id;
         }
     }
-    else{
-         //  $scope.queryString = "&org_id="+ $.cookie("s4_id");
+    else if($routeParams.id1!=null){
+            $scope.queryString = "&groupId="+$routeParams.id;
     }
 
     //获取自定义标签列表

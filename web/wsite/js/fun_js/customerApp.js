@@ -10,7 +10,7 @@ angular.module("SCustomerApp", [
     'ngRoute'
 ]).config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.
-        when('/collapseG_1',{
+        when('/collapseG_1/:id1',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//车系
         })
