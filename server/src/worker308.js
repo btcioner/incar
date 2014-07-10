@@ -738,11 +738,11 @@ function packetProcess_1603(dataBuffer,cb) {
                 obdInfo.engineType=obd.engineType;     //发动机类型
                 obdInfo.engineDisplacement=obd.disp;    //发动机排量
                 obdInfo.initCode=obd.initCode;         //恢复出厂序列号
-                //cb(get1603Response(obdInfo));
+                cb(get1603Response(obdInfo));
             }
             //4、如果不存在则创建一个新的OBD，并写入默认数据
             else{
-                console.log("ObdCode:"+obdCode+"不存在或还未激活");
+                console.log("ObdCode:"+obdCode+"不存在");
                 /*obdInfo=get1603Default();
                  obdInfo.obdCode=obdCode;
                  obdInfo.tripId=tripId;
