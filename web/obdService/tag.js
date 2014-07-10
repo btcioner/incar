@@ -247,13 +247,11 @@ exports.addTag= function(req,res){
     var groupId=body['groupId'];
     var tagName=body['tagName'];
     var description=body['description'];
-    var code=body['code'];
     var active=body['active'];
     var createTime=new Date();
     var creator=body['creator'];
     if(!groupId)groupId=8;
     if(!description)description='';
-    if(!code)code='';
     if(!active)active=1;
     if(!creator)creator='';
     var sql="insert into t_tag set ?";
@@ -262,13 +260,31 @@ exports.addTag= function(req,res){
         groupId:groupId,
         name:tagName,
         description:description,
-        code:code,
         active:active,
         createTime:createTime,
         creator:creator
     };
     dao.insertBySql(sql,args,function(info){
-        res.json(info);
+        if(info.err){
+            console.log('添加自定义标签失败:'+info.err);
+        }
+        else{
+            var id=info.data.id;
+            if(id){
+                var sql="update t_tag set code=? where id=?";
+                var args=['cus'+id,id];
+                dao.executeBySql(sql,args,function(info){
+                    if(info.err){
+                        console.log('自定义标签Code更新失败:'+info.err);
+                    }
+                    res.json(info);
+                });
+            }
+            else{
+                res.json(info);
+            }
+        }
+
     });
 }
 /**
