@@ -675,7 +675,7 @@ function get1603Default(){
         voltageThreshold:"120,153",     //熄火后电池电压阀值
 
 
-        uploadInterval:120,             //行驶中上传数据间隔时间
+        uploadInterval:300,             //行驶中上传数据间隔时间
         uploadParamId:[0x01FF,0x00FF],  //行驶中上传数据参数Id，参考4.01和4.02
 
         updateId:"0.0.0"                //软件升级Id
