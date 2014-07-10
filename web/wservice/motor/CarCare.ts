@@ -438,7 +438,7 @@ module Work{
         //  中止保养申请
         abort(req, res){
             if(this.step !== "approved") { res.json(new Service.TaskException(-1, "只有处于'已批准'状态才可以被中止", null)); return; }
-            if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
+          //  if(!req.body.reason) { res.json(new Service.TaskException(-1, "缺少reason参数", null)); return; }
 
             Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}

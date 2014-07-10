@@ -100,7 +100,6 @@
                           <th class="tablestyle-01"></th>
                           <th class="tablestyle-02"></th>
                       </tr>
-
                       </thead>
                   </table>
               </div>
@@ -177,7 +176,7 @@
                             <input type="text" placeholder="12位OBD编号" style="width:150px;" ng-model="obd_num"/></th>
                         <th style="vertical-align: middle;">车系：
                             <select style="width:150px;padding-left:15px;" ng-model="series" ng-options="series.seriesCode as series.series for series in carSeries">
-                                <option></option>
+                                <option value="">请选择</option>
                             </select></th>
                         <th style="vertical-align: middle;"><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo();">搜索</button></th>
                     </tr>
