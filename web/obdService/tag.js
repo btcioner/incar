@@ -2,253 +2,7 @@
  * Created by LM on 14-5-27.
  */
 var dao=require("../config/dao");
-/**
- * 获得里程标签Code
- * @param car
- * @returns {string}
- */
-function getMilTag(car){
-    if(car.mileage){
-        if(car.mileage<5000){
-            return 'useTo1';
-        }
-        else{
-            return 'useTo2';
-        }
-    }
-    else{
-        return '';
-    }
-}
-/**
- * 获得频率标签Code
- * @param car
- * @returns {string}
- */
-function getRateTag(car){
-    if(car.count){
-        if(car.count<60){
-            return 'rate1';
-        }
-        else if(car.count<120){
-            return 'rate2';
-        }
-        else if(car.count<180){
-            return 'rate3';
-        }
-        else{
-            return 'rate4';
-        }
-    }
-    else{
-        return '';
-    }
-}
-/**
- * 获得偏好标签Code
- * @param car
- * @returns {string}
- */
-function getPreTag(car){
-    if(car.preCount){
-        if(car.preCount<5){
-            return 'pre1';
-        }
-        else if(car.preCount<15){
-            return 'pre2';
-        }
-        else{
-            return 'pre3';
-        }
-    }
-    else{
-        return '';
-    }
-}
-/**
- * 获得时段标签Code
- * @param car
- * @returns {string}
- */
-function getTimeTag(car){
-    if(car.time1&&car.time2&&car.time3){
-        if(car.time1>car.time2){
-            if(car.time1>car.time3){
-                return 'time1';
-            }
-            else{
-                return 'time3';
-            }
-        }
-        else{
-            if(car.time2>car.time3){
-                return 'time2';
-            }
-            else{
-                return 'time3';
-            }
-        }
-    }
-    else{
-        return '';
-    }
-}
-/**
- * 获得上个自然月的开始和结束
- * @returns [开始时间,结束时间]
- */
-function getMonthStartAndEnd(){
-    var start=new Date();
-    start.setDate(1);
-    start.setHours(0);
-    start.setMinutes(0);
-    start.setSeconds(0);
-    var end=new Date(start.valueOf()-1000);
-    start.setMonth(start.getMonth()-1);
-    return [start,new Date()];
-}
-/**
- * 重算并更新所有车辆标签
- */
-exports._buildTag=function(cb){
-    //车系、渠道、车龄
-    var sql="select c.id as carId," +
-        "concat(c.brand,'-',c.series) as serTag," +
-        "a.wx_oid as chlTag," +
-        "timestampDiff(YEAR,c.age,now()) as ageTag," +
-        "d.currentMileage as milTag," +
-        "d.speedUp+d.speedDown+d.sharpTurn as preTag," +
-        "dayOfWeek(d.fireTime) as fireWeek," +
-        "timestampDiff(hour,DATE(d.fireTime),d.fireTime) as timeTag " +
-        "from t_car c " +
-        "left join t_car_user cu on c.id=cu.car_id " +
-        "left join t_account a on a.id=cu.acc_id " +
-        "left join t_obd_drive d on d.obdCode=c.obd_code " +
-        "and d.fireTime>=? and d.fireTime<?";
-    var args=getMonthStartAndEnd();
-    dao.findBySql(sql,args,function(info){
-        if(info.err){
-            throw err;
-        }
-        else{
-            var rows=info.data;
-            var cars={};
-            for(var i=0;i<rows.length;i++){
-                var tagInfo=rows[i];
-                var carId=tagInfo.carId;
-                var serTag=tagInfo.serTag;
-                var chlTag=tagInfo.chlTag;
-                var ageTag=tagInfo.ageTag;
-                var milTag=tagInfo.milTag;
-                var preTag=tagInfo.preTag;
-                var timeTaeg=tagInfo.timeTag;
-                var fireWeek=tagInfo.fireWeek;
-                var carInfo=cars[carId];
-                if(!carInfo){
-                    carInfo={};
-                    if(serTag)carInfo.serTag='ser'+serTag;
-                    if(chlTag)carInfo.chlTag='chl2';
-                    if(ageTag)carInfo.ageTag=ageTag/5>0?'age5':'age'+ageTag;
-                    carInfo.count=0;
-                    carInfo.mileage=0;
-                    carInfo.preCount=0;
-                    carInfo.time1=0;
-                    carInfo.time2=0;
-                    carInfo.time3=0;
-                    cars[carId]=carInfo;
-                }
-                carInfo.count+=fireWeek?1:null;
-                carInfo.mileage+=milTag;
-                carInfo.preCount+=preTag;
-                if(fireWeek>1&&fireWeek<7){
-                    if(timeTag>=6&&timeTag<10){
-                        carInfo.time1++;
-                    }
-                    else if(timeTag>=10&&timeTag<20){
-                        carInfo.time2++;
-                    }
-                    else{
-                        carInfo.time3++;
-                    }
-                }
-                else{
-                    carInfo.time3++;
-                }
-            }
-            sql="select t.id,t.code from t_tag t";
-            var tagMap={};
-            dao.findBySql(sql,[],function(info){
-                if(info.err){
-                    throw err;
-                }
-                else{
-                    var rows=info.data;
-                    var sqls=["truncate table t_car_tag"];
-                    var args=[{}];
-                    for(i=0;i<rows.length;i++){
-                        var code=rows[i].code;
-                        var tagId=rows[i].id;
-                        tagMap[code]=tagId;
-                    }
-                    for(var key in cars){
-                        var carTag=cars[key];
-                        if(carTag.serTag){
-                            sqls.push("insert into t_car_tag set ?");
-                            args.push({tag_id:tagMap[carTag.serTag],car_id:key});
-                        }
-                        if(carTag.chlTag){
-                            sqls.push("insert into t_car_tag set ?");
-                            args.push({tag_id:tagMap[carTag.chlTag],car_id:key});
-                        }
-                        if(carTag.ageTag){
-                            sqls.push("insert into t_car_tag set ?");
-                            args.push({tag_id:tagMap[carTag.ageTag],car_id:key});
-                        }
-                        var tag=getTimeTag(carTag);
-                        if(tag!=''){
-                            sqls.push("insert into t_car_tag set ?");
-                            args.push({tag_id:tagMap[tag],car_id:key});
-                        }
-                        tag=getMilTag(carTag);
-                        if(tag!=''){
-                            sqls.push("insert into t_car_tag set ?");
-                            args.push({tag_id:tagMap[tag],car_id:key});
-                        }
-                        tag=getRateTag(carTag);
-                        if(tag!=''){
-                            sqls.push("insert into t_car_tag set ?");
-                            args.push({tag_id:tagMap[tag],car_id:key});
-                        }
-                        tag=getPreTag(carTag);
-                        if(tag!=''){
-                            sqls.push("insert into t_car_tag set ?");
-                            args.push({tag_id:tagMap[tag],car_id:key});
-                        }
-                    }
-                    dao.executeBySqls(sqls,args,function(info){
-                        if(info.err){
-                            throw err;
-                        }
-                        else{
-                            cb(info);
-                        }
-                    });
-                }
-            });
-        }
-    });
-}
-exports.buildTags=function(req,res){
-    _buildTags(function(err){
-        if(err){
-            res.json({status:'failure'});
-        }
-        else{
-            res.json({status:'success'});
-        }
-    });
-}
-//updateTagForUser();
+
 /**
  * 获得当前4S店所有标签大类及其标签的相关信息
  */
@@ -256,7 +10,9 @@ exports.tagList= function(req,res){
     var brand=req.params.brand;
     var s4Id=req.params.s4Id;
     var sql="select g.id as groupId,g.name as groupName,g.type," +
-        "t.id as tagId,t.name as tagName " +
+        "t.id as tagId," +
+        "t.code as tagCode," +
+        "t.name as tagName " +
         "from t_tag_group g " +
         "left join t_tag t on t.groupId=g.id " +
         "where g.id in (2,3,4,5,6,7) " +
@@ -273,14 +29,15 @@ exports.tagList= function(req,res){
                 var groupId=rows[i].groupId;
                 var groupName=rows[i].groupName;
                 var tagId=rows[i].tagId;
+                var tagCode=rows[i].tagCode;
                 var tagName=rows[i].tagName;
                 var type=rows[i].type;
                 var group=list[groupId];
                 if(group){
-                    group['tags'].push({tagId:tagId,tagName:tagName});
+                    group['tags'].push({tagId:tagId,tagCode:tagCode,tagName:tagName});
                 }
                 else{
-                    group={groupId:groupId,groupName:groupName,type:type,tags:[{tagId:tagId,tagName:tagName}]};
+                    group={groupId:groupId,groupName:groupName,type:type,tags:[{tagId:tagId,tagCode:tagCode,tagName:tagName}]};
                     list[groupId]=group;
                 }
             }
@@ -300,7 +57,7 @@ exports.tagList= function(req,res){
 exports.tagListSystem= function(req,res){
     var brand=req.params.brand;
     var sql="select g.id as groupId,g.name as groupName," +
-        "t.id as tagId,t.name as tagName " +
+        "t.id as tagId,t.code as tagCode,t.name as tagName " +
         "from t_tag_group g " +
         "left join t_tag t on t.groupId=g.id " +
         "where g.type=? and( g.id>1 or g.id=1 and subStr(t.code,4,instr(t.code,'-')-4)=?)";
@@ -315,13 +72,14 @@ exports.tagListSystem= function(req,res){
                 var groupId=rows[i].groupId;
                 var groupName=rows[i].groupName;
                 var tagId=rows[i].tagId;
+                var tagCode=rows[i].tagCode;
                 var tagName=rows[i].tagName;
                 var group=list[groupId];
                 if(group){
-                    group['tags'].push({tagId:tagId,tagName:tagName});
+                    group['tags'].push({tagId:tagId,tagCode:tagCode,tagName:tagName});
                 }
                 else{
-                    group={groupId:groupId,groupName:groupName,tags:[{tagId:tagId,tagName:tagName}]};
+                    group={groupId:groupId,groupName:groupName,tags:[{tagId:tagId,tagCode:tagCode,tagName:tagName}]};
                     list[groupId]=group;
                 }
             }
@@ -343,7 +101,7 @@ exports.tagListCustom= function(req,res){
     var query=req.query;
     var page=parseInt(query['page']);
     var pageSize=parseInt(query['pageSize']);
-    var sql="select t.id as tagId,t.name as tagName," +
+    var sql="select t.id as tagId,t.code as tagCode,t.name as tagName," +
         "t.createTime as createTime,t.creator as creator " +
         "from t_tag t " +
         "left join t_tag_group g on t.groupId=g.id " +
@@ -359,7 +117,7 @@ exports.tagListCustom= function(req,res){
 exports.searchForUsers= function(req,res){
     var s4Id=req.params.s4Id;
     var query=req.query;
-    var tagId=query.tagId;
+    var tagCode=query.tagCode;
     var nickName=query.nickName;
     var userPhone=query.userPhone;
     var license=query.license;
@@ -381,9 +139,9 @@ exports.searchForUsers= function(req,res){
         "left join t_car_dictionary d on d.brandCode=c.brand and d.seriesCode=c.series " +
         "where c.s4_id=?";
     var args=[s4Id];
-    if(tagId){
-        sql+=" and ct.tag_id=?";
-        args.push(tagId);
+    if(tagCode){
+        sql+=" and t.code=?";
+        args.push(tagCode);
     }
     else{
         if(groupId){
@@ -426,7 +184,8 @@ exports.searchForUsers= function(req,res){
  */
 exports.getTagsByCarId= function(req,res){
     var carId=req.params['carId'];
-    var sql="select tg.type as tagType,t.id as tagId,t.name as tagName " +
+    var sql="select tg.type as tagType,t.id as tagId," +
+        "t.code as tagCode,t.name as tagName " +
         "from t_tag t " +
         "left join t_tag_group tg on tg.id=t.groupId " +
         "left join t_car_tag ct on ct.tag_id=t.id " +
@@ -442,12 +201,13 @@ exports.getTagsByCarId= function(req,res){
             for(var i=0;i<rows.length;i++){
                 var type=rows[i].tagType;
                 var tagId=rows[i].tagId;
+                var tagCode=rows[i].tagCode;
                 var tagName=rows[i].tagName;
                 if(type===0){
-                    type0.push({tagId:tagId,tagName:tagName});
+                    type0.push({tagId:tagId,tagCode:tagCode,tagName:tagName});
                 }
                 else{
-                    type1.push({tagId:tagId,tagName:tagName});
+                    type1.push({tagId:tagId,tagCode:tagCode,tagName:tagName});
                 }
             }
             var list={systemTag:type0,customTag:type1};
@@ -457,6 +217,7 @@ exports.getTagsByCarId= function(req,res){
 
     });
 }
+
 /**
  * 给车打标签
  */
@@ -486,13 +247,11 @@ exports.addTag= function(req,res){
     var groupId=body['groupId'];
     var tagName=body['tagName'];
     var description=body['description'];
-    var code=body['code'];
     var active=body['active'];
     var createTime=new Date();
     var creator=body['creator'];
     if(!groupId)groupId=8;
     if(!description)description='';
-    if(!code)code='';
     if(!active)active=1;
     if(!creator)creator='';
     var sql="insert into t_tag set ?";
@@ -501,13 +260,31 @@ exports.addTag= function(req,res){
         groupId:groupId,
         name:tagName,
         description:description,
-        code:code,
         active:active,
         createTime:createTime,
         creator:creator
     };
     dao.insertBySql(sql,args,function(info){
-        res.json(info);
+        if(info.err){
+            console.log('添加自定义标签失败:'+info.err);
+        }
+        else{
+            var id=info.data.id;
+            if(id){
+                var sql="update t_tag set code=? where id=?";
+                var args=['cus'+id,id];
+                dao.executeBySql(sql,args,function(info){
+                    if(info.err){
+                        console.log('自定义标签Code更新失败:'+info.err);
+                    }
+                    res.json(info);
+                });
+            }
+            else{
+                res.json(info);
+            }
+        }
+
     });
 }
 /**

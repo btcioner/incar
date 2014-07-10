@@ -122,8 +122,9 @@ angular.module("SCustomerApp", [
                     alert("请求无响应");
             })
         }
-        $scope.changeLeftbar = function(id,len,groupId)
+        $scope.changeLeftbar = function(id,len,len1,groupId)
         {
+            $scope.randomTime = new Date();
             for(var i=0;i<8;i++)
             {
                 if(i==id)
@@ -134,15 +135,20 @@ angular.module("SCustomerApp", [
                     $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
                 }
             }
-            for(var i=1;i<len+1;i++)
+            for(var i=1;i<len+2;i++)
             {
                 $("#a_"+groupId+"_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
             }
+            for(var i=1;i<len1+2;i++)
+            {
+                 $("#b_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+            }
+
         }
         $scope.changeLeftSmallBar = function(id,len,groupId)
         {
             $scope.randomTime = new Date();
-              for(var i=1;i<len+1;i++)
+              for(var i=1;i<len+2;i++)
               {
                  if(i==id)
                  {
@@ -152,6 +158,20 @@ angular.module("SCustomerApp", [
                      $("#a_"+groupId+"_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
                  }
               }
+        }
+        $scope.changeLeftSmallBar_1 = function(id,len)
+        {
+            $scope.randomTime = new Date();
+            for(var i=1;i<len+2;i++)
+            {
+                if(i==id)
+                {
+                    $("#b_"+i).removeClass().addClass("btn btn-menu sidebar_a_s");
+                }
+                else{
+                    $("#b_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
+                }
+            }
         }
 
         //注销
@@ -180,11 +200,11 @@ function s_statisticsCtrl($scope,$http)
         $scope.carOwnerCount = data.rowCount;
     })
     //微信端
-    $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?tagId=526&t="+$scope.randomTime).success(function(data){
+    $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?tagCode=chl2&t="+$scope.randomTime).success(function(data){
         $scope.weixinCount = data.rowCount;
     })
     //手机端
-    $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?tagId=525&t="+$scope.randomTime).success(function(data){
+    $http.get('/tag/searchForUsers/'+ $.cookie("s4_id")+"?tagCode=chl1&t="+$scope.randomTime).success(function(data){
         $scope.appCount = data.rowCount;
     })
 }

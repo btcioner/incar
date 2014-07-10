@@ -147,7 +147,7 @@
       {
           case "approve":
               if(confirm("是否确定已确认?")){
-                  $scope.postData = {op:"approve",};
+                  $scope.postData = {op:"approve"};
                   $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                       if(data.status=="ok")
                       {

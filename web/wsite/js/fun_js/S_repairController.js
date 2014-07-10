@@ -34,7 +34,7 @@ function s_repairCtrl($scope, $http,$routeParams){
                 else{
                     for(var i=0;i<data.tries.length;i++)
                     {
-                        if(data.tries[i].step=="apply")
+                        if(data.tries[i].step=="applied")
                         {
                             data.tries[i].text = "管理";
                         }
@@ -122,8 +122,8 @@ function s_repairCtrl($scope, $http,$routeParams){
                 $scope.newApplyOper = true;
                 break;
             case "approved":
-                $scope.applyOperDiv = true;
-                $scope.completeOper = true;
+                 $scope.previewDiv = true;
+//                $scope.completeOper = true;
                 break;
             case "rejected":
                 $scope.previewDiv = true;
@@ -134,7 +134,7 @@ function s_repairCtrl($scope, $http,$routeParams){
                 break;
             case "done":
                 $scope.previewDiv = true;
-                $scope.diffDiv = true;;
+//                $scope.diffDiv = true;;
             case "aborted":
                 $scope.previewDiv = true;
                 break;

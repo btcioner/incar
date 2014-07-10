@@ -45,7 +45,7 @@ angular.module("AdminApp", [
 
 }).controller("adminCtrl",function($scope,$http, jlVV){
       //  alert(jlVV.foo("dsdfdfd"));
-
+        $scope.randomTime = new Date();
         if($.cookie("nick") != "" && $.cookie("nick") != null)
         {
             $("#body_id").css("display","block");
@@ -56,6 +56,7 @@ angular.module("AdminApp", [
      //动态改变被激活菜单
      $scope.active = function(ac_id)
      {
+         $scope.randomTime = new Date();
         for(var i=1;i<8;i++)
         {
             $("#li_active_"+i).removeClass();

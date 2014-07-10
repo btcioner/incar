@@ -25,28 +25,28 @@
             <div class="accordion" id="collapse-group" >
                 <div class="accordion-group widget-box"  ng-repeat="group in tagsGroup">
                     <div class="{{group.class}}" id="{{group.id}}">
-                        <div class="widget-title"> <a data-parent="#collapse-group" href="{{group.link}}" data-toggle="collapse" ng-click="changeLeftbar($index,group.tags.length,group.groupId);"> <span class="icon"><i class="icon-list"></i></span>
+                        <div class="widget-title"> <a data-parent="#collapse-group" href="{{group.link}}?t={{randomTime}}" data-toggle="collapse" ng-click="changeLeftbar($index,group.tags.length,customTags.length,group.groupId);"> <span class="icon"><i class="icon-list"></i></span>
                             <h5>{{group.groupName}}</h5>
                         </a> </div>
                     </div>
                     <div class="collapse accordion-body" id="{{group.fid}}">
                         <div class="widget-content" style="text-align: right;padding: 0" ng-repeat ="tag in group.tags">
-                            <a class="btn btn-menu" style="width: 100%;" href="{{group.link}}/{{tag.tagId}}?t={{randomTime}}" id="a_{{group.groupId}}_{{$index+1}}"  ng-click="changeLeftSmallBar($index+1,group.tags.length,group.groupId);">{{tag.tagName}}</a>
+                            <a class="btn btn-menu" style="width: 100%;" href="{{group.link}}/{{tag.tagCode}}?t={{randomTime}}" id="a_{{group.groupId}}_{{$index+1}}"  ng-click="changeLeftSmallBar($index+1,group.tags.length,group.groupId);"><font>{{tag.tagName}}</font></a>
                         </div>
                     </div>
                 </div>
                 <div class="accordion-group widget-box" >
                     <div class="accordion-heading sidebar_b" id="div_7">
-                        <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseG_X/8" data-toggle="collapse" ng-click="changeLeftbar(7);"> <span class="icon"><i class="icon-magnet"></i></span>
+                        <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseG_X/8?t={{randomTime}}" data-toggle="collapse" ng-click="changeLeftbar(7,group.tags.length,customTags.length,group.groupId);"> <span class="icon"><i class="icon-magnet"></i></span>
                             <h5>自定义标签</h5>
                         </a> </div>
                     </div>
                     <div class="collapse accordion-body" id="collapseG_X">
                         <div class="widget-content" style="text-align: right;padding: 0">
-                            <a class="btn btn-menu" style="width: 100%;" href="#collapseG_X/X" >标签管理</a>
+                            <a class="btn btn-menu" style="width: 100%;" href="#collapseG_X/X?t={{randomTime}}" id="b_1" ng-click="changeLeftSmallBar_1(1,customTags.length);"><font>标签管理</font></a>
                         </div>
                         <div class="widget-content" style="text-align: right;padding: 0" ng-repeat="ctt in customTags">
-                            <a class="btn btn-menu" style="width: 100%;" href="#collapseG_X/8/{{ctt.tagId}}">{{ctt.tagName}}</a>
+                            <a class="btn btn-menu" style="width: 100%;" href="#collapseG_X/8/{{ctt.tagCode}}?t={{randomTime}}" id="b_{{$index+2}}" ng-click="changeLeftSmallBar_1($index+2,customTags.length);"><font>{{ctt.tagName}}</font></a>
                         </div>
                     </div>
                 </div>

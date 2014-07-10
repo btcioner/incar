@@ -64,7 +64,7 @@ a img {
 }
 
 
-h1 {
+h1,h2 {
 	font-size: 14px;
 	line-height: 32px;
 }

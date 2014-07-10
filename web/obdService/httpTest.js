@@ -2,18 +2,21 @@
  * Created by LM on 14-6-6.
  */
 'use strict'
-
 var http = require("http");
 var dataSet = JSON.stringify({
-    carId:8,
-    tags:'546,557'
+    s4Id:1,
+    groupId:8,
+    tagName:'自定义测试标签',
+    description:'',
+    active:1,
+    creator:'柳明'
 });
 var data=dataSet;
 var opt = {
-    method: "get",
+    method: "post",
     host: "localhost",
     port: 80,
-    path: "/alarm/1?remindStatus=1&page=2&pageSize=5",
+    path: "/tag/addTag",
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)
