@@ -30,7 +30,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     {
 
             $scope.queryString = "&groupId="+$routeParams.id1+"&tagCode="+$routeParams.id;
-
+        GetFirstPageInfo();//get fist driveData for first page；
     }
     else{
         if($routeParams.id1 == "X")
@@ -41,9 +41,11 @@ function s_customerCtrl($scope, $http,$routeParams){
         else if($routeParams.id1 == "ALL")
         {
                $scope.queryString ="";
+               GetFirstPageInfo();//get fist driveData for first page；
         }
         else{
                 $scope.queryString = "&groupId="+$routeParams.id1;
+               GetFirstPageInfo();//get fist driveData for first page；
          }
     }
 
@@ -64,7 +66,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     //筛选框初始值 todo--要从数据库读出来
     $scope.allCity = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
 
-    GetFirstPageInfo();//get fist driveData for first page；
+
     function GetFirstPageInfo()
     {
         $scope.tips="";
@@ -158,6 +160,7 @@ function s_customerCtrl($scope, $http,$routeParams){
                 $scope.cusTabDiv = false;
                 $scope.labelListDiv = true;
                 $scope.labelAddDiv = false;
+
                 break;
             case 4:
                 $scope.cusDetailDiv = false;
@@ -501,12 +504,12 @@ function s_customerCtrl($scope, $http,$routeParams){
                if(data.status == "success")
                {
                    alert("添加成功!");
+                   getCustomTagList();
                }
                 else
                 {
                    alert("添加失败！");
                 }
-               getCustomTagList();
         }).error(function(data){
                 alert("请求无响应");
         })

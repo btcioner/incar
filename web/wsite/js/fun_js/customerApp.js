@@ -124,6 +124,7 @@ angular.module("SCustomerApp", [
         }
         $scope.changeLeftbar = function(id,len,len1,groupId)
         {
+            $scope.randomTime = new Date();
             for(var i=0;i<8;i++)
             {
                 if(i==id)
@@ -134,11 +135,11 @@ angular.module("SCustomerApp", [
                     $("#div_"+i).removeClass().addClass("accordion-heading sidebar_b");
                 }
             }
-            for(var i=1;i<len+1;i++)
+            for(var i=1;i<len+2;i++)
             {
                 $("#a_"+groupId+"_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
             }
-            for(var i=1;i<len1+1;i++)
+            for(var i=1;i<len1+2;i++)
             {
                  $("#b_"+i).removeClass().addClass("btn btn-menu sidebar_b_s");
             }
@@ -147,7 +148,7 @@ angular.module("SCustomerApp", [
         $scope.changeLeftSmallBar = function(id,len,groupId)
         {
             $scope.randomTime = new Date();
-              for(var i=1;i<len+1;i++)
+              for(var i=1;i<len+2;i++)
               {
                  if(i==id)
                  {
@@ -161,7 +162,7 @@ angular.module("SCustomerApp", [
         $scope.changeLeftSmallBar_1 = function(id,len)
         {
             $scope.randomTime = new Date();
-            for(var i=1;i<len;i++)
+            for(var i=1;i<len+2;i++)
             {
                 if(i==id)
                 {
