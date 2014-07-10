@@ -29,7 +29,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     if($routeParams.id!=null)
     {
 
-            $scope.queryString = "&groupId="+$routeParams.id1+"&tagId="+$routeParams.id;
+            $scope.queryString = "&groupId="+$routeParams.id1+"&tagCode="+$routeParams.id;
 
     }
     else{
