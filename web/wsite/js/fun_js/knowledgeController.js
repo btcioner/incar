@@ -50,7 +50,13 @@ function knowledgeBaseCtrl($scope, $http){
 
     //新增
     $scope.add = function(){
+        $("#loading_0").css("display","none");
+        $("#loaded_0").css("display","none");
+        $("#imghead1").attr("src","../../data/200x200.jpg");
+        $("#edit_pro_img_1").val("");
         $("#formId_edit3").ajaxForm(function(data){
+            $("#loading_0").css("display","none");
+            $("#loaded_0").css("display","block");
             $scope.filename = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
         $scope.knowledgeListDiv = false;
@@ -60,24 +66,33 @@ function knowledgeBaseCtrl($scope, $http){
     //添加确认
     $scope.AddConfirm = function()
     {
-       $scope.postData={title:$scope.title,keyword:$scope.keyword,description:$scope.description,filename:$scope.filename};
-        $http.post(baseurl + "manual",$scope.postData).success(function(data){
-            if(data.status == "ok")
-            {
-                alert("添加成功");
-                GetFirstPageInfo();
-                $scope.knowledgeListDiv = true;
-                $scope.addKnowledgeDiv = false;
-            }
-        }).error(function(data){
-                alert("请求无响应！");
-            });
+        if($("#loading_0").css("display")=="block"){
+            alert("正在上传，请稍后提交...");
+        }else{
+           $scope.postData={title:$scope.title,keyword:$scope.keyword,description:$scope.description,filename:$scope.filename};
+            $http.post(baseurl + "manual",$scope.postData).success(function(data){
+                if(data.status == "ok")
+                {
+                    alert("添加成功");
+                    GetFirstPageInfo();
+                    $scope.knowledgeListDiv = true;
+                    $scope.addKnowledgeDiv = false;
+                }
+            }).error(function(data){
+                    alert("请求无响应！");
+                });
+        }
     }
 
     //修改
     $scope.modify = function(id){
+        $("#loading_1").css("display","none");
+        $("#loaded_1").css("display","none");
         $scope.knowDetail = $scope.manual[id];
+        $("#imghead").attr("src","../../"+$scope.knowDetail.filename);
         $("#formId_edit2").ajaxForm(function(data){
+            $("#loading_1").css("display","none");
+            $("#loaded_1").css("display","block");
             $scope.knowDetail.filename = data.split("</pre>")[0].split(">")[1].split("\"")[9];
         });
         $scope.knowledgeListDiv = false;
@@ -88,17 +103,21 @@ function knowledgeBaseCtrl($scope, $http){
     //修改确认
     $scope.ModifyConfirm = function()
     {
-        $http.post(baseurl + "manual/"+$scope.knowDetail.id,$scope.knowDetail).success(function(data){
-            if(data.status == "ok")
-            {
-                alert("修改成功!");
-                GetFirstPageInfo();
-                $scope.knowledgeListDiv = true;
-                $scope.modifyKnowledgeDiv = false;
-            }
-        }).error(function(data){
-            alert("请求无响应！");
-        });
+        if($("#loading_1").css("display")=="block"){
+            alert("正在上传，请稍后提交...");
+        }else{
+            $http.post(baseurl + "manual/"+$scope.knowDetail.id,$scope.knowDetail).success(function(data){
+                if(data.status == "ok")
+                {
+                    alert("修改成功!");
+                    GetFirstPageInfo();
+                    $scope.knowledgeListDiv = true;
+                    $scope.modifyKnowledgeDiv = false;
+                }
+            }).error(function(data){
+                alert("请求无响应！");
+            });
+        }
     }
 
     //返回操作
@@ -109,10 +128,12 @@ function knowledgeBaseCtrl($scope, $http){
             case 1:
                 $scope.knowledgeListDiv = true;
                 $scope.modifyKnowledgeDiv = false;
+                GetFirstPageInfo();
                 break;
             case 2:
                 $scope.knowledgeListDiv = true;
                 $scope.addKnowledgeDiv = false;
+                GetFirstPageInfo();
                 break;
         }
     }

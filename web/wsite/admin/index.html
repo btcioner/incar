@@ -40,13 +40,13 @@
 <!--close-top-Header-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i>运营后台</a>
     <ul>
-        <li id="li_active_1" class="menu_hl"><a href="#main" ng-click="active(1)"><i class="icon icon-home"></i> <span>设备管理</span></a> </li>
-        <li id="li_active_2"> <a href="#driveData" ng-click="active(2)"><i class="icon icon-signal"></i> <span>行车数据</span></a> </li>
-        <li id="li_active_3"> <a href="#customer4s" ng-click="active(3)"><i class="icon icon-inbox"></i> <span>4S客户</span></a> </li>
-        <li id="li_active_4"><a href="#carOwners" ng-click="active(4)"><i class="icon icon-th"></i> <span>车主</span></a></li>
-        <li id="li_active_5"><a href="#userManage" ng-click="active(5)"><i class="icon icon-fullscreen"></i> <span>系统用户</span></a></li>
-        <li id="li_active_6"> <a href="#knowledgeBase" ng-click="active(6)"><i class="icon icon-th-list"></i> <span>行车手册</span></a></li>
-        <li id="li_active_7"> <a href="#paramSetting" ng-click="active(7)"><i class="icon icon-th-list"></i><span>参数设置</span></a></li>
+        <li id="li_active_1" class="menu_hl"><a href="#main?t={{randomTime}}" ng-click="active(1)"><i class="icon icon-home"></i> <span>设备管理</span></a> </li>
+        <li id="li_active_2"> <a href="#driveData?t={{randomTime}}" ng-click="active(2)"><i class="icon icon-signal"></i> <span>行车数据</span></a> </li>
+        <li id="li_active_3"> <a href="#customer4s?t={{randomTime}}" ng-click="active(3)"><i class="icon icon-inbox"></i> <span>4S客户</span></a> </li>
+        <li id="li_active_4"><a href="#carOwners?t={{randomTime}}" ng-click="active(4)"><i class="icon icon-th"></i> <span>车主</span></a></li>
+        <li id="li_active_5"><a href="#userManage?t={{randomTime}}" ng-click="active(5)"><i class="icon icon-fullscreen"></i> <span>系统用户</span></a></li>
+        <li id="li_active_6"> <a href="#knowledgeBase?t={{randomTime}}" ng-click="active(6)"><i class="icon icon-th-list"></i> <span>行车手册</span></a></li>
+        <li id="li_active_7"> <a href="#paramSetting?t={{randomTime}}" ng-click="active(7)"><i class="icon icon-th-list"></i><span>参数设置</span></a></li>
     </ul>
 </div>
     <div id="content" style="margin-top: 80px;" ng-view="">

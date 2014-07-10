@@ -43,9 +43,10 @@
                                 </div>
                                 <label class="control-label">活动图片：<br/ ><span class="img_textstyle01">图片要求:<br />尺寸为150px*150px，大小在100KB以内。</span></label>
                                 <div class="controls">
-                                    <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img"  onchange="changeImg(this,'edit_pro_img','formId_edit2','preview','imghead')" />
+                                    <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img"  onchange="changeImg(this,'edit_pro_img','formId_edit2','preview','imghead',1)" />
                                 </div>
-                                
+                                <div id="loading_1" style="display:none;margin-top: 10px;"><img src="../../data/loader.gif" />正在上传...</div>
+                                <div id="loaded_1" style="display:none;margin-top: 10px;">上传成功！</div>
                             </div>
                         </div><!--mainrightbox end-->
                         <div class="clearfix"></div>
@@ -98,8 +99,10 @@
                                 </div>
                                 <label class="control-label">活动图片：<br/ ><span class="img_textstyle01">图片要求:<br />尺寸为150px*150px，大小在100KB以内。</span></label>
                                 <div class="controls">
-                                    <input name="edit_pro_img_1" type="file" width="100px" id="edit_pro_img_1"  onchange="changeImg(this,'edit_pro_img_1','formId_edit3','preview1','imghead1')" />
+                                    <input name="edit_pro_img_1" type="file" width="100px" id="edit_pro_img_1"  onchange="changeImg(this,'edit_pro_img_1','formId_edit3','preview1','imghead1',0)" />
                                 </div>
+                                <div id="loading_0" style="display:none;margin-top: 10px;"><img src="../../data/loader.gif" />正在上传...</div>
+                                <div id="loaded_0" style="display:none;margin-top: 10px;">上传成功！</div>
                             </div>
                         </div><!--mainrightbox end-->
                         <div class="clearfix"></div>
