@@ -698,7 +698,6 @@ function packetProcess_1603(dataBuffer,cb) {
     var sql="select t.id,t.brand,t.series,t.modelYear,t.engineType," +
         "t.disp,t.initCode,t.act_type from t_car t where t.obd_code=?";
     dao.findBySql(sql,[obdCode],function(info) {
-        console.log(info);
         if(info.err){
             throw err;
         }
