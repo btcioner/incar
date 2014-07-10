@@ -13,6 +13,10 @@ angular.module("SCustomerApp", [
         when('/collapseG_1/:id1',{
             controller:'s_customerCtrl',
             templateUrl:'/4sStore/partials/customer_channel.html'//车系
+        }).
+        when('/collapseG/:id1',{
+            controller:'s_customerCtrl',
+            templateUrl:'/4sStore/partials/customer_channel.html'//车系
         })
         .when('/collapseG_1/:id1/:id',{
             controller:'s_customerCtrl',
@@ -125,7 +129,7 @@ angular.module("SCustomerApp", [
         $scope.changeLeftbar = function(id,len,len1,groupId)
         {
             $scope.randomTime = new Date();
-            for(var i=0;i<8;i++)
+            for(var i=0;i<9;i++)
             {
                 if(i==id)
                 {
