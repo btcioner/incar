@@ -192,7 +192,7 @@
               break;
           case "abort":
               if(confirm("是否确定未到店?")){
-                  $scope.postData = {op:"abort",reason:$scope.jj_reason};
+                  $scope.postData = {op:"abort",reason:""};
                   $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                       if(data.status=="ok")
                       {
