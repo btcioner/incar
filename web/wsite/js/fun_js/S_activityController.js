@@ -15,7 +15,7 @@
     $scope.tags = "";
     $scope.queryString = "";
     $scope.statusSelect =[{id:0,name:"请选择"},{id:1,name:"已创建"},{id:2,name:"已发布"}];
-    $scope.ser_status = "";
+    $scope.ser_status = 0;
     $scope.ser_title = "";
 
     function initAddData()

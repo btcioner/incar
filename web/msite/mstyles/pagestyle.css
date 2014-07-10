@@ -40,6 +40,20 @@ a img {
 	border-top-style: solid;
 	border-radius:5px;
 }
+.button03 {
+	background-repeat: no-repeat;
+	background-position: 10px top;
+	padding-top: 5px;
+	display: block;
+	width: 33%;
+	float: left;
+}
+.button03 a{
+	display: block;
+	width: 56px;
+	text-align: center;
+	line-height: 18px;
+}
 .button_bg {
 	background-repeat: no-repeat;
 	background-position: center top;
