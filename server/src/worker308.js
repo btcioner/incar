@@ -695,11 +695,10 @@ function packetProcess_1603(dataBuffer,cb) {
     var initCode=dataManager.nextByte();            //恢复出厂序列号
     //构建OBD对应的JSON对象，回复给OBD设备的数据来源
     //2、根据OBD编号查询OBD信息，一个JSON对象
-
-
     var sql="select t.id,t.brand,t.series,t.modelYear,t.engineType," +
-        "t.disp,t.initCode from t_car t where t.obd_code=? and t.act_type=?";
-    dao.findBySql(sql,[obdCode,1],function(info) {
+        "t.disp,t.initCode,t.act_type from t_car t where t.obd_code=?";
+    dao.findBySql(sql,[obdCode],function(info) {
+        console.log(info);
         if(info.err){
             throw err;
         }
@@ -709,7 +708,27 @@ function packetProcess_1603(dataBuffer,cb) {
             if(rows.length>0){
                 var obd=rows[0];
                 var id=obd.id;
-
+                var actType=obd.act_type;
+                if(!actType){
+                    sql="update t_car c set ? where c.id=?";
+                    var args=[{
+                        hardwareVersion:hardwareVersion,
+                        firmwareVersion:firmwareVersion,
+                        softwareVersion:softwareVersion,
+                        diagnosisType:diagnosisType,
+                        initCode:initCode,
+                        act_type:1,
+                        act_time:new Date()
+                    },id];
+                    dao.executeBySql(sql,args,function(info){
+                        if(info.err){
+                            console.log("更新"+obdCode+"固件信息失败"+JSON.stringify(info));
+                        }
+                        else{
+                            console.log("更新"+obdCode+"固件信息成功"+JSON.stringify(info));
+                        }
+                    });
+                }
                 var obdInfo=get1603Default();
                 obdInfo.carUpdateCount=0x05;            //车辆信息更新数量(0x00或0x05)
                 obdInfo.vid=obd.id;                     //vid
@@ -719,7 +738,7 @@ function packetProcess_1603(dataBuffer,cb) {
                 obdInfo.engineType=obd.engineType;     //发动机类型
                 obdInfo.engineDisplacement=obd.disp;    //发动机排量
                 obdInfo.initCode=obd.initCode;         //恢复出厂序列号
-                cb(get1603Response(obdInfo));
+                //cb(get1603Response(obdInfo));
             }
             //4、如果不存在则创建一个新的OBD，并写入默认数据
             else{
