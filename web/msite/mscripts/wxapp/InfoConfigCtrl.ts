@@ -193,10 +193,10 @@ module wxApp {
                     else
                     {
                         alert(data.status);
-                        if(this.flag =="update")
-                        {
-                           this.searchUser();
-                        }
+//                        if(this.flag =="update")
+//                        {
+//                           this.searchUser();
+//                        }
                     }
                 })
                 .error((data, status, headers, config)=>{
