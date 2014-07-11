@@ -15,6 +15,7 @@ module wxApp {
             this.user_openid = $location.search().user;
             if(this.user_openid) { // 已经获取了open_id, 查询数据
                 // 初始化车品牌
+                this.userCfg = {name:"",nick:"",obd_code:"",modelYear:"",phone:"",license:"",mileage:"",disp:"",id:""}
                 this.InitCarBrand();
                 this.searchUser();
             }
