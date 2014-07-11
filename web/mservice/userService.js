@@ -156,7 +156,7 @@ function userEnroll(req, res) {
                     });
                 }
                 else{
-                    res.json({status:'failure',message:'无法识别的appid'});
+                    res.json({status:'无法识别的appid'});
                 }
             }
         });
@@ -184,7 +184,7 @@ function carEnroll(req,res, cb){
     var sql="select id from t_car where obd_code=? and s4_id=?";
     dao.findBySql(sql,[obdCode, user.s4_id],function(info){
         if(info.err){
-            res.json(res);
+            res.json({status:'该OBD编号不存在!'});
         }
         else{
             var rows=info.data;
@@ -207,12 +207,9 @@ function carEnroll(req,res, cb){
                 var pool = findPool();
                 pool.query(sql, [car,id], function(ex, result){
                     if(ex){
-                        console.log(ex);
-                        if(cb) cb(ex);
-                        else res.json(ex);
+                        res.json({status:"该OBD已经被注册!"});
                         return;
                     }
-
                     // 建立t_car_user;
                     if(flag =="update")
                     {
@@ -225,9 +222,10 @@ function carEnroll(req,res, cb){
 
                     pool.query(sql, [user.s4_id,  id, 1,user.id], function(ex, result){
                         if(ex) {
-                            console.log(ex);
-                            if(cb) cb(ex);
-                            else res.json(ex);
+//                            console.log(ex);
+//                            if(cb) cb(ex);
+//                            else
+                            res.json({status:"该OBD已经被注册!"});
                             return;
                         }
 
@@ -238,8 +236,8 @@ function carEnroll(req,res, cb){
                 });
             }
             else{
-                if(cb) { cb({status:'failed',message:'OBD不存在'}); return; }
-                res.send({status:'failed',message:'OBD不存在'});
+                if(cb) { cb({status:'该OBD编号不存在!'}); return; }
+                res.send({status:'该OBD编号不存在!'});
             }
         }
     });
