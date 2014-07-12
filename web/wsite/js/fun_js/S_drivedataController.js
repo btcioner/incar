@@ -88,6 +88,7 @@ angular.module("DriveDataApp", [])
     //paging redirct
     $scope.changePage=function(changeId,id)
     {
+        $scope.queryString = "&s4_id="+ $.cookie("s4_id");
         $scope.currentPage = changeId;
         switch(id)
         {
