@@ -175,7 +175,7 @@ module wxApp {
 
             // engine_type
             if(this.eng_type === '涡轮增压') postData.engine_type = 'T';
-            else postData.engine_type = 'N';
+            else postData.engine_type = 'L';
 
 
 
