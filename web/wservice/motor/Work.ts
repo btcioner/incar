@@ -12,7 +12,6 @@ module Work{
         public working_time: string; // working time
         public json_args: string; // args
         public created_time: Date; // created time
-
         constructor(work){
             this.work = work;
             this.created_time = new Date();

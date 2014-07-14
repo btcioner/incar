@@ -137,6 +137,14 @@
     $scope.changePage=function(changeId)
     {
         $scope.currentPage = changeId ;
+        if($routeParams.id!=null)
+        {
+            $scope.queryString = "&step="+$routeParams.id;
+        }
+        if($scope.ownerNick=="")$scope.ownerNick="";
+        if($scope.ownerLicense=="")$scope.ownerLicense="";
+        if($scope.work_time_begin=="")$scope.work_time_begin="";
+        $scope.queryString += "&cust_nick="+$scope.ownerNick+"&license="+$scope.ownerLicense+"&working_time_begin="+$scope.work_time_begin;
         GetFirstPageInfo();
     }
 
@@ -147,7 +155,7 @@
       {
           case "approve":
               if(confirm("是否确定已确认?")){
-                  $scope.postData = {op:"approve"};
+                  $scope.postData = {op:"approve",brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series};
                   $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                       if(data.status=="ok")
                       {
@@ -164,7 +172,7 @@
               break;
           case "cancel":
               if(confirm("是否确定已取消?")){
-                  $scope.postData = {op:"cancel"};
+                  $scope.postData = {op:"cancel",brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series};
                   $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                       if(data.status=="ok")
                       {
@@ -192,7 +200,7 @@
               break;
           case "abort":
               if(confirm("是否确定未到店?")){
-                  $scope.postData = {op:"abort",reason:""};
+                  $scope.postData = {op:"abort",reason:"",brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series};
                   $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                       if(data.status=="ok")
                       {
@@ -300,7 +308,7 @@
         {
             case 1://已完成
                 if(confirm("是否确定已完成?")){
-                    $scope.postData = {op:"done",care_items:$scope.care_items,care_cost:$scope.care_cost,begin_time:$scope.begin_time,end_time:$scope.end_time};
+                    $scope.postData = {op:"done",care_items:$scope.care_items,care_cost:$scope.care_cost,begin_time:$scope.begin_time,end_time:$scope.end_time,brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series};
                     $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                         if(data.status == "ok")
                         {
@@ -319,7 +327,7 @@
                 break;
             case 2://拒绝
                 if(confirm("是否确定已拒绝?")){
-                    $scope.postData={op: "reject", reason:$scope.jj_reason};
+                    $scope.postData={op: "reject", reason:$scope.jj_reason,brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series};
                     $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                         if(data.status == "ok")
                         {
@@ -383,8 +391,8 @@
                 if(care.json_args && care.json_args.brand && care.json_args.series){
                     try{
                         care.series_name = window.cacheBS[care.json_args.brand][care.json_args.series];
-//                        console.log(care.json_args);
-//                        console.log(care.series_name);
+//                      console.log(care.json_args);
+//                      console.log(care.series_name);
                     }
                     catch(ex){}
                 }

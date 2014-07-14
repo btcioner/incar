@@ -66,6 +66,7 @@
         }).error(function(data){
                 alert("请求无响应");
             })
+        $scope.queryString = "";
     }
 
     //get paging param info
@@ -84,6 +85,10 @@
     $scope.changePage=function(changeId)
     {
         $scope.currentPage = changeId ;
+        if($routeParams.id !=null)
+        {
+            $scope.queryString ="&status="+$routeParams.id;
+        }
         GetFirstPageInfo()
     }
 
