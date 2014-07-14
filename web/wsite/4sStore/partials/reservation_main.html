@@ -18,8 +18,8 @@
             <th class="tablestyle-02">{{careDetail.license}}</th>
         </tr>
         <tr>
-            <th class="tablestyle-01">车品牌</th>
-            <th class="tablestyle-02">{{careDetail.brand}}</th>
+            <th class="tablestyle-01">车系</th>
+            <th class="tablestyle-02">{{careDetail.series_name}}</th>
             <th class="tablestyle-01">当前里程</th>
             <th class="tablestyle-02"></th>
             <th class="tablestyle-01">申请渠道</th>
@@ -54,9 +54,9 @@
         </thead>
     </table>
 </div>
-    <div class="widget-content" ng-show="rejectReason">
+    <div class="widget-content mar_t_14" ng-show="rejectReason">
         <form class="form-horizontal formstyle_box03">
-            <div class="control-group w_44 fl" >
+            <div class="" >
                 <label class="control-label pad_l20 w_100">原因</label>
                 <div class="controls pad_t_b_10">
                     <textarea ng-model="jj_reason" style="width:300px;"></textarea>
@@ -70,9 +70,9 @@
             </div><!--button_box01 start-->
         </form>
     </div>
-    <div class="widget-content" ng-show="ReservationInfo">
+    <div class="widget-content mar_t_14" ng-show="ReservationInfo">
         <form class="form-horizontal formstyle_box03">
-            <div class="control-group w_44 fl" >
+            <div class="" >
                 <label class="control-label pad_l20 w_100">保养项目：</label>
                 <div class="controls pad_t_b_10">
                     <input type="text"  class="span11"  ng-model="care_items" style="width:300px;" />
@@ -185,7 +185,7 @@
             <th>车牌号</th>
             <th>来源渠道</th>
             <th>申请时间</th>
-            <th>提交时间</th>
+            <th>操作时间</th>
             <th>操作人</th>
             <th>状态</th>
             <th>操作</th>
@@ -199,7 +199,7 @@
             <td style="text-align: center">{{mt.license}}</td>
             <td style="text-align: center">微信</td>
             <td style="text-align: center">{{mt.working_time}}</td>
-            <td style="text-align: center">{{mt.created_time}}</td>
+            <td style="text-align: center">{{mt.updated_time}}</td>
             <td style="text-align: center">{{mt.json_args.oper}}</td>
             <td style="text-align: center">{{mt.step}}</td>
             <td style="text-align: center"><input type="button" class="btn btn-info btn-mini" value="查看" ng-click="Operation($index,mt.step);"></a></td>

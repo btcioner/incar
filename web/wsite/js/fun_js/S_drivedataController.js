@@ -89,6 +89,8 @@ angular.module("DriveDataApp", [])
     $scope.changePage=function(changeId,id)
     {
         $scope.queryString = "&s4_id="+ $.cookie("s4_id");
+        if($scope.series == null){$scope.series =""};
+        $scope.queryString  = $scope.queryString+"&obd_code="+$scope.obd_num+"&series="+$scope.series;
         $scope.currentPage = changeId;
         switch(id)
         {
@@ -99,7 +101,6 @@ angular.module("DriveDataApp", [])
                 $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id,$scope.index);
                 break;
         }
-        $scope.currentPage = 1;
     }
         //get owner and car info  缺少所属4s店
         function GetOwnerInfo(obd_code)
