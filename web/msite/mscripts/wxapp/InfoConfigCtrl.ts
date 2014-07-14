@@ -15,6 +15,7 @@ module wxApp {
             this.user_openid = $location.search().user;
             if(this.user_openid) { // 已经获取了open_id, 查询数据
                 // 初始化车品牌
+                this.userCfg = {name:"",nick:"",obd_code:"",modelYear:"",phone:"",license:"",mileage:"",disp:"",id:""}
                 this.InitCarBrand();
                 this.searchUser();
             }
@@ -174,7 +175,7 @@ module wxApp {
 
             // engine_type
             if(this.eng_type === '涡轮增压') postData.engine_type = 'T';
-            else postData.engine_type = 'N';
+            else postData.engine_type = 'L';
 
 
 
@@ -193,6 +194,10 @@ module wxApp {
                     else
                     {
                         alert(data.status);
+//                        if(this.flag =="update")
+//                        {
+//                           this.searchUser();
+//                        }
                     }
                 })
                 .error((data, status, headers, config)=>{

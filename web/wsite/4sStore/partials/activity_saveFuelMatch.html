@@ -419,12 +419,10 @@
             <thead>
             <tr>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车系： &nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in s_p">
-                        <option>请选择</option>
+                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in intS_P">
                     </select></th>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排量：&nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in s_p">
-                        <option>请选择</option>
+                    <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in intS_P">
                     </select></th>
                 <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo(2);">搜索</button></th>
             </tr>
@@ -512,18 +510,13 @@
             <thead>
             <tr>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车系： &nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in s_p">
-                        <option>请选择</option>
+                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in intS_P">
                     </select></th>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排量：&nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in s_p">
-                        <option>请选择</option>
+                    <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in intS_P">
                     </select></th>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否符合要求：&nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;" >
-                        <option>请选择</option>
-                        <option>是</option>
-                        <option>否</option>
+                    <select style="width:150px;" ng-model="flag_status" ng-options="fs.id as fs.name for fs in flagStatus" >
                     </select></th>
                 <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo(3);">搜索</button></th>
             </tr>
@@ -629,12 +622,10 @@
                 <thead>
                 <tr>
                     <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车系： &nbsp;&nbsp;&nbsp;
-                        <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in s_p">
-                            <option>请选择</option>
+                        <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in intS_P">
                         </select></th>
                     <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排量：&nbsp;&nbsp;&nbsp;
-                        <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in s_p">
-                            <option>请选择</option>
+                        <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in intS_P">
                         </select></th>
                     <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo(4);">搜索</button></th>
                 </tr>
