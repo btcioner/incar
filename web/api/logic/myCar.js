@@ -116,7 +116,7 @@ myCar.driveBehaviorReport = function(userName, serverName, callback){
     });
 };
 */
-myCar.myDriveRecord= function(userName, serverName, callback){
+myCar.myDriveReport= function(userName, serverName, callback){
     var tpl = [
         '最近一次驾驶：\n\n',
         '    平均油耗 <%=fuelDataLastTime.fuel %> 升/百公里\n',
@@ -158,6 +158,49 @@ myCar.myDriveRecord= function(userName, serverName, callback){
         '    急转弯次数 <%=turnLatestMonth%> 次\n',
         '\n'*/
     ].join('');
+    var compiled = ejs.compile(tpl);
+
+    myDrive.getReport(userName, serverName, function(err, result) {
+        if (err) { callback(err);}
+        else {
+            if (result.fuelDataLastTime.fuel !== undefined && result.fuelDataLastTime.fuel !== null) {
+                result.fuelDataLastTime.fuel /= 100; // 原单位为 升/万千米
+                result.fuelDataLastTime.fuel = result.fuelDataLastTime.fuel.toFixed(2);
+            }
+            if (result.fuelDataLastTime.mileage !== undefined && result.fuelDataLastTime.mileage !== null) {
+                result.fuelDataLastTime.mileage /= 1000; // 原单位为 米
+                result.fuelDataLastTime.mileage = result.fuelDataLastTime.mileage.toFixed(2);
+            }
+            if (result.fuelDataLastTime.totalFuel !== undefined && result.fuelDataLastTime.totalFuel !== null) {
+                result.fuelDataLastTime.totalFuel /= 10000000; // 原单位为 千万分之一升
+                result.fuelDataLastTime.totalFuel = result.fuelDataLastTime.totalFuel.toFixed(2);
+            }
+           // if (result.fuelDataLastWeek.fuel !== undefined && result.fuelDataLastWeek.fuel !== null) { result.fuelDataLastWeek.fuel = result.fuelDataLastWeek.fuel.toFixed(2); }
+            //if (result.fuelDataLastWeek.mileage !== undefined && result.fuelDataLastWeek.mileage !== null) { result.fuelDataLastWeek.mileage = result.fuelDataLastWeek.mileage.toFixed(2); }
+           // if (result.fuelDataLastWeek.totalFuel !== undefined && result.fuelDataLastWeek.totalFuel !== null) { result.fuelDataLastWeek.totalFuel = result.fuelDataLastWeek.totalFuel.toFixed(2); }
+           // if (result.fuelDataLastMonth.fuel !== undefined && result.fuelDataLastMonth.fuel !== null) { result.fuelDataLastMonth.fuel = result.fuelDataLastMonth.fuel.toFixed(2); }
+            //if (result.fuelDataLastMonth.mileage !== undefined && result.fuelDataLastMonth.mileage !== null) { result.fuelDataLastMonth.mileage = result.fuelDataLastMonth.mileage.toFixed(2); }
+            //if (result.fuelDataLastMonth.totalFuel !== undefined && result.fuelDataLastMonth.totalFuel !== null) { result.fuelDataLastMonth.totalFuel = result.fuelDataLastMonth.totalFuel.toFixed(2); }
+            if (result.carbonDataLastTime.carbon !== undefined && result.carbonDataLastTime.carbon !== null) {
+                result.carbonDataLastTime.carbon /= 100000; // 原单位为 十万分之一千克
+                result.carbonDataLastTime.carbon = result.carbonDataLastTime.carbon.toFixed(2);
+            }
+            //if (result.carbonDataLastWeek.carbon !== undefined && result.carbonDataLastWeek.carbon !== null) { result.carbonDataLastWeek.carbon = result.carbonDataLastWeek.carbon.toFixed(2); }
+           // if (result.carbonDataLastMonth.carbon !== undefined && result.carbonDataLastMonth.carbon !== null) { result.carbonDataLastMonth.carbon = result.carbonDataLastMonth.carbon.toFixed(2); }
+
+           // if (result.carbonDataLastWeek.carbon === 0.00)
+           //     result.carbonDataLastWeek.percentage = 100;
+          //  if (result.carbonDataLastMonth.carbon === 0.00)
+           //     result.carbonDataLastMonth.percentage = 100;
+
+            callback(null, compiled(result));
+        }
+    });
+}
+myCar.myDriveRecord= function(userName, serverName, callback){
+    var tpl = [
+        '点击查看所有行车记录'
+    ].join('');
 //    var compiled =
         ejs.compile(tpl);
 
@@ -176,10 +219,10 @@ myCar.myDriveRecord= function(userName, serverName, callback){
 //                result.fuelDataLastTime.totalFuel /= 10000000; // 原单位为 千万分之一升
 //                result.fuelDataLastTime.totalFuel = result.fuelDataLastTime.totalFuel.toFixed(2);
 //            }
-//           // if (result.fuelDataLastWeek.fuel !== undefined && result.fuelDataLastWeek.fuel !== null) { result.fuelDataLastWeek.fuel = result.fuelDataLastWeek.fuel.toFixed(2); }
+//            // if (result.fuelDataLastWeek.fuel !== undefined && result.fuelDataLastWeek.fuel !== null) { result.fuelDataLastWeek.fuel = result.fuelDataLastWeek.fuel.toFixed(2); }
 //            //if (result.fuelDataLastWeek.mileage !== undefined && result.fuelDataLastWeek.mileage !== null) { result.fuelDataLastWeek.mileage = result.fuelDataLastWeek.mileage.toFixed(2); }
-//           // if (result.fuelDataLastWeek.totalFuel !== undefined && result.fuelDataLastWeek.totalFuel !== null) { result.fuelDataLastWeek.totalFuel = result.fuelDataLastWeek.totalFuel.toFixed(2); }
-//           // if (result.fuelDataLastMonth.fuel !== undefined && result.fuelDataLastMonth.fuel !== null) { result.fuelDataLastMonth.fuel = result.fuelDataLastMonth.fuel.toFixed(2); }
+//            // if (result.fuelDataLastWeek.totalFuel !== undefined && result.fuelDataLastWeek.totalFuel !== null) { result.fuelDataLastWeek.totalFuel = result.fuelDataLastWeek.totalFuel.toFixed(2); }
+//            // if (result.fuelDataLastMonth.fuel !== undefined && result.fuelDataLastMonth.fuel !== null) { result.fuelDataLastMonth.fuel = result.fuelDataLastMonth.fuel.toFixed(2); }
 //            //if (result.fuelDataLastMonth.mileage !== undefined && result.fuelDataLastMonth.mileage !== null) { result.fuelDataLastMonth.mileage = result.fuelDataLastMonth.mileage.toFixed(2); }
 //            //if (result.fuelDataLastMonth.totalFuel !== undefined && result.fuelDataLastMonth.totalFuel !== null) { result.fuelDataLastMonth.totalFuel = result.fuelDataLastMonth.totalFuel.toFixed(2); }
 //            if (result.carbonDataLastTime.carbon !== undefined && result.carbonDataLastTime.carbon !== null) {
@@ -187,58 +230,15 @@ myCar.myDriveRecord= function(userName, serverName, callback){
 //                result.carbonDataLastTime.carbon = result.carbonDataLastTime.carbon.toFixed(2);
 //            }
 //            //if (result.carbonDataLastWeek.carbon !== undefined && result.carbonDataLastWeek.carbon !== null) { result.carbonDataLastWeek.carbon = result.carbonDataLastWeek.carbon.toFixed(2); }
-//           // if (result.carbonDataLastMonth.carbon !== undefined && result.carbonDataLastMonth.carbon !== null) { result.carbonDataLastMonth.carbon = result.carbonDataLastMonth.carbon.toFixed(2); }
+//            // if (result.carbonDataLastMonth.carbon !== undefined && result.carbonDataLastMonth.carbon !== null) { result.carbonDataLastMonth.carbon = result.carbonDataLastMonth.carbon.toFixed(2); }
 //
-//           // if (result.carbonDataLastWeek.carbon === 0.00)
-//           //     result.carbonDataLastWeek.percentage = 100;
-//          //  if (result.carbonDataLastMonth.carbon === 0.00)
-//           //     result.carbonDataLastMonth.percentage = 100;
+//            // if (result.carbonDataLastWeek.carbon === 0.00)
+//            //     result.carbonDataLastWeek.percentage = 100;
+//            //  if (result.carbonDataLastMonth.carbon === 0.00)
+//            //     result.carbonDataLastMonth.percentage = 100;
 //
 //            callback(null, compiled(result));
 //        }
 //    });
-}
-myCar.myDriveReport= function(userName, serverName, callback){
-    var tpl = [
-        '最近一次驾驶：点击查看所有行车记录'
-    ].join('');
-    var compiled = ejs.compile(tpl);
-
-    myDrive.getReport(userName, serverName, function(err, result) {
-        if (err) { callback(err);}
-        else {
-            if (result.fuelDataLastTime.fuel !== undefined && result.fuelDataLastTime.fuel !== null) {
-                result.fuelDataLastTime.fuel /= 100; // 原单位为 升/万千米
-                result.fuelDataLastTime.fuel = result.fuelDataLastTime.fuel.toFixed(2);
-            }
-            if (result.fuelDataLastTime.mileage !== undefined && result.fuelDataLastTime.mileage !== null) {
-                result.fuelDataLastTime.mileage /= 1000; // 原单位为 米
-                result.fuelDataLastTime.mileage = result.fuelDataLastTime.mileage.toFixed(2);
-            }
-            if (result.fuelDataLastTime.totalFuel !== undefined && result.fuelDataLastTime.totalFuel !== null) {
-                result.fuelDataLastTime.totalFuel /= 10000000; // 原单位为 千万分之一升
-                result.fuelDataLastTime.totalFuel = result.fuelDataLastTime.totalFuel.toFixed(2);
-            }
-            // if (result.fuelDataLastWeek.fuel !== undefined && result.fuelDataLastWeek.fuel !== null) { result.fuelDataLastWeek.fuel = result.fuelDataLastWeek.fuel.toFixed(2); }
-            //if (result.fuelDataLastWeek.mileage !== undefined && result.fuelDataLastWeek.mileage !== null) { result.fuelDataLastWeek.mileage = result.fuelDataLastWeek.mileage.toFixed(2); }
-            // if (result.fuelDataLastWeek.totalFuel !== undefined && result.fuelDataLastWeek.totalFuel !== null) { result.fuelDataLastWeek.totalFuel = result.fuelDataLastWeek.totalFuel.toFixed(2); }
-            // if (result.fuelDataLastMonth.fuel !== undefined && result.fuelDataLastMonth.fuel !== null) { result.fuelDataLastMonth.fuel = result.fuelDataLastMonth.fuel.toFixed(2); }
-            //if (result.fuelDataLastMonth.mileage !== undefined && result.fuelDataLastMonth.mileage !== null) { result.fuelDataLastMonth.mileage = result.fuelDataLastMonth.mileage.toFixed(2); }
-            //if (result.fuelDataLastMonth.totalFuel !== undefined && result.fuelDataLastMonth.totalFuel !== null) { result.fuelDataLastMonth.totalFuel = result.fuelDataLastMonth.totalFuel.toFixed(2); }
-            if (result.carbonDataLastTime.carbon !== undefined && result.carbonDataLastTime.carbon !== null) {
-                result.carbonDataLastTime.carbon /= 100000; // 原单位为 十万分之一千克
-                result.carbonDataLastTime.carbon = result.carbonDataLastTime.carbon.toFixed(2);
-            }
-            //if (result.carbonDataLastWeek.carbon !== undefined && result.carbonDataLastWeek.carbon !== null) { result.carbonDataLastWeek.carbon = result.carbonDataLastWeek.carbon.toFixed(2); }
-            // if (result.carbonDataLastMonth.carbon !== undefined && result.carbonDataLastMonth.carbon !== null) { result.carbonDataLastMonth.carbon = result.carbonDataLastMonth.carbon.toFixed(2); }
-
-            // if (result.carbonDataLastWeek.carbon === 0.00)
-            //     result.carbonDataLastWeek.percentage = 100;
-            //  if (result.carbonDataLastMonth.carbon === 0.00)
-            //     result.carbonDataLastMonth.percentage = 100;
-
-            callback(null, compiled(result));
-        }
-    });
 }
 exports = module.exports = myCar;
