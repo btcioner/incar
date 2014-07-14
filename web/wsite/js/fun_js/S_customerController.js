@@ -146,6 +146,19 @@ function s_customerCtrl($scope, $http,$routeParams){
         switch(id)
         {
             case 1:
+                if($routeParams.id!=null)
+                {
+                    $scope.queryString = "&groupId="+$routeParams.id1+"&tagCode="+$routeParams.id;
+                }
+                else{
+                    if($routeParams.id1 == "ALL")
+                    {
+                        $scope.queryString ="";
+                    }
+                    else{
+                        $scope.queryString = "&groupId="+$routeParams.id1;
+                    }
+                }
                 GetFirstPageInfo();
                 break;
             case 2:

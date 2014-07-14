@@ -26,10 +26,6 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     $scope.ser_month = 0;
     $scope.ser_title = "";
 
-    if($routeParams.id != null)
-    {
-        $scope.queryString = "&status="+$routeParams.id;
-    }
 
     function initAddData()
     {
