@@ -52,7 +52,7 @@ module wxApp {
         private searchUser = ()=>{
             this.$http.post('/mservice/infoConfig', {user:this.user_openid})
                 .success((data, status, headers, config)=>{
-                    this.name_sta = true;
+//                    this.name_sta = true;
                     this.printWord = "修改成功!";
                     this.flag = "update";
                     this.userCfg = data;
@@ -71,7 +71,7 @@ module wxApp {
                 .error((data, status, headers, config)=>{
 //                    console.log(status);
                     alert("您还未注册或未绑定OBD信息\n请先注册账号！");
-                    this.name_sta = false;
+//                    this.name_sta = false;
                     this.printWord ="创建成功!";
                     this.flag = "add";
                     this.userCfg = {name:"",nick:"",obd_code:"",modelYear:"",phone:"",license:"",mileage:"",disp:"",id:""}
@@ -218,7 +218,7 @@ module wxApp {
         private pwd:string;
         private pwd2:string;
         private $http: any;
-        private name_sta:boolean;
+//        private name_sta:boolean;
         private printWord:any;
         private brand_code:any;
         private flag:any;

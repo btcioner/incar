@@ -134,11 +134,11 @@ function userEnroll(req, res) {
                         if(err){
                             if(flag=="update")
                             {
-                                res.json({status:'修改账户失败'});
+                                res.json({status:'该用户名已被注册！'});
                             }
                             else if(flag == "add")
                             {
-                                res.json({status:'添加账户失败'});
+                                res.json({status:'该用户名已被注册！'});
                             }
                         }
                         else{
@@ -147,8 +147,8 @@ function userEnroll(req, res) {
                             req.body.user = user;
                             carEnroll(req,res, function(ex){
                                 if(ex) {
-                                    pool.query('DELETE FROM t_account WHERE id=?', [accountId], function(){});
-                                    res.json(ex); return;
+//                                    pool.query('DELETE FROM t_account WHERE id=?', [accountId], function(){});
+                                    res.json({status:'修改账户失败'}); return;
                                 }
                                 res.json({status:'success',accountId:accountId});
                             });
