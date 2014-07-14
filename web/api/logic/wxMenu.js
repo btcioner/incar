@@ -21,6 +21,11 @@ var menuObject={
                     [
                         {
                             "type":"click",
+                            "name":"行车记录",
+                            "key":"MYCAR.DRIVERECORD"
+                        },
+                        {
+                            "type":"click",
                             "name":"行车分析",
                             "key":"MYCAR.MYDRIVE"
                         },
@@ -121,7 +126,27 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, req, next) {
         }
     });
 };
-
+wxMenu.onClick['MYCAR.DRIVERECORD'] = function(message, req, next) {
+    myCar.myDriveRecord(message.FromUserName, message.ToUserName, function(err, reportContent){
+        if (err) {
+            console.error(err);
+            next(null, [{
+                title: '行车记录',
+                description: '请向4S店购买并注册OBD获取此功能',
+                picurl: url.resolve("http://" + req.headers.host, "data/logo.jpg"),
+                url: ''
+            }]);
+        }
+        else {
+            next(null, [{
+                title: '行车记录',
+                description: reportContent,
+                picurl: url.resolve("http://" + req.headers.host, "data/upload/5360-1y8wzqo.jpg"),
+                url: url.resolve("http://" + req.headers.host, "msite/driveRecord.html?user=") + message.FromUserName + '@' + message.ToUserName
+            }]);
+        }
+    });
+};
 wxMenu.onClick['MYCAR.MAINTAIN'] = function(message, req, next){
     next(null, [{
         title: "车况检测",
