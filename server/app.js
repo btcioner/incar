@@ -57,6 +57,7 @@ server.on('connection', function(socket) {
     socket.on('error',function(err){
         console.log('OBD('+mark+')：出现错误：'+err);
         server.close();
+        throw err;
     });
 });
 
