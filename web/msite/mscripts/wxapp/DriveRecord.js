@@ -17,7 +17,7 @@ app.controller("driveRecordCtrl", function($scope, $http){
           {
               alert(data.status);
               if(WeixinJSBridge){
-                  console.log("bridge存在!");
+                  alert("bridge存在!");
                   WeixinJSBridge.call('closeWindow');
               }
           }
