@@ -187,8 +187,8 @@ my4S.mostNews = function (uoid, soid, session, cb) {
         // 查询最新资讯template = 'ActAd'
         var sqlAd = "SELECT A.id, A.title, A.logo_url\n" +
             "FROM t_activity A\n" +
-            "\tJOIN t_4s S ON A.s4_id = S.id AND S.open_id = ?\n" +
-            "\tJOIN t_activity_template T ON A.tempate_id = T.id AND A.s4_id = T.s4_id AND T.template = 'ActAd'\n" +
+            "\tJOIN t_4s S ON A.s4_id = S.id AND S.openid = ?\n" +
+            "\tJOIN t_activity_template T ON A.template_id = T.id AND A.s4_id = T.s4_id AND T.template = 'ActAd'\n" +
             "ORDER BY A.tm_announce DESC\n" +
             "LIMIT 1";
         pool.query(sqlAd, [soid], function(ex ,result){
@@ -200,8 +200,8 @@ my4S.mostNews = function (uoid, soid, session, cb) {
         // 查询最新活动template <> 'ActAd'
         var sqlOther = "SELECT A.id, A.title, A.logo_url\n" +
             "FROM t_activity A\n" +
-            "\tJOIN t_4s S ON A.s4_id = S.id AND S.open_id = ?\n" +
-            "\tJOIN t_activity_template T ON A.tempate_id = T.id AND A.s4_id = T.s4_id AND T.template <> 'ActAd'\n" +
+            "\tJOIN t_4s S ON A.s4_id = S.id AND S.openid = ?\n" +
+            "\tJOIN t_activity_template T ON A.template_id = T.id AND A.s4_id = T.s4_id AND T.template <> 'ActAd'\n" +
             "ORDER BY A.tm_announce DESC\n" +
             "LIMIT 1";
         pool.query(sqlOther, [soid], function(ex ,result){
