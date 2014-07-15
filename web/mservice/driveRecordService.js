@@ -23,7 +23,7 @@ function driveRecord(req, res) {
         if (info.err) { res.json({status:"连接数据库出错！"});return }
         else{
             var acc_id = info.data[0].id;
-             sql="select car_id from t_car_user where car_id=?"
+             sql="select car_id from t_car_user where acc_id=?"
             dao.findBySql(sql,[acc_id],function(info){
                 if (info.err) { res.json({status:"您还没有注册OBD！"});return }
                 else{
