@@ -288,7 +288,7 @@ wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
 
         // task B
         task.B = {
-            title: "车况检测:亲,正在开发中,马上就会有",
+            title: "行车报告:亲,正在开发中,马上就会有",
             description: "亲,正在开发中,马上就会有",
             picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
             url: ''
