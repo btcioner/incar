@@ -56,29 +56,42 @@ module wxApp {
                     this.printWord = "修改成功!";
                     this.flag = "update";
                     this.userCfg = data;
-
-                    this.mySeries = data.series;
+                    if(data.series ==="")
+                    {
+                        this.mySeries =-1;
+                    }else{
+                       this.mySeries = data.series;
+                    }
                     var temp = this.user_openid.split("@");
                     if(this.userCfg.name === "wx_"+temp[0])
                     {
                         this.userCfg.name ="";
                     }
-
                     if(this.userCfg.nick==="微信匿名用户")
                     {
                         this.userCfg.nick ="";
                     }
                     // age
-                    var ageDate=new Date();
-                     data.age = ageDate.getFullYear() - data.age.substring(0,4);
-                    for(var i=0;i<this.ages.length;i++){
-                        if(data.age === i)
-                            this.age = this.ages[i+1];
+                    if(data.age==="")
+                    {
+                        this.age ="请选择";
+                    }else{
+                        var ageDate=new Date();
+                         data.age = ageDate.getFullYear() - data.age.substring(0,4);
+                        for(var i=0;i<this.ages.length;i++){
+                            if(data.age === i)
+                                this.age = this.ages[i+1];
+                        }
                     }
-
                     // 发动机类型
-                    if(data.engine_type === 'T') this.eng_type = '涡轮增压';
-                    else this.eng_type = '自然吸气';
+                    if(data.engine_type ===""){
+                        this.eng_type = '请选择';
+                    }
+                    else
+                    {
+                        if(data.engine_type === 'T') this.eng_type = '涡轮增压';
+                        else this.eng_type = '自然吸气';
+                    }
 
                     console.log(data);
                 })
