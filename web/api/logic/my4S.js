@@ -180,7 +180,8 @@ my4S.contact = function (userName, sopenid, session, callback) {
  * @param cb 回调
  */
 my4S.mostNews = function (uoid, soid, session, cb) {
-    var pool = require('../../config/db.js');
+    var db = require('../../config/db.js');
+    var pool = db();
     var task = { finished:0 };
     task.begin = function(){
         // 查询最新资讯template = 'ActAd'
