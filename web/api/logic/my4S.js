@@ -213,11 +213,11 @@ my4S.mostNews = function (uoid, soid, session, cb) {
     task.end = function(){
         if(task.finished < 2) return;
         var news = [];
-        if(!task.A.ex && task.A.result && task.A.result.length > 0){
-            news.push(task.A.result[0]);
-        }
         if(!task.B.ex && task.B.result && task.B.result.length > 0){
             news.push(task.B.result[0]);
+        }
+        if(!task.A.ex && task.A.result && task.A.result.length > 0){
+            news.push(task.A.result[0]);
         }
         cb(news);
     };
