@@ -29,6 +29,7 @@ var myActivityService= require('./myActivityService');
 var my4sInfoService= require('./my4sInfoService');
 var activityDetailService= require('./activityDetailService');
 var applyService= require('./applyService');
+var driveRecordService = require('./driveRecordService');
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
 
 userService(mservice);
@@ -51,6 +52,7 @@ myActivityService(mservice);
 my4sInfoService(mservice);
 activityDetailService(mservice);
 applyService(mservice);
+driveRecordService(mservice);
 (function(service) {
 
     function entrance(req, res) {
@@ -60,6 +62,7 @@ applyService(mservice);
             res.send(404);
             return;
         }
+//       console.log(req.method);
         var api;
         switch (req.method) {
             case 'GET':
