@@ -216,7 +216,7 @@ my4S.mostNews = function (uoid, soid, session, cb) {
         if(!task.A.ex && task.A.result && task.A.result.length > 0){
             news.push(task.A.result[0]);
         }
-        if(!task.B.ex & task.B.result && task.B.result.length > 0){
+        if(!task.B.ex && task.B.result && task.B.result.length > 0){
             news.push(task.B.result[0]);
         }
         cb(news);

@@ -117,7 +117,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
             if (err) {
                 console.error(err);
                 task.B = {
-                        title: '行车分析',
+                        title: '购买并注册OBD获取查看平均油耗、碳排放、驾驶行为、速段统计等更多功能',
                         description: '请向4S店购买并注册OBD获取此功能',
                         picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
                         url: ''
