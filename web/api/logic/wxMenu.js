@@ -152,64 +152,165 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
     task.begin();
 };
 wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
-    myCar.myDriveRecord(message.FromUserName, message.ToUserName, function (err, reportContent) {
-        if (err) {
-            console.error(err);
-            next(null, [
-                {
-                    title: '行车记录',
-                    description: '请向4S店购买并注册OBD获取此功能',
-                    picurl: url.resolve("http://" + req.headers.host, "data/logo.jpg"),
-                    url: ''
-                }
-            ]);
+    var task = { finished: 0};
+    task.begin = function () {
+        // task A
+        my4S.mostNews(message.FromUserName, message.ToUserName, req.wxsession, function (news) {
+            task.finished++;
+            task.A = { news: news };
+            task.end();
+        });
+
+        // task B
+        myCar.myDriveRecord(message.FromUserName, message.ToUserName, function (err, reportContent) {
+            if (err) {
+                console.error(err);
+                task.B =
+                    {
+                        title: '行车记录',
+                        description: '请向4S店购买并注册OBD获取此功能',
+                        picurl: url.resolve("http://" + req.headers.host, "data/logo.jpg"),
+                        url: ''
+                    };
+            }
+            else {
+                task.B =
+                    {
+                        title: '行车记录',
+                        description: reportContent,
+                        picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
+                        url: url.resolve("http://" + req.headers.host, "msite/driveRecord.html?user=") + message.FromUserName + '@' + message.ToUserName
+                    };
+            }
+            task.finished++;
+            task.end();
+        });
+    };
+    task.end = function () {
+        if(task.finished < 2) return;
+        var wxMsg = [task.B];
+        for(var i=0;i<task.A.news.length;i++){
+            var news = task.A.news[i];
+            wxMsg.push({
+                title: news.title,
+                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
+            });
         }
-        else {
-            next(null, [
-                {
-                    title: '行车记录',
-                    description: reportContent,
-                    picurl: url.resolve("http://" + req.headers.host, "data/upload/5360-1y8wzqo.jpg"),
-                    url: url.resolve("http://" + req.headers.host, "msite/driveRecord.html?user=") + message.FromUserName + '@' + message.ToUserName
-                }
-            ]);
-        }
-    });
+
+        next(null, wxMsg);
+    };
+    task.begin();
 };
 wxMenu.onClick['MYCAR.MAINTAIN'] = function (message, req, next) {
-    next(null, [
-        {
+    var task = { finished: 0};
+    task.begin = function () {
+        // task A
+        my4S.mostNews(message.FromUserName, message.ToUserName, req.wxsession, function (news) {
+            task.finished++;
+            task.A = { news: news };
+            task.end();
+        });
+
+        // task B
+        task.B = {
             title: "车况检测",
             description: "亲,正在开发中,马上就会有",
-            picurl: url.resolve("http://" + req.headers.host, "data/logo.jpg"),
+            picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
             url: ''
+        };
+        task.finished++;
+        task.end();
+    };
+    task.end = function () {
+        if(task.finished < 2) return;
+        var wxMsg = [task.B];
+        for(var i=0;i<task.A.news.length;i++){
+            var news = task.A.news[i];
+            wxMsg.push({
+                title: news.title,
+                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
+            });
         }
-    ]);
+
+        next(null, wxMsg);
+    };
+    task.begin();
 };
 wxMenu.onClick['MYCAR.MANUAL'] = function (message, req, next) {
-    my4S.manual(message.FromUserName, req.wxsession, function (err, result) {
-        if (err) {
-            return next(err);
-        }
-        return next(null, [
-            {
+    var task = { finished: 0};
+    task.begin = function () {
+        // task A
+        my4S.mostNews(message.FromUserName, message.ToUserName, req.wxsession, function (news) {
+            task.finished++;
+            task.A = { news: news };
+            task.end();
+        });
+
+        // task B
+        my4S.manual(message.FromUserName, req.wxsession, function (err, result) {
+            task.B = {
                 title: '行车手册',
                 description: result,
                 picurl: '',
                 url: url.resolve("http://" + req.headers.host, "msite/page_xcsc.html?user=") + message.FromUserName + '@' + message.ToUserName
-            }
-        ]);
-    });
+            };
+            task.finished++;
+            task.end();
+        });
+    };
+    task.end = function () {
+        if(task.finished < 2) return;
+        var wxMsg = [task.B];
+        for(var i=0;i<task.A.news.length;i++){
+            var news = task.A.news[i];
+            wxMsg.push({
+                title: news.title,
+                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
+            });
+        }
+
+        next(null, wxMsg);
+    };
+    task.begin();
 };
 wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
-    next(null, [
-        {
+    var task = { finished: 0};
+    task.begin = function () {
+        // task A
+        my4S.mostNews(message.FromUserName, message.ToUserName, req.wxsession, function (news) {
+            task.finished++;
+            task.A = { news: news };
+            task.end();
+        });
+
+        // task B
+        task.B = {
             title: "车况检测",
             description: "亲,正在开发中,马上就会有",
-            picurl: url.resolve("http://" + req.headers.host, "data/logo.jpg"),
+            picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
             url: ''
+        };
+        task.finished++;
+        task.end();
+    };
+    task.end = function () {
+        if(task.finished < 2) return;
+        var wxMsg = [task.B];
+        for(var i=0;i<task.A.news.length;i++){
+            var news = task.A.news[i];
+            wxMsg.push({
+                title: news.title,
+                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
+            });
         }
-    ]);
+
+        next(null, wxMsg);
+    };
+    task.begin();
 };
 
 
