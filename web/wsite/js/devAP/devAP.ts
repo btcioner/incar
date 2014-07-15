@@ -71,6 +71,7 @@ module devAP {
 
         // 被测试的页面
         public pagesDev = [
+            { title: "我的车-行车记录[wmq@dev]", url: "/msite/driveRecord.html?" },
             { title: "我的车-行车分析[wmq@dev]", url: "/msite/myDrive.html?" },
             { title: "我的车-行车手册", url: "/msite/page_xcsc.html?" },
             { title: "我的4S-预约保养[wmq@dev]", url: "/msite/booking.html?"  },
@@ -82,6 +83,7 @@ module devAP {
         ];
 
         public pagesStaging = [
+            { title: "我的车-行车记录[wmq@dev]", url: "/msite/driveRecord.html?" },
             { title: "我的车-行车分析[wmq@stagging]", url: "/msite/myDrive.html?" },
             { title: "我的车-行车手册", url: "/msite/page_xcsc.html?" },
             { title: "我的4S-预约保养[wmq@stagging]", url: "/msite/booking.html?"  },

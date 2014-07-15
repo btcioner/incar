@@ -1,0 +1,45 @@
+<!DOCTYPE>
+<html ng-app="drAPP">
+<head>
+    <title>行车记录页面</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+
+    <script src="../mscripts/jquery-1.7.1.min.js"></script>
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
+
+    <script src="../mscripts/angular.js"></script>
+    <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/angular-route.min.js"></script>
+    <script src="../mscripts/wxapp/DriveRecord.js"></script>
+
+</head>
+
+<body ng-controller="driveRecordCtrl">
+<div id="wrap">
+    <!--main_wrap start-->
+    <div id="main_wrap">
+        <!--containe_250 start-->
+        <div id="containe_250">
+            <!--基本信息contentbox start-->
+            <div class="contentbox"  ng-repeat="rl in recordList">
+                <div class="columnname">
+                    <div class="text_09">启动时间：{{rl.fireTime}}</div></div>
+                <div class="content"><ul><li class="text_08">行驶里程：</li>
+                    <li>{{rl.currentMileage}}公里</li></ul><div class="clear"></div></div>
+                <div class="content"><ul><li class="text_08">平均油耗：</li>
+                    <li>{{rl.currentAvgOilUsed}}升/百公里</li></ul><div class="clear"></div></div>
+                <div class="content"><ul><li class="text_08">熄火时间：</li>
+                    <li>{{rl.flameOutTime}}</li></ul><div class="clear"></div></div>
+                <div class="clear"></div>
+            </div><!--基本信息contentbox end-->
+            <div ng-view ng-show="false"></div>
+
+        </div><!--containe_250 end-->
+    </div><!--main_wrap end-->
+</div>
+</body>
+</html>
