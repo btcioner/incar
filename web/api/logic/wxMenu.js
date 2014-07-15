@@ -253,7 +253,7 @@ wxMenu.onClick['MYCAR.MANUAL'] = function (message, req, next) {
             task.B = {
                 title: '请回复关键字,来查询行车手册',
                 description: result,
-                picurl: '',
+                picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
                 url: url.resolve("http://" + req.headers.host, "msite/page_xcsc.html?user=") + message.FromUserName + '@' + message.ToUserName
             };
             task.finished++;
