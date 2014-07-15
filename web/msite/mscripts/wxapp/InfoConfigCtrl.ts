@@ -56,10 +56,24 @@ module wxApp {
                     this.printWord = "修改成功!";
                     this.flag = "update";
                     this.userCfg = data;
+
                     this.mySeries = data.series;
+                    var temp = this.user_openid.split("@");
+                    if(this.userCfg.name === "wx_"+temp[0])
+                    {
+                        this.userCfg.name ="";
+                    }
+
+                    if(this.userCfg.nick==="微信匿名用户")
+                    {
+                        this.userCfg.nick ="";
+                    }
                     // age
+                    var ageDate=new Date();
+                     data.age = ageDate.getFullYear() - data.age.substring(0,4);
                     for(var i=0;i<this.ages.length;i++){
-                        if(data.age === this.ages[i]) this.age = this.ages[i];
+                        if(data.age === i)
+                            this.age = this.ages[i+1];
                     }
 
                     // 发动机类型
@@ -167,15 +181,27 @@ module wxApp {
             }
 
             // age
-            for(var i=0;i<this.ages.length;i++){
-                if(this.age === this.ages[i]){
-                    postData.age = i;
+            if(this.age==="请选择")
+            {
+               alert("请选择车龄!");
+                return;
+            }else{
+                for(var i=1;i<this.ages.length+1;i++){
+                    if(this.age === this.ages[i]){
+                        postData.age = i-1;
+                    }
                 }
             }
 
             // engine_type
-            if(this.eng_type === '涡轮增压') postData.engine_type = 'T';
-            else postData.engine_type = 'L';
+            if(this.eng_type ==="请选择")
+            {
+                alert("请选择发动机类型!");
+                return;
+            }else{
+                if(this.eng_type === '涡轮增压') postData.engine_type = 'T';
+                else postData.engine_type = 'L';
+            }
 
 
 
@@ -211,10 +237,10 @@ module wxApp {
         private mySeries:any;
         private brand_name:string;
         private userCfg:any;
-        private eng_types = [ '自然吸气', '涡轮增压' ];
-        private eng_type = '涡轮增压';
-        private ages = ['1年以下','1-2年','2-3年','3-4年','4-5年','大于5年'];
-        private age = '1-2年';
+        private eng_types = ['请选择', '自然吸气', '涡轮增压' ];
+        private eng_type = '请选择';
+        private ages = ['请选择','1年以下','1-2年','2-3年','3-4年','4-5年','大于5年'];
+        private age = '请选择';
         private pwd:string;
         private pwd2:string;
         private $http: any;
