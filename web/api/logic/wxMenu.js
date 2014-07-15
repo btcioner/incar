@@ -167,7 +167,7 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
                 console.error(err);
                 task.B =
                     {
-                        title: '行车记录',
+                        title: '请向4S店购买并注册OBD获取此功能',
                         description: '请向4S店购买并注册OBD获取此功能',
                         picurl: url.resolve("http://" + req.headers.host, "data/logo.jpg"),
                         url: ''
@@ -176,7 +176,7 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
             else {
                 task.B =
                     {
-                        title: '行车记录',
+                        title: '点击查看所有行车记录',
                         description: reportContent,
                         picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
                         url: url.resolve("http://" + req.headers.host, "msite/driveRecord.html?user=") + message.FromUserName + '@' + message.ToUserName
@@ -214,7 +214,7 @@ wxMenu.onClick['MYCAR.MAINTAIN'] = function (message, req, next) {
 
         // task B
         task.B = {
-            title: "车况检测",
+            title: "车况检测:亲,正在开发中,马上就会有",
             description: "亲,正在开发中,马上就会有",
             picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
             url: ''
@@ -251,7 +251,7 @@ wxMenu.onClick['MYCAR.MANUAL'] = function (message, req, next) {
         // task B
         my4S.manual(message.FromUserName, req.wxsession, function (err, result) {
             task.B = {
-                title: '行车手册',
+                title: '请回复关键字,来查询行车手册',
                 description: result,
                 picurl: '',
                 url: url.resolve("http://" + req.headers.host, "msite/page_xcsc.html?user=") + message.FromUserName + '@' + message.ToUserName
@@ -288,7 +288,7 @@ wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
 
         // task B
         task.B = {
-            title: "车况检测",
+            title: "车况检测:亲,正在开发中,马上就会有",
             description: "亲,正在开发中,马上就会有",
             picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
             url: ''
