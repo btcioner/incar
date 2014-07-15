@@ -250,8 +250,8 @@ a.text_07 {
 
 #wrap {
 	width: 100%;
-	min-height:435px;
-	_height:435px;
+	min-height:600px;
+	_height:600px;
 	background-repeat: repeat-x;
 	background-position: top;
 }
