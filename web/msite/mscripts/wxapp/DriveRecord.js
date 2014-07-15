@@ -1,7 +1,7 @@
 var app = angular.module("drAPP", ['ngResource','ngRoute']);
 
 //行车记录前台logic
-var WeixinJSBridge;
+
 app.controller("driveRecordCtrl", function($scope, $http){
 
     $scope.user_openid = window.location.toString().split("=")[1];
@@ -16,9 +16,9 @@ app.controller("driveRecordCtrl", function($scope, $http){
           }else
           {
               alert(data.status);
-              if(WeixinJSBridge){
+//              if(WeixinJSBridge){
                   WeixinJSBridge.call('closeWindow');
-              }
+//              }
           }
     }).error(function(data){
             alert("请求无响应!");
