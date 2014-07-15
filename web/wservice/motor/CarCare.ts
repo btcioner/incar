@@ -338,7 +338,8 @@ module Work{
                     this.json_args = JSON.stringify({
                         oper: userLogin.dto.nick,
                         brand:data.brand,
-                        series:data.series
+                        series:data.series,
+                        license:data.license
                     });
                     console.log(this.json_args);
 //                  this.json_args = JSON.stringify({oper:userLogin.dto.nick});
@@ -382,7 +383,8 @@ module Work{
                         oper: userLogin.dto.nick,
                         brand:req.body.brand,
                         series:req.body.series,
-                        reason:req.body.reason
+                        reason:req.body.reason,
+                        license:req.body.license
                     });
 
                     var sql = "UPDATE t_work SET step = 'rejected', json_args = ? WHERE id = ? and step = 'applied'";
@@ -418,7 +420,7 @@ module Work{
             Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
-                    var args:any = { oper:userLogin.dto.nick,brand:req.body.brand,series:req.body.series};
+                    var args:any = { oper:userLogin.dto.nick,brand:req.body.brand,series:req.body.series,license:req.body.license};
 
                     if(req.body.reason) args.reason = req.body.reason;
 
@@ -458,7 +460,7 @@ module Work{
             Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
                 else{
-                    this.json_args = JSON.stringify({oper:userLogin.dto.nick, reason:req.body.reason,brand:req.body.brand,series:req.body.series});
+                    this.json_args = JSON.stringify({oper:userLogin.dto.nick, reason:req.body.reason,brand:req.body.brand,series:req.body.series,license:req.body.license});
 
                     var sql = "UPDATE t_work SET step = 'aborted', json_args = ? WHERE id = ? and step = 'approved'";
                     var dac = Service.MySqlAccess.RetrievePool();
@@ -512,7 +514,8 @@ module Work{
                             begin_time: data.begin_time,
                             end_time: data.end_time,
                             brand:data.brand,
-                            series:data.series
+                            series:data.series,
+                            license:data.license
                         });
 
                         var sql = "UPDATE t_work SET step = 'done', json_args = ? WHERE id = ? and step = 'approved'";
