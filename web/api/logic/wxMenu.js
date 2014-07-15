@@ -117,12 +117,33 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function(message, req, next) {
             }]);
         }
         else {
-            next(null, [{
-                title: '行车分析',
-                description: reportContent,
-                picurl: '',
-                url: url.resolve("http://" + req.headers.host, "msite/myDrive.html?user=") + message.FromUserName + '@' + message.ToUserName
-            }]);
+            if(mesage.ToUserName !== 'gh_54cfa67f0283') {
+                next(null, [
+                    {
+                        title: '行车分析',
+                        description: reportContent,
+                        picurl: '',
+                        url: url.resolve("http://" + req.headers.host, "msite/myDrive.html?user=") + message.FromUserName + '@' + message.ToUserName
+                    }
+                ]);
+            }
+            else{
+                // 测试微信多图文消息
+                next(null, [
+                    {
+                        title: '行车分析',
+                        description: reportContent,
+                        picurl: '',
+                        url: url.resolve("http://" + req.headers.host, "msite/myDrive.html?user=") + message.FromUserName + '@' + message.ToUserName
+                    },
+                    {
+                        title: '行车分析',
+                        description: reportContent,
+                        picurl: '',
+                        url: url.resolve("http://" + req.headers.host, "msite/myDrive.html?user=") + message.FromUserName + '@' + message.ToUserName
+                    }
+                ]);
+            }
         }
     });
 };
