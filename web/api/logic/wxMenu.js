@@ -103,47 +103,53 @@ wxMenu.textMsgRepliers['my4S.onManual'] = my4S.onManualMessages;
 wxMenu.onClick = [];
 
 wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
-    myCar.myDriveReport(message.FromUserName, message.ToUserName, function (err, reportContent) {
-        if (err) {
-            console.error(err);
-            next(null, [
-                {
-                    title: '行车分析',
-                    description: '请向4S店购买并注册OBD获取此功能',
-                    picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
-                    url: ''
-                },
-                {
-                    title: '行车分析2',
-                    description: '请向4S店购买并注册OBD获取此功能2',
-                    picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
-                    url: ''
-                },
-                {
-                    title: '行车分析3',
-                    description: '请向4S店购买并注册OBD获取此功能3',
-                    picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
-                    url: ''
-                },
-                {
-                    title: '行车分析4',
-                    description: '请向4S店购买并注册OBD获取此功能4',
-                    picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
-                    url: ''
-                }
-            ]);
-        }
-        else {
-            next(null, [
-                {
-                    title: '行车分析',
+    var task = { finished: 0};
+    task.begin = function () {
+        // task A
+        my4S.mostNews(message.FromUserName, message.ToUserName, req.wxsession, function (news) {
+            task.finished++;
+            task.A = { news: news };
+            task.end();
+        });
+
+        // task B
+        myCar.myDriveReport(message.FromUserName, message.ToUserName, function (err, reportContent) {
+            if (err) {
+                console.error(err);
+                task.B = {
+                        title: '行车分析',
+                        description: '请向4S店购买并注册OBD获取此功能',
+                        picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
+                        url: ''
+                };
+            }
+            else {
+                task.B = {
+                    title: '点击查看平均油耗、碳排放、驾驶行为、速段统计等',
                     description: reportContent,
-                    picurl: '',
+                    picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
                     url: url.resolve("http://" + req.headers.host, "msite/myDrive.html?user=") + message.FromUserName + '@' + message.ToUserName
-                }
-            ]);
+                };
+            }
+            task.finished++;
+            task.end();
+        });
+    };
+    task.end = function () {
+        if(task.finished < 2) return;
+        var wxMsg = [task.B];
+        for(var i=0;i<task.A.news.length;i++){
+            var news = task.A.news[i];
+            wxMsg.push({
+                title: news.title,
+                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
+            });
         }
-    });
+
+        next(null, wxMsg);
+    };
+    task.begin();
 };
 wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
     myCar.myDriveRecord(message.FromUserName, message.ToUserName, function (err, reportContent) {

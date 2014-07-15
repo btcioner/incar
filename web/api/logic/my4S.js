@@ -10,14 +10,14 @@ var manual = require('./manual');
 
 var my4S = {};
 
-my4S.onBookingMessages = function(message, req, callback) {
+my4S.onBookingMessages = function (message, req, callback) {
     var session = req.wxsession;
     var idx = parseInt(message.Content);
-    if (! session.slotData) {
+    if (!session.slotData) {
         session.textMsgReplierIndex = null;
         return callback({type: 'text', content: '会话错误！'});
     }
-    if (! idx) {
+    if (!idx) {
         if (idx !== 0) return callback({type: 'text', content: '输入错误！'});
     }
     if (idx < 1 || idx > session.slotData.slots.length) {
@@ -26,7 +26,7 @@ my4S.onBookingMessages = function(message, req, callback) {
 
     console.log(session.slotData);
 
-    return booking.applySlot(message.FromUserName,message.ToUserName, session.slotData.slots[(idx -1)], function(err, result){
+    return booking.applySblot(message.FromUserName, message.ToUserName, session.slotData.slots[(idx - 1)], function (err, result) {
         if (err) {
             session.textMsgReplierIndex = null;
             delete session.slotData;
@@ -40,15 +40,17 @@ my4S.onBookingMessages = function(message, req, callback) {
     });
 };
 
-my4S.onManualMessages = function(message, req, callback) {
+my4S.onManualMessages = function (message, req, callback) {
     var session = req.wxsession;
-    manual.retrieve(message.Content, req, function(err, msg){
-        if (err) { return callback({type: 'text', content: '您输入的关键字未搜索到任何手册条目。我们会继续努力持续扩大手册的内容的。'}); }
+    manual.retrieve(message.Content, req, function (err, msg) {
+        if (err) {
+            return callback({type: 'text', content: '您输入的关键字未搜索到任何手册条目。我们会继续努力持续扩大手册的内容的。'});
+        }
         return callback(msg);
     });
 };
 
-my4S.book = function(userName,sopenid, session, callback){
+my4S.book = function (userName, sopenid, session, callback) {
     console.log("begin book");
     // 模板将来要从数据库来读取
     var tpl = [
@@ -83,7 +85,7 @@ my4S.book = function(userName,sopenid, session, callback){
 
     var compiled = ejs.compile(tpl);
 
-    booking.getPromotionSlots(userName,sopenid, function(err, result) {
+    booking.getPromotionSlots(userName, sopenid, function (err, result) {
         if (err) {
             session.textMsgReplierIndex = null;
             if (session.slotData) delete session.slotData;
@@ -99,30 +101,30 @@ my4S.book = function(userName,sopenid, session, callback){
         }
     });
 };
-my4S.trialrun=function(userName,sopenid, session, callback){
+my4S.trialrun = function (userName, sopenid, session, callback) {
     var tpl = [
         '本店提供【<%=brandName%>】各系列车试乘试驾：\n\n',
 
         '请点击进入,进行预约\n\n'
-        ].join('');
+    ].join('');
     var compiled = ejs.compile(tpl);
-    booking.getBrand(sopenid,function(err,result){
-           if(err){
-               session.textMsgReplierIndex = null;
-               //if (session.slotData) delete session.slotData;
-               callback(err);
-           }else{
-               var data={};
-               data.brandName=result;
-              session.textMsgReplierIndex = 'my4S.onTrialrun';
-               callback(null,compiled(data));
-           }
+    booking.getBrand(sopenid, function (err, result) {
+        if (err) {
+            session.textMsgReplierIndex = null;
+            //if (session.slotData) delete session.slotData;
+            callback(err);
+        } else {
+            var data = {};
+            data.brandName = result;
+            session.textMsgReplierIndex = 'my4S.onTrialrun';
+            callback(null, compiled(data));
+        }
     });
 
     //session.textMsgReplierIndex = 'my4S.onTrialrun';
     //callback(null,compiled({}));
-}
-my4S.my4sInfo=function(userName,sopenid, session, callback){
+};
+my4S.my4sInfo = function (userName, sopenid, session, callback) {
     var tpl = [
         '活动多多，优惠多多：\n\n',
 
@@ -131,8 +133,8 @@ my4S.my4sInfo=function(userName,sopenid, session, callback){
     var compiled = ejs.compile(tpl);
     session.textMsgReplierIndex = 'my4S.on4sInfo';
     callback(null, compiled({}));
-}
-my4S.manual = function(userName, session, callback){
+};
+my4S.manual = function (userName, session, callback) {
     // 模板将来要从数据库来读取
     var tpl = [
         '请回复关键字，来查询行车手册\n\n',
@@ -145,28 +147,80 @@ my4S.manual = function(userName, session, callback){
     callback(null, compiled({}));
 };
 
-my4S.contact=function(userName,sopenid,session,callback){
+my4S.contact = function (userName, sopenid, session, callback) {
     var tpl = [
         '<%=name%>：\n\n',
         '地址：<%=address%>\n\n',
         '热线电话：<%=hotline%>\n\n'
     ].join('');
     var compiled = ejs.compile(tpl);
-    booking.get4sDetail(sopenid,function(err,result){
-        if(err){
+    booking.get4sDetail(sopenid, function (err, result) {
+        if (err) {
             session.textMsgReplierIndex = null;
             //if (session.slotData) delete session.slotData;
             callback(err);
-        }else{
-            var data={};
-            data.name=result.name;
-            data.address=result.address;
-            data.hotline=result.hotline;
-            data.description=result.description;
+        } else {
+            var data = {};
+            data.name = result.name;
+            data.address = result.address;
+            data.hotline = result.hotline;
+            data.description = result.description;
             data.logo_url = result.logo_url || "data/logo.jpg";
-             session.textMsgReplierIndex = 'my4S.onContact';
-            callback(null,compiled(data),data.logo_url);
+            session.textMsgReplierIndex = 'my4S.onContact';
+            callback(null, compiled(data), data.logo_url);
         }
     });
 };
+
+/**
+ * 获取最新的一条店内资讯和店内活动
+ * @param uoid 微信用户open_id
+ * @param soid 微信服务号open_id
+ * @param session 微信会话
+ * @param cb 回调
+ */
+my4S.mostNews = function (uoid, soid, session, cb) {
+    var pool = require('../../config/db.js');
+    var task = { finished:0 };
+    task.begin = function(){
+        // 查询最新资讯template = 'ActAd'
+        var sqlAd = "SELECT A.id, A.title, A.logo_url\n" +
+            "FROM t_activity A\n" +
+            "\tJOIN t_4s S ON A.s4_id = S.id AND S.open_id = ?\n" +
+            "\tJOIN t_activity_template T ON A.tempate_id = T.id AND A.s4_id = T.s4_id AND T.template = 'ActAd'\n" +
+            "ORDER BY A.tm_announce DESC\n" +
+            "LIMIT 1";
+        pool.query(sqlAd, [soid], function(ex ,result){
+            task.finished ++;
+            task.A = { ex:ex, result:result };
+            task.end();
+        });
+
+        // 查询最新活动template <> 'ActAd'
+        var sqlOther = "SELECT A.id, A.title, A.logo_url\n" +
+            "FROM t_activity A\n" +
+            "\tJOIN t_4s S ON A.s4_id = S.id AND S.open_id = ?\n" +
+            "\tJOIN t_activity_template T ON A.tempate_id = T.id AND A.s4_id = T.s4_id AND T.template <> 'ActAd'\n" +
+            "ORDER BY A.tm_announce DESC\n" +
+            "LIMIT 1";
+        pool.query(sqlOther, [soid], function(ex ,result){
+            task.finished ++;
+            task.B = { ex:ex, result:result };
+            task.end();
+        });
+    };
+    task.end = function(){
+        if(task.finished < 2) return;
+        var news = [];
+        if(!task.A.ex && task.A.result && task.A.result.length > 0){
+            news.push(task.A.result[0]);
+        }
+        if(!task.B.ex & task.B.result && task.B.result.length > 0){
+            news.push(task.B.result[0]);
+        }
+        cb(news);
+    };
+    task.begin();
+};
+
 exports = module.exports = my4S;
