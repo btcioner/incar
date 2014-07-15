@@ -19,7 +19,7 @@ function toTime(str){
     if(dt>min){
         return getDateTimeStamp(dt);
     }
-    return getDateTimeStamp(min);
+    return getDateTimeStamp(new Date());
 }
 function sendToMessageServer(dataBuffer,commandWord,cb){
     console.log("接收到"+commandWord.toString(16)+"短信回复,开始连接短信服务器：");
@@ -706,6 +706,9 @@ function packetProcess_1603(dataBuffer,cb) {
             var rows=info.data;
             if(rows.length>0){
                 var obd=rows[0];
+                if(obd.initCode!==initCode){
+                    console.log('开始执行OBD重置工作('+initCode+"/"+obd.initCode+")...");
+                }
                 var id=obd.id;
                 var actType=obd.act_type;
                 if(!actType){
@@ -715,7 +718,6 @@ function packetProcess_1603(dataBuffer,cb) {
                         firmwareVersion:firmwareVersion,
                         softwareVersion:softwareVersion,
                         diagnosisType:diagnosisType,
-                        initCode:initCode,
                         act_type:1,
                         act_time:new Date()
                     },id];
