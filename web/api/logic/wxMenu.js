@@ -114,8 +114,20 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
                     url: ''
                 },
                 {
-                    title: '行车分析',
-                    description: '请向4S店购买并注册OBD获取此功能',
+                    title: '行车分析2',
+                    description: '请向4S店购买并注册OBD获取此功能2',
+                    picurl: url.resolve("http://" + req.headers.host, "data/logo2.jpg"),
+                    url: ''
+                },
+                {
+                    title: '行车分析3',
+                    description: '请向4S店购买并注册OBD获取此功能3',
+                    picurl: url.resolve("http://" + req.headers.host, "data/logo2.jpg"),
+                    url: ''
+                },
+                {
+                    title: '行车分析4',
+                    description: '请向4S店购买并注册OBD获取此功能4',
                     picurl: url.resolve("http://" + req.headers.host, "data/logo2.jpg"),
                     url: ''
                 }
