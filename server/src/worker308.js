@@ -19,7 +19,7 @@ function toTime(str){
     if(dt>min){
         return getDateTimeStamp(dt);
     }
-    return getDateTimeStamp(min);
+    return getDateTimeStamp(new Date());
 }
 function sendToMessageServer(dataBuffer,commandWord,cb){
     console.log("接收到"+commandWord.toString(16)+"短信回复,开始连接短信服务器：");
