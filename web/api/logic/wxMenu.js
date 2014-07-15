@@ -30,7 +30,7 @@ var menuObject = {
                 {
                     "type": "click",
                     "name": "行车手册",
-                    "key": "MY4S.MANUAL"
+                    "key": "MYCAR.MANUAL"
                 },
                 {
                     "type": "click",
@@ -186,7 +186,21 @@ wxMenu.onClick['MYCAR.MAINTAIN'] = function (message, req, next) {
         }
     ]);
 };
-
+wxMenu.onClick['MYCAR.MANUAL'] = function (message, req, next) {
+    my4S.manual(message.FromUserName, req.wxsession, function (err, result) {
+        if (err) {
+            return next(err);
+        }
+        return next(null, [
+            {
+                title: '行车手册',
+                description: result,
+                picurl: '',
+                url: url.resolve("http://" + req.headers.host, "msite/page_xcsc.html?user=") + message.FromUserName + '@' + message.ToUserName
+            }
+        ]);
+    });
+};
 wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
     next(null, [
         {
@@ -246,21 +260,6 @@ wxMenu.onClick['MY4S.BOOKING'] = function (message, req, next) {
     });
 };
 
-wxMenu.onClick['MY4S.MANUAL'] = function (message, req, next) {
-    my4S.manual(message.FromUserName, req.wxsession, function (err, result) {
-        if (err) {
-            return next(err);
-        }
-        return next(null, [
-            {
-                title: '行车手册',
-                description: result,
-                picurl: '',
-                url: url.resolve("http://" + req.headers.host, "msite/page_xcsc.html?user=") + message.FromUserName + '@' + message.ToUserName
-            }
-        ]);
-    });
-};
 wxMenu.onClick['MY4S.CONTACT'] = function (message, req, next) {
     my4S.contact(message.FromUserName, message.ToUserName, req.wxsession, function (err, result, pic) {
         if (err) {
