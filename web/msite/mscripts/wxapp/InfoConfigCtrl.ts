@@ -56,6 +56,7 @@ module wxApp {
                     this.printWord = "修改成功!";
                     this.flag = "update";
                     this.userCfg = data;
+                    this.mileage = data.mileage + data.obd_mileage;
                     if(data.series ==="")
                     {
                         this.mySeries =-1;
@@ -115,7 +116,7 @@ module wxApp {
                 modelYear: this.userCfg.modelYear,
                 phone:this.userCfg.phone,
                 license:this.userCfg.license,
-                mileage: this.userCfg.mileage,
+                mileage: this.mileage - this.userCfg.obd_mileage,
                 disp: this.userCfg.disp,
                 flag:this.flag,
                 id:this.userCfg.id
@@ -254,6 +255,7 @@ module wxApp {
         private eng_type = '请选择';
         private ages = ['请选择','1年以下','1-2年','2-3年','3-4年','4-5年','大于5年'];
         private age = '请选择';
+        private mileage = 0;
         private pwd:string;
         private pwd2:string;
         private $http: any;

@@ -118,6 +118,7 @@ function getCarInfo(db, callback) {
                             report.modelYear = rows[0].modelYear;
                             report.disp = rows[0].disp;
                             report.mileage = rows[0].mileage;
+                            report.obd_mileage = 0;
                             report.age = rows[0].age;
                             report.engine_type = rows[0].engineType;
 
@@ -133,10 +134,22 @@ function getCarInfo(db, callback) {
                                     task.B = {err: err, data: data};
                                     task.end();
                                 });
+
+                                // 当前里程
+                                pool.query('SELECT max(mileage) AS mileage FROM t_obd_drive WHERE obdCode = ?', [report.obd_code], function(err, data){
+                                    task.finished++;
+                                    task.C = { err:err, data:data };
+                                    task.end();
+                                });
                             };
                             task.end = function () {
-                                if (task.finished < 2) return;
-                                // 这里2个方法一定已经都返回了
+                                if (task.finished < 3) return;
+                                // 这里3个方法一定已经都返回了
+
+                                if(!task.C.err && task.C.data.length > 0){
+                                    report.obd_mileage = task.C.data[0].mileage;
+                                }
+
                                 if (task.A.err) callback(task.A.err);
                                 else if (task.B.err) callback(task.B.err);
                                 else {
