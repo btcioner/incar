@@ -1,5 +1,5 @@
 /**
- * Created by zhoupeng on 14-6-7.
+ * Created by liz on 14-7-14.
  */
 'use strict';
 
@@ -50,12 +50,5 @@ function driveRecord(req, res) {
             });
         }
     });
-//    search(db,sopenid,function(err, data) {
-//        if (err) { res.send(200,err); }
-//        else {
-//            console.log("4sInfo length :"+data.length);
-//            res.send(data);
-//        }
-//    });
 }
 
