@@ -119,7 +119,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
                 task.B = {
                         title: '购买并注册OBD获取查看平均油耗、碳排放、驾驶行为、速段统计等更多功能',
                         description: '请向4S店购买并注册OBD获取此功能',
-                        picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
+                        picurl: url.resolve("http://" + req.headers.host, "data/行车分析.jpg"),
                         url: ''
                 };
             }
@@ -127,7 +127,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
                 task.B = {
                     title: '点击查看平均油耗、碳排放、驾驶行为、速段统计等',
                     description: reportContent,
-                    picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
+                    picurl: url.resolve("http://" + req.headers.host, "data/行车分析.jpg"),
                     url: url.resolve("http://" + req.headers.host, "msite/myDrive.html?user=") + message.FromUserName + '@' + message.ToUserName
                 };
             }
@@ -169,7 +169,7 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
                     {
                         title: '请向4S店购买并注册OBD获取此功能',
                         description: '请向4S店购买并注册OBD获取此功能',
-                        picurl: url.resolve("http://" + req.headers.host, "data/logo.jpg"),
+                        picurl: url.resolve("http://" + req.headers.host, "data/行车记录.jpg"),
                         url: ''
                     };
             }
@@ -178,7 +178,7 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
                     {
                         title: '点击查看所有行车记录',
                         description: reportContent,
-                        picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
+                        picurl: url.resolve("http://" + req.headers.host, "data/行车记录.jpg"),
                         url: url.resolve("http://" + req.headers.host, "msite/driveRecord.html?user=") + message.FromUserName + '@' + message.ToUserName
                     };
             }
@@ -216,7 +216,7 @@ wxMenu.onClick['MYCAR.MAINTAIN'] = function (message, req, next) {
         task.B = {
             title: "车况检测:亲,正在开发中,马上就会有",
             description: "亲,正在开发中,马上就会有",
-            picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
+            picurl: url.resolve("http://" + req.headers.host, "data/车况检测.jpg"),
             url: ''
         };
         task.finished++;
@@ -253,7 +253,7 @@ wxMenu.onClick['MYCAR.MANUAL'] = function (message, req, next) {
             task.B = {
                 title: '请回复关键字,来查询行车手册',
                 description: result,
-                picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
+                picurl: url.resolve("http://" + req.headers.host, "data/行车手册.jpg"),
                 url: url.resolve("http://" + req.headers.host, "msite/page_xcsc.html?user=") + message.FromUserName + '@' + message.ToUserName
             };
             task.finished++;
@@ -290,7 +290,7 @@ wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
         task.B = {
             title: "行车报告:亲,正在开发中,马上就会有",
             description: "亲,正在开发中,马上就会有",
-            picurl: url.resolve("http://" + req.headers.host, "data/Logo2.jpg"),
+            picurl: url.resolve("http://" + req.headers.host, "data/用车报告.jpg"),
             url: ''
         };
         task.finished++;
