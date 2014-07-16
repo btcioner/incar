@@ -7,7 +7,7 @@ var app = angular.module("mrAPP", ['ngResource','ngRoute']);
 //行车记录前台logic
 
 app.controller("matchResultCtrl", function($scope, $http,$sce){
-
+    alert("https://open.weixin.qq.com/connect/oauth2/authorize?appid=app_id&redirect_uri=baseurl/msite/infoConfig.html&response_type=code&scope=snsapi_base&state=app_id_1#wechat_redirect".replace("app_id",123));
     $scope.user_openid = window.location.toString().split("=")[1].split("&")[0];
     $scope.match_id =  window.location.toString().split("=")[2];
 
