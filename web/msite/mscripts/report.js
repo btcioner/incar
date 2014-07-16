@@ -56,8 +56,13 @@ var config={
     }
 };
 var app = angular.module("reportApp", []);
-app.controller("myTravelReport", function($scope, $http){
-    $http.get('../travelReport/loadTravelReport/1/INCAR000004').success(function(data,status,headers,cfg){
+app.config(['$locationProvider', function($locationProvider){
+    $locationProvider.html5Mode(true);
+}]);
+app.controller("myTravelReport", function($scope, $http, $location){
+    var user = $location.search().user;
+
+    $http.get('../travelReport/loadTravelReport?user='+user).success(function(data,status,headers,cfg){
         if(data.status=='success'){
             var staInfo=data.data;
             $scope.console=staInfo;

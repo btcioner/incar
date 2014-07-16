@@ -69,6 +69,7 @@ module devAP {
             { title: "我的车-行车记录", url: "/msite/driveRecord.html" },
             { title: "我的车-行车分析", url: "/msite/myDrive.html" },
             { title: "我的车-行车手册", url: "/msite/page_xcsc.html" },
+            { title: "我的车-行车报告", url: "/msite/travelReport.html" },
             { title: "我的4S-预约保养", url: "/msite/booking.html"  },
             { title: "我的4S-试乘试驾", url: "/msite/trialrun.html"  },
             { title: "我的4S-资讯活动", url: "/msite/my4sInfo.html" },
