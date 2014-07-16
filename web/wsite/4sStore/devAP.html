@@ -1,4 +1,4 @@
-F<!DOCTYPE html>
+<!DOCTYPE html>
 <html ng-app="devAP">
 <head lang="zh-cn">
     <meta charset="UTF-8">
@@ -26,17 +26,25 @@ F<!DOCTYPE html>
     <div class="row">
         <div class="col-xs-12 col-md-4 text-center" >
             <div ng-bind-html="model.img_qrcode"></div><br>
-            <div class="input-group">
+            <div class="input-group" style="margin-bottom: 15px;">
                 <input ng-model="model.url" type="text" class="form-control" ng-keypress="model.changeQRCode($event)">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button" ng-click="model.changeQRCode($event)">Go!</button>
                 </span>
             </div>
+            <div class="col-xs-2" style="padding:4px 0;">模拟用户</div>
+            <div class="col-xs-10">
+                <div class="btn-group" data-toggle="buttons" style="margin-bottom: 15px;">
+                    <label class="btn btn-primary" ng-class="{active: model.wx_active_key === oid}" ng-repeat="oid in model.wx_oid_keys" ng-click="model.switchActive(oid)">
+                        <input type="radio">{{oid}}
+                    </label>
+                </div>
+            </div>
         </div>
         <div class="col-xs-12 col-md-4">
             <ul class="list-group">
-                <li class="list-group-item" ng-repeat="page in model.pagesDev">
-                    <a ng-href="{{page.url}}">{{page.title}}</a>
+                <li class="list-group-item" ng-repeat="page in model.pages">
+                    <a ng-href="{{page.url}}?{{model.wx_oids[model.wx_active_key]}}">{{page.title}}</a>
                 </li>
             </ul>
         </div>
