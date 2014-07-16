@@ -7,6 +7,6 @@ module wxApp {
                 templateUrl: '/msite/mpartials/MyActInfo.html',
                 controller: 'myActInfoCtrl'
             });
-        $locationProvider.html5Mode(true);
+//        $locationProvider.html5Mode(true);
     }]);
 }
