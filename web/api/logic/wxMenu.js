@@ -85,7 +85,7 @@ var menuObject = {
                 {
                     "type": "view",
                     "name": "设置",
-                    "url": "msite/test.html"
+                    "url": "msite/infoConfig.html"
                 }
             ]
         }
