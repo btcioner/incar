@@ -165,7 +165,7 @@ my4S.contact = function (userName, sopenid, session, callback) {
             data.address = result.address;
             data.hotline = result.hotline;
             data.description = result.description;
-            data.logo_url = result.logo_url || "data/logo.jpg";
+            data.logo_url = result.logo_url || "data/contact_us.jpg";
             session.textMsgReplierIndex = 'my4S.onContact';
             callback(null, compiled(data), data.logo_url);
         }

@@ -338,7 +338,7 @@ wxMenu.onClick['MY4S.INFO'] = function (message, req, next) {
             {
                 title: '资讯活动',
                 description: result,
-                picurl: '',
+                picurl: url.resolve("http://" + req.headers.host, 'data/act_info.jpg'),
                 url: url.resolve("http://" + req.headers.host, "msite/my4sInfo.html?user=") + message.FromUserName + '@' + message.ToUserName
             }
         ]);
@@ -354,7 +354,7 @@ wxMenu.onClick['MY4S.BOOKING'] = function (message, req, next) {
             {
                 title: '预约保养',
                 description: result,
-                picurl: '',
+                picurl: url.resolve("http://" + req.headers.host, 'data/care_booking.jpg'),
                 url: url.resolve("http://" + req.headers.host, "msite/booking.html?user=") + message.FromUserName + '@' + message.ToUserName
             }
         ]);
