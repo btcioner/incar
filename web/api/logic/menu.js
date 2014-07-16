@@ -13,6 +13,7 @@ exports = module.exports = function(tickTasks, menuObject, callback) {
     var resolveUrl = function(mo, baseSite, app_id){
         // clone mo
         var mx = JSON.parse(JSON.stringify(mo));
+
         // process url
         var baseUrl = "http://" + baseSite;
         for(var i in mx.button){
