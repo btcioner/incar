@@ -33,6 +33,9 @@ module wxApp {
             this.user_openid = $location.search().user;
             this.$http = $http;
             this.$scope = $scope;
+            this.$location = $location;
+
+            $scope.$on('$locationChangeStart', this.onSwitchView);
 
             if(this.user_openid){
                 // have gotten the open_id
@@ -69,16 +72,21 @@ module wxApp {
             this.$http.post("/mservice/myActivity", { user: this.user_openid, s4_id: this.s4_id, acc_id: this.acc_id}, { dataType: "json"})
                 .success((data, status, headers, config)=>{
                     this.activities = data;
-                    console.log(data);
                 })
                 .error((data, status, headers, config)=>{ alert("未找到您参加的活动"); });
+        };
+
+        private onSwitchView = (e)=>{
+            this.show_main = this.$location.path() === "/msite/myActivity.html";
         };
 
         private user_openid: string;
         private acc_id: number;
         private s4_id: number;
+        private show_main = true;
         private activities : Array<any>;
         private $http: any;
         private $scope: any;
+        private $location: any;
     }
 }

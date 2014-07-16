@@ -30,7 +30,7 @@
     <!--main_wrap start-->
     <div id="main_wrap">
         <!--containe_250 start-->
-        <div id="containe_250" ng-cloak class="ng-cloak">
+        <div id="containe_250" ng-cloak class="ng-cloak" ng-show="model.show_main">
             <!--基本信息contentbox start-->
             <div class="contentbox" ng-repeat="act in model.activities">
                 <div class="columnname"><div class="text_09">{{act.title}}</div></div>
@@ -46,9 +46,9 @@
                 </ul>
               <div class="clear"></div>
             </div><!--基本信息contentbox end-->
-            <div ng-view ng-show="false"></div>
-
         </div><!--containe_250 end-->
+
+        <ng-view></ng-view>
     </div><!--main_wrap end-->
 </div>
 </body>
