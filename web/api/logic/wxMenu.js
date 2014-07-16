@@ -73,18 +73,14 @@ var menuObject = {
             "name": "发现",
             "sub_button": [
                 {
-                    "type": "view",
+                    "type": "click",
                     "name": "我的活动",
-                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=app_id" +
-                        "&redirect_uri=baseurl/msite/myActivity.html" +
-                        "&response_type=code&scope=snsapi_base&state=app_id_1#wechat_redirect"
+                    "key": "ETC.MYACT"
                 },
                 {
-                    "type": "view",
+                    "type": "click",
                     "name": "我的预约",
-                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=app_id" +
-                        "&redirect_uri=baseurl/msite/myBooking.html" +
-                        "&response_type=code&scope=snsapi_base&state=app_id_1#wechat_redirect"
+                    "key": "ETC.MYBKG"
                 },
                 {
                     "type": "click",
@@ -387,6 +383,26 @@ wxMenu.onClick['ETC.CFG'] = function(message, req, next){
         description:"点击配置我的车辆",
         picurl: url.resolve("http://" + req.headers.host, "data/my_config.jpg"),
         url: url.resolve("http://" + req.headers.host, "msite/infoConfig.html?user=") + message.FromUserName + '@' + message.ToUserName
+    };
+    return onClickETC(topMsg, message, req, next);
+};
+
+wxMenu.onClick['ETC.MYACT'] = function(message, req, next){
+    var topMsg = {
+        title: "点击查看我的活动",
+        description:"点击查看我的活动",
+        picurl: url.resolve("http://" + req.headers.host, "data/my_activities.jpg"),
+        url: url.resolve("http://" + req.headers.host, "msite/myActivity.html?user=") + message.FromUserName + '@' + message.ToUserName
+    };
+    return onClickETC(topMsg, message, req, next);
+};
+
+wxMenu.onClick['ETC.MYBKG'] = function(message, req, next){
+    var topMsg = {
+        title: "点击查看我的预约",
+        description:"点击查看我的预约",
+        picurl: url.resolve("http://" + req.headers.host, "data/my_bookings.jpg"),
+        url: url.resolve("http://" + req.headers.host, "msite/myBooking.html?user=") + message.FromUserName + '@' + message.ToUserName
     };
     return onClickETC(topMsg, message, req, next);
 };
