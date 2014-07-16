@@ -87,7 +87,7 @@ var menuObject = {
                         "&response_type=code&scope=snsapi_base&state=app_id_1#wechat_redirect"
                 },
                 {
-                    "type": "view",
+                    "type": "click",
                     "name": "设置",
                     "key": "ETC.CFG"
                 }
