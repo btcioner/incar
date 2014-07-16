@@ -85,7 +85,9 @@ var menuObject = {
                 {
                     "type": "view",
                     "name": "设置",
-                    "url": "msite/infoConfig.html"
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=app_id"+
+                        "&redirect_uri=" + encodeURIComponent("baseurl/msite/infoConfig.html") +
+                        "&response_type=code&scope=snsapi_base&state=app_id_1#wechat_redirect"
                 }
             ]
         }

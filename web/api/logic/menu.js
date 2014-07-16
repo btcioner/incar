@@ -21,10 +21,16 @@ exports = module.exports = function(tickTasks, menuObject, callback) {
                 var sub = btn.sub_button[j];
                 if(sub.url){
                     // append app_id
-                    if(sub.url.indexOf('?') === -1) sub.url += '?';
-                    if(sub.url.indexOf('?') < sub.url.length-1) sub.url += '&';
-                    sub.url += 'app_id=' + app_id;
+//                    if(sub.url.indexOf('?') === -1) sub.url += '?';
+//                    if(sub.url.indexOf('?') < sub.url.length-1) sub.url += '&';
+//                    sub.url += 'app_id=' + app_id;
+                    sub
                     // prefix base url
+                    /** jl---start  modify */
+                    sub.url.replace("app_id",app_id);
+                    sub.url.replace("app_id_1",app_id);
+                    sub.url.replace("baseurl/","http://"+baseSite);
+                    /** jl---end  modify */
                     if(baseSite && sub.url.toLowerCase().indexOf('http://') !== 0) sub.url = url.resolve(baseUrl, sub.url);
                 }
             }
