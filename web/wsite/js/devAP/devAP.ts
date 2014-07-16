@@ -16,14 +16,14 @@ module devAP {
         $locationProvider.html5Mode(true);
     }]);
 
-    // 页面控制器
+    // 页面控制�?
     class DevAPCtrl {
         constructor(ctrlName:string) {
-            // 尝试读取以前的配置
+            // 尝试读取以前的配�?
             if(localStorage && localStorage[this._lskURL]){
                 this.url = localStorage[this._lskURL];
             }
-            // 向angular注册控制器
+            // 向angular注册控制�?
             _module.controller(ctrlName, ['$scope', '$sce', this.init]);
         }
 
@@ -60,22 +60,24 @@ module devAP {
             this.makeQRCode(this.url, this.$sce);
         };
 
+
         public switchActive = (oid:string)=>{
             this.wx_active_key = oid;
         };
 
         // 被测试的页面
         public pages = [
-            { title: "我的车-行车记录", url: "/msite/driveRecord.html" },
-            { title: "我的车-行车分析", url: "/msite/myDrive.html" },
-            { title: "我的车-行车手册", url: "/msite/page_xcsc.html" },
-            { title: "我的车-行车报告", url: "/msite/travelReport.html" },
+            { title: "我的�?行车记录", url: "/msite/driveRecord.html" },
+            { title: "我的�?行车分析", url: "/msite/myDrive.html" },
+            { title: "我的�?行车手册", url: "/msite/page_xcsc.html" },
+            { title: "我的�?行车报告", url: "/msite/travelReport.html" },
             { title: "我的4S-预约保养", url: "/msite/booking.html"  },
             { title: "我的4S-试乘试驾", url: "/msite/trialrun.html"  },
             { title: "我的4S-资讯活动", url: "/msite/my4sInfo.html" },
             { title: "发现-我的预约", url: "/msite/myBooking.html" },
             { title: "发现-我的活动", url: "/msite/myActivity.html" },
             { title: "发现-设置", url: "/msite/infoConfig.html" }
+
         ];
 
         private _lskURL = "devAPurl";
