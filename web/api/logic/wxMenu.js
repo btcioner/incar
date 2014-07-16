@@ -385,8 +385,8 @@ wxMenu.onClick['ETC.CFG'] = function(message, req, next){
     var topMsg = {
         title: "点击配置我的车辆",
         description:"点击配置我的车辆",
-        picurl: url.resolve("http://" + req.headers.host, "data/car_checking.jpg"),
-        url: "msite/infoConfig.html?user=" + message.FromUserName + "@" + message.ToUserName
+        picurl: url.resolve("http://" + req.headers.host, "data/my_config.jpg"),
+        url: url.resolve("http://" + req.headers.host, "msite/infoConfig.html?user=") + message.FromUserName + '@' + message.ToUserName
     };
     return onClickETC(topMsg, message, req, next);
 };
