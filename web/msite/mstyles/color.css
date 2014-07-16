@@ -60,6 +60,12 @@ a.text_07 {
 	background-color: #43454a;
 	border-top-color: #6f727a;
 }
+.button03 {
+	background-image: url(../mimages/icon_08.png);
+}
+.button03 a{
+	background-color: #dbdee5;
+}
 #wrap {
 	background-color: #b5b7bc;
 	/* [disabled]background-image: url(../mimages/top_bg.jpg); */

@@ -134,11 +134,11 @@ function userEnroll(req, res) {
                         if(err){
                             if(flag=="update")
                             {
-                                res.json({status:'修改账户失败'});
+                                res.json({status:'该用户名已被注册！'});
                             }
                             else if(flag == "add")
                             {
-                                res.json({status:'添加账户失败'});
+                                res.json({status:'该用户名已被注册！'});
                             }
                         }
                         else{
@@ -147,8 +147,8 @@ function userEnroll(req, res) {
                             req.body.user = user;
                             carEnroll(req,res, function(ex){
                                 if(ex) {
-                                    pool.query('DELETE FROM t_account WHERE id=?', [accountId], function(){});
-                                    res.json(ex); return;
+//                                    pool.query('DELETE FROM t_account WHERE id=?', [accountId], function(){});
+                                    res.json({status:'修改账户失败'}); return;
                                 }
                                 res.json({status:'success',accountId:accountId});
                             });
@@ -156,7 +156,7 @@ function userEnroll(req, res) {
                     });
                 }
                 else{
-                    res.json({status:'failure',message:'无法识别的appid'});
+                    res.json({status:'无法识别的appid'});
                 }
             }
         });
@@ -178,13 +178,15 @@ function carEnroll(req,res, cb){
     var engine_type=params.engine_type;
     var user=params.user;
     var flag = params.flag;
+    var userId = params.id
     if(!user) console.error("===>传入的参数缺少user!!!");
 
     //var s4Id=user.s4_id;
+
     var sql="select id from t_car where obd_code=? and s4_id=?";
     dao.findBySql(sql,[obdCode, user.s4_id],function(info){
         if(info.err){
-            res.json(res);
+            res.json({status:'该OBD编号不存在!'});
         }
         else{
             var rows=info.data;
@@ -207,39 +209,45 @@ function carEnroll(req,res, cb){
                 var pool = findPool();
                 pool.query(sql, [car,id], function(ex, result){
                     if(ex){
-                        console.log(ex);
-                        if(cb) cb(ex);
-                        else res.json(ex);
+                        res.json({status:"该OBD已经被注册!"});
                         return;
-                    }
-
+                    }else{
                     // 建立t_car_user;
-                    if(flag =="update")
-                    {
-                        user.id = params.id;
-                        var sql = "update t_car_user set s4_id=?,car_id=?,user_type=? where acc_id=?"
-                    }else if(flag=="add")
-                    {
-                       var sql = "INSERT t_car_user(s4_id,car_id,user_type,acc_id) values(?,?,?,?)";
-                    }
-
-                    pool.query(sql, [user.s4_id,  id, 1,user.id], function(ex, result){
-                        if(ex) {
-                            console.log(ex);
-                            if(cb) cb(ex);
-                            else res.json(ex);
-                            return;
+                    sql="select car_id from t_car_user where s4_id=? and acc_id=? "
+                    dao.findBySql(sql,[user.s4_id, userId],function(info){
+                        if(info.err){
+                            res.json({status:'连接数据库有问题!'});
                         }
+                        else{
+                            if(info.data[0] == null)
+                            {
+                                 sql = "INSERT t_car_user(s4_id,car_id,user_type,acc_id) values(?,?,?,?)";
+                            }
+                            else
+                            {
+                                 sql = "update t_car_user set s4_id=?,car_id=?,user_type=? where acc_id=?";
+                            }
+                            pool.query(sql, [user.s4_id,  id, 1,userId], function(ex, result){
+                                if(ex) {
+//                            console.log(ex);
+//                            if(cb) cb(ex);
+//                            else
+                                    res.json({status:"该OBD已经被注册!"});
+                                    return;
+                                }
 
-                        console.log("更新成功");
-                        if(cb) { cb(null); }
-                        else res.json({status:"ok"});
+                                console.log("更新成功");
+                                if(cb) { cb(null); }
+                                else res.json({status:"ok"});
+                            });
+                        }
                     });
+                    }
                 });
             }
             else{
-                if(cb) { cb({status:'failed',message:'OBD不存在'}); return; }
-                res.send({status:'failed',message:'OBD不存在'});
+                if(cb) { cb({status:'该OBD编号不存在!'}); return; }
+                res.send({status:'该OBD编号不存在!'});
             }
         }
     });

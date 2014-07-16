@@ -24,12 +24,8 @@ angular.module("SActivityApp", [
         })
         .when('/saveFuelMatch',{
             controller:'s_fuelMatchCtrl',
-            templateUrl:'/4sStore/partials/activity_saveFuelMatch.html'//红包
+            templateUrl:'/4sStore/partials/activity_saveFuelMatch.html'//节油大赛
         })
-        .when('/saveFuelMatch',{
-            controller:'s_fuelMatchCtrl',
-            templateUrl:'/4sStore/partials/activity_saveFuelMatch.html'//红包
-         })
         .when('/lotteryTicket',{
             controller:'s_activityCtrl',
             templateUrl:'/4sStore/partials/activity_lotteryTicket.html'//彩票

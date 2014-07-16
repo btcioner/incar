@@ -197,4 +197,12 @@ myCar.myDriveReport= function(userName, serverName, callback){
         }
     });
 }
+myCar.myDriveRecord= function(userName, serverName, callback){
+    var tpl = [
+        '点击查看所有行车记录'
+    ].join('');
+    var compiled = ejs.compile(tpl);
+
+    callback(null, compiled({}));
+}
 exports = module.exports = myCar;

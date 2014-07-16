@@ -23,7 +23,7 @@ angular.module("DriveDataApp", [])
     $scope.city_name="";
     $scope.org_name="";
     $scope.series = "";
-    $scope.queryString = "&s4_id="+ $.cookie("s4_id");
+    $scope.queryString = "";
 
     //筛选框初始值 todo--要从数据库读出来
     $scope.city = [{name:"请选择"},{name:"武汉"},{name:"北京"}]
@@ -35,7 +35,7 @@ angular.module("DriveDataApp", [])
         {
             $scope.tips="";
             $scope.randomTime = new Date();
-            $http.get(baseurl+'cmpx/drive_info?page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
+            $http.get(baseurl+'cmpx/drive_info?s4_id='+ $.cookie("s4_id")+'&page='+$scope.currentPage+'&pagesize='+$scope.pageRecord+$scope.queryString+"&t="+$scope.randomTime).success(function(data){
                 if(data.status == "ok")
                 {
                     if(data.drvInfos.length == 0)
@@ -66,7 +66,6 @@ angular.module("DriveDataApp", [])
     //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
-          $scope.queryString = "&s4_id="+ $.cookie("s4_id");
           if($scope.series == null){$scope.series =""};
           $scope.queryString  = $scope.queryString+"&obd_code="+$scope.obd_num+"&series="+$scope.series;
           GetFirstPageInfo();
@@ -88,6 +87,8 @@ angular.module("DriveDataApp", [])
     //paging redirct
     $scope.changePage=function(changeId,id)
     {
+        if($scope.series == null){$scope.series =""};
+        $scope.queryString  = $scope.queryString+"&obd_code="+$scope.obd_num+"&series="+$scope.series;
         $scope.currentPage = changeId;
         switch(id)
         {
@@ -98,7 +99,6 @@ angular.module("DriveDataApp", [])
                 $scope.GetDriveDetail($scope.chooseOC,$scope.drive_id,$scope.index);
                 break;
         }
-        $scope.currentPage = 1;
     }
         //get owner and car info  缺少所属4s店
         function GetOwnerInfo(obd_code)

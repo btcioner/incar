@@ -17,19 +17,15 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     $scope.currentPage_4 = 1;//已公布
     $scope.pageRecord = 10;
     $scope.statusSelect =[{id:0,name:"请选择"},{id:1,name:"已创建"},{id:2,name:"已发布"},{id:3,name:"已开始"},{id:4,name:"已结束"},{id:5,name:"已公布"}];
-    $scope.ser_status ="";
+    $scope.ser_status =0;
+    $scope.flag_status = -1;
+    $scope.flagStatus = [{id:-1,name:"请选择"},{id:1,name:"是"},{id:0,name:"否"}];
     $scope.monthSelect =[{id:0,name:"请选择"},{id:1,name:"一月"},{id:2,name:"二月"},{id:3,name:"三月"},{id:4,name:"四月"},{id:5,name:"五月"}
                           ,{id:6,name:"六月"},{id:7,name:"七月"},{id:8,name:"八月"},{id:9,name:"九月"},{id:10,name:"十月"},{id:11,name:"十一月"}
                           ,{id:12,name:"十二月"}]
-    $scope.ser_month = "";
+    $scope.ser_month = 0;
     $scope.ser_title = "";
-    $scope.queryString = "";
-    $scope.seriesCode = "";
-    $scope.disp = "";
-    if($routeParams.id != null)
-    {
-        $scope.queryString = "&status="+$routeParams.id;
-    }
+
 
     function initAddData()
     {
@@ -91,14 +87,21 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
                GetFirstPageInfo();
                break;
            case 2://开始
+               if($scope.seriesCode == -1)$scope.seriesCode="";
+               if($scope.disp == "请选择") $scope.disp="";
                $scope.queryString = "&series="+$scope.seriesCode+"&disp="+$scope.disp;
                getSignUpList("",2);
                break;
            case 3://结束
-               $scope.queryString = "&series="+$scope.seriesCode+"&disp="+$scope.disp;
+               if($scope.seriesCode == -1)$scope.seriesCode="";
+               if($scope.disp == "请选择") $scope.disp="";
+               if($scope.flag_status==-1)$scope.flag_status="";
+               $scope.queryString = "&series="+$scope.seriesCode+"&disp="+$scope.disp+"&status="+$scope.flag_status;
                getSignUpList("",3);
                break;
            case 4://公布
+               if($scope.seriesCode == -1)$scope.seriesCode="";
+               if($scope.disp == "请选择") $scope.disp="";
                $scope.queryString = "&series="+$scope.seriesCode+"&disp="+$scope.disp;
                getSignUpList("&enough_mileage=true",4);
                break;
@@ -283,6 +286,8 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     //管理
     $scope.manager = function(fm_id,index,fm_status)
     {
+
+
         $scope.fuleMatchDetail = $scope.fuelMatch[index];
         $scope.checkboxId_1 = false;
        switch(fm_status)
@@ -345,9 +350,17 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
     //获取车系
     function getSeries()
     {
+        $scope.seriesCode = -1;
+        $scope.disp = "请选择";
+        $scope.flag_status = -1;
+        $scope.intS_P = [{"brand":8,"series":-1,"disp":"请选择","brand_name":"宝马/BMW","series_name":"请选择"}];
         $scope.randomTime = new Date();
         $http.get(baseurl+'4s/'+ $.cookie("s4_id")+'/activity/'+$scope.fuleMatchDetail.id+'/s_p'+"?t="+$scope.randomTime).success(function(data){
             $scope.s_p = data.s_p;
+            for(var i=0;i<$scope.s_p.length;i++)
+            {
+               $scope.intS_P[i+1] = $scope.s_p[i];
+            }
         });
     }
 
@@ -391,7 +404,6 @@ function s_fuelMatchCtrl($scope,$http,$routeParams)
                             data.members[i].milageFlag ="否";
                         }
                     }
-
                 }
 
                 $scope.members = data.members;

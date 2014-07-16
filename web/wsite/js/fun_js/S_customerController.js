@@ -16,7 +16,7 @@ function s_customerCtrl($scope, $http,$routeParams){
     $scope.org_id = 0;
     $scope.queryString = "";
     $scope.brandCode = "";
-    $scope.seriesCode = "";
+    $scope.seriesCode = -1;
     $scope.acc_nick = "";
     $scope.acc_phone = "";
     $scope.queryNick = "";
@@ -25,12 +25,12 @@ function s_customerCtrl($scope, $http,$routeParams){
     $scope.obd_code="";
     $scope.label_name="";
     //按照传过来的参数
+    getSeries();
 
     if($routeParams.id!=null)
     {
-
             $scope.queryString = "&groupId="+$routeParams.id1+"&tagCode="+$routeParams.id;
-        GetFirstPageInfo();//get fist driveData for first page；
+            GetFirstPageInfo();//get fist driveData for first page;
     }
     else{
         if($routeParams.id1 == "X")
@@ -90,17 +90,38 @@ function s_customerCtrl($scope, $http,$routeParams){
                 alert("请求无响应");
         })
 
-        $http.get(baseurl+'brand/'+ $.cookie("brand_id")+'/series').success(function(data){
-            $scope.carSeries = data.series;
-        });
         $scope.queryString = "";
     }
-
+    function getSeries()
+    {
+        $scope.intSeries =[{"id":"","brandCode":"","seriesCode":-1,"brand":"","series":"请选择","manufacturer":"","care_mileage":"","care_hour":""}];
+        $http.get(baseurl+'brand/'+ $.cookie("brand_id")+'/series').success(function(data){
+            $scope.carSeries = data.series;
+            for(var i=0;i<$scope.carSeries.length;i++)
+            {
+                $scope.intSeries[i+1] = $scope.carSeries[i];
+            }
+        });
+    }
 
 
     //按条件筛选行车数据行车数据
     $scope.SearchDriveInfo = function()
     {
+        if($scope.seriesCode == -1)$scope.seriesCode = "";
+        if($routeParams.id!=null)
+        {
+            $scope.queryString = "&groupId="+$routeParams.id1+"&tagCode="+$routeParams.id;
+        }
+        else{
+           if($routeParams.id1 == "ALL")
+            {
+                $scope.queryString ="";
+            }
+            else{
+                $scope.queryString = "&groupId="+$routeParams.id1;
+            }
+        }
         $scope.queryString = $scope.queryString +"&series="+$scope.seriesCode+"&brand=8&nickName="+$scope.queryNick+"&userPhone="+$scope.queryPhone+"&license="+$scope.car_license;
         GetFirstPageInfo();
     }
@@ -125,6 +146,19 @@ function s_customerCtrl($scope, $http,$routeParams){
         switch(id)
         {
             case 1:
+                if($routeParams.id!=null)
+                {
+                    $scope.queryString = "&groupId="+$routeParams.id1+"&tagCode="+$routeParams.id;
+                }
+                else{
+                    if($routeParams.id1 == "ALL")
+                    {
+                        $scope.queryString ="";
+                    }
+                    else{
+                        $scope.queryString = "&groupId="+$routeParams.id1;
+                    }
+                }
                 GetFirstPageInfo();
                 break;
             case 2:

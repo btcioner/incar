@@ -110,7 +110,7 @@
                          <div style="float: left;" id="preview">
                              <img src="../../data/200x200.jpg" id="imghead" style="width:120px;height:120px; padding:15px 20px 5px 5px;" />
                          </div>
-                         <label class="control-label">标题图片：<br/><span class="img_textstyle01">图片要求:<br />尺寸为150px*150px，大小在100KB以内。</span></label>
+                         <label class="control-label">标题图片：<br/><span class="img_textstyle01">图片要求:<br />尺寸为120px*120px，大小在100KB以内。</span></label>
                          <div class="controls">
                              <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img"  onchange="changeImg(this,'edit_pro_img','formId_edit2','preview','imghead',0)"  style="width:240px;"  ng-model="logo_url"/>
                          </div>
@@ -248,7 +248,7 @@
                          <div style="float: left;" id="preview1">
                              <img src="../../{{fuleMatchDetail.logo_url}}" id="imghead1" style="width:120px;height:120px; padding:15px 20px 5px 5px;" />
                          </div>
-                         <label class="control-label">标题图片：<br/ ><span class="img_textstyle01">图片要求:<br />尺寸为150px*150px，大小在100KB以内。</span></label>
+                         <label class="control-label">标题图片：<br/ ><span class="img_textstyle01">图片要求:<br />尺寸为120px*120px，大小在100KB以内。</span></label>
                          <div class="controls">
                              <input name="edit_pro_img" type="file" width="100px" id="edit_pro_img_1"  onchange="changeImg(this,'edit_pro_img_1','formId_edit3','preview1','imghead1',1)"  style="width:240px;" />
                          </div>
@@ -419,12 +419,10 @@
             <thead>
             <tr>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车系： &nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in s_p">
-                        <option>请选择</option>
+                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in intS_P">
                     </select></th>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排量：&nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in s_p">
-                        <option>请选择</option>
+                    <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in intS_P">
                     </select></th>
                 <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo(2);">搜索</button></th>
             </tr>
@@ -512,18 +510,13 @@
             <thead>
             <tr>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车系： &nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in s_p">
-                        <option>请选择</option>
+                    <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in intS_P">
                     </select></th>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排量：&nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in s_p">
-                        <option>请选择</option>
+                    <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in intS_P">
                     </select></th>
                 <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否符合要求：&nbsp;&nbsp;&nbsp;
-                    <select style="width:150px;" >
-                        <option>请选择</option>
-                        <option>是</option>
-                        <option>否</option>
+                    <select style="width:150px;" ng-model="flag_status" ng-options="fs.id as fs.name for fs in flagStatus" >
                     </select></th>
                 <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo(3);">搜索</button></th>
             </tr>
@@ -629,12 +622,10 @@
                 <thead>
                 <tr>
                     <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车系： &nbsp;&nbsp;&nbsp;
-                        <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in s_p">
-                            <option>请选择</option>
+                        <select style="width:150px;padding-left:15px;" ng-model="seriesCode"  ng-options="cs.series as cs.series_name for cs in intS_P">
                         </select></th>
                     <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排量：&nbsp;&nbsp;&nbsp;
-                        <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in s_p">
-                            <option>请选择</option>
+                        <select style="width:150px;" ng-model="disp"  ng-options="p.disp as p.disp for p in intS_P">
                         </select></th>
                     <th style="vertical-align: middle" ><button type="submit" class="btn btn-success" ng-click="SearchDriveInfo(4);">搜索</button></th>
                 </tr>
@@ -951,7 +942,7 @@
              <th class="tablestyle-01">发动机运行时间</th>
              <th class="tablestyle-02">{{driveDetail.runTime}}</th>
              <th class="tablestyle-01">本次平均油耗</th>
-             <th class="tablestyle-02">{{driveDetail.currentAvgOilUsed}}</th>
+             <th class="tablestyle-02">{{driveDetail.currentAvgOilUsed/100}}升/百公里</th>
              <th class="tablestyle-01">急加速次数</th>
              <th class="tablestyle-02">{{driveDetail.speedUp}}</th>
              <th class="tablestyle-01">急减数次数</th>
@@ -963,7 +954,7 @@
              <th class="tablestyle-01">熄火电压</th>
              <th class="tablestyle-02">{{driveDetail.flameOutVoltage}}</th>
              <th class="tablestyle-01">累计平均油耗</th>
-             <th class="tablestyle-02">{{driveDetail.avgOilUsed}}</th>
+             <th class="tablestyle-02">{{driveDetail.avgOilUsed/100}}升/百公里</th>
              <th class="tablestyle-01">累计行驶里程</th>
              <th class="tablestyle-02">{{driveDetail.mileage}}</th>
          </tr>

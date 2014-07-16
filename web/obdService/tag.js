@@ -145,7 +145,7 @@ exports.searchForUsers= function(req,res){
     }
     else{
         if(groupId){
-            if(groupId===-1){
+            if(groupId < 0){
                 sql+=" and ct.tag_id is null";
             }
             else{

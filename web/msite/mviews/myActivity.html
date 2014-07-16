@@ -38,12 +38,13 @@
                 <div class="content"><ul><li class="text_08">活动状态：</li><li>{{act.status | act_status_name}}</li></ul><div class="clear"></div></div>
                 <div class="content"><ul><li class="text_08">我的状态：</li><li>{{act.myStatus | act_my_status_name}}</li></ul><div class="clear"></div></div>
                 <ul>
-                    <li><a ng-href="/msite/activityDetail.html?user={{model.user_openid}}&id={{act.id}}" target="_self">查看活动</a></li>
-                    <li ng-show="false">
-                        <a ng-href="/msite/v/4s/{{model.s4_id}}/activity/{{act.template}}/{{act.id}}/account/{{model.acc_id}}" ng-show="act.status==3 || act.status==4">我的赛况</a>
-                    </li>
-                    <li><a href="javascript:void(0)" ng-show="act.status==5">活动结果</a></li>
+                    <li class="button03"><a ng-href="/msite/activityDetail.html?user={{model.user_openid}}&id={{act.id}}" target="_self">查看活动</a></li>
+                    <li class="button03" ng-show="act.status==3 || act.status==4">
+                        <a ng-href="/msite/v/4s/{{model.s4_id}}/activity/{{act.template}}/{{act.id}}/account/{{model.acc_id}}" >我的赛况</a>
+                    </li >
+                    <li class="button03" ng-show="act.status==5"><a href="javascript:void(0)" >活动结果</a></li>
                 </ul>
+              <div class="clear"></div>
             </div><!--基本信息contentbox end-->
             <div ng-view ng-show="false"></div>
 
