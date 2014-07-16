@@ -418,8 +418,8 @@ function onClickETC(topMsg, message, req, next){
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
+        return next(null, wxMsg);
     });
-    return next(null, wxMsg);
 }
 
 exports = module.exports = wxMenu;
