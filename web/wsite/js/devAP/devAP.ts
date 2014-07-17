@@ -16,14 +16,14 @@ module devAP {
         $locationProvider.html5Mode(true);
     }]);
 
-    // 页面控制�?
+    // 页面控制器
     class DevAPCtrl {
         constructor(ctrlName:string) {
-            // 尝试读取以前的配�?
+            // 尝试读取以前的配置
             if(localStorage && localStorage[this._lskURL]){
                 this.url = localStorage[this._lskURL];
             }
-            // 向angular注册控制�?
+            // 向angular注册控制器
             _module.controller(ctrlName, ['$scope', '$sce', this.init]);
         }
 
