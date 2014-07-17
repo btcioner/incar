@@ -50,7 +50,7 @@
                 <div class="paperbox_bgtop" ng-repeat="item in model.searchResult">
                     <div class="paperbox_main txt_manual">
                         <h4 ng-show="item.title">{{item.title}}</h4>
-                        <img ng-src="{{item.img_url}}" alt="{{item.title}}" ng-show="item.img_url" class="img_manual"><br ng-show="item.img_url">
+                        <img ng-src="../../{{item.img_url}}" alt="{{item.title}}" ng-show="item.img_url" class="img_manual"><br ng-show="item.img_url">
                         {{item.description}}
                     </div>
                 </div>
