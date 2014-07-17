@@ -39,7 +39,7 @@ var menuObject = {
                 },
                 {
                     "type": "click",
-                    "name": "行车报告",
+                    "name": "用车报告",
                     "key": "MYCAR.COST"
                 }
             ]
@@ -84,7 +84,7 @@ var menuObject = {
                 },
                 {
                     "type": "click",
-                    "name": "设置",
+                    "name": "我的信息",
                     "key": "ETC.CFG"
                 }
             ]
@@ -288,7 +288,7 @@ wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
 
         // task B
         task.B = {
-            title: "点击查看行车报告",
+            title: "点击查看用车报告",
             description: "",
             picurl: url.resolve("http://" + req.headers.host, "data/car_report.jpg"),
             url: url.resolve("http://" + req.headers.host, "msite/travelReport.html?user=" + message.FromUserName + "@" + message.ToUserName)
