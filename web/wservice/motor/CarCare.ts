@@ -11,7 +11,7 @@ module Service{
         task.begin = ()=>{
             var sql = "SELECT C.id, C.obd_code, C2.brand, C2.series, C.age, U.acc_id AS owner_id, A.nick AS owner_nick, A.phone As owner_phone,\n" +
                 "\tmax(D.mileage) AS max_mileage,\n" +
-                "\tdatediff(now(),ifnull(max(W.updated_time),C.age))*24 AS care_since_hours,\n"+
+                "\tdatediff(now(),ifnull(max(W.working_time),C.age))*24 AS care_since_hours,\n"+
                 "\tC2.care_mileage, C2.care_hour\n" +
                 "FROM t_car C\n" +
                 "\tJOIN t_car_dictionary C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode\n" +
@@ -36,7 +36,7 @@ module Service{
             task.A.result.forEach((entry:any)=>{
                 var sql = "SELECT * FROM t_work\n" +
                     "WHERE org_id = ? and car_id = ? and work = 'care' and step = 'done'\n" +
-                    "ORDER BY updated_time DESC LIMIT 1";
+                    "ORDER BY working_time DESC LIMIT 1";
                 dac.query(sql, [req.params.org_id, entry.id], (ex, result)=>{
                     task.finished++;
                     if(ex || result.length === 0){
