@@ -267,11 +267,12 @@ module Work{
                 return;
             }
 
-            this.step = "applied";
+            this.step = "done";
             this.org_id = req.params.org_id;
             this.car_id = data.car_id;
             this.cust_id = data.cust_id;
             this.working_time = data.working_time;
+
 
             Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
@@ -305,7 +306,14 @@ module Work{
 
                     task.RegistWork = (booking_id:number)=>{
                         // 向t_work中登记
-                        this.json_args = JSON.stringify({oper:userLogin.dto.nick,via:"web"});
+                        this.json_args = JSON.stringify({
+                            oper:userLogin.dto.nick,
+                            via:"web",
+                            begin_time:data.begin_time,
+                            care_mileage:data.care_mileage,
+                            care_items:data.care_items,
+                            care_cost:data.care_cost
+                        });
                         this.work_ref_id = booking_id;
 
                         var sql2 = "INSERT t_work SET ?";
