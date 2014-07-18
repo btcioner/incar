@@ -413,14 +413,15 @@ function onClickETC(topMsg, message, req, next){
     var wxMsg = [topMsg];
     my4S.mostNews(message.FromUserName, message.ToUserName, req.wxsession, function (news) {
         for (var i = 0; i < news.length; i++) {
-            if(news[i].logo_url)
+            var url = "";
+            if(!news[i].logo_url)
             {
-                news[i].logo_url = "";
+               url = news[i].logo_url;
             }
             console.log("---"+news[i].logo_url);
             wxMsg.push({
                 title: news[i].title,
-                picurl: url.resolve("http://" + req.headers.host, news[i].logo_url),
+                picurl: url.resolve("http://" + req.headers.host, url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news[i].id
             });
         }
