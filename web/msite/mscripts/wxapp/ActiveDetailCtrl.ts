@@ -13,7 +13,6 @@ module wxApp {
             this.$sce = $sce;
             this.$scope = $scope;
             this.searchActivity();
-
             $scope.model = this;
         };
 
@@ -22,6 +21,7 @@ module wxApp {
                 .success((data, status, headers, config)=> {
                     data.brief = this.$sce.trustAsHtml(data.brief);
                     this.act = data;
+
                 })
                 .error((data, status, headers, config)=> {
                     alert("没有找到相关信息\n或此活动已取消！");
