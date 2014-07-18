@@ -413,6 +413,10 @@ function onClickETC(topMsg, message, req, next){
     var wxMsg = [topMsg];
     my4S.mostNews(message.FromUserName, message.ToUserName, req.wxsession, function (news) {
         for (var i = 0; i < news.length; i++) {
+            if(news[i].logo_url)
+            {
+                news[i].logo_url = "";
+            }
             wxMsg.push({
                 title: news[i].title,
                 picurl: url.resolve("http://" + req.headers.host, news[i].logo_url),
