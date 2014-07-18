@@ -414,7 +414,7 @@ function onClickETC(topMsg, message, req, next){
     my4S.mostNews(message.FromUserName, message.ToUserName, req.wxsession, function (news) {
         for (var i = 0; i < news.length; i++) {
             var logo_url = "";
-            if(!news[i].logo_url)
+            if(news[i].logo_url !=null)
             {
                 logo_url = news[i].logo_url;
             }
