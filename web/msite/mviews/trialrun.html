@@ -118,7 +118,11 @@
         postData.seriesName= $("#seriesName").find("option:selected").text(); // document.getElementById("seriesName").value;
         postData.bookDate=document.getElementById("start").value;
         postData.bookTime=document.getElementById("end").value;
-        alert(postData.seriesName);
+        if(postData.seriesName == "请选择")
+        {
+            alert("请选择车型");
+            return;
+        }
         var series = $('#seriesName').val();
         var args=JSON.stringify({'brand':brand,'series':series});
         postData.args=args;
