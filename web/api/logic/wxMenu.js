@@ -92,8 +92,10 @@ var menuObject = {
     ]
 };
 wxMenu.defineTasks = function (tickTasks, callback) {
-    //console.log("menu begins");
-    menuBuilder(tickTasks, menuObject, callback);
+    if(process.env.INCAR_REG_WXMENU || process.env.NODE_ENV !== 'development')
+        menuBuilder(tickTasks, menuObject, callback);
+    else
+        console.info("development环境默认不启用微信菜单注册,除非定义了INCAR_REG_WXMENU=true");
 };
 wxMenu.textMsgRepliers = [];
 

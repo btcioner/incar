@@ -24,7 +24,7 @@ require('./config/routes')(app);
 
 // Start server
 app.listen(config.port, function() {
-    console.log('Express server is listening on port %d in %s mode.\n\n', config.port, app.get('env'));
+    console.log('Express server is listening on port %d in %s mode.\n', config.port, app.get('env'));
 });
 
 // Delayed initializer
