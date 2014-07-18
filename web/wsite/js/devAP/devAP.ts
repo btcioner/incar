@@ -84,7 +84,8 @@ module devAP {
         public url = "http://114.215.172.92:80/4sStore/devAP.html";
         public img_qrcode:string;
         public wx_oids = {
-            "wmq@product" : "user=o-ElVtzzO2RH69kM6aqyIiFtnvNY@gh_54cfa67f0283"
+            "wmq@product" : "user=o-ElVtzzO2RH69kM6aqyIiFtnvNY@gh_54cfa67f0283",
+            "xgh@dev" : "user=oAPKMuJssQAohcEgKyKkcRDUDiAw@gh_2ca6120e0ed0"
         };
         public wx_oid_keys : Array<string>;
         public wx_active_key: string;
