@@ -17,7 +17,7 @@
     <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body onload="init()" ng-controller="trialRunCtrl">
+<body ng-controller="trialRunCtrl">
 <div id="wrap">
     <!--main_wrap start-->
     <div id="main_wrap" ng-cloak>
@@ -154,6 +154,10 @@
         searchUser();
         searchSeriesName();
     }
+
+    $(document).ready(function(){
+        init();
+    });
 
 </script>
 </body>
