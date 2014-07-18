@@ -116,7 +116,7 @@
         postData.seriesName= $("#seriesName").find("option:selected").text(); // document.getElementById("seriesName").value;
         postData.bookDate=document.getElementById("start").value;
         postData.bookTime=document.getElementById("end").value;
-
+        alert(postData.seriesName);
         var series = $('#seriesName').val();
         var args=JSON.stringify({'brand':brand,'series':series});
         postData.args=args;
@@ -151,6 +151,5 @@
     }
 
 </script>
-
 </body>
 </html>
