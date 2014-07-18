@@ -14,7 +14,9 @@ exports = module.exports = function() {
         var user = process.env.INCAR_MySQLUser || 'incarapp';
         var pwd = process.env.INCAR_MySQLPwd || 'nodejs4WMQ';
 
-        var dbname = process.env.INCAR_MySQLDatabase || 'incar';
+        // product环境使用incar,开发环境使用incardev
+        // 操作product环境时,请谨慎
+        var dbname = process.env.INCAR_MySQLDatabase || 'incardev';
 
         var args = {
             host: host,
@@ -24,7 +26,13 @@ exports = module.exports = function() {
             timezone: '0000'
         };
         global.poolInCar = mysql.createPool(args);
-        console.log(util.format("MySQL: %s@%s/%s", args.user, args.host, args.database));
+
+        var strDB = util.format("MySQL: %s@%s/%s", args.user, args.host, args.database);
+        if(process.env.NODE_ENV !== 'product' && args.database === 'incar')
+            console.warn("WARN!!!WARN!!!WARN!!!\nYou're using the product database, be more careful, please!!!\n"
+                + strDB + "\nWARN!!!WARN!!!WARN!!!\n");
+        else
+            console.log(strDB);
 
         // 不知什么原因,每过几分钟,客户端就会lost connection
         // 临时解决办法,每过一段时间,随便发点什么给数据库
