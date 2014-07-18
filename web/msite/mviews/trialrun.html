@@ -20,7 +20,7 @@
 <body onload="init()" ng-controller="trialRunCtrl">
 <div id="wrap">
     <!--main_wrap start-->
-    <div id="main_wrap">
+    <div id="main_wrap" ng-cloak>
         <!--containe_280 start--><div id="containe_280">
         <div class="img_04"></div>
         <!--预约试驾表单contentboxstyle01 start--><div class="contentboxstyle01">
@@ -54,13 +54,12 @@
     </div><!--main_wrap end-->
 </div>
 <script  src="../mscripts/jquery-1.7.1.min.js"></script>
-<script  src="../mscripts/car.js"></script>
-<!--日期控件资源  -->
-<script  src="../mscripts/jqm-datebox-1.4.0.comp.flipbox.min.js"></script>
 <script  src="../mscripts/jquery.mobile.min.js"></script>
+<script  src="../mscripts/jqm-datebox-1.4.0.comp.flipbox.min.js"><!--日期控件资源  --></script>
 <script src="../mscripts/angular.min.js"></script>
 <script src="../mscripts/angular-resource.min.js"></script>
 <script src="../mscripts/angular-route.min.js"></script>
+<script  src="../mscripts/car.js"></script>
 <script src="../mscripts/wxapp.js"></script>
 <script>
     var user;
