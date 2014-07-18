@@ -417,6 +417,7 @@ function onClickETC(topMsg, message, req, next){
             {
                 news[i].logo_url = "";
             }
+            console.log("---"+news[i].logo_url);
             wxMsg.push({
                 title: news[i].title,
                 picurl: url.resolve("http://" + req.headers.host, news[i].logo_url),
