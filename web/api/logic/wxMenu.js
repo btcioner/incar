@@ -142,9 +142,14 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
         var wxMsg = [task.B];
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
+            var logo_url = "";
+            if(news[i].logo_url !=null)
+            {
+                logo_url = news[i].logo_url;
+            }
             wxMsg.push({
                 title: news.title,
-                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                picurl: url.resolve("http://" + req.headers.host, logo_url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
@@ -193,9 +198,14 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
         var wxMsg = [task.B];
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
+            var logo_url = "";
+            if(news[i].logo_url !=null)
+            {
+                logo_url = news[i].logo_url;
+            }
             wxMsg.push({
                 title: news.title,
-                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                picurl: url.resolve("http://" + req.headers.host, .logo_url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
@@ -229,9 +239,14 @@ wxMenu.onClick['MYCAR.MAINTAIN'] = function (message, req, next) {
         var wxMsg = [task.B];
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
+            var logo_url = "";
+            if(news[i].logo_url !=null)
+            {
+                logo_url = news[i].logo_url;
+            }
             wxMsg.push({
                 title: news.title,
-                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                picurl: url.resolve("http://" + req.headers.host, logo_url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
@@ -267,9 +282,14 @@ wxMenu.onClick['MYCAR.MANUAL'] = function (message, req, next) {
         var wxMsg = [task.B];
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
+            var logo_url = "";
+            if(news[i].logo_url !=null)
+            {
+                logo_url = news[i].logo_url;
+            }
             wxMsg.push({
                 title: news.title,
-                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                picurl: url.resolve("http://" + req.headers.host, logo_url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
@@ -303,9 +323,14 @@ wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
         var wxMsg = [task.B];
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
+            var logo_url = "";
+            if(news[i].logo_url !=null)
+            {
+                logo_url = news[i].logo_url;
+            }
             wxMsg.push({
                 title: news.title,
-                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                picurl: url.resolve("http://" + req.headers.host, logo_url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
