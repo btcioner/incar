@@ -205,7 +205,7 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
             }
             wxMsg.push({
                 title: news.title,
-                picurl: url.resolve("http://" + req.headers.host, .logo_url),
+                picurl: url.resolve("http://" + req.headers.host, logo_url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
