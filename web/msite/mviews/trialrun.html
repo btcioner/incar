@@ -27,8 +27,8 @@
         <div class="formstyle01"><ul><li style="text-shadow:none;">车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</li><li><select name="seriesName" id="seriesName"  class="w190" ><option>请选择</option></select></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li style="text-shadow:none;">预约日期：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align: middle"/></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li style="text-shadow:none;">预约时间：</li><li><select id="end" name="end" class="w190"  style="width: 100%;min-height: 1.4em;width: 15em">
-            <option>9:00</option>
-            <option>9:30</option>
+            <option>09:00</option>
+            <option>09:30</option>
             <option>10:00</option>
             <option>10:30</option>
             <option>11:00</option>
@@ -77,34 +77,37 @@
              document.getElementById('acc_id').value=result.id;
              document.getElementById('s4_id').value=result.s4_id;
              brand=result.brand;
-             series=result.series;
+             setSeries(result.series);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("连接失败\n请检查网络连接是否正常");
             }
         });
     }
-  function searchSeriesName(){
-      var sopenid=user.split('@')[1];
-      $.ajax({
-          type: "POST",
-          url: "/mservice/getSeries",
-          data: {'sopenId':sopenid},
-          dataType: "json",
-          success: function (result,status) {
-              var seriesStr="<option>请选择</option>";
-              for(var i=0;i<result.length;i++){
-                  seriesStr+="<option value="+ result[i].seriesCode +">"+result[i].series+"</option>"
-              }
-              document.getElementById('seriesName').innerHTML=seriesStr;
-          },
-          error:function(XMLHttpRequest, textStatus, errorThrown){
-              //alert("连接失败\n请检查网络连接是否正常");
-          }
-      });
-  }
+    function setSeries(sCode){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/getSeries",
+            data: {'sopenId':user.split('@')[1]},
+            dataType: "json",
+            success:function(result,status){
+                var str="<option>请选择</option>";
+                for(var i=0;i<result.length;i++){
+                    var selected = '';
+                    str+="<option "+selected+" value='"+result[i].seriesCode+"'>"+result[i].series+"</option>";
+                }
+                //alert(str);
+                document.getElementById("seriesName").innerHTML=str;
+                if(sCode){
+                    $('#seriesName').val(sCode);
+                    $('#seriesName').selectmenu("refresh");
+                }
+
+            }
+        });
+
+    }
     function submitTrialrun(){
-        //alert("begin");
         var postData={};
         var temp=user.split('@');
         postData.wx_oid=temp[0]+":"+temp[1];
@@ -115,10 +118,56 @@
         postData.seriesName= $("#seriesName").find("option:selected").text(); // document.getElementById("seriesName").value;
         postData.bookDate=document.getElementById("start").value;
         postData.bookTime=document.getElementById("end").value;
+
+        /**试乘试驾预约信息验证--start by JL*/
+        if(postData.name == ""){
+            alert("请填写预约车主姓名!");
+            return;
+        }
+        if(postData.phone == "")
+        {
+            alert("请填写预约电话!");
+            return;
+        }
         if(postData.seriesName == "请选择")
         {
-            alert("请选择车型");
+            alert("请选择车型!");
             return;
+        }
+        today=new Date();
+        if(parseInt(postData.bookDate.substring(0,4)) < parseInt(defaultDate().substring(0,4)))
+        {
+            alert("该时间已过期!");
+            return;
+        }else if(parseInt(postData.bookDate.substring(0,4)) == parseInt(defaultDate().substring(0,4)))
+        {
+          if(parseInt(postData.bookDate.substring(5,7)) < parseInt(defaultDate().substring(5,7)))
+          {
+              alert("该时间已过期!");
+              return;
+          }
+          else if(parseInt(postData.bookDate.substring(5,7)) == parseInt(defaultDate().substring(5,7))){
+              if(parseInt(postData.bookDate.substring(8,10)) < parseInt(defaultDate().substring(8,10)))
+              {
+                  alert("该时间已过期!");
+                  return;
+              }
+              else if(parseInt(postData.bookDate.substring(8,10)) == parseInt(defaultDate().substring(8,10))){
+                 if(parseInt(postData.bookDate) == parseInt(defaultDate())){
+                if(parseInt(postData.bookTime.substring(0,2))<parseInt(today.getHours()))
+                {
+                     alert("该时间已过期!");
+                     return;
+                }
+                else if(parseInt(postData.bookTime.substring(0,2))==parseInt(today.getHours())){
+                    if(parseInt(postData.bookTime.substring(3,5))<parseInt(today.getMinutes())){
+                        alert("该时间已过期!");
+                        return;
+                    }
+                }
+              }
+            }
+          }
         }
         var series = $('#seriesName').val();
         var args=JSON.stringify({'brand':brand,'series':series});
@@ -144,13 +193,17 @@
 
     function init(){
         user=getQueryString("user");
+        document.getElementById("start").value=defaultDate();
+        searchUser();
+//        searchSeriesName();
+    }
+    function defaultDate()
+    {
         today=new Date();
         year=today.getFullYear();    //获取完整的年份(4位,1970-????)
         month=(today.getMonth()+1>9)?today.getMonth()+1:"0"+(today.getMonth()+1);     //获取当前月份(0-11,0代表1月)
-        day=today.getDate()>9?today.getDate():"0"+today.getDate();;        //获取当前日(1-31)
-        document.getElementById("start").value=year+"-"+month+"-"+day;
-        searchUser();
-        searchSeriesName();
+        day=today.getDate()>9?today.getDate():"0"+today.getDate();        //获取当前日(1-31)
+        return year+"-"+month+"-"+day;
     }
 
     $(document).ready(function(){
