@@ -143,7 +143,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
             var logo_url = "";
-            if(news[i].logo_url !=null)
+            if(news[i].logo_url)
             {
                 logo_url = news[i].logo_url;
             }
@@ -199,7 +199,7 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
             var logo_url = "";
-            if(news[i].logo_url !=null)
+            if(news[i].logo_url)
             {
                 logo_url = news[i].logo_url;
             }
@@ -240,7 +240,7 @@ wxMenu.onClick['MYCAR.MAINTAIN'] = function (message, req, next) {
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
             var logo_url = "";
-            if(news[i].logo_url !=null)
+            if(news[i].logo_url)
             {
                 logo_url = news[i].logo_url;
             }
@@ -283,7 +283,7 @@ wxMenu.onClick['MYCAR.MANUAL'] = function (message, req, next) {
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
             var logo_url = "";
-            if(news[i].logo_url !=null)
+            if(news[i].logo_url)
             {
                 logo_url = news[i].logo_url;
             }
@@ -324,7 +324,7 @@ wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
             var logo_url = "";
-            if(news[i].logo_url !=null)
+            if(news[i].logo_url)
             {
                 logo_url = news[i].logo_url;
             }
@@ -439,7 +439,7 @@ function onClickETC(topMsg, message, req, next){
     my4S.mostNews(message.FromUserName, message.ToUserName, req.wxsession, function (news) {
         for (var i = 0; i < news.length; i++) {
             var logo_url = "";
-            if(news[i].logo_url !=null)
+            if(news[i].logo_url)
             {
                 logo_url = news[i].logo_url;
             }
