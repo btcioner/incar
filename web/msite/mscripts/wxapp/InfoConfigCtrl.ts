@@ -98,7 +98,7 @@ module wxApp {
                 })
                 .error((data, status, headers, config)=>{
 //                    console.log(status);
-                    alert("您还未注册或未绑定英卡车云终端\n请先注册账号！");
+                    alert("您还未注册或未绑定车云终端\n请先注册账号！");
 //                    this.name_sta = false;
                     this.printWord ="创建成功!";
                     this.flag = "add";
