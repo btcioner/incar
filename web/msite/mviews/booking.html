@@ -57,6 +57,7 @@
         <!--regsiterbutton start--><div id="regsiterbutton"><span class="text_02" style="text-shadow:none;">*号为必填项</span><br /><a href="#" class="button01" onclick="submitBooking()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
     </div><!--main_wrap end-->
 </div>
+<input type="hidden" id="brand" />
 <script>
     var user;//用户openid
     var today;
@@ -154,6 +155,7 @@
         }
         /**预约保养信息验证---end by JL*/
         var series = $('#carType').val();
+        var brand =$("#brand").val();
         postData.args=JSON.stringify({'brand':brand,'series':series, 'license': $('#license').val(),nick:postData.nick,
                                       phone:postData.phone,mileage:postData.mileage});
         postData.acc_id=acc_id;
@@ -190,7 +192,7 @@
                 document.getElementById('mileage').value=result.mileage;
                 document.getElementById('phone').value=result.phone;
                 document.getElementById('ownerName').value=result.nick;
-                brand=result.brand;
+                document.getElementById('brand').value=result.brand;
                 setSeries(result.series);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){

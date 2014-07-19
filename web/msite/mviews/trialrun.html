@@ -52,13 +52,13 @@
         </select></li></ul><div class="clear"></div></div>
         <input type="hidden" id="acc_id" />
         <input type="hidden" id="s4_id" />
+        <input type="hidden" id="brand" />
     </div><!--预约试驾表单contentboxstyle01 end-->
     </div><!--containe_280 end-->
         <div class="w10"></div>
         <!--regsiterbutton start--><div id="regsiterbutton"><span class="text_02" style="text-shadow:none;">*号为必填项</span><br /><a href="javascript:void(0)" class="button01" onClick="submitTrialrun()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
     </div><!--main_wrap end-->
 </div>
-
 <script>
     var user;
     var today;
@@ -76,7 +76,7 @@
              document.getElementById('name').value=result.nick;
              document.getElementById('acc_id').value=result.id;
              document.getElementById('s4_id').value=result.s4_id;
-             brand=result.brand;
+             document.getElementById('brand').value=result.brand;
              setSeries(result.series);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -172,6 +172,7 @@
           }
         }
         var series = $('#seriesName').val();
+        var brand = $("#brand").val();
         var args=JSON.stringify({'brand':brand,'series':series,nick:postData.name,phone:postData.phone});
         postData.args=args;
         //alert("开始提交");
