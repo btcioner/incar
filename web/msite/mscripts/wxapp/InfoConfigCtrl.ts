@@ -52,6 +52,7 @@ module wxApp {
         private searchUser = ()=>{
             this.$http.post('/mservice/infoConfig', {user:this.user_openid})
                 .success((data, status, headers, config)=>{
+                    this.userCfg = {name:"",nick:"",obd_code:"",modelYear:"",phone:"",license:"",mileage:"",disp:"",id:""};
 //                    this.name_sta = true;
                     this.printWord = "修改成功!";
                     this.flag = "update";
@@ -102,7 +103,7 @@ module wxApp {
 //                    this.name_sta = false;
                     this.printWord ="创建成功!";
                     this.flag = "add";
-                    this.userCfg = {name:"",nick:"",obd_code:"",modelYear:"",phone:"",license:"",mileage:"",disp:"",id:""}
+                    this.userCfg = {name:"",nick:"",obd_code:"",modelYear:"",phone:"",license:"",mileage:"",disp:"",id:""};
                 });
         };
 
@@ -185,7 +186,7 @@ module wxApp {
                 return;
             }
 
-            if (postData.mileage == "") {
+            if (postData.mileage == "" || postData.mileage ==0) {
                 alert('行驶总里程不能为空!');
                 return;
             }
