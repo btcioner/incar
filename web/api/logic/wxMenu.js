@@ -143,9 +143,9 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
             var logo_url = "";
-            if(news[i].logo_url)
+            if(news.logo_url)
             {
-                logo_url = news[i].logo_url;
+                logo_url = news.logo_url;
             }
             wxMsg.push({
                 title: news.title,
@@ -199,9 +199,9 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
             var logo_url = "";
-            if(news[i].logo_url)
+            if(news.logo_url)
             {
-                logo_url = news[i].logo_url;
+                logo_url = news.logo_url;
             }
             wxMsg.push({
                 title: news.title,
@@ -240,9 +240,9 @@ wxMenu.onClick['MYCAR.MAINTAIN'] = function (message, req, next) {
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
             var logo_url = "";
-            if(news[i].logo_url)
+            if(news.logo_url)
             {
-                logo_url = news[i].logo_url;
+                logo_url = news.logo_url;
             }
             wxMsg.push({
                 title: news.title,
@@ -283,9 +283,9 @@ wxMenu.onClick['MYCAR.MANUAL'] = function (message, req, next) {
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
             var logo_url = "";
-            if(news[i].logo_url)
+            if(news.logo_url)
             {
-                logo_url = news[i].logo_url;
+                logo_url = news.logo_url;
             }
             wxMsg.push({
                 title: news.title,
@@ -324,9 +324,9 @@ wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
         for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
             var logo_url = "";
-            if(news[i].logo_url)
+            if(news.logo_url)
             {
-                logo_url = news[i].logo_url;
+                logo_url = news.logo_url;
             }
             wxMsg.push({
                 title: news.title,
