@@ -68,6 +68,7 @@
         document.getElementById("start").value=defaultDate();
         user=getQueryString("user");
         searchUser();
+        getBrand();
     }
 
     function defaultDate()
@@ -192,7 +193,7 @@
                 document.getElementById('mileage').value=result.mileage;
                 document.getElementById('phone').value=result.phone;
                 document.getElementById('ownerName').value=result.nick;
-                document.getElementById('brand').value=result.brand;
+
                 setSeries(result.series);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -201,6 +202,19 @@
             }
         });
     }
+
+    function getBrand(){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/brandData",
+            data: {'user':user},
+            dataType: "json",
+            success:function(result,status){
+
+                document.getElementById('brand').value=result.brandCode;
+              }
+            });
+       }
     function setSeries(sCode){
         $.ajax({
             type: "POST",

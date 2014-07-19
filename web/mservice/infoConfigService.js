@@ -76,7 +76,7 @@ function getAccountInfo(db, userName, callback) {
                                 nick: '微信匿名用户'
                             };
                             var s4_brand = result[0].brand;
-                            report.brand = result[0].brand;
+
                             pool.query("INSERT INTO t_account SET ?", [wx_user], function (ex, result) {
                                 if(ex) return callback(ex);
                                 else{

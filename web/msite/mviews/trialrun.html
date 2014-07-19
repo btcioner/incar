@@ -29,7 +29,7 @@
         <!--containe_280 start--><div id="containe_280">
         <div class="img_04"></div>
         <!--预约试驾表单contentboxstyle01 start--><div class="contentboxstyle01" id="bookStatus" style="text-shadow: none;">
-        <div class="formstyle01"><ul><li style="text-shadow:none;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名*：</li><li><input name="name" id="name" type="text" class="w190" /></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名*：</li><li><input name="nick" id="nick" type="text" class="w190" /></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li style="text-shadow:none;">联系电话*：</li><li><input name="phone" id="phone" type="text" class="w190" /></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li style="text-shadow:none;">车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型*：</li><li><select name="seriesName" id="seriesName"  class="w190" ><option>请选择</option></select></li></ul><div class="clear"></div></div>
         <div class="formstyle01"><ul><li style="text-shadow:none;">预约日期*：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align: middle"/></li></ul><div class="clear"></div></div>
@@ -73,14 +73,24 @@
             dataType: "json",
             success: function (result,status) {
              document.getElementById('phone').value=result.phone;
-             document.getElementById('name').value=result.nick;
+             document.getElementById('nick').value=result.nick;
              document.getElementById('acc_id').value=result.id;
              document.getElementById('s4_id').value=result.s4_id;
-             document.getElementById('brand').value=result.brand;
              setSeries(result.series);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("连接失败\n请检查网络连接是否正常");
+            }
+        });
+    }
+    function getBrand(){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/brandData",
+            data: {'user':user},
+            dataType: "json",
+            success:function(result,status){
+                document.getElementById('brand').value=result.brandCode;
             }
         });
     }
@@ -115,7 +125,7 @@
         postData.wx_oid=temp[0]+":"+temp[1];
         postData.acc_id=document.getElementById("acc_id").value;
         postData.s4_id=document.getElementById("s4_id").value;
-        postData.name=document.getElementById("name").value;
+        postData.name=document.getElementById("nick").value;
         postData.phone=document.getElementById("phone").value;
         postData.seriesName= $("#seriesName").find("option:selected").text(); // document.getElementById("seriesName").value;
         postData.bookDate=document.getElementById("start").value;
@@ -202,6 +212,7 @@
         document.getElementById("start").value=defaultDate();
         searchUser();
 //        searchSeriesName();
+        getBrand();
     }
     function defaultDate()
     {
