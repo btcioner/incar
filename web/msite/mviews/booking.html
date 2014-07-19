@@ -214,7 +214,7 @@
             data: {'sopenId':user.split('@')[1]},
             dataType: "json",
             success:function(result,status){
-              var str="<option>请选择</option>";
+              var str="<option value='-1'>请选择</option>";
               for(var i=0;i<result.length;i++){
                   var selected = '';
                   str+="<option "+selected+" value='"+result[i].seriesCode+"'>"+result[i].series+"</option>";
@@ -224,6 +224,9 @@
                 if(sCode){
                     $('#carType').val(sCode);
                     $('#carType').selectmenu("refresh");
+                }
+                else{
+                    $('#carType').val('-1');
                 }
             }
         });
