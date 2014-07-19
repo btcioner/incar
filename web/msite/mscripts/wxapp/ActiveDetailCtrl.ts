@@ -21,7 +21,9 @@ module wxApp {
                 .success((data, status, headers, config)=> {
                     data.brief = this.$sce.trustAsHtml(data.brief);
                     this.act = data;
-
+                    this.act.tm_start =  this.act.tm_start.substring(0,16);
+                    this.act.tm_end = this.act.tm_end.substring(0,16);
+                    this.act.tm_announce =  this.act.tm_announce.substring(0,16);
                 })
                 .error((data, status, headers, config)=> {
                     alert("没有找到相关信息\n或此活动已取消！");
@@ -48,5 +50,6 @@ module wxApp {
         private $http:any;
         private $sce:any;
         private $scope:any;
+
     }
 }
