@@ -94,12 +94,11 @@ module wxApp {
                         if(data.engine_type === 'T') this.eng_type = '涡轮增压';
                         else this.eng_type = '自然吸气';
                     }
-
                     console.log(data);
                 })
                 .error((data, status, headers, config)=>{
 //                    console.log(status);
-                    alert("您还未注册或未绑定OBD信息\n请先注册账号！");
+                    alert("您还未注册或未绑定英卡车云终端\n请先注册账号！");
 //                    this.name_sta = false;
                     this.printWord ="创建成功!";
                     this.flag = "add";
@@ -130,7 +129,7 @@ module wxApp {
             }
 
             if (postData.obd_code == "") {
-                alert('OBD编号不能为空!');
+                alert('车云终端ID不能为空!');
                 return;
             }
             // check pwd
@@ -218,11 +217,6 @@ module wxApp {
                 else postData.engine_type = 'L';
             }
 
-
-
-//            console.log(postData);
-
-
             this.$http.post('/mservice/enroll', postData)
                 .success((data, status, headers, config)=>{
                     if(data.status == "success")
@@ -242,7 +236,7 @@ module wxApp {
                     }
                 })
                 .error((data, status, headers, config)=>{
-                    alert("修改失败\n请检查OBD Id是否正确");
+                    alert("修改失败\n请检查车云终端ID是否正确");
                 });
         };
 

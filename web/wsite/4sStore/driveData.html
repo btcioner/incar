@@ -45,7 +45,7 @@
                           <th class="tablestyle-02">{{custInfo.nick}}</th>
                           <th class="tablestyle-01">联系电话</th>
                           <th class="tablestyle-02">{{custInfo.phone}}</th>
-                          <th class="tablestyle-01">OBD编号</th>
+                          <th class="tablestyle-01">终端编号</th>
                           <th class="tablestyle-02">{{carInfo.obd_code}}</th>
                           <th class="tablestyle-01">SIM卡号</th>
                           <th class="tablestyle-02">{{carInfo.sim_number}}</th>
@@ -108,7 +108,7 @@
                   <table class="table table-bordered">
                       <thead>
                       <tr >
-                          <th class="tablestyle-03">OBD设备编号</th>
+                          <th class="tablestyle-03">终端编号</th>
                           <th class="tablestyle-03">行驶编号</th>
                           <th class="tablestyle-03">创建时间</th>
                           <th class="tablestyle-03">操作</th>
@@ -172,8 +172,8 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th style="vertical-align: middle;">OBD编号：
-                            <input type="text" placeholder="12位OBD编号" style="width:150px;" ng-model="obd_num"/></th>
+                        <th style="vertical-align: middle;">终端编号：
+                            <input type="text" placeholder="请输入终端编号" style="width:150px;" ng-model="obd_num"/></th>
                         <th style="vertical-align: middle;">车系：
                             <select style="width:150px;padding-left:15px;" ng-model="series" ng-options="series.seriesCode as series.series for series in carSeries">
                                 <option value="">请选择</option>
@@ -191,7 +191,7 @@
                         <th>4S店</th>
                         <th>品牌</th>
                         <th>车系</th>
-                        <th>OBD编号</th>
+                        <th>终端编号</th>
                         <th>VIN码</th>
                         <th>点火时间</th>
                         <th>本次行驶里程(km)</th>

@@ -63,7 +63,7 @@ module wxApp {
                     this.searchActivity();
                 })
                 .error((data, status, headers, config)=>{
-                    alert("您还未注册或未绑定OBD信息\n请先注册账号！");
+                    alert("您还未注册或未绑定车云终端\n请先注册账号！");
                     window.location.href = "/msite/infoConfig.html?user="+this.user_openid;
                 });
         };
