@@ -21,8 +21,8 @@
                     </thead>
                     <tbody>
                     <tr class="gradeX" ng-repeat="tries in tries">
-                        <td id="tdc">{{tries.nick}}</td>
-                        <td id="tdc">{{tries.phone}}</td>
+                        <td id="tdc">{{tries.json_args.nick}}</td>
+                        <td id="tdc">{{tries.json_args.phone}}</td>
                         <td id="tdc">{{tries.json_args.brand_name}}</td>
                         <td id="tdc">{{tries.json_args.series_name}}</td>
                         <td id="tdc">{{tries.working_time}}</td>
@@ -56,9 +56,9 @@
                         <thead>
                         <tr>
                             <th class="tablestyle-01">车主姓名</th>
-                            <th class="tablestyle-02">{{triesDetail.nick}}</th>
+                            <th class="tablestyle-02">{{triesDetail.json_args.nick}}</th>
                             <th class="tablestyle-01">联系电话
-                            <th class="tablestyle-02">{{triesDetail.phone}}</th>
+                            <th class="tablestyle-02">{{triesDetail.json_args.phone}}</th>
                             <th class="tablestyle-01">预约品牌</th>
                             <th class="tablestyle-02">{{triesDetail.json_args.brand_name}}</th>
                         </tr>
@@ -80,9 +80,9 @@
                         </thead>
                     </table>
                 </div>
-                <div class="widget-content" ng-show="rejectReason">
+                <div class="widget-content mar_t_14" ng-show="rejectReason">
                     <form class="form-horizontal formstyle_box03">
-                        <div class="control-group w_44 fl" >
+                        <div class="" >
                             <label class="control-label pad_l20 w_100">原因</label>
                             <div class="controls pad_t_b_10">
                                 <textarea ng-model="jj_reason" style="width:300px;"></textarea>
@@ -126,9 +126,9 @@
                         <thead>
                         <tr>
                             <th class="tablestyle-01">车主姓名</th>
-                            <th class="tablestyle-02">{{triesDetail.nick}}</th>
+                            <th class="tablestyle-02">{{triesDetail.json_args.nick}}</th>
                             <th class="tablestyle-01">联系电话
-                            <th class="tablestyle-02">{{triesDetail.phone}}</th>
+                            <th class="tablestyle-02">{{triesDetail.json_args.phone}}</th>
                             <th class="tablestyle-01">预约品牌</th>
                             <th class="tablestyle-02">{{triesDetail.json_args.brand_name}}</th>
                         </tr>

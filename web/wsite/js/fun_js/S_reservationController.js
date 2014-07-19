@@ -155,7 +155,7 @@
       {
           case "approve":
               if(confirm("是否确定已确认?")){
-                  $scope.postData = {op:"approve",brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series,license:$scope.careDetail.json_args.license};
+                  $scope.postData = {op:"approve",brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series,license:$scope.careDetail.json_args.license,nick:$scope.careDetail.json_args.nick,phone:$scope.careDetail.json_args.phone,mileage:$scope.careDetail.json_args.mileage};
                   $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                       if(data.status=="ok")
                       {
@@ -172,7 +172,7 @@
               break;
           case "cancel":
               if(confirm("是否确定已取消?")){
-                  $scope.postData = {op:"cancel",brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series,license:$scope.careDetail.json_args.license};
+                  $scope.postData = {op:"cancel",brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series,license:$scope.careDetail.json_args.license,nick:$scope.careDetail.json_args.nick,phone:$scope.careDetail.json_args.phone,mileage:$scope.careDetail.json_args.mileage};
                   $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                       if(data.status=="ok")
                       {
@@ -200,7 +200,7 @@
               break;
           case "abort":
               if(confirm("是否确定未到店?")){
-                  $scope.postData = {op:"abort",reason:"",brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series,license:$scope.careDetail.json_args.license};
+                  $scope.postData = {op:"abort",reason:"",brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series,license:$scope.careDetail.json_args.license,nick:$scope.careDetail.json_args.nick,phone:$scope.careDetail.json_args.phone,mileage:$scope.careDetail.json_args.mileage};
                   $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                       if(data.status=="ok")
                       {
@@ -308,7 +308,7 @@
         {
             case 1://已完成
                 if(confirm("是否确定已完成?")){
-                    $scope.postData = {op:"done",care_items:$scope.care_items,care_cost:$scope.care_cost,begin_time:$scope.begin_time,end_time:$scope.end_time,brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series,license:$scope.careDetail.json_args.license};
+                    $scope.postData = {op:"done",care_items:$scope.care_items,care_cost:$scope.care_cost,begin_time:$scope.begin_time,end_time:$scope.end_time,brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series,license:$scope.careDetail.json_args.license,nick:$scope.careDetail.json_args.nick,phone:$scope.careDetail.json_args.phone,mileage:$scope.careDetail.json_args.mileage};
                     $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                         if(data.status == "ok")
                         {
@@ -327,7 +327,7 @@
                 break;
             case 2://拒绝
                 if(confirm("是否确定已拒绝?")){
-                    $scope.postData={op: "reject", reason:$scope.jj_reason,brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series,license:$scope.careDetail.json_args.license};
+                    $scope.postData={op: "reject", reason:$scope.jj_reason,brand:$scope.careDetail.json_args.brand,series:$scope.careDetail.json_args.series,license:$scope.careDetail.json_args.license,nick:$scope.careDetail.json_args.nick,phone:$scope.careDetail.json_args.phone,mileage:$scope.careDetail.json_args.mileage};
                     $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/care/'+$scope.id,$scope.postData).success(function(data){
                         if(data.status == "ok")
                         {

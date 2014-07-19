@@ -11,8 +11,8 @@
     <!--日期控件资源结束  -->
     <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
-    <link href="../mstyles/color.css" rel="stylesheet" type="text/css"/>
     <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body ng-controller="trialRunCtrl">
@@ -21,12 +21,12 @@
     <div id="main_wrap" ng-cloak>
         <!--containe_280 start--><div id="containe_280">
         <div class="img_04"></div>
-        <!--预约试驾表单contentboxstyle01 start--><div class="contentboxstyle01">
-        <div class="formstyle01"><ul><li style="text-shadow:none;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</li><li><input name="name" id="name" type="text" class="w190" /></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li style="text-shadow:none;">联系电话：</li><li><input name="phone" id="phone" type="text" class="w190" /></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li style="text-shadow:none;">车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</li><li><select name="seriesName" id="seriesName"  class="w190" ><option>请选择</option></select></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li style="text-shadow:none;">预约日期：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align: middle"/></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li style="text-shadow:none;">预约时间：</li><li><select id="end" name="end" class="w190"  style="width: 100%;min-height: 1.4em;width: 15em">
+        <!--预约试驾表单contentboxstyle01 start--><div class="contentboxstyle01" id="bookStatus" style="text-shadow: none;">
+        <div class="formstyle01"><ul><li style="text-shadow:none;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名*：</li><li><input name="name" id="name" type="text" class="w190" /></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">联系电话*：</li><li><input name="phone" id="phone" type="text" class="w190" /></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型*：</li><li><select name="seriesName" id="seriesName"  class="w190" ><option>请选择</option></select></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">预约日期*：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align: middle"/></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">预约时间*：</li><li><select id="end" name="end" class="w190"  style="width: 100%;min-height: 1.4em;width: 15em">
             <option>09:00</option>
             <option>09:30</option>
             <option>10:00</option>
@@ -48,7 +48,7 @@
     </div><!--预约试驾表单contentboxstyle01 end-->
     </div><!--containe_280 end-->
         <div class="w10"></div>
-        <!--regsiterbutton start--><div id="regsiterbutton"><a href="javascript:void(0)" class="button01" onClick="submitTrialrun()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
+        <!--regsiterbutton start--><div id="regsiterbutton"><span class="text_02" style="text-shadow:none;">*号为必填项</span><br /><a href="javascript:void(0)" class="button01" onClick="submitTrialrun()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
     </div><!--main_wrap end-->
 </div>
 <script  src="../mscripts/jquery-1.7.1.min.js"></script>
@@ -170,7 +170,7 @@
           }
         }
         var series = $('#seriesName').val();
-        var args=JSON.stringify({'brand':brand,'series':series});
+        var args=JSON.stringify({'brand':brand,'series':series,nick:postData.name,phone:postData.phone});
         postData.args=args;
         //alert("开始提交");
         $.ajax({
@@ -179,12 +179,15 @@
             data: postData,
             dataType: "json",
             success: function (result,status) {
-                window.location="/msite/trialResult.html?state=1";
-
+                //alert(result.fuelData.length);
+                document.getElementById("bookStatus").innerHTML="<div>"+
+                        "<span class='text_03' id='note'>您的预约申请已提交，<br/>您可以在'我的预约'中查看申请结果，<br/>请您耐心等待，谢谢！</span></div>";
+                document.getElementById('regsiterbutton').innerHTML='';
             },
-            error:function(XMLHttpRequest, textStatus, errorThrown){
-                //alert("连接失败\n请检查网络连接是否正常");
-                window.location="/msite/trialResult.html?state=0";
+            error:function(){
+                document.getElementById("bookStatus").innerHTML="<div>"+
+                        "<span class='text_03' id='note'>预约失败，请检查网络连接！</span></div>";
+                document.getElementById("regsiterbutton").innerHTML='';
             }
         });
     }

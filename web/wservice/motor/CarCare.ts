@@ -349,7 +349,10 @@ module Work{
                         oper: userLogin.dto.nick,
                         brand:data.brand,
                         series:data.series,
-                        license:data.license
+                        license:data.license,
+                        nick:data.nick,
+                        phone:data.phone,
+                        mileage:data.mileage
                     });
                     console.log(this.json_args);
 //                  this.json_args = JSON.stringify({oper:userLogin.dto.nick});
@@ -394,7 +397,10 @@ module Work{
                         brand:req.body.brand,
                         series:req.body.series,
                         reason:req.body.reason,
-                        license:req.body.license
+                        license:req.body.license,
+                        nick:req.body.nick,
+                        phone:req.body.phone,
+                        mileage:req.body.mileage
                     });
 
                     var sql = "UPDATE t_work SET step = 'rejected', json_args = ? WHERE id = ? and step = 'applied'";
@@ -430,7 +436,8 @@ module Work{
             Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
-                    var args:any = { oper:userLogin.dto.nick,brand:req.body.brand,series:req.body.series,license:req.body.license};
+                    var args:any = { oper:userLogin.dto.nick,brand:req.body.brand,series:req.body.series,license:req.body.license,nick:req.body.nick,
+                                     phone:req.body.phone,mileage:req.body.mileage};
 
                     if(req.body.reason) args.reason = req.body.reason;
 
@@ -470,7 +477,8 @@ module Work{
             Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
                 else{
-                    this.json_args = JSON.stringify({oper:userLogin.dto.nick, reason:req.body.reason,brand:req.body.brand,series:req.body.series,license:req.body.license});
+                    this.json_args = JSON.stringify({oper:userLogin.dto.nick, reason:req.body.reason,brand:req.body.brand,series:req.body.series,license:req.body.license,
+                                                     nick:req.body.nick,phone:req.body.phone,mileage:req.body.mileage});
 
                     var sql = "UPDATE t_work SET step = 'aborted', json_args = ? WHERE id = ? and step = 'approved'";
                     var dac = Service.MySqlAccess.RetrievePool();
@@ -525,7 +533,10 @@ module Work{
                             end_time: data.end_time,
                             brand:data.brand,
                             series:data.series,
-                            license:data.license
+                            license:data.license,
+                            nick:data.nick,
+                            phone:data.phone,
+                            mileage:data.mileage
                         });
 
                         var sql = "UPDATE t_work SET step = 'done', json_args = ? WHERE id = ? and step = 'approved'";

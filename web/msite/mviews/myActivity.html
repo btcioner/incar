@@ -34,7 +34,7 @@
             <!--基本信息contentbox start-->
             <div class="contentbox" ng-repeat="act in model.activities">
                 <div class="columnname"><div class="text_09">{{act.title}}</div></div>
-                <div class="content"><ul><li class="text_08">发布日期：</li><li>{{act.tm_announce}}</li></ul><div class="clear"></div></div>
+                <div class="content"><ul><li class="text_08">发布时间：</li><li>{{act.tm_announce}}</li></ul><div class="clear"></div></div>
                 <div class="content"><ul><li class="text_08">活动状态：</li><li>{{act.status | act_status_name}}</li></ul><div class="clear"></div></div>
                 <div class="content"><ul><li class="text_08">我的状态：</li><li>{{act.myStatus | act_my_status_name}}</li></ul><div class="clear"></div></div>
                 <ul>

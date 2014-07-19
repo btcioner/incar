@@ -162,7 +162,8 @@
         }
         /**预约保养信息验证---end by JL*/
         var series = $('#carType').val();
-        postData.args=JSON.stringify({'brand':brand,'series':series, 'license': $('#license').val() });
+        postData.args=JSON.stringify({'brand':brand,'series':series, 'license': $('#license').val(),nick:postData.nick,
+                                      phone:postData.phone,mileage:postData.mileage});
         postData.acc_id=acc_id;
 
             $.ajax({
@@ -172,13 +173,13 @@
                 dataType: "json",
                 success: function (result,status) {
                     //alert(result.fuelData.length);
-                    document.getElementById("bookStatus").innerHTML="<h2 style='text-align: center'>您的预约申请已提交，<br>"+
-                            "您可以在'我的预约'中查看申请结果，<br>"+
-                            "请您注意查看，谢谢！</h2>";
-                    document.getElementById("regsiterbutton").innerHTML='';
+                    document.getElementById("bookStatus").innerHTML="<div>"+
+                    "<span class='text_03' id='note'>您的预约申请已提交，<br/>您可以在'我的预约'中查看申请结果，<br/>请您耐心等待，谢谢！</span></div>";
+                    document.getElementById('regsiterbutton').innerHTML='';
                 },
                 error:function(){
-                    document.getElementById("bookStatus").innerHTML="<h2 style='text-align: center'>预约失败，请检查网络连接。！</h2>";
+                    document.getElementById("bookStatus").innerHTML="<div>"+
+                            "<span class='text_03' id='note'>预约失败，请检查网络连接！</span></div>";
                     document.getElementById("regsiterbutton").innerHTML='';
                 }
             });
