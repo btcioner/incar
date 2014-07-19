@@ -325,7 +325,7 @@ wxMenu.onClick['MY4S.PROBE'] = function (message, req, next) {
             {
                 title: '试乘试驾',
                 description: result,
-                picurl: '',
+                picurl: url.resolve("http://" + req.headers.host, 'data/act_info.jpg'),
                 url: url.resolve("http://" + req.headers.host, "msite/trialrun.html?user=") + message.FromUserName + '@' + message.ToUserName
             }
         ]);
