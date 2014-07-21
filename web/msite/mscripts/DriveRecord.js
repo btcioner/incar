@@ -20,7 +20,7 @@ app.controller("driveRecordCtrl", function($scope, $http){
                   if(WeixinJSBridge){
                       WeixinJSBridge.call('closeWindow');
                   }
-              },1000)
+              },1000);
           }
     }).error(function(data){
             alert("请求无响应!");

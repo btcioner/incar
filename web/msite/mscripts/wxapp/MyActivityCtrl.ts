@@ -71,7 +71,19 @@ module wxApp {
         private searchActivity = ()=>{
             this.$http.post("/mservice/myActivity", { user: this.user_openid, s4_id: this.s4_id, acc_id: this.acc_id}, { dataType: "json"})
                 .success((data, status, headers, config)=>{
-                    this.activities = data;
+                    if(data.length === 0)
+                    {
+                        alert("您尚没有参加任何活动!");
+                        setInterval(function(){
+                            if(WeixinJSBridge){
+                                WeixinJSBridge.call('closeWindow');
+                            }
+                        },1000);
+                    }
+                    else
+                    {
+                        this.activities = data;
+                    }
                 })
                 .error((data, status, headers, config)=>{ alert("未找到您参加的活动"); });
         };
