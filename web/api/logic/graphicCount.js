@@ -5,16 +5,23 @@
 'use strict';
 
 /**
- * 获取最新的一条店内资讯和店内活动
- * @param uoid 微信用户open_id
- * @param soid 微信服务号open_id
- * @param session 微信会话
- * @param cb 回调
+
  */
 var dao=require("../../config/dao");
 var graphicCount = {};
-graphicCount.countData = function (count_type,pageId,date) {
-   console.log("come in!!!!");
+graphicCount.countData = function (countType,pageId,callback) {
+    var sql = "insert into t_graphic_count(page_id,created_time,count_type) values(?,?,?)"
+    dao.insertBySql(sql,[pageId,new Date(),countType],function(info){
+           if(info.err)
+           {
+               console.error("连接数据库错误!");
+               callback(info.err,{status:"error!!!"});
+           }
+           else
+           {
+               callback(null,{status:"ok"});
+           }
+    });
 };
 
 exports = module.exports = graphicCount;
