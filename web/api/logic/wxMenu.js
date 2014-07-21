@@ -105,8 +105,14 @@ wxMenu.textMsgRepliers['my4S.onManual'] = my4S.onManualMessages;
 wxMenu.onClick = [];
 
 wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
-    graphicCount.countData("0","2",function(news){
-          console.log(news.status);
+    graphicCount.countData("0","2",function(err,news){
+          if(err)
+          {
+              console.error(err);
+          }
+        else{
+              console.log(news.status);
+          }
     });
     var task = { finished: 0};
     task.begin = function () {

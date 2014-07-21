@@ -15,7 +15,7 @@ graphicCount.countData = function (countType,pageId,callback) {
            if(info.err)
            {
                console.error("连接数据库错误!");
-               callback(info.err,{status:"error!!!"});
+               callback(info.err);
            }
            else
            {
