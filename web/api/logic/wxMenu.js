@@ -105,15 +105,7 @@ wxMenu.textMsgRepliers['my4S.onManual'] = my4S.onManualMessages;
 wxMenu.onClick = [];
 
 wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
-    graphicCount.countData("0","2",function(err,news){
-          if(err)
-          {
-              console.error(err);
-          }
-        else{
-              console.log(news.status);
-          }
-    });
+    countMenuClick("0","2",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     var task = { finished: 0};
     task.begin = function () {
         // task A
@@ -168,7 +160,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
     task.begin();
 };
 wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
-
+    countMenuClick("0","1",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     var task = { finished: 0};
     task.begin = function () {
         // task A
@@ -225,6 +217,7 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
     task.begin();
 };
 wxMenu.onClick['MYCAR.MAINTAIN'] = function (message, req, next) {
+    countMenuClick("0","4",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     var task = { finished: 0};
     task.begin = function () {
         // task A
@@ -266,6 +259,7 @@ wxMenu.onClick['MYCAR.MAINTAIN'] = function (message, req, next) {
     task.begin();
 };
 wxMenu.onClick['MYCAR.MANUAL'] = function (message, req, next) {
+    countMenuClick("0","3",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     var task = { finished: 0};
     task.begin = function () {
         // task A
@@ -309,6 +303,7 @@ wxMenu.onClick['MYCAR.MANUAL'] = function (message, req, next) {
     task.begin();
 };
 wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
+    countMenuClick("0","5",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     var task = { finished: 0};
     task.begin = function () {
         // task A
@@ -352,6 +347,7 @@ wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
 
 
 wxMenu.onClick['MY4S.PROBE'] = function (message, req, next) {
+    countMenuClick("0","7",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     my4S.trialrun(message.FromUserName, message.ToUserName, req.wxsession, function (err, result) {
         if (err) {
             return next(err);
@@ -367,6 +363,7 @@ wxMenu.onClick['MY4S.PROBE'] = function (message, req, next) {
     });
 };
 wxMenu.onClick['MY4S.INFO'] = function (message, req, next) {
+    countMenuClick("0","8",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     my4S.my4sInfo(message.FromUserName, message.ToUserName, req.wxsession, function (err, result) {
         if (err) {
             return next(err);
@@ -382,7 +379,7 @@ wxMenu.onClick['MY4S.INFO'] = function (message, req, next) {
     });
 };
 wxMenu.onClick['MY4S.BOOKING'] = function (message, req, next) {
-
+    countMenuClick("0","6",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     my4S.book(message.FromUserName, message.ToUserName, req.wxsession, function (err, result) {
         if (err) {
             return next(err);
@@ -399,6 +396,7 @@ wxMenu.onClick['MY4S.BOOKING'] = function (message, req, next) {
 };
 
 wxMenu.onClick['MY4S.CONTACT'] = function (message, req, next) {
+    countMenuClick("0","9",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     my4S.contact(message.FromUserName, message.ToUserName, req.wxsession, function (err, result, pic) {
         if (err) {
             return next(err);
@@ -415,6 +413,7 @@ wxMenu.onClick['MY4S.CONTACT'] = function (message, req, next) {
 };
 
 wxMenu.onClick['ETC.CFG'] = function(message, req, next){
+    countMenuClick("0","12",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     var topMsg = {
         title: "点击配置我的车辆",
         description:"点击配置我的车辆",
@@ -425,6 +424,7 @@ wxMenu.onClick['ETC.CFG'] = function(message, req, next){
 };
 
 wxMenu.onClick['ETC.MYACT'] = function(message, req, next){
+    countMenuClick("0","10",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     var topMsg = {
         title: "点击查看我的活动",
         description:"点击查看我的活动",
@@ -435,6 +435,7 @@ wxMenu.onClick['ETC.MYACT'] = function(message, req, next){
 };
 
 wxMenu.onClick['ETC.MYBKG'] = function(message, req, next){
+    countMenuClick("0","11",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     var topMsg = {
         title: "点击查看我的预约",
         description:"点击查看我的预约",
@@ -464,4 +465,18 @@ function onClickETC(topMsg, message, req, next){
     });
 }
 
+
+//菜单点击记录--by jl 07/21/14
+function countMenuClick(countType,pageId,wx_oid)
+{
+    graphicCount.countData(countType,pageId,function(err,news){
+        if(err)
+        {
+            console.error(err);
+        }
+        else{
+            console.log(news.status);
+        }
+    });
+}
 exports = module.exports = wxMenu;
