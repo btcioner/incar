@@ -77,14 +77,13 @@ module devAP {
             { title: "发现-我的预约", url: "/msite/myBooking.html" },
             { title: "发现-我的活动", url: "/msite/myActivity.html" },
             { title: "发现-设置", url: "/msite/infoConfig.html" }
-
         ];
 
         private _lskURL = "devAPurl";
         public url = "http://114.215.172.92:80/4sStore/devAP.html";
         public img_qrcode:string;
         public wx_oids = {
-            "wmq@product" : "user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI1@gh_2ca6120e0ed0",
+            "wmq@product" : "user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI@gh_2ca6120e0ed0",
             "xgh@dev" : "user=oAPKMuJssQAohcEgKyKkcRDUDiAw@gh_2ca6120e0ed0"
         };
         public wx_oid_keys : Array<string>;

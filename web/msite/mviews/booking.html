@@ -168,13 +168,11 @@
                 dataType: "json",
                 success: function (result,status) {
                     //alert(result.fuelData.length);
-                    document.getElementById("bookStatus").innerHTML="<div>"+
-                    "<span class='text_03' id='note'>您的预约申请已提交，<br/>您可以在'我的预约'中查看申请结果，<br/>请您耐心等待，谢谢！</span></div>";
+                    document.getElementById("bookStatus").innerHTML="<span class='text_03' id='note'>您的预约申请已提交，<br/>您可以在'我的预约'中查看申请结果，<br/>请您耐心等待，谢谢！</span>";
                     document.getElementById('regsiterbutton').innerHTML='';
                 },
                 error:function(){
-                    document.getElementById("bookStatus").innerHTML="<div>"+
-                            "<span class='text_03' id='note'>预约失败，请检查网络连接！</span></div>";
+                    document.getElementById("bookStatus").innerHTML="<span class='text_03' id='note'>预约失败，请检查网络连接！</span>";
                     document.getElementById("regsiterbutton").innerHTML='';
                 }
             });

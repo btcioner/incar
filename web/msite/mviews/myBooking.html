@@ -34,8 +34,7 @@
                     <div class="content"><ul><li class="text_08">提交时间：</li><li>{{ trial.ts.substr(0,16) }}</li></ul><div class="clear"></div></div>
                     <div class="content"><ul><li class="text_08">预约时间：</li><li>{{ trial.bookingtime.substr(0,16) }}</li></ul><div class="clear"></div></div>
                     <div class="content"><ul><li class="text_08">当前状态：</li><li>{{ trial.bookingStatus | trial_status_name }}</li></ul><div class="clear"></div></div>
-
-                <ul >
+                <ul>
                     <li class="button03" ng-show="trial.bookingStatus | trial_status_op"><a href="javascript:void(0)" class="text_10" ng-click="model.cancel(trial)">{{ trial.bookingStatus | trial_status_op }}</a></li>
                 </ul>
                     <div class="clear"></div>
