@@ -43,6 +43,7 @@ module wxApp {
         }
 
         private init = ($scope, $location, $http, $filter) => {
+
             this.user_openid = $location.search().user;
             this.$http = $http;
             this.$filter = $filter;

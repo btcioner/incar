@@ -7,11 +7,11 @@
 var WXAPI = require('../weixin').API;
 var myCar = require('./myCar');
 var my4S = require('./my4S');
+var graphicCount = require('./graphicCount');
 var menuBuilder = require('./menu');
 var config = require('../../config/config');
 var url = require('url');
 var wxMenu = {};
-
 var menuObject = {
     "button": [
         {
@@ -105,6 +105,9 @@ wxMenu.textMsgRepliers['my4S.onManual'] = my4S.onManualMessages;
 wxMenu.onClick = [];
 
 wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
+    graphicCount.countData("0","2",new Date(),function(){
+
+    });
     var task = { finished: 0};
     task.begin = function () {
         // task A
@@ -159,6 +162,7 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
     task.begin();
 };
 wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
+
     var task = { finished: 0};
     task.begin = function () {
         // task A
