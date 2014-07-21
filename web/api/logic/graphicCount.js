@@ -14,7 +14,7 @@
 var dao=require("../../config/dao");
 var graphicCount = {};
 graphicCount.countData = function (count_type,pageId,date) {
-    alert("进来！");
+   console.log("come in!!!!");
 };
 
 exports = module.exports = graphicCount;
