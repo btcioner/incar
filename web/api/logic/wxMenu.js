@@ -469,7 +469,7 @@ function onClickETC(topMsg, message, req, next){
 //菜单点击记录--by jl 07/21/14
 function countMenuClick(countType,pageId,wx_oid)
 {
-    graphicCount.countData(countType,pageId,function(err,news){
+    graphicCount.countData(countType,pageId,wx_oid,function(err,news){
         if(err)
         {
             console.error(err);
