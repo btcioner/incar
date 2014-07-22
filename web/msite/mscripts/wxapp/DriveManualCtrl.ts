@@ -5,13 +5,34 @@ module wxApp {
     export class DriveManualCtrl {
         constructor(ctrlName:string) {
             // 向angular注册控制器
-            _module.controller(ctrlName, ['$scope', '$resource', this.init]);
+            _module.controller(ctrlName, ['$scope', '$resource', '$http','$location',this.init]);
         }
 
-        private init = ($scope, $resource) => {
+        private init = ($scope, $resource,$http,$location) => {
+            this.$http = $http;
+            this.user_openid = $location.search().user;
+
             $scope.model = this;
             // 登记服务
             this.srvManual = $resource("/wservice/manual");
+
+            this.countPageClick("1","3",this.user_openid); //原文点击记录
+        };
+
+        //原文点击记录--by jl 07/21/14
+        private countPageClick = (countType,pageId,wx_oid)=>{
+            this.$http.post('/mservice/countData', {countType:countType,pageId:pageId,wx_oid:wx_oid})
+                .success((data)=>{
+                    if(data.status == "ok")
+                    {
+                        console.log(data.status);
+                    }else{
+                        alert(data.status);
+                    }
+                })
+                .error((data)=>{
+                    alert(data.status);
+                });
         };
 
         public search2 = ($event) => {
@@ -42,6 +63,8 @@ module wxApp {
         public keyword = "备胎";
         public tip = "点击搜索查询相关内容,比如'备胎'";
         private searchResult:Array<ManualItem> = [];
+        private user_openid:string;
+        private $http: any;
     }
 
     class ManualItem {
