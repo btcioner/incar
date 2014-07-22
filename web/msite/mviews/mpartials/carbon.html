@@ -117,13 +117,14 @@
  <script>
      //分享到微信朋友圈
      function shareToFriend(){
-         str=location.href;
+         var str=location.href;
          var beginDate=new Date($('#start').val());
          var endDate=new Date($('#end').val());
-         title="我的碳排放";
-         desc="分享我的碳排放";
-         link=str.substring(0,str.lastIndexOf('/'))+"/carbonShare.html?user="+user+"&start="+beginDate.toDateString()+"&end="+endDate.toDateString();
-         weixinShareTimeline(title,desc,link,"");
+         var title="我的碳排放";
+         var desc="分享我的碳排放";
+         var link=str.substring(0,str.lastIndexOf('/'))+"/carbonShare.html?user="+user+"&start="+beginDate.toDateString()+"&end="+endDate.toDateString();
+         var pic = str.substring(0,str.lastIndexOf('/'))+"/data/drive_analyse.jpg";
+         weixinShareTimeline(title,desc,link,pic);
      }
      //分享到腾讯微博
      function shareToWeibo(){
@@ -142,7 +143,8 @@
          title="我的碳排放";
          desc="分享我的碳排放";
          link=str.substring(0,str.lastIndexOf('/'))+"/carbonShare.html?user="+user+"&start="+beginDate.toDateString()+"&end="+endDate.toDateString();
-         weixinShareFriend(title,desc,link,"");
+         var pic = str.substring(0,str.lastIndexOf('/'))+"/data/drive_analyse.jpg";
+         weixinShareFriend(title,desc,link,pic);
      }
      //将传回的数据转换为图表控件所需格式
      function chartDataConvert(data){
