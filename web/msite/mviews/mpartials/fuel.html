@@ -136,7 +136,7 @@
         var title="我的油耗";
         var desc="分享我的油耗";
         var link=str.substring(0,str.lastIndexOf('/'))+"/fuelShare.html?user="+user+"&start="+beginDate.toDateString()+"&end="+endDate.toDateString();
-        var pic = str.substring(0,str.lastIndexOf('/'))+"/data/drive_analyse.jpg";
+        var pic = str.substring(0,str.lastIndexOf('/msite'))+"/data/drive_analyse.jpg";
         weixinShareTimeline(title,desc,link,pic);
     }
     //分享到腾讯微博
@@ -156,7 +156,7 @@
         var title="我的油耗";
         var desc="分享我的油耗";
         var link=str.substring(0,str.lastIndexOf('/'))+"/fuelShare.html?user="+user+"&start="+beginDate.toDateString()+"&end="+endDate.toDateString();
-        var pic = str.substring(0,str.lastIndexOf('/'))+"/data/drive_analyse.jpg";
+        var pic = str.substring(0,str.lastIndexOf('/msite'))+"/data/drive_analyse.jpg";
         weixinShareFriend(title,desc,link,pic);
     }
     //将传回的数据转换为图表控件所需格式

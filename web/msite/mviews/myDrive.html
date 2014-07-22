@@ -398,7 +398,7 @@ function shareToFriend() {
     var title = "我的行车数据";
     var desc = "分享我的行车数据";
     var link = str.substring(0, str.lastIndexOf('/')) + "/myDriveShare.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
-    var pic = str.substring(0, str.lastIndexOf('/')) + "/data/drive_analyse.jpg";
+    var pic = str.substring(0, str.lastIndexOf('/msite')) + "/data/drive_analyse.jpg";
     weixinShareTimeline(title, desc, link, pic);
 }
 //分享到腾讯微博
@@ -418,7 +418,7 @@ function shareTo() {
     var title = "我的行车数据";
     var desc = "分享我的行车数据";
     var link = str.substring(0, str.lastIndexOf('/')) + "/myDriveShare.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
-    var pic = str.substring(0, str.lastIndexOf('/')) + "/data/drive_analyse.jpg";
+    var pic = str.substring(0, str.lastIndexOf('/msite')) + "/data/drive_analyse.jpg";
     weixinShareFriend(title, desc, link, pic);
 }
 //将传回的油耗数据转换为图表控件所需格式
