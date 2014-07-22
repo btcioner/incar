@@ -11,9 +11,10 @@ exports = module.exports = function(service) {
 }
 
 function countData(req, res) {
-    var pageId = req.body.pagerId;
+    var pageId = req.body.pageId;
     var countType = req.body.countType;
-    var wx_oid = req.body.wx_oid;
+    var temp = req.body.wx_oid.split("@");
+    var wx_oid = temp[0]+":"+temp[1];
     var sql = "insert into t_graphic_count(page_id,created_time,count_type,wx_oid) values(?,?,?,?)"
     dao.insertBySql(sql,[pageId,changeDate_1(new Date()),countType,wx_oid],function(info){
         if(info.err)
