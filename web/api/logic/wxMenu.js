@@ -101,7 +101,6 @@ wxMenu.textMsgRepliers = [];
 
 wxMenu.textMsgRepliers['my4S.onBooking'] = my4S.onBookingMessages;
 wxMenu.textMsgRepliers['my4S.onManual'] = my4S.onManualMessages;
-
 wxMenu.onClick = [];
 
 wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
