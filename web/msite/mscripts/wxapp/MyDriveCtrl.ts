@@ -105,7 +105,7 @@ module wxApp {
         };
 
         private ShareLinks = ()=>{
-            if(WeixinJSBridge){
+            if(typeof WeixinJSBridge !== "undefined"){
                 //修改分享链接
                 shareToFriend();
                 shareToWeibo();
