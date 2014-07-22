@@ -121,8 +121,8 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
             if (err) {
                 console.error(err);
                 task.B = {
-                    title: '购买并注册OBD获取查看平均油耗、碳排放、驾驶行为、速段统计等更多功能',
-                    description: '请向4S店购买并注册OBD获取此功能',
+                    title: '购买并注册车云终端以查看平均油耗、碳排放、速段统计等信息',
+                    description: '购买并注册车云终端以查看平均油耗、碳排放、速段统计等信息',
                     picurl: url.resolve("http://" + req.headers.host, "data/drive_analyse.jpg"),
                     url: ''
                 };
@@ -201,8 +201,8 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
                 // 没有注册OBD
                 task.B =
                 {
-                    title: '请向4S店购买并注册OBD获取此功能',
-                    description: '请向4S店购买并注册OBD获取此功能',
+                    title: '购买并注册车云终端以查看行车记录信息',
+                    description: '购买并注册车云终端以查看行车记录信息',
                     picurl: url.resolve("http://" + req.headers.host, "data/drive_records.jpg"),
                     url: ''
                 };
@@ -246,7 +246,7 @@ wxMenu.onClick['MYCAR.MAINTAIN'] = function (message, req, next) {
         // task B
         task.B = {
             title: "车况检测:亲,正在开发中,马上就会有",
-            description: "亲,正在开发中,马上就会有",
+            description: "车况检测:亲,正在开发中,马上就会有",
             picurl: url.resolve("http://" + req.headers.host, "data/car_checking.jpg"),
             url: ''
         };
@@ -330,12 +330,28 @@ wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
         });
 
         // task B
-        task.B = {
-            title: "点击查看用车报告",
-            description: "",
-            picurl: url.resolve("http://" + req.headers.host, "data/car_report.jpg"),
-            url: url.resolve("http://" + req.headers.host, "msite/travelReport.html?user=" + message.FromUserName + "@" + message.ToUserName)
-        };
+        userSrv.isRegisterOBD(message.FromUserName+":"+message.ToUserName, function(ex, data) {
+            if(ex){ console.log(ex); }
+            else if(data){
+                task.B = {
+                    title: "点击查看用车报告",
+                    description: "",
+                    picurl: url.resolve("http://" + req.headers.host, "data/car_report.jpg"),
+                    url: url.resolve("http://" + req.headers.host, "msite/travelReport.html?user=" + message.FromUserName + "@" + message.ToUserName)
+                };
+            }
+            else{
+                // 没有注册OBD
+                task.B =
+                {
+                    title: '购买并注册车云终端以查看用车分析报告',
+                    description: '购买并注册车云终端以查看用车分析报告',
+                    picurl: url.resolve("http://" + req.headers.host, "data/car_report.jpg"),
+                    url: ''
+                };
+            }
+        });
+
         task.finished++;
         task.end();
     };
