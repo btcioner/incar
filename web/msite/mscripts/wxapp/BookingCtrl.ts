@@ -1,18 +1,18 @@
 /// <reference path="wxApp.ts" />
 
 module wxApp{
-    export class TrialRunCtrl {
+    export class BookingCtrl {
         constructor(ctrlName:string) {
 
             // 向angular注册控制器
             _module.controller(ctrlName, ['$scope', '$location', '$http', this.init]);
         }
 
-        private init = ($scope, $location, $http, $filter) => {
+        private init = ($scope, $location, $http) => {
             this.user_openid = $location.search().user;
             this.$http = $http;
             this.$scope = $scope;
-            this.countPageClick("1","7",this.user_openid);//原文点击记录
+            this.countPageClick("1","6",this.user_openid);//原文点击记录
             $scope.url = $location.url();
         }
 

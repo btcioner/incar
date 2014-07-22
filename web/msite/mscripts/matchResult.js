@@ -13,6 +13,24 @@ app.controller("matchResultCtrl", function($scope, $http,$sce){
 
     $scope.postData={user:$scope.user_openid,id:$scope.match_id};
 
+    countPageClick("1","14", $scope.user_openid);//原文点击记录
+
+    //原文点击记录--by jl 07/21/14
+    function countPageClick  (countType,pageId,wx_oid){
+        $http.post('/mservice/countData', {countType:countType,pageId:pageId,wx_oid:wx_oid})
+            .success(function(data){
+                if(data.status == "ok")
+                {
+                    console.log(data.status);
+                }else{
+                    alert(data.status);
+                }
+            })
+            .error(function(data){
+                alert(data.status);
+            });
+    };
+
     $http.post("/mservice/matchResult",$scope.postData).success(function(data){
           if(data.status == "ok")
           {

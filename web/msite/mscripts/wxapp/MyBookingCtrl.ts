@@ -46,10 +46,24 @@ module wxApp{
                     this.searchUser($http, $scope);
                 });
             }
-
+            this.countPageClick("1","11",this.user_openid);//原文点击记录
             $scope.model = this;
         };
-
+        //原文点击记录--by jl 07/21/14
+        private countPageClick = (countType,pageId,wx_oid)=>{
+            this.$http.post('/mservice/countData', {countType:countType,pageId:pageId,wx_oid:wx_oid})
+                .success((data)=>{
+                    if(data.status == "ok")
+                    {
+                        console.log(data.status);
+                    }else{
+                        alert(data.status);
+                    }
+                })
+                .error((data)=>{
+                    alert(data.status);
+                });
+        };
         private searchUser = ($http, $scope) => {
             $http.post("/mservice/infoConfig", { user:this.user_openid }, {dataType:"json"})
                 .success((data,status, headers, config)=>{

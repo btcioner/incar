@@ -13,7 +13,24 @@ module wxApp {
             this.$sce = $sce;
             this.$scope = $scope;
             this.searchActivity();
+            this.countPageClick("1","13",this.user_openid);//原文点击记录
             $scope.model = this;
+        };
+
+        //原文点击记录--by jl 07/21/14
+        private countPageClick = (countType,pageId,wx_oid)=>{
+            this.$http.post('/mservice/countData', {countType:countType,pageId:pageId,wx_oid:wx_oid})
+                .success((data)=>{
+                    if(data.status == "ok")
+                    {
+                        console.log(data.status);
+                    }else{
+                        alert(data.status);
+                    }
+                })
+                .error((data)=>{
+                    alert(data.status);
+                });
         };
 
         private searchActivity = ()=> {
