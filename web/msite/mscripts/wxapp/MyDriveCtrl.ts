@@ -105,13 +105,20 @@ module wxApp {
         };
 
         private ShareLinks = ()=>{
-            $(document).on("WeixinJSBridgeReady", ()=>{
-                alert("wx, ready!");
+            if(WeixinJSBridge){
                 //修改分享链接
                 shareToFriend();
                 shareToWeibo();
                 shareTo();
-            });
+            }
+            else {
+                $(document).on("WeixinJSBridgeReady", ()=> {
+                    //修改分享链接
+                    shareToFriend();
+                    shareToWeibo();
+                    shareTo();
+                });
+            }
         };
 
         private user_openid:string;
