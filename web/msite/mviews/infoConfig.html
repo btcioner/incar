@@ -106,18 +106,18 @@
         function sendMessage(){
             WeixinJSBridge.on('menu:share:appmessage', function(argv){
                 WeixinJSBridge.invoke('sendAppMessage',{
-
                     "appid":"",                                              //appid 设置空就好了。
-                    "img_url":	 "",                                   //分享时所带的图片路径
+                    "img_url":	 "../../data/logo2.jpg",                                   //分享时所带的图片路径
                     "img_width":	"120",                            //图片宽度
                     "img_height":	"120",                            //图片高度
-                    "link":"www.baidu.com",                                               //分享附带链接地址
-                    "desc":"测试",                            //分享内容介绍
-                    "title":"测试标题"
+                    "link":window.location.toString(),                                              //分享附带链接地址
+                    "desc":"个人信息设置",                            //分享内容介绍
+                    "title":"我的信息"
                 }, function(res){/*** 回调函数，最好设置为空 ***/
 
                 });
             });
+            infoConfigCtrl.countPageClick("2","12",getQueryString("user"));
         }
 </script>
 </body>
