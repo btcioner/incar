@@ -8,7 +8,6 @@ var mysql = require('mysql');
 var path = require('path');
 
 var config = require('../config/config');
-
 var userService = require('./userService');
 var carService = require('./carService');
 var fuelService = require('./fuelService');
@@ -31,6 +30,7 @@ var activityDetailService= require('./activityDetailService');
 var applyService= require('./applyService');
 var driveRecordService = require('./driveRecordService');
 var matchResultService = require('./matchResultService');
+var graphicCountService = require('./graphicCountService');
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
 
 userService(mservice);
@@ -55,6 +55,7 @@ activityDetailService(mservice);
 applyService(mservice);
 driveRecordService(mservice);
 matchResultService(mservice);
+graphicCountService(mservice);
 (function(service) {
 
     function entrance(req, res) {
