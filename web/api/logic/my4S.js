@@ -83,8 +83,6 @@ my4S.book = function (userName, sopenid, session, callback) {
         return fmt;
     };
 
-    var compiled = ejs.compile(tpl);
-
     booking.getPromotionSlots(userName, sopenid, function (err, result) {
         if (err) {
             session.textMsgReplierIndex = null;
@@ -96,6 +94,8 @@ my4S.book = function (userName, sopenid, session, callback) {
                 // 修正TPL模版在无特价工位时
                 tpl = ['点击本消息进行预约保养'].join('');
             }
+
+            var compiled = ejs.compile(tpl);
 
             var data = {};
             data.slots = result;
