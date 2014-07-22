@@ -105,25 +105,13 @@ module wxApp {
         };
 
         private ShareLinks = ()=>{
-            try {
-                if(WeixinJSBridge) {
-                    //修改分享链接
-                    shareToFriend();
-                    shareToWeibo();
-                    shareTo();
-                    alert("share links");
-                }
-                else{
-                    $(document).on("WeixinJSBridgeReady", ()=>{
-                        alert("wx, ready!");
-                        this.ShareLinks();
-                    });
-                }
-            }
-            catch(ex){
-                alert(ex);
-                console.log(ex);
-            }
+            $(document).on("WeixinJSBridgeReady", ()=>{
+                alert("wx, ready!");
+                //修改分享链接
+                shareToFriend();
+                shareToWeibo();
+                shareTo();
+            });
         };
 
         private user_openid:string;
