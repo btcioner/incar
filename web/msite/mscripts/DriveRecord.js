@@ -8,20 +8,6 @@ app.controller("driveRecordCtrl", function($scope, $http){
 
     $scope.postData={user:$scope.user_openid};
 
-    //微信内置分享API
-    if(document.addEventListener){
-        document.addEventListener('WeixinJSBridgeReady', sendMessage, false);  }
-    else if(document.attachEvent){
-        document.attachEvent('WeixinJSBridgeReady'   , sendMessage);
-        document.attachEvent('onWeixinJSBridgeReady' , sendMessage);
-    }
-
-    function sendMessage(){
-        WeixinJSBridge.on('menu:share:appmessage', function(argv){
-            alert("发送给好友");
-        });
-    }
-
     countPageClick("1","1", $scope.user_openid);//原文点击记录
 
     //原文点击记录--by jl 07/21/14

@@ -41,4 +41,19 @@
     </div><!--main_wrap end-->
 </div>
 </body>
+<script >
+    //微信内置分享API
+    if(document.addEventListener){
+        document.addEventListener('WeixinJSBridgeReady', sendMessage, false);  }
+    else if(document.attachEvent){
+        document.attachEvent('WeixinJSBridgeReady'   , sendMessage);
+        document.attachEvent('onWeixinJSBridgeReady' , sendMessage);
+    }
+
+    function sendMessage(){
+        WeixinJSBridge.on('menu:share:appmessage', function(argv){
+            alert("发送给好友");
+        });
+    }
+</script>
 </html>
