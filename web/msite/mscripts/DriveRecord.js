@@ -34,11 +34,11 @@ app.controller("driveRecordCtrl", function($scope, $http){
           }else
           {
               alert(data.status);
-//              setInterval(function(){
-//                  if(WeixinJSBridge){
-//                      WeixinJSBridge.call('closeWindow');
-//                  }
-//              },1000);
+              setInterval(function(){
+                  if(WeixinJSBridge){
+                      WeixinJSBridge.call('closeWindow');
+                  }
+              },1000);
           }
         }).error(function(data){
             alert("请求无响应!");
