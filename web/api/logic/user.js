@@ -4,6 +4,7 @@ var db = require('../../config/db');
 exports = module.exports = (function(){
     var userSrv = {};
     userSrv.isRegisterOBD = function(oid, cb){
+        var pool = db();
         // 如果没有传入oid,直接返回false
         if(!oid) cb(null, false);
         var sql = "SELECT C.obd_code\n" +
