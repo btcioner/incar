@@ -105,7 +105,18 @@
 
         function sendMessage(){
             WeixinJSBridge.on('menu:share:appmessage', function(argv){
-                alert("发送给好友");
+                WeixinJSBridge.invoke('sendAppMessage',{
+
+                    "appid":"",                                              //appid 设置空就好了。
+                    "img_url":	 "",                                   //分享时所带的图片路径
+                    "img_width":	"120",                            //图片宽度
+                    "img_height":	"120",                            //图片高度
+                    "link":"",                                               //分享附带链接地址
+                    "desc":"测试",                            //分享内容介绍
+                    "title":"测试标题"
+                }, function(res){/*** 回调函数，最好设置为空 ***/
+
+                });
             });
         }
 </script>
