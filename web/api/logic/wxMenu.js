@@ -4,13 +4,15 @@
 
 'use strict';
 
+var url = require('url');
+var config = require('../../config/config');
+var menuBuilder = require('./menu');
 var WXAPI = require('../weixin').API;
 var myCar = require('./myCar');
 var my4S = require('./my4S');
+var userSrv = require('./user');
 var graphicCount = require('./graphicCount');
-var menuBuilder = require('./menu');
-var config = require('../../config/config');
-var url = require('url');
+
 var wxMenu = {};
 var menuObject = {
     "button": [
@@ -169,10 +171,34 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
             task.end();
         });
 
-        // task B
-        myCar.myDriveRecord(message.FromUserName, message.ToUserName, function (err, reportContent) {
-            if (err) {
-                console.error(err);
+        userSrv.isRegisterOBD(message.FromUserName+":"+message.ToUserName, function(ex, data){
+            if(ex){
+                console.log(ex);
+                task.finished++;
+                task.end();
+                return;
+            }
+
+            if(data){
+                myCar.myDriveRecord(message.FromUserName, message.ToUserName, function (err, reportContent) {
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        task.B =
+                        {
+                            title: '点击查看所有行车记录',
+                            description: reportContent,
+                            picurl: url.resolve("http://" + req.headers.host, "data/drive_records.jpg"),
+                            url: url.resolve("http://" + req.headers.host, "msite/driveRecord.html?user=") + message.FromUserName + '@' + message.ToUserName
+                        };
+                    }
+                    task.finished++;
+                    task.end();
+                });
+            }
+            else{
+                // 没有注册OBD
                 task.B =
                 {
                     title: '请向4S店购买并注册OBD获取此功能',
@@ -180,18 +206,9 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
                     picurl: url.resolve("http://" + req.headers.host, "data/drive_records.jpg"),
                     url: ''
                 };
+                task.finished++;
+                task.end();
             }
-            else {
-                task.B =
-                {
-                    title: '点击查看所有行车记录',
-                    description: reportContent,
-                    picurl: url.resolve("http://" + req.headers.host, "data/drive_records.jpg"),
-                    url: url.resolve("http://" + req.headers.host, "msite/driveRecord.html?user=") + message.FromUserName + '@' + message.ToUserName
-                };
-            }
-            task.finished++;
-            task.end();
         });
     };
     task.end = function () {
