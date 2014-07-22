@@ -114,7 +114,10 @@ module wxApp {
                     alert("share links");
                 }
                 else{
-                    alert("WxJSBridge not ready!");
+                    $(document).on("WeixinJSBridgeReady", ()=>{
+                        alert("wx, ready!");
+                        this.ShareLinks();
+                    });
                 }
             }
             catch(ex){
