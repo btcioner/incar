@@ -92,11 +92,17 @@ my4S.book = function (userName, sopenid, session, callback) {
             callback(err);
         }
         else {
+            if(result.length === 0){
+                // 修正TPL模版在无特价工位时
+                tpl = ['点击本消息进行预约保养'].join('');
+            }
+
             var data = {};
             data.slots = result;
 
             session.slotData = data;
             session.textMsgReplierIndex = 'my4S.onBooking';
+
             callback(null, compiled(data));
         }
     });
