@@ -106,12 +106,19 @@ module wxApp {
 
         private ShareLinks = ()=>{
             try {
-                //修改分享链接
-                shareToFriend();
-                shareToWeibo();
-                shareTo();
+                if(WeixinJSBridge) {
+                    //修改分享链接
+                    shareToFriend();
+                    shareToWeibo();
+                    shareTo();
+                    alert("share links");
+                }
+                else{
+                    alert("WxJSBridge not ready!");
+                }
             }
             catch(ex){
+                alert(ex);
                 console.log(ex);
             }
         };
