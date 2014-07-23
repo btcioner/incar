@@ -8,7 +8,6 @@ declare var dochart:any;
 module wxApp {
     export class MyDriveCtrl {
         constructor(ctrlName:string) {
-
             // 向angular注册控制器
             _module.controller(ctrlName, ['$scope', '$location', '$http', '$filter', this.init]);
 
@@ -65,10 +64,10 @@ module wxApp {
         private countPageClick = (countType,pageId,wx_oid)=>{
             this.$http.post('/mservice/countData', {countType:countType,pageId:pageId,wx_oid:wx_oid})
                 .success((data)=>{
-                    if(data.status == "ok")
-                    {
-                        console.log(data.status);
-                    }else{
+                    if(data.status == "ok"){
+                        // console.log(data.status);
+                    }
+                    else{
                         alert(data.status);
                     }
                 })
@@ -89,7 +88,7 @@ module wxApp {
             this.$http.post('/mservice/myDriveData', postData)
                 .success((data, status, headers, config)=>{
                     this.driveData = data;
-                    dochart(data);
+                    dochart(data, this);
                 })
                 .error((data, status, headers, config)=>{ console.log(status); });
         };
