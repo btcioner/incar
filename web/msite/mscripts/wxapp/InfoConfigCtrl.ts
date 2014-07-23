@@ -80,7 +80,13 @@ module wxApp {
                     }
                     else
                     {
-                        this.mileage =parseInt(data.mileage.toString());
+                        if(data.mileage)
+                        {
+                            this.mileage = 0
+                        }else
+                        {
+                            this.mileage =parseInt(data.mileage.toString());
+                        }
                     }
                     alert("---:" + this.mileage);
                     if(data.series ==="")
