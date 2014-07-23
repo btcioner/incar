@@ -104,6 +104,7 @@
         }
 
         function sendMessage(){
+            if(typeof WeixinJSBridge === "undefined") return;
             WeixinJSBridge.on('menu:share:appmessage', function(argv){
                 WeixinJSBridge.invoke('sendAppMessage',{
                     "appid":"",                                              //appid 设置空就好了。
