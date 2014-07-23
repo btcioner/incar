@@ -2,7 +2,7 @@ var app = angular.module("drAPP", ['ngResource','ngRoute']);
 
 //行车记录前台logic
 
-app.controller("driveRecordCtrl", function($scope, $http){
+app.controller("driveRecordCtrl", function($scope, $http, $location){
 
     $scope.user_openid = window.location.toString().split("=")[1];
 
@@ -45,22 +45,25 @@ app.controller("driveRecordCtrl", function($scope, $http){
         });
 
     var wxShare = function(){
+        var base = window.location.href.match(/\w+:\/\/[^\/]+/);
         var pic = $("meta[name=wx-share-pic]").attr("content");
-        alert(pic);
+        WeixinJSBridge.on("menu:share:timeline", function(){
+            var dataShared = {
+                img_url:base + pic,
+                link:window.location.href,
+                title:$("title").text()
+            };
+
+            WeixinJSBridge.invoke("shareTimeline", dataShared);
+        });
     };
 
     // 微信分享
-    if(WeixinJSBridge){
-        alert(WeixinJSBridge);
-        alert(typeof WeixinJSBridge);
-    }
-
-    if(typeof WeixinJSBridge !== undefined){
+    if(typeof WeixinJSBridge !== "undefined"){
         wxShare();
     }
     else{
         $(document).on("WeixinJSBridgeReady", function(){
-            alert("WeixinJSBridgeReady");
             wxShare();
         });
     }
