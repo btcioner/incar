@@ -54,8 +54,25 @@ app.controller("driveRecordCtrl", function($scope, $http, $location){
                 title:$("title").text(),
                 desc:''
             };
-
             WeixinJSBridge.invoke("shareTimeline", dataShared);
+        });
+
+        WeixinJSBridge.on("menu:share:appmessage", function(argv){
+            var dataShared = {
+                img_url:base + pic,
+                link:window.location.href,
+                title:$("title").text(),
+                desc:''
+            };
+            WeixinJSBridge.invoke("sendAppMessage", dataShared);
+        });
+
+        WeixinJSBridge.on("menu:share:weibo", function(argv){
+            var dataShared = {
+                url:window.location.href,
+                content:$("title").text()
+            };
+            WeixinJSBridge.invoke("shareWeibo", dataShared);
         });
     };
 
