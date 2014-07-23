@@ -77,14 +77,11 @@ module wxApp {
                     if(data.mileage)
                     {
                         this.mileage =parseInt(data.mileage.toString());
-                        alert("=++"+parseInt(data.mileage.toString()));
                     }
                     if(data.mileage && data.obd_mileage)
                     {
-                        alert("=++"+parseInt(data.obd_mileage.toString()));
                         this.mileage =parseInt(data.mileage.toString()) + parseInt(data.obd_mileage.toString());
                     }
-                    alert("---:" + this.mileage);
                     if(data.series ==="")
                     {
                         this.mySeries =-1;
@@ -210,7 +207,7 @@ module wxApp {
                 alert("系列不能为空!");
                 return;
             }
-             postData.mileage = parseInt(this.mileage.toString());
+             postData.mileage = this.mileage;
             if (postData.mileage == "" || postData.mileage ==0) {
                 alert('行驶总里程不能为空!');
                 return;
