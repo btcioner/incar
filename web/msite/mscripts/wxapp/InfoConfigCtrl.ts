@@ -82,6 +82,7 @@ module wxApp {
                     {
                         this.mileage =parseInt(data.mileage.toString()) + parseInt(data.obd_mileage.toString());
                     }
+                    alert("---:" + this.mileage);
                     if(data.series ==="")
                     {
                         this.mySeries =-1;
@@ -207,7 +208,8 @@ module wxApp {
                 alert("系列不能为空!");
                 return;
             }
-            if (!postData.mileage) {
+             postData.mileage = parseInt(this.mileage.toString());
+            if (postData.mileage == "" || postData.mileage ==0) {
                 alert('行驶总里程不能为空!');
                 return;
             }
