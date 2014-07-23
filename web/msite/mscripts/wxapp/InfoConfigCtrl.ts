@@ -80,6 +80,7 @@ module wxApp {
                     }
                     if(data.mileage && data.obd_mileage)
                     {
+                        alert("=++"+parseInt(data.obd_mileage.toString()));
                         this.mileage =parseInt(data.mileage.toString()) + parseInt(data.obd_mileage.toString());
                     }
                     alert("---:" + this.mileage);
