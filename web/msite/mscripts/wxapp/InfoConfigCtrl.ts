@@ -69,13 +69,14 @@ module wxApp {
         private searchUser = ()=>{
             this.$http.post('/mservice/infoConfig', {user:this.user_openid})
                 .success((data, status, headers, config)=>{
-                    this.userCfg = {name:"",nick:"",obd_code:"",modelYear:"",phone:"",license:"",mileage:"",disp:"",id:""};
+
 //                    this.name_sta = true;
                     this.printWord = "修改成功!";
                     this.flag = "update";
                     this.userCfg = data;
-                    this.mileage = parseInt(data.mileage) + parseInt(data.obd_mileage);
-
+                    alert(typeof(data.obd_mileage)+"----"+data.obd_mileage);
+                    this.mileage =parseInt(data.mileage.toString()) + parseInt(data.obd_mileage.toString());
+                    alert("---:" + this.mileage);
                     if(data.series ==="")
                     {
                         this.mySeries =-1;
@@ -134,7 +135,7 @@ module wxApp {
                 modelYear: this.userCfg.modelYear,
                 phone:this.userCfg.phone,
                 license:this.userCfg.license,
-                mileage: this.mileage - parseInt(this.userCfg.obd_mileage),
+                mileage: this.mileage - this.userCfg.obd_mileage,
                 disp: this.userCfg.disp,
                 flag:this.flag,
                 id:this.userCfg.id
@@ -202,7 +203,6 @@ module wxApp {
                 alert("系列不能为空!");
                 return;
             }
-             alert(parseInt(this.userCfg.obd_mileage) + "----" + postData.mileage);
             if (postData.mileage == "" || postData.mileage ==0) {
                 alert('行驶总里程不能为空!');
                 return;
