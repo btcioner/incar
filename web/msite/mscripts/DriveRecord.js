@@ -24,7 +24,7 @@ app.controller("driveRecordCtrl", function($scope, $http){
             .error(function(data){
                 alert(data.status);
             });
-    };
+    }
 
     $http.post("/mservice/driveRecord",$scope.postData).success(function(data){
           if(data.status == "ok")
@@ -44,5 +44,22 @@ app.controller("driveRecordCtrl", function($scope, $http){
             alert("请求无响应!");
         });
 
+    var wxShare = function(){
+        var pic = $("meta[name=wx-share-pic]").attr("content");
+        alert(pic);
+    };
+
+    // 微信分享
+    alert(WeixinJSBridge);
+    alert(typeof WeixinJSBridge);
+    if(typeof WeixinJSBridge !== undefined){
+        wxShare();
+    }
+    else{
+        $(document).on("WeixinJSBridgeReady", function(){
+            alert("WeixinJSBridgeReady");
+            wxShare();
+        });
+    }
 });
 
