@@ -1,7 +1,6 @@
 /// <reference path="wxApp.ts" />
 
 declare var hex_sha1:(raw:string)=>string;
-declare var WeixinJSBridge:any;
 
 module wxApp {
     export class InfoConfigCtrl {
