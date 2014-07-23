@@ -74,20 +74,13 @@ module wxApp {
                     this.printWord = "修改成功!";
                     this.flag = "update";
                     this.userCfg = data;
-                    alert(data.obd_mileage+"---"+data.mileage);
-                    if(data.obd_mileage)
+                    if(data.mileage)
+                    {
+                        this.mileage =parseInt(data.mileage.toString());
+                    }
+                    if(data.mileage && data.obd_mileage)
                     {
                         this.mileage =parseInt(data.mileage.toString()) + parseInt(data.obd_mileage.toString());
-                    }
-                    else
-                    {
-                        if(data.mileage)
-                        {
-                            this.mileage = 0
-                        }else
-                        {
-                            this.mileage =parseInt(data.mileage.toString());
-                        }
                     }
                     alert("---:" + this.mileage);
                     if(data.series ==="")
