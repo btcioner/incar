@@ -47,11 +47,12 @@ app.controller("driveRecordCtrl", function($scope, $http, $location){
     var wxShare = function(){
         var base = window.location.href.match(/\w+:\/\/[^\/]+/);
         var pic = $("meta[name=wx-share-pic]").attr("content");
-        WeixinJSBridge.on("menu:share:timeline", function(){
+        WeixinJSBridge.on("menu:share:timeline", function(argv){
             var dataShared = {
                 img_url:base + pic,
                 link:window.location.href,
-                title:$("title").text()
+                title:$("title").text(),
+                desc:''
             };
 
             WeixinJSBridge.invoke("shareTimeline", dataShared);
