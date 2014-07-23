@@ -74,8 +74,14 @@ module wxApp {
                     this.printWord = "修改成功!";
                     this.flag = "update";
                     this.userCfg = data;
-                    alert(typeof(data.obd_mileage)+"----"+data.obd_mileage);
-                    this.mileage =parseInt(data.mileage.toString()) + parseInt(data.obd_mileage.toString());
+                    if(data.obd_mileage)
+                    {
+                        this.mileage =parseInt(data.mileage.toString()) + parseInt(data.obd_mileage.toString());
+                    }
+                    else
+                    {
+                        this.mileage =parseInt(data.mileage.toString());
+                    }
                     alert("---:" + this.mileage);
                     if(data.series ==="")
                     {
@@ -135,7 +141,6 @@ module wxApp {
                 modelYear: this.userCfg.modelYear,
                 phone:this.userCfg.phone,
                 license:this.userCfg.license,
-                mileage: this.mileage - this.userCfg.obd_mileage,
                 disp: this.userCfg.disp,
                 flag:this.flag,
                 id:this.userCfg.id
@@ -207,6 +212,16 @@ module wxApp {
                 alert('行驶总里程不能为空!');
                 return;
             }
+            else{
+                if(this.userCfg.obd_mileage)
+                {
+                    postData.mileage = this.mileage - parseInt(this.userCfg.obd_mileage.toString())
+                }
+                else{
+                    postData.mileage = this.mileage;
+                }
+            }
+            alert(postData.mileage);
             if (postData.disp == "") {
                 alert('排气量不能为空!');
                 return;
