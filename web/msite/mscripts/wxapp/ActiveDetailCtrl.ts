@@ -49,10 +49,6 @@ module wxApp {
                     var pic = data.logo_url;
                     if(pic.charAt(0) !== '/') pic = '/' + pic;
                     wxs.wxShare(data.title, window.location.href, base+pic, txt);
-                    console.log(data.title);
-                    console.log(window.location.href);
-                    console.log(base+pic);
-                    console.log(txt);
                 })
                 .error((data, status, headers, config)=> {
                     alert("没有找到相关信息\n或此活动已取消！");
