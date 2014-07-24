@@ -410,6 +410,7 @@ wxMenu.onClick['MY4S.INFO'] = function (message, req, next) {
         ]);
     });
 };
+
 wxMenu.onClick['MY4S.BOOKING'] = function (message, req, next) {
     countMenuClick("0","6",message.FromUserName+":"+message.ToUserName);//记录菜单点击
     my4S.book(message.FromUserName, message.ToUserName, req.wxsession, function (err, result) {

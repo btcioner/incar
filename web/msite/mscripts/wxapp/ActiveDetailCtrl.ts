@@ -41,6 +41,12 @@ module wxApp {
                     if(this.act.tm_start)this.act.tm_start =  this.act.tm_start.substring(0,16);
                     if(this.act.tm_end)this.act.tm_end = this.act.tm_end.substring(0,16);
                     if(this.act.tm_announce)this.act.tm_announce =  this.act.tm_announce.substring(0,16);
+
+                    // 微信分享
+                    var wxs = new WXShare();
+                    var base = window.location.href.match(/\w+:\/\/[^\/]+/);
+                    var pic = data.logo_url;
+                    wxs.wxShare(data.title, window.location.href, base+pic, data.brief);
                 })
                 .error((data, status, headers, config)=> {
                     alert("没有找到相关信息\n或此活动已取消！");
