@@ -96,8 +96,8 @@
 </div>
 <!--upbox_wrap start-->
 <div class="cover" id="cover" ng-show="model.cover_show"></div>
-<div class="upbox_wrap" ng-show="model.upbox_show">
-    <div class="upbox">
+<div class="upbox_wrap" id="upbox_wrap" ng-show="model.upbox_show">
+    <div class="upbox" id="upbox">
         <div class="close_icon"><a href="#" ng-click="model.closeUpbox()"><img src="../mimages/close_icon.gif" width="16" height="16"></a></div>
         <div class="text_12" style="padding-top: 10px;padding-bottom: 10px;">{{model.tips}}</div>
         <div>
@@ -107,8 +107,11 @@
 </div><!--upbox_wrap end-->
 <script >
         $(document).ready(function(){
+            //调整
             var height=$("#wrap").height();
             $("#cover").css("height",height);
+            var topHeight = (height - 150) / 2;
+            $("#upbox_wrap").css("top",topHeight);
         })
         //微信内置分享API
         if(document.addEventListener){
