@@ -92,11 +92,24 @@
         <div id="regsiterbutton" >
             <a href="#" class="button01" ng-click="model.update()">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</a>
         </div><!--regsiterbutton end-->
-
     </div><!--main_wrap end-->
 </div>
+<!--upbox_wrap start-->
+<div class="cover" id="cover" ng-show="model.cover_show"></div>
+<div class="upbox_wrap" ng-show="model.upbox_show">
+    <div class="upbox">
+        <div class="close_icon"><a href="#" ng-click="model.closeUpbox()"><img src="../mimages/close_icon.gif" width="16" height="16"></a></div>
+        <div class="text_12" style="padding-top: 10px;padding-bottom: 10px;">{{model.tips}}</div>
+        <div>
+            <a href="javascript:void(0)" ng-click="model.closeUpbox()"><div class="button02">关闭</div></a>
+        </div>
+    </div>
+</div><!--upbox_wrap end-->
 <script >
-
+        $(document).ready(function(){
+            var height=$("#wrap").height();
+            $("#cover").css("height",height);
+        })
         //微信内置分享API
         if(document.addEventListener){
             document.addEventListener('WeixinJSBridgeReady', sendMessage, false);
