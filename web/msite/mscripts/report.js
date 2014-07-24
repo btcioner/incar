@@ -115,6 +115,7 @@ var config={
         }
     }
 };*/
+
 var cache={};
 var app = angular.module("reportApp", []);
 app.config(['$locationProvider', function($locationProvider){
@@ -162,3 +163,45 @@ app.controller("myTravelReport", function($scope, $http, $location){
 
     });
 });
+
+var wxShare = function(){
+    var base = window.location.href.match(/\w+:\/\/[^\/]+/);
+    var pic = $("meta[name=wx-share-pic]").attr("content");
+    WeixinJSBridge.on("menu:share:timeline", function(argv){
+        var dataShared = {
+            img_url:base + pic,
+            link:window.location.href,
+            title:$("title").text(),
+            desc:''
+        };
+        WeixinJSBridge.invoke("shareTimeline", dataShared);
+    });
+
+    WeixinJSBridge.on("menu:share:appmessage", function(argv){
+        var dataShared = {
+            img_url:base + pic,
+            link:window.location.href,
+            title:$("title").text(),
+            desc:''
+        };
+        WeixinJSBridge.invoke("sendAppMessage", dataShared);
+    });
+
+    WeixinJSBridge.on("menu:share:weibo", function(argv){
+        var dataShared = {
+            url:window.location.href,
+            content:$("title").text()
+        };
+        WeixinJSBridge.invoke("shareWeibo", dataShared);
+    });
+};
+
+// 微信分享
+if(typeof WeixinJSBridge !== "undefined"){
+    wxShare();
+}
+else{
+    $(document).on("WeixinJSBridgeReady", function(){
+        wxShare();
+    });
+}
