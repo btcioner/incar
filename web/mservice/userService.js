@@ -92,7 +92,8 @@ function userEnroll(req, res) {
         var sql="select id from t_4s where openid=?";
         dao.findBySql(sql,[openId4S],function(info){
             if(info.err){
-                res.json(info);
+                res.json({status:'网络好像断了，请检查网络连接！'});
+                return;
             }
             else{
                 var rows=info.data;
@@ -134,11 +135,13 @@ function userEnroll(req, res) {
                         if(err){
                             if(flag=="update")
                             {
-                                res.json({status:'该用户名已被注册！'});
+                                res.json({status:'网络好像断了，请检查网络连接！'});
+                                return;
                             }
                             else if(flag == "add")
                             {
-                                res.json({status:'该用户名已被注册！'});
+                                res.json({status:'网络好像断了，请检查网络连接！'});
+                                return;
                             }
                         }
                         else{
@@ -148,7 +151,7 @@ function userEnroll(req, res) {
                             carEnroll(req,res, function(ex){
                                 if(ex) {
 //                                    pool.query('DELETE FROM t_account WHERE id=?', [accountId], function(){});
-                                    res.json({status:'修改账户失败'}); return;
+                                    res.json({status:'修改汽车信息失败！'}); return;
                                 }
                                 res.json({status:'success',accountId:accountId});
                             });
@@ -157,6 +160,7 @@ function userEnroll(req, res) {
                 }
                 else{
                     res.json({status:'无法识别的appid'});
+                    return;
                 }
             }
         });
@@ -186,69 +190,85 @@ function carEnroll(req,res, cb){
     var sql="select id from t_car where obd_code=? and s4_id=?";
     dao.findBySql(sql,[obdCode, user.s4_id],function(info){
         if(info.err){
-            res.json({status:'该OBD编号不存在!'});
+            res.json({status:'网络好像断了，请检查网络连接！'});
+            return;
         }
         else{
             var rows=info.data;
-            if(rows.length>0){
-                var id=rows[0].id;
-                var car={
-                    s4_id:user.s4_id,
-                    brand:brand,
-                    series:series,
-                    modelYear:modelYear,
-                    license:license,
-                    act_type:1,
-                    disp:disp,
-                    mileage:mileage,
-                    age:ageDate,
-                    engineType:engine_type,
-                    created_date:new Date()
-                };
-                sql="update t_car set ? where id=?";
-                var pool = findPool();
-                pool.query(sql, [car,id], function(ex, result){
-                    if(ex){
-                        res.json({status:"该OBD已经被注册!"});
-                        return;
-                    }else{
-                    // 建立t_car_user;
-                    sql="select car_id from t_car_user where s4_id=? and acc_id=? "
-                    dao.findBySql(sql,[user.s4_id, userId],function(info){
-                        if(info.err){
-                            res.json({status:'连接数据库有问题!'});
-                        }
-                        else{
-                            if(info.data[0] == null)
-                            {
-                                 sql = "INSERT t_car_user(s4_id,car_id,user_type,acc_id) values(?,?,?,?)";
+             if(rows.length>0){
+                 var id=rows[0].id;
+                 sql="select count(*) as count from t_car_user where s4_id =? and car_id =? and acc_id !=?";
+               dao.findBySql(sql,[user.s4_id,id,userId],function(info){
+                 if(info.err)
+                 {
+                     res.json({status:'网络好像断了，请检查网络连接！'});
+                     return;
+                 }
+                else{
+                     console.log(info.data[0].count);
+                  if(parseInt(info.data[0].count) > 0)
+                  {
+                      res.json({status:'该车云终端已经被注册了！'});return;
+                  }
+                  else{
+                    var car={
+                        s4_id:user.s4_id,
+                        brand:brand,
+                        series:series,
+                        modelYear:modelYear,
+                        license:license,
+                        act_type:1,
+                        disp:disp,
+                        mileage:mileage,
+                        age:ageDate,
+                        engineType:engine_type,
+                        created_date:new Date()
+                    };
+                    sql="update t_car set ? where id=?";
+                    var pool = findPool();
+                    pool.query(sql, [car,id], function(ex, result){
+                        if(ex){
+                            res.json({status:"该车牌号已经被注册过!"});
+                            return;
+                        }else{
+                        // 建立t_car_user;
+                        sql="select car_id from t_car_user where s4_id=? and acc_id=? "
+                        dao.findBySql(sql,[user.s4_id, userId],function(info){
+                            if(info.err){
+                                res.json({status:'网络好像断了，请检查网络连接！'});
+                                return;
                             }
-                            else
-                            {
-                                 sql = "update t_car_user set s4_id=?,car_id=?,user_type=? where acc_id=?";
-                            }
-                            pool.query(sql, [user.s4_id,  id, 1,userId], function(ex, result){
-                                if(ex) {
-//                            console.log(ex);
-//                            if(cb) cb(ex);
-//                            else
-                                    res.json({status:"该OBD已经被注册!"});
-                                    return;
+                            else{
+                                if(info.data[0] == null)
+                                {
+                                     sql = "INSERT t_car_user(s4_id,car_id,user_type,acc_id) values(?,?,?,?)";
                                 }
-
-                                console.log("更新成功");
-                                if(cb) { cb(null); }
-                                else res.json({status:"ok"});
-                            });
+                                else
+                                {
+                                     sql = "update t_car_user set s4_id=?,car_id=?,user_type=? where acc_id=?";
+                                }
+                                pool.query(sql, [user.s4_id,  id, 1,userId], function(ex, result){
+                                    if(ex) {
+                                        res.json({status:"网络好像断了，请检查网络连接！"});
+                                        return;
+                                    }
+                                    console.log("更新成功");
+                                    if(cb) { cb(null); }
+                                    else res.json({status:"ok"});
+                                });
+                            }
+                        });
                         }
-                    });
-                    }
-                });
+                      });
+                   }
+                 }
+               });
             }
-            else{
-                if(cb) { cb({status:'该OBD编号不存在!'}); return; }
-                res.send({status:'该OBD编号不存在!'});
+             else{
+                res.json({status:'该4S店暂无该车云终端,请核对ID!'});
+                 return;
             }
+
         }
     });
 }
