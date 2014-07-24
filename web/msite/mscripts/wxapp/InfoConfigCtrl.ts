@@ -272,7 +272,7 @@ module wxApp {
                          if(typeof WeixinJSBridge !== "undefined"){
                             WeixinJSBridge.call('closeWindow');
                          }
-                        },6000);
+                        },3000);
                     }
                     else
                     {
