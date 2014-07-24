@@ -267,10 +267,12 @@ module wxApp {
                 .success((data, status, headers, config)=>{
                     if(data.status == "success")
                     {
+                        setInterval(function(){
                         this.openUpbox(this.printWord);
-                        if(typeof WeixinJSBridge !== "undefined"){
+                         if(typeof WeixinJSBridge !== "undefined"){
                             WeixinJSBridge.call('closeWindow');
-                        }
+                         }
+                        },3000);
                     }
                     else
                     {
