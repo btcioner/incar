@@ -107,7 +107,7 @@ module wxApp {
                     if(data.length === 0)
                     {
                         this.openUpbox("您尚没有参加任何活动!");
-                        setTimeout(function(){
+                        setInterval(function(){
                             if(typeof WeixinJSBridge !== "undefined"){
                                 WeixinJSBridge.call('closeWindow');
                             }

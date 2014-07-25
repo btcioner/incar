@@ -51,7 +51,7 @@ app.controller("driveRecordCtrl", function($scope, $http){
           }else
           {
               $scope.openUpbox(data.status);
-              setTimeout(function(){
+              setInterval(function(){
                   if(WeixinJSBridge){
                       WeixinJSBridge.call('closeWindow');
                   }
