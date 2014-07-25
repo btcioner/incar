@@ -2,11 +2,28 @@ var app = angular.module("drAPP", ['ngResource','ngRoute']);
 
 //行车记录前台logic
 
-app.controller("driveRecordCtrl", function($scope, $http, $location){
+app.controller("driveRecordCtrl", function($scope, $http){
 
     $scope.user_openid = window.location.toString().split("=")[1];
 
     $scope.postData={user:$scope.user_openid};
+
+
+
+    $scope.tips = "";
+    $scope.cover_show = false;
+    $scope.upbox_show = false;
+
+    $scope.closeUpbox = function(){
+        $scope.tips = "";
+        $scope.cover_show = false;
+        $scope.upbox_show = false;
+    }
+    $scope.openUpbox = function(tips){
+        $scope.tips = tips;
+        $scope.cover_show = true;
+        $scope.upbox_show = true;
+    }
 
     countPageClick("1","1", $scope.user_openid);//原文点击记录
 
@@ -18,11 +35,11 @@ app.controller("driveRecordCtrl", function($scope, $http, $location){
                 {
                     console.log(data.status);
                 }else{
-                    alert(data.status);
+                    $scope.openUpbox(data.status);
                 }
             })
             .error(function(data){
-                alert(data.status);
+                $scope.openUpbox(data.status);
             });
     }
 
@@ -33,15 +50,15 @@ app.controller("driveRecordCtrl", function($scope, $http, $location){
               $scope.recordList = data.recordList;
           }else
           {
-              alert(data.status);
-              setInterval(function(){
+              $scope.openUpbox(data.status);
+              setTimeout(function(){
                   if(WeixinJSBridge){
                       WeixinJSBridge.call('closeWindow');
                   }
-              },1000);
+              },1500);
           }
         }).error(function(data){
-            alert("请求无响应!");
+            $scope.openUpbox("网络好像断了，请检查网络连接！");
         });
 
     var wxShare = function(){

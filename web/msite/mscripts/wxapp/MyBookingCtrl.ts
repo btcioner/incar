@@ -40,7 +40,7 @@ module wxApp{
                 // 尚未得到open_id
                 var wxoa = new WXOAuth($location);
                 wxoa.findUserOpenId((data)=>{
-                    if(!data.user_openid) alert(data);
+                    if(!data.user_openid) this.openUpbox(data);
                     // 已经获取了open_id,查询数据
                     this.user_openid = data.user_openid;
                     this.searchUser($http, $scope);
@@ -64,13 +64,25 @@ module wxApp{
                     {
                         console.log(data.status);
                     }else{
-                        alert(data.status);
+                        this.openUpbox(data.status);
                     }
                 })
                 .error((data)=>{
                     alert(data.status);
                 });
         };
+
+        private closeUpbox =()=>{
+            this.tips = "";
+            this.cover_show = false;
+            this.upbox_show = false;
+        }
+        private openUpbox =(tips)=>{
+            this.tips = tips;
+            this.cover_show = true;
+            this.upbox_show = true;
+        }
+
         private searchUser = ($http, $scope) => {
             $http.post("/mservice/infoConfig", { user:this.user_openid }, {dataType:"json"})
                 .success((data,status, headers, config)=>{
@@ -124,11 +136,11 @@ module wxApp{
             if (con) {
                 this.$http.post("/mservice/cancelTrialrun", { id: data.id }, { dataType: "json"})
                     .success(()=>{
-                        alert("预约已取消");
+                        this.openUpbox("预约已取消");
                         data.bookingStatus = 4;
                     })
                     .error(()=>{
-                        alert("预约已取消");
+                        this.openUpbox("预约已取消");
                         data.bookingStatus = 4;
                     });
             }
@@ -139,11 +151,11 @@ module wxApp{
             if (con) {
                 this.$http.post("/mservice/cancelSlotBooking", { id: data.id }, { dataType: "json"})
                     .success(()=>{
-                        alert("预约已取消");
+                        this.openUpbox("预约已取消");
                         data.bookingStatus = 4;
                     })
                     .error(()=>{
-                        alert("预约已取消");
+                        this.openUpbox("预约已取消");
                         data.bookingStatus = 4;
                     });
             }
@@ -155,5 +167,8 @@ module wxApp{
         private qry_returned = 0;
         private my_works = [];
         private $http: any;
+        private cover_show=false;
+        private upbox_show = false;
+        private tips:string;
     }
 }

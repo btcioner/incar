@@ -41,6 +41,30 @@
         </div><!--containe_250 end-->
     </div><!--main_wrap end-->
 </div>
-
+<!--upbox_wrap start-->
+<div class="cover" id="cover" ng-show="cover_show"></div>
+<div class="upbox_wrap" id="upbox_wrap" ng-show="upbox_show">
+    <div class="upbox" id="upbox">
+        <div class="close_icon"><a href="#" ng-click="closeUpbox()"><img src="../mimages/close_icon.gif" width="16" height="16"></a></div>
+        <div class="text_12" style="padding-top: 10px;padding-bottom: 17px;">{{tips}}</div>
+        <div>
+            <a href="javascript:void(0)" ng-click="closeUpbox()"><div class="button02">关闭</div></a>
+        </div>
+    </div>
+</div><!--upbox_wrap end-->
+<script >
+    $(document).ready(function(){
+        $(document).ready(function(){
+            //调整弹框出现的位置
+            $("#wrap").css("min-height",$(window).height());
+            var height=$("#wrap").height();
+            $("#cover").css("height",height);
+            setTimeout(function(){
+                var height=$("#wrap").height();
+                $("#cover").css("height",height);
+            },2000);
+        });
+    });
+</script>
 </body>
 </html>

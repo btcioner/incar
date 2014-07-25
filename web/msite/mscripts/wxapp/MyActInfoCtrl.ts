@@ -17,5 +17,8 @@ module wxApp {
         private user_openid: string;
         private $http: any;
         private $scope: any;
+        private cover_show=false;
+        private upbox_show = false;
+        private tips:string;
     }
 }

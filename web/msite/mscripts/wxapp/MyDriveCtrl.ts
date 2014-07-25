@@ -68,13 +68,24 @@ module wxApp {
                         // console.log(data.status);
                     }
                     else{
-                        alert(data.status);
+                        this.openUpbox(data.status);
                     }
                 })
                 .error((data)=>{
-                    alert(data.status);
+                       this.openUpbox(data.status);
                 });
         };
+
+        private closeUpbox =()=>{
+            this.tips = "";
+            this.cover_show = false;
+            this.upbox_show = false;
+        }
+        private openUpbox =(tips)=>{
+            this.tips = tips;
+            this.cover_show = true;
+            this.upbox_show = true;
+        }
 
         private fetchData = ()=>{
             var tmStart = Date.parse(this.tmStart) - 1000*3600*8;
@@ -127,5 +138,8 @@ module wxApp {
         private $http:any;
         private $scope:any;
         private $filter:any;
+        private cover_show=false;
+        private upbox_show = false;
+        private tips:string;
     }
 }

@@ -106,13 +106,18 @@
     </div>
 </div><!--upbox_wrap end-->
 <script >
+    $(document).ready(function(){
         $(document).ready(function(){
-            //调整
+            //调整弹框出现的位置
+            $("#wrap").css("min-height",$(window).height());
             var height=$("#wrap").height();
             $("#cover").css("height",height);
-            var topHeight = (height - 150) / 2;
-            $("#upbox_wrap").css("top",topHeight);
-        })
+            setTimeout(function(){
+                var height=$("#wrap").height();
+                $("#cover").css("height",height);
+            },2000);
+        });
+    });
         //微信内置分享API
         if(document.addEventListener){
             document.addEventListener('WeixinJSBridgeReady', sendMessage, false);
