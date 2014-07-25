@@ -120,12 +120,13 @@
                     str+="<option "+selected+" value='"+result[i].seriesCode+"'>"+result[i].series+"</option>";
                 }
                 document.getElementById("seriesName").innerHTML=str;
+                var snx = $('#seriesName');
                 if(sCode){
-                    $('#seriesName').val(sCode);
-                    $('#seriesName').selectmenu("refresh");
+                    snx.val(sCode);
+                    snx.selectmenu("refresh");
                 }else{
-                    $('#seriesName').val('-1');
-                    $('#seriesName').selectmenu("refresh");
+                    snx.val('-1');
+                    snx.selectmenu("refresh");
                 }
             }
         });
@@ -215,8 +216,9 @@
             dataType: "json",
             success: function (result,status) {
                 var height=$(window).height();
-                $("#wrap").css("min-height",height);
-                $("#wrap").css("_height",height);
+                var xWrap = $("#wrap");
+                xWrap.css("min-height",height);
+                xWrap.css("_height",height);
                 document.getElementById("bookStatus").innerHTML="<div>"+
                         "<span class='text_03' id='note'>您的预约申请已提交，<br/>您可以在'我的预约'中查看申请结果，<br/>请您耐心等待，谢谢！</span></div>";
                 document.getElementById('regsiterbutton').innerHTML='';
@@ -232,12 +234,11 @@
     var trialRunCtrl = new wxApp.TrialRunCtrl("trialRunCtrl");
 
     function init(){
-
         user=getQueryString("user");
-        // document.getElementById("start").value=defaultDate();
-        $('#start').val(defaultDate());
+        var dateStart = $('#start');
+        dateStart.css('min-width', '186px');
+        dateStart.val(defaultDate());
         searchUser();
-//        searchSeriesName();
         getBrand();
     }
     function defaultDate()
@@ -251,8 +252,9 @@
 
     $(document).ready(function(){
         //调整弹框出现的位置
-        $("#wrap").css("min-height",$(window).height());
-        var height=$("#wrap").height();
+        var xWrap = $("#wrap");
+        xWrap.css("min-height",$(window).height());
+        var height=xWrap.height();
         $("#cover").css("height",height);
         setTimeout(function(){
             var height=$("#wrap").height();
