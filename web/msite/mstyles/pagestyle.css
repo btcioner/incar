@@ -32,12 +32,6 @@ a img {
     -khtml-opacity: 0.5;
     opacity: 0.5;
 }
-.oupbox_wrap {
-    position: absolute;
-    left: 0px;
-    top: 160px;
-    width: 100%;
-}
 .upbox_wrap .upbox{
     -webkit-border-radius:8px;
     border-radius:8px;
@@ -45,7 +39,7 @@ a img {
     _height:120px;
     width: 220px;
     border: 3px solid;
-    position: absolute;
+    position: fixed;
     margin-right: 0px;
     margin-left: -120px;
     padding: 10px;

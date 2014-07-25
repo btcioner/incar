@@ -113,8 +113,10 @@
     }
     function openUpbox(tips){
         $("#tips").html(tips);
+        $("#upbox").css("z-index",99);
         $("#cover").css("display","block");
         $("#upbox_wrap").css("display","block");
+
     }
     //提交预约数据
     function submitBooking(){
