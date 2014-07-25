@@ -234,7 +234,8 @@
     function init(){
 
         user=getQueryString("user");
-        document.getElementById("start").value=defaultDate();
+        // document.getElementById("start").value=defaultDate();
+        $('#start').val(defaultDate());
         searchUser();
 //        searchSeriesName();
         getBrand();
