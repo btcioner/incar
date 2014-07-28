@@ -64,7 +64,7 @@
 <!--upbox_wrap start-->
 <div class="cover" id="cover"  style="display: none;"></div>
 <div class="upbox_wrap" id="upbox_wrap"  style="display: none;">
-    <div class="upbox" id="upbox">
+    <div class="upbox" id="upbox" style="display: none;">
         <div class="close_icon"><a href="#" onclick="closeUpbox()"><img src="../mimages/close_icon.gif" width="16" height="16"></a></div>
         <div class="text_12" style="padding-top: 10px;padding-bottom: 17px;" id="tips"></div>
         <div>
@@ -137,12 +137,14 @@
         $("#tips").html("");
         $("#cover").css("display","none");
         $("#upbox_wrap").css("display","none");
+        $("#upbox").css("display","none");
     }
     function openUpbox(tips){
         $("#tips").html(tips);
         $("#upbox").css("z-index",99);
         $("#cover").css("display","block");
         $("#upbox_wrap").css("display","block");
+        $("#upbox").css("display","block");
     }
     function submitTrialrun(){
         var postData={};
