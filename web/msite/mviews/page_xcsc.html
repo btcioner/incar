@@ -21,8 +21,15 @@
             font-size:large;
         }
     </style>
+    <script src="../mscripts/jquery-1.7.1.min.js"></script>
+    <script src="../mscripts/angular.min.js"></script>
+    <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/angular-route.min.js"></script>
+    <script src="../mscripts/wxapp.js"></script>
+    <script type="text/javascript">
+        var driveManualCtrl = new wxApp.DriveManualCtrl("driveManualCtrl");
+    </script>
 </head>
-
 <body ng-controller="driveManualCtrl">
 <div id="wrap">
     <!--main_wrap start-->
@@ -72,14 +79,8 @@
     </div>
 </div>
 <!--upbox_wrap end-->
-<script src="../mscripts/jquery-1.7.1.min.js"></script>
-<script src="../mscripts/angular.min.js"></script>
-<script src="../mscripts/angular-resource.min.js"></script>
-<script src="../mscripts/angular-route.min.js"></script>
-<script src="../mscripts/wxapp.js"></script>
-<script type="text/javascript">
-    var driveManualCtrl = new wxApp.DriveManualCtrl("driveManualCtrl");
-</script>
+
+
 <script >
 //    $(document).ready(function(){
 //        //调整弹框出现的位置
