@@ -5,10 +5,13 @@ module wxApp {
     export class DriveManualCtrl {
         constructor(ctrlName:string) {
             // 向angular注册控制器
-            _module.controller(ctrlName, ['$scope', '$resource', '$http','$location',this.init]);
+            _module.controller(ctrlName, ['$scope', '$resource', '$http','$location',this.init])
         }
 
         private init = ($scope, $resource,$http,$location) => {
+            $scope.cover_show = false;
+            $scope.upbox_show = false;
+            $scope.tips = "";
             this.cover_show = false;
             this.upbox_show = false;
             this.tips = "";
