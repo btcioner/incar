@@ -55,35 +55,45 @@ var config={
         }
     }
 };
+var cache={};
 var app = angular.module("reportApp", []);
 app.config(['$locationProvider', function($locationProvider){
     $locationProvider.html5Mode(true);
 }]);
+function showColumns(configs){
+    for(var i=0;i<configs.length;i++){
+        $('#main_wrap>div:eq('+i+')').highcharts(configs[i]);
+    }
+}
 app.controller("myTravelReport", function($scope, $http, $location){
-    var user = $location.search().user;
-
+    var userStr = $location.search().user;
+    var user=userStr.replace('@',':');
     $http.get('../travelReport/loadTravelReport?user='+user).success(function(data,status,headers,cfg){
         if(data.status=='success'){
             var staInfo=data.data;
-            $scope.console=staInfo;
+            $scope.s4Name=staInfo.s4Name;
+            var results=staInfo.results;
             var allMonths=[];
-            for(var monthKey in staInfo){
+            for(var monthKey in results){
                 allMonths.push(monthKey);
-            }
-            $scope.allMonths=allMonths;
-            $scope.switchMonth=function(index){
-                var dataMth=staInfo[$scope.allMonths[index]].dataMth;
+                var dataMth=results[monthKey].dataMth;
+                cache[monthKey]=[];
                 for(var i=0;i<dataMth.length;i++){
                     var newConfig=cloneJSON(config);
                     newConfig.title={text:dataMth[i].title};        //标题
                     newConfig.subtitle={text:dataMth[i].unit};      //单位
                     newConfig.series=[{data:dataMth[i].data}];      //内容
-                    $('#main_wrap>div:eq('+i+')').highcharts(newConfig);
+                    cache[monthKey][i]=newConfig;
                 }
+            }
+            showColumns(cache[allMonths[allMonths.length-1]]);
+            $scope.allMonths=allMonths;
+            $scope.switchMonth=function(index){
+                showColumns(cache[allMonths[index]]);
             }
         }
         else{
-            $scope.console=data.message;
+            $('#main_wrap>div:eq(0)').html(data.message);
         }
 
     });

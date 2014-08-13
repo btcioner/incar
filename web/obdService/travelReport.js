@@ -69,10 +69,12 @@ exports.loadTravelReport=function(req,res){
             var rows=info.data;
             var results={};
             if(rows.length>0){
+                var s4Name='';
                 for(var i=0;i<rows.length;i++){
                     var year=rows[i].year;
                     var month=rows[i].month;
-                    var dataMth={year:year,month:month,
+                    s4Name=rows[i].s4Name;
+                    var dataMth={year:year,month:month,s4Name:s4Name,
                         dataMth:[
                         {
                             title:'行驶里程',
@@ -94,7 +96,7 @@ exports.loadTravelReport=function(req,res){
                     };
                     results[month]=dataMth;
                 }
-                info.data=results;
+                info.data={s4Name:s4Name,results:results};
                 res.json(info);
             }
             else{
