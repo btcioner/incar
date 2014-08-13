@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS t_obd_statistics(
     avgOilMth float(10,2) COMMENT '当月平均油耗',
     speedMth float(10,2) COMMENT '当月平均车速',
     type    tinyint COMMENT '统计类型1普通2当月小计',
+    markTime timestamp COMMENT '标识日期',
     primary key (id));
 -- 创建车辆行程信息表
 CREATE TABLE IF NOT EXISTS t_obd_drive(
