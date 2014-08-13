@@ -105,11 +105,11 @@
                     postData.nick=$('#ownerName').val();
                     postData.bookingDate=bookDate;
                     postData.bookingTime=bookTime;
-                    postData.license=$('#license').val();
+                    // postData.license=$('#license').val();
                     postData.phone=$('#phone').val();
                     postData.mileage=$('#mileage').val();
                     postData.carType=document.getElementById("carType").value;
-                    postData.args=JSON.stringify({'brand':brand,'series':carTypeValue});
+                    postData.args=JSON.stringify({'brand':brand,'series':carTypeValue, 'license': $('#license').val() });
                     postData.acc_id=acc_id;
                     //alert("33333333");
                     if(bookDate<=today) {alert("预约时间错误！");return;}

@@ -73,14 +73,14 @@ module wxApp{
                 .error((data, status, headers, config)=>{ console.log(status); });
         };
 
-        // 获取预约数据
+        // 获取保养预约数据
         private searchBook = ($http) =>{
             var sid = this.wx_oid.split(":");
             $http.post("/mservice/myBooking", { user: this.user_openid, sid: sid[1]}, { dataType:"json"})
                 .success((data, status, headers, config)=>{
                     for(var i=0;i<data.length;i++){
                         data[i].work_type = "保养";
-                        data[i].seriesName = this.car_license;
+                        data[i].seriesName = data[i].license;
                         this.my_works.push(data[i]);
                     }
                 })

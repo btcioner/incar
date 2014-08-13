@@ -16,14 +16,14 @@ module devAP {
         $locationProvider.html5Mode(true);
     }]);
 
-    // 页面控制器
+    // 页面控制�?
     class DevAPCtrl {
         constructor(ctrlName:string) {
-            // 尝试读取以前的配置
+            // 尝试读取以前的配�?
             if(localStorage && localStorage[this._lskURL]){
                 this.url = localStorage[this._lskURL];
             }
-            // 向angular注册控制器
+            // 向angular注册控制�?
             _module.controller(ctrlName, ['$scope', '$sce', this.init]);
         }
 
@@ -35,17 +35,8 @@ module devAP {
             this.makeQRCode(this.url, $sce);
 
             // 模拟微信用户
-            var wx_oid_wmq_dev = "user=o1fUut3BkIo8XM6-8HG-3ORAtvls@gh_895980ee6356";
-            var wx_oid_wmq_staging = "user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI@gh_2ca6120e0ed0";
-            var wx_oid_xgh_staging = "user=oAPKMuJssQAohcEgKyKkcRDUDiAw@gh_2ca6120e0ed0";
-            var wx_oid_jl_fake = "user=oAPKMuJssQAohcEgKylkcRDUDiAw@gh_2ca6120e0ed0";
-
-            for(var i in this.pagesDev){
-                this.pagesDev[i].url += wx_oid_wmq_dev;
-            }
-            for(var i in this.pagesStaging){
-                this.pagesStaging[i].url += wx_oid_wmq_staging;
-            }
+            this.wx_oid_keys = Object.keys(this.wx_oids);
+            if(this.wx_oid_keys.length > 0) this.wx_active_key = this.wx_oid_keys[0];
         };
 
         private makeQRCode = (text:string, $sce:any)=>{
@@ -69,34 +60,36 @@ module devAP {
             this.makeQRCode(this.url, this.$sce);
         };
 
-        // 被测试的页面
-        public pagesDev = [
-            { title: "我的车-行车记录[wmq@dev]", url: "/msite/driveRecord.html?" },
-            { title: "我的车-行车分析[wmq@dev]", url: "/msite/myDrive.html?" },
-            { title: "我的车-行车手册", url: "/msite/page_xcsc.html?" },
-            { title: "我的4S-预约保养[wmq@dev]", url: "/msite/booking.html?"  },
-            { title: "我的4S-试乘试驾[wmq@dev]", url: "/msite/trialrun.html?"  },
-            { title: "我的4S-资讯活动[wmq@dev]", url: "/msite/my4sInfo.html?" },
-            { title: "发现-我的预约[wmq@dev]", url: "/msite/myBooking.html?" },
-            { title: "发现-我的活动[wmq@dev]", url: "/msite/myActivity.html?" },
-            { title: "发现-设置[wmq@dev]", url: "/msite/infoConfig.html?" }
-        ];
 
-        public pagesStaging = [
-            { title: "我的车-行车记录[wmq@dev]", url: "/msite/driveRecord.html?" },
-            { title: "我的车-行车分析[wmq@stagging]", url: "/msite/myDrive.html?" },
-            { title: "我的车-行车手册", url: "/msite/page_xcsc.html?" },
-            { title: "我的4S-预约保养[wmq@stagging]", url: "/msite/booking.html?"  },
-            { title: "我的4S-试乘试驾[wmq@stagging]", url: "/msite/trialrun.html?" },
-            { title: "我的4S-资讯活动[wmq@stagging]", url: "/msite/my4sInfo.html?" },
-            { title: "发现-我的预约[wmq@stagging]", url: "/msite/myBooking.html?" },
-            { title: "发现-我的活动[wmq@stagging]", url: "/msite/myActivity.html?" },
-            { title: "发现-设置[wmq@stagging]", url: "/msite/infoConfig.html?" }
+        public switchActive = (oid:string)=>{
+            this.wx_active_key = oid;
+        };
+
+        // 被测试的页面
+        public pages = [
+            { title: "我的�?行车记录", url: "/msite/driveRecord.html" },
+            { title: "我的�?行车分析", url: "/msite/myDrive.html" },
+            { title: "我的�?行车手册", url: "/msite/page_xcsc.html" },
+            { title: "我的�?行车报告", url: "/msite/travelReport.html" },
+            { title: "我的4S-预约保养", url: "/msite/booking.html"  },
+            { title: "我的4S-试乘试驾", url: "/msite/trialrun.html"  },
+            { title: "我的4S-资讯活动", url: "/msite/my4sInfo.html" },
+            { title: "发现-我的预约", url: "/msite/myBooking.html" },
+            { title: "发现-我的活动", url: "/msite/myActivity.html" },
+            { title: "发现-设置", url: "/msite/infoConfig.html" }
+
         ];
 
         private _lskURL = "devAPurl";
         public url = "http://114.215.172.92:80/4sStore/devAP.html";
         public img_qrcode:string;
+        public wx_oids = {
+            "wmq@dev" : "user=o1fUut3BkIo8XM6-8HG-3ORAtvls@gh_895980ee6356",
+            "wmq@staging" : "user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI@gh_2ca6120e0ed0",
+            "xgh@staging" : "user=oAPKMuJssQAohcEgKyKkcRDUDiAw@gh_2ca6120e0ed0"
+        };
+        public wx_oid_keys : Array<string>;
+        public wx_active_key: string;
 
         private $sce:any;
     }

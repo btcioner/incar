@@ -14,8 +14,7 @@
     <script src="../mscripts/angular.js"></script>
     <script src="../mscripts/angular-resource.min.js"></script>
     <script src="../mscripts/angular-route.min.js"></script>
-    <script src="../mscripts/wxapp/DriveRecord.js"></script>
-
+    <script src="../mscripts/DriveRecord.js"></script>
 </head>
 
 <body ng-controller="driveRecordCtrl">
@@ -29,9 +28,9 @@
                 <div class="columnname">
                     <div class="text_09">启动时间：{{rl.fireTime}}</div></div>
                 <div class="content"><ul><li class="text_08">行驶里程：</li>
-                    <li>{{rl.currentMileage}}公里</li></ul><div class="clear"></div></div>
+                    <li>{{rl.currentMileage/1000}}公里</li></ul><div class="clear"></div></div>
                 <div class="content"><ul><li class="text_08">平均油耗：</li>
-                    <li>{{rl.currentAvgOilUsed}}升/百公里</li></ul><div class="clear"></div></div>
+                    <li>{{rl.currentAvgOilUsed/100}}升/百公里</li></ul><div class="clear"></div></div>
                 <div class="content"><ul><li class="text_08">熄火时间：</li>
                     <li>{{rl.flameOutTime}}</li></ul><div class="clear"></div></div>
                 <div class="clear"></div>

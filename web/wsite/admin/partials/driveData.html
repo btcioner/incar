@@ -48,7 +48,7 @@
                           <th class="tablestyle-01">发动机运行时间</th>
                           <th class="tablestyle-02">{{driveDetail.runTime}}</th>
                           <th class="tablestyle-01">本次平均油耗</th>
-                          <th class="tablestyle-02">{{driveDetail.currentAvgOilUsed}}</th>
+                          <th class="tablestyle-02">{{driveDetail.currentAvgOilUsed/100}}升/百公里</th>
                           <th class="tablestyle-01">急加速次数</th>
                           <th class="tablestyle-02">{{driveDetail.speedUp}}</th>
                           <th class="tablestyle-01">急减数次数</th>
@@ -60,7 +60,7 @@
                           <th class="tablestyle-01">熄火电压</th>
                           <th class="tablestyle-02">{{driveDetail.flameOutVoltage}}</th>
                           <th class="tablestyle-01">累计平均油耗</th>
-                          <th class="tablestyle-02">{{driveDetail.avgOilUsed}}</th>
+                          <th class="tablestyle-02">{{driveDetail.avgOilUsed/100}}升/百公里</th>
                           <th class="tablestyle-01">累计行驶里程</th>
                           <th class="tablestyle-02">{{driveDetail.currentMileage}}</th>
                       </tr>

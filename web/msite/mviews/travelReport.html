@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html ng-app="reportApp" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>测试</title>
+    <link type="text/css" rel="stylesheet" href="../mstyles/graph.css">
+    <link type="text/css" rel="stylesheet" href="../mstyles/lines.css">
+    <link type="text/css" rel="stylesheet" href="../mstyles/pagestyle.css"  />
+    <link type="text/css" rel="stylesheet" href="../mstyles/color.css"/>
+    <link type="text/css" rel="stylesheet" href="../mstyles/menustyle.css"/>
+    <script src="../mscripts/jquery-2.1.1.js" type="text/javascript"></script>
+    <script src="../mscripts/highChart4.0/highCharts.js" type="text/javascript"></script>
+    <script src="../mscripts/highChart4.0/exporting.js" type="text/javascript"></script>
+    <script src="../mscripts/angular.js" type="text/javascript"></script>
+    <script src="../mscripts/report.js" type="text/javascript"></script>
+
+</head>
+<body>
+    <div id="wrap" ng-controller="myTravelReport">
+        <!--menu_box start-->
+        <div id="menu_box">
+            <!--ULmenu start-->
+            <ul class="menu" >
+                <li ng-repeat="month in allMonths"><a id="menu_icon1" href="###" ng-click="switchMonth($index)"><span class="nostyle01">{{month}}月</span></a></li>
+            </ul>
+            <!--ULmenu end-->
+            <div class="clear"></div>
+        </div>
+        <!--meun_box end-->
+        <div class="clear"></div>
+
+        <!--main_wrap start-->
+        <div id="main_wrap">
+            <div id="col0" style="width: 120px; height: 160px;float:left;"></div>
+            <div id="col1" style="width: 120px; height: 160px;float:left;"></div>
+            <div id="col2" style="width: 120px; height: 160px;float:left;"></div>
+            <div id="col3" style="width: 120px; height: 160px;float:left;"></div>
+        </div>
+    <!--main_wrap end-->
+    </div>
+</body>
+</html>

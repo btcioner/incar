@@ -30,6 +30,7 @@ var my4sInfoService= require('./my4sInfoService');
 var activityDetailService= require('./activityDetailService');
 var applyService= require('./applyService');
 var driveRecordService = require('./driveRecordService');
+var matchResultService = require('./matchResultService');
 var mservice = { get:{}, post:{}, delete:{}, put:{} };
 
 userService(mservice);
@@ -53,6 +54,7 @@ my4sInfoService(mservice);
 activityDetailService(mservice);
 applyService(mservice);
 driveRecordService(mservice);
+matchResultService(mservice);
 (function(service) {
 
     function entrance(req, res) {

@@ -27,6 +27,10 @@ function driveRecord(req, res) {
             dao.findBySql(sql,[acc_id],function(info){
                 if (info.err) { res.json({status:"您还没有注册OBD！"});return }
                 else{
+                    if(info.data.length == 0)
+                    {
+                        res.json({status:"您还没有注册OBD！"});return
+                    }else{
                     var car_id = info.data[0].car_id
                     sql="select obd_code from t_car where id =?"
                     dao.findBySql(sql,[car_id],function(info){
@@ -46,6 +50,7 @@ function driveRecord(req, res) {
                             });
                         }
                     });
+                    }
                 }
             });
         }

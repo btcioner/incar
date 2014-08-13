@@ -6,9 +6,9 @@
 var dao=require("../config/dao");
 
 function getObdInfo(obdCode){
-    var sql="select * from t_obd_drive d where d.obdCode=? and d.fireTime>? and d.fireTime<? order by d.tripId";
-    var startTime=new Date("2014-07-09 00:00:00");
-    dao.findBySql(sql,[obdCode,startTime,new Date()],function(info){
+    var sql="select * from t_obd_drive d where d.obdCode=? and d.fireTime>? order by d.tripId";
+    var startTime=new Date("2014-07-10 08:00:00");
+    dao.findBySql(sql,[obdCode,startTime],function(info){
         var obdArray=info.data;
         dao.findBySql("select * from t_drive_dictionary",[],function(info){
             var rows=info.data;
@@ -51,4 +51,7 @@ function getObdInfo(obdCode){
         });
     });
 }
-getObdInfo("INCAR000004");
+//getObdInfo("INCAR000004");
+var a=new Date('2014-12-31 00:00:00');
+a.setMonth(a.getMonth()+1);
+console.log(a);
