@@ -36,7 +36,7 @@ module.exports = function(app) {
     app.put('/timing/buildTags',timingStaService.buildTags);             //重算车辆信息并打上标签
     app.put('/timing/buildObdByMonth',timingStaService.buildObdInfoByMonth);//OBD统计信息计算
     //行车报告
-    app.get('/travelReport/loadTravelReport/:s4Id/:obdCode',travelReportService.loadTravelReport);//获得行车报告
+    app.get('/travelReport/loadTravelReport',travelReportService.loadTravelReport);//获得行车报告
     // Routes for wsite service
     var authCheck = [wservice.CheckAuthority];
 
