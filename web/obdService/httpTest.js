@@ -11,12 +11,12 @@ var dataSet = JSON.stringify({
     active:1,
     creator:'柳明'
 });
-var data=dataSet;
+var data='';
 var opt = {
-    method: "post",
+    method: "put",
     host: "localhost",
     port: 80,
-    path: "/tag/addTag",
+    path: "/timing/buildObdByMonth",
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)

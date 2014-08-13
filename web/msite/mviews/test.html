@@ -1,0 +1,20 @@
+<!doctype html>
+<html ng-app="reportApp">
+<head>
+</head>
+<body ng-controller="myTravelReport">
+    <p>{{someText}}</p>
+    <script src="../mscripts/angular.js"></script>
+    <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/angular-route.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module("reportApp", []);
+        app.controller("myTravelReport", function($scope, $http){
+            $scope.someText='Loading';
+            $http.get('../travelReport/loadTravelReport/1/INCAR000001').success(function(data,status,headers,config){
+                $scope.someText=data;
+            });
+        })
+    </script>
+</body>
+</html>
