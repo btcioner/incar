@@ -17,6 +17,12 @@ function cloneJSON(para){
     return rePara;
 }
 var config={
+    title:{
+        style:{color:"#FFFFFF"}
+    },
+    subtitle:{
+        style:{color:"#FFFFFF"}
+    },
     credits:{
         enabled:false   //禁用版权信息
     },
@@ -82,8 +88,8 @@ app.controller("myTravelReport", function($scope, $http, $location){
                 cache[monthKey]=[];
                 for(var i=0;i<dataMth.length;i++){
                     var newConfig=cloneJSON(config);
-                    newConfig.title={text:dataMth[i].title};        //标题
-                    newConfig.subtitle={text:dataMth[i].unit};      //单位
+                    newConfig.title.text=dataMth[i].title;        //标题
+                    newConfig.subtitle.text=dataMth[i].unit;      //单位
                     newConfig.series=[{data:dataMth[i].data}];      //内容
                     cache[monthKey][i]=newConfig;
                 }
