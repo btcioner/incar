@@ -101,7 +101,7 @@ app.controller("myTravelReport", function($scope, $http, $location){
             }
         }
         else{
-            $('#main_wrap>div:eq(0)').html(data.message);
+            $scope.noData=true;
         }
 
     });
