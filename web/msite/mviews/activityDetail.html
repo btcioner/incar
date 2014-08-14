@@ -29,7 +29,7 @@
                 <h6 class="text_05" id="start_end" style="text-align: left" ng-show="model.act.tm_start">活动时间：{{model.act.tm_start}} 至 {{model.act.tm_end}}</h6><br>
                 <h6 class="text_05" id="act_condition" style="text-align: left" ng-show="model.act.min_milage">活动要求：活动期间最小里程为{{model.act.min_milage}}</h6><br>
                 <div class="detai_text">
-                    <img ng-src="{{model.act.logo_url}}" alt="{{model.act.title}}" style="max-width: 290px">
+                    <img ng-src="../../{{model.act.logo_url}}" alt="{{model.act.title}}" style="max-width: 290px">
                     <p class="text_06" id="content" ng-bind-html="model.act.brief"></p>
                 </div>
                 <div class="button_bg" id="applyBtn" ng-show="model.act.template === 'ActSaveGas'">
