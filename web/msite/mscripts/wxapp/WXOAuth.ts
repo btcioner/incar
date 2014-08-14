@@ -9,8 +9,6 @@ module wxApp{
         public findUserOpenId = (cb:(data)=>void)=>{
             var args = this._$location.search();
             var wx_code = args.code;
-            alert("----");
-            alert("wx_code:"+wx_code);
             if(wx_code){
                 // 用CODE换取用户的open_id
                 var $injector = angular.injector(['wxApp']);
