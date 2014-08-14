@@ -27,7 +27,9 @@ var config={
         enabled:false   //禁用鼠标提示
     },
     chart: {
-        type: 'column'
+        type: 'column',
+        backgroundColor:'#B5B8BB',
+        borderWidth:1
     },
     colors: ['#90DE69'],
     xAxis: {
@@ -71,7 +73,7 @@ app.controller("myTravelReport", function($scope, $http, $location){
     $http.get('../travelReport/loadTravelReport?user='+user).success(function(data,status,headers,cfg){
         if(data.status=='success'){
             var staInfo=data.data;
-            $scope.s4Name=staInfo.s4Name;
+            //$scope.s4Name=staInfo.s4Name;
             var results=staInfo.results;
             var allMonths=[];
             for(var monthKey in results){
