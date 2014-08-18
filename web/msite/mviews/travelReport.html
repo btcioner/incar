@@ -10,8 +10,8 @@
     <link type="text/css" rel="stylesheet" href="../mstyles/color.css"/>
     <link type="text/css" rel="stylesheet" href="../mstyles/menustyle.css"/>
     <script src="../mscripts/jquery-2.1.1.js" type="text/javascript"></script>
-    <script src="../mscripts/highChart4.0/highCharts.js" type="text/javascript"></script>
-    <script src="../mscripts/highChart4.0/exporting.js" type="text/javascript"></script>
+    <script src="../mscripts/highchart4.0/highcharts.js" type="text/javascript"></script>
+    <script src="../mscripts/highchart4.0/exporting.js" type="text/javascript"></script>
     <script src="../mscripts/angular.js" type="text/javascript"></script>
     <script src="../mscripts/report.js" type="text/javascript"></script>
 
@@ -32,13 +32,14 @@
         <div class="clear"></div>
 
         <!--main_wrap start-->
-        <div id="main_wrap">
-            <div id="col0" style="width: 120px; height: 160px;float:left;"></div>
-            <div id="col1" style="width: 120px; height: 160px;float:left;"></div>
-            <div id="col2" style="width: 120px; height: 160px;float:left;"></div>
-            <div id="col3" style="width: 120px; height: 160px;float:left;"></div>
+        <div id="main_wrap" ng-show="!noData">
+            <div id="col0" style="width: 140px; height: 160px;float:left;margin-bottom: 10px;"></div>
+            <div id="col1" style="width: 140px; height: 160px;float:left;margin-left: 10px;margin-bottom: 10px;"></div>
+            <div id="col2" style="width: 140px; height: 160px;float:left;"></div>
+            <div id="col3" style="width: 140px; height: 160px;float:left;margin-left: 10px;"></div>
         </div>
     <!--main_wrap end-->
+        <div id="noData" ng-show="noData">亲，每月一日产生上月报告，现在没有你的用车报告!</div>
     </div>
 </body>
 </html>
