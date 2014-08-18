@@ -12,7 +12,7 @@
                 <th class="tablestyle-02">{{carDetails.owner_nick}}</th>
                 <th class="tablestyle-01">联系电话
                 <th class="tablestyle-02">{{carDetails.owner_phone}}</th>
-                <th class="tablestyle-01">OBD编号</th>
+                <th class="tablestyle-01">终端编号</th>
                 <th class="tablestyle-02">{{carDetails.obd_code}}</th>
             </tr>
             <tr>
@@ -26,8 +26,8 @@
             <tr>
                 <th class="tablestyle-01">上次保养里程</th>
                 <th class="tablestyle-02">{{carDetails.max_mileage - carDetails.new_mileage}}</th>
-                <th class="tablestyle-01">上次保养周期</th>
-                <th class="tablestyle-02">{{carDetails.max_hour - carDetails.new_hour}}</th>
+                <th class="tablestyle-01">距上次保养</th>
+                <th class="tablestyle-02">{{carDetails.new_hour/24 | number }} 天</th>
                 <th colspan="2" class="tablestyle-01" rowspan="2" ng-show="buttonTh"><button class='btn btn-success'  ng-click='operationChild(1)'>已预约</button>
                         &nbsp;&nbsp;&nbsp;<button class='btn btn-success'  ng-click='operationChild(2)'>未预约</button></th>
                 <th class="tablestyle-01" ng-show="remindMileTi">提醒时里程</th>

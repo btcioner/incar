@@ -285,10 +285,10 @@ function doRecursionForStatistics(startTime,endTime,sqlArray,sqlArgs,cb){
                         s4Id:s4Id,
                         year:year,
                         month:month,
-                        countMth:countMth?countMth:0,
-                        mileageMth:mileageMth?mileageMth:0,
-                        avgOilMth:avgOilMth?avgOilMth:0,
-                        speedMth:speedMth?speedMth:0,
+                        countMth:countMth?Math.round(countMth):0,
+                        mileageMth:mileageMth?Math.round(mileageMth):0,
+                        avgOilMth:avgOilMth?Math.round(avgOilMth):0,
+                        speedMth:speedMth?Math.round(speedMth):0,
                         type:1,
                         markTime:markTime
                     };
@@ -319,10 +319,10 @@ function doRecursionForStatistics(startTime,endTime,sqlArray,sqlArgs,cb){
                         s4Id:s4Id,
                         year:year,
                         month:month,
-                        countMth:Math.round(s4Info.countMth/s4Info.count*100)/100,
-                        mileageMth:Math.round(s4Info.mileageMth/s4Info.count*100)/100,
-                        avgOilMth:Math.round(s4Info.avgOilMth/s4Info.count*100)/100,
-                        speedMth:Math.round(s4Info.speedMth/s4Info.count*100)/100,
+                        countMth:Math.round(s4Info.countMth/s4Info.count),
+                        mileageMth:Math.round(s4Info.mileageMth/s4Info.count),
+                        avgOilMth:Math.round(s4Info.avgOilMth/s4Info.count),
+                        speedMth:Math.round(s4Info.speedMth/s4Info.count),
                         type:2,
                         markTime:s4Info.markTime
                     };

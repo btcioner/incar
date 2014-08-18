@@ -16,14 +16,14 @@ module devAP {
         $locationProvider.html5Mode(true);
     }]);
 
-    // 页面控制�?
+    // 页面控制器
     class DevAPCtrl {
         constructor(ctrlName:string) {
-            // 尝试读取以前的配�?
+            // 尝试读取以前的配置
             if(localStorage && localStorage[this._lskURL]){
                 this.url = localStorage[this._lskURL];
             }
-            // 向angular注册控制�?
+            // 向angular注册控制器
             _module.controller(ctrlName, ['$scope', '$sce', this.init]);
         }
 
@@ -67,10 +67,10 @@ module devAP {
 
         // 被测试的页面
         public pages = [
-            { title: "我的�?行车记录", url: "/msite/driveRecord.html" },
-            { title: "我的�?行车分析", url: "/msite/myDrive.html" },
-            { title: "我的�?行车手册", url: "/msite/page_xcsc.html" },
-            { title: "我的�?行车报告", url: "/msite/travelReport.html" },
+            { title: "我的车-行车记录", url: "/msite/driveRecord.html" },
+            { title: "我的车-行车分析", url: "/msite/myDrive.html" },
+            { title: "我的车-行车手册", url: "/msite/page_xcsc.html" },
+            { title: "我的车-行车报告", url: "/msite/travelReport.html" },
             { title: "我的4S-预约保养", url: "/msite/booking.html"  },
             { title: "我的4S-试乘试驾", url: "/msite/trialrun.html"  },
             { title: "我的4S-资讯活动", url: "/msite/my4sInfo.html" },
@@ -84,9 +84,8 @@ module devAP {
         public url = "http://114.215.172.92:80/4sStore/devAP.html";
         public img_qrcode:string;
         public wx_oids = {
-            "wmq@dev" : "user=o1fUut3BkIo8XM6-8HG-3ORAtvls@gh_895980ee6356",
-            "wmq@staging" : "user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI@gh_2ca6120e0ed0",
-            "xgh@staging" : "user=oAPKMuJssQAohcEgKyKkcRDUDiAw@gh_2ca6120e0ed0"
+            "wmq@product" : "user=oAPKMuL3dNs0NjF9ytmOQl8PpxMI1@gh_2ca6120e0ed0",
+            "xgh@dev" : "user=oAPKMuJssQAohcEgKyKkcRDUDiAw@gh_2ca6120e0ed0"
         };
         public wx_oid_keys : Array<string>;
         public wx_active_key: string;

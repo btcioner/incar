@@ -30,25 +30,25 @@
     <!--main_wrap start-->
     <div id="main_wrap">
         <!--containe_250 start-->
-        <div id="containe_250" ng-cloak class="ng-cloak">
+        <div id="containe_250" ng-cloak class="ng-cloak" ng-show="model.show_main">
             <!--基本信息contentbox start-->
             <div class="contentbox" ng-repeat="act in model.activities">
                 <div class="columnname"><div class="text_09">{{act.title}}</div></div>
-                <div class="content"><ul><li class="text_08">发布日期：</li><li>{{act.tm_announce}}</li></ul><div class="clear"></div></div>
+                <div class="content"><ul><li class="text_08">发布时间：</li><li>{{act.tm_announce}}</li></ul><div class="clear"></div></div>
                 <div class="content"><ul><li class="text_08">活动状态：</li><li>{{act.status | act_status_name}}</li></ul><div class="clear"></div></div>
                 <div class="content"><ul><li class="text_08">我的状态：</li><li>{{act.myStatus | act_my_status_name}}</li></ul><div class="clear"></div></div>
                 <ul>
                     <li class="button03"><a ng-href="/msite/activityDetail.html?user={{model.user_openid}}&id={{act.id}}" target="_self">查看活动</a></li>
-                    <li class="button03" ng-show="act.status==3 || act.status==4">
-                        <a ng-href="/msite/v/4s/{{model.s4_id}}/activity/{{act.template}}/{{act.id}}/account/{{model.acc_id}}" >我的赛况</a>
-                    </li >
-                    <li class="button03" ng-show="act.status==5"><a href="javascript:void(0)" >活动结果</a></li>
+                    <!--<li class="button03" ng-show="act.status==3 || act.status==4">-->
+                        <!--<a ng-href="/msite/v/4s/{{model.s4_id}}/activity/{{act.template}}/{{act.id}}/account/{{model.acc_id}}" >我的赛况</a>-->
+                    <!--</li >-->
+                    <li class="button03" ng-show="act.status==5"><a ng-href="/msite/matchResult.html?user={{model.user_openid}}&id={{act.id}}" target="_self">活动结果</a></li>
                 </ul>
               <div class="clear"></div>
             </div><!--基本信息contentbox end-->
-            <div ng-view ng-show="false"></div>
-
         </div><!--containe_250 end-->
+        <span ng-show="model.activities.length === 0">您尚没有参加任何活动</span>
+        <ng-view></ng-view>
     </div><!--main_wrap end-->
 </div>
 </body>

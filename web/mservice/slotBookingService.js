@@ -15,7 +15,7 @@ function slotBooking(req, res) {
     var self = this;
     var postData = req.body;
     //console.log(postData);
-    postData.timeSlot= postData.bookingDate + ' ' + postData.bookingTime;
+    postData.timeSlot= postData.bookDate + ' ' + postData.bookTime;
     console.log(postData);
 
     getOrgId(self.db, postData.user.split('@')[0], function(err, orgId) {

@@ -43,7 +43,7 @@ function applyData(db,openid,sopenid,act_id,tags,callback) {
                         pool.query('select car_id from t_car_user where acc_id=? and s4_id=?;',[acc_id,s4_id],function(err,rows){
                               if(err) callback(err);
                               else{
-                                  if(rows) {
+                                  if(rows&&rows.length>=1) {
                                       pool.query('insert into t_activity_member (act_id,cust_id,status,ref_car_id,ref_tags) values(?,?,1,?,?);',
                                           [act_id,acc_id,rows[0].car_id,tags],function(err,ressult){
                                             if(err) callback(err);

@@ -4,40 +4,38 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>试乘试驾</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
-    <script  src="../mscripts/car.js"></script>
-    <!--日期控件资源  -->
-    <script  src="../mscripts/jqm-datebox-1.4.0.comp.flipbox.min.js"></script>
     <script  src="../mscripts/jquery.mobile.min.js"></script>
+    <script  src="../mscripts/jqm-datebox-1.4.0.comp.flipbox.min.js"><!--日期控件资源  --></script>
+    <script src="../mscripts/angular.min.js"></script>
+    <script src="../mscripts/angular-resource.min.js"></script>
+    <script src="../mscripts/angular-route.min.js"></script>
+    <script  src="../mscripts/car.js"></script>
+    <script src="../mscripts/wxapp.js"></script>
     <link rel="stylesheet" href="../mstyles/jquery.mobile.min.css">
     <link rel="stylesheet" href="../mstyles/jqm-datebox.min.css">
     <!--日期控件资源结束  -->
     <link href="../mstyles/angular-csp.css" rel="stylesheet" type="text/css"/>
-    <script src="../mscripts/angular.min.js"></script>
-    <script src="../mscripts/angular-resource.min.js"></script>
-    <script src="../mscripts/angular-route.min.js"></script>
-    <script src="../mscripts/wxapp.js"></script>
-
     <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
-    <link href="../mstyles/color.css" rel="stylesheet" type="text/css"/>
     <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css"/>
 </head>
 
-<body onload="init()" ng-controller="trialRunCtrl">
+<body ng-controller="trialRunCtrl">
 <div id="wrap">
     <!--main_wrap start-->
-    <div id="main_wrap">
+    <div id="main_wrap" ng-cloak>
         <!--containe_280 start--><div id="containe_280">
         <div class="img_04"></div>
-        <!--预约试驾表单contentboxstyle01 start--><div class="contentboxstyle01">
-        <div class="formstyle01"><ul><li style="text-shadow:none;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</li><li><input name="name" id="name" type="text" class="w190" /></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li style="text-shadow:none;">联系电话：</li><li><input name="phone" id="phone" type="text" class="w190" /></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li style="text-shadow:none;">车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</li><li><select name="seriesName" id="seriesName"  class="w190" ><option>请选择</option></select></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li style="text-shadow:none;">预约日期：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align: middle"/></li></ul><div class="clear"></div></div>
-        <div class="formstyle01"><ul><li style="text-shadow:none;">预约时间：</li><li><select id="end" name="end" class="w190"  style="width: 100%;min-height: 1.4em;width: 15em">
-            <option>9:00</option>
-            <option>9:30</option>
+        <!--预约试驾表单contentboxstyle01 start--><div class="contentboxstyle01" id="bookStatus" style="text-shadow: none;">
+        <div class="formstyle01"><ul><li style="text-shadow:none;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名*：</li><li><input name="nick" id="nick" type="text" class="w190" /></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">联系电话*：</li><li><input name="phone" id="phone" type="text" class="w190" /></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型*：</li><li><select name="seriesName" id="seriesName"  class="w190" ><option>请选择</option></select></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">预约日期*：</li><li><input name="start" class="w190" type="date" data-options='{"mode":"flipbox"}' data-role="datebox" id="start" style="vertical-align: middle"/></li></ul><div class="clear"></div></div>
+        <div class="formstyle01"><ul><li style="text-shadow:none;">预约时间*：</li><li><select id="end" name="end" class="w190"  style="width: 100%;min-height: 1.4em;width: 15em">
+            <option>09:00</option>
+            <option>09:30</option>
             <option>10:00</option>
             <option>10:30</option>
             <option>11:00</option>
@@ -54,10 +52,11 @@
         </select></li></ul><div class="clear"></div></div>
         <input type="hidden" id="acc_id" />
         <input type="hidden" id="s4_id" />
+        <input type="hidden" id="brand" />
     </div><!--预约试驾表单contentboxstyle01 end-->
     </div><!--containe_280 end-->
         <div class="w10"></div>
-        <!--regsiterbutton start--><div id="regsiterbutton"><a href="javascript:void(0)" class="button01" onClick="submitTrialrun()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
+        <!--regsiterbutton start--><div id="regsiterbutton"><span class="text_02" style="text-shadow:none;">*号为必填项</span><br /><a href="javascript:void(0)" class="button01" onClick="submitTrialrun()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
     </div><!--main_wrap end-->
 </div>
 <script>
@@ -74,51 +73,117 @@
             dataType: "json",
             success: function (result,status) {
              document.getElementById('phone').value=result.phone;
-             document.getElementById('name').value=result.nick;
+             document.getElementById('nick').value=result.nick;
              document.getElementById('acc_id').value=result.id;
              document.getElementById('s4_id').value=result.s4_id;
-             brand=result.brand;
-             series=result.series;
+             setSeries(result.series);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
                 //alert("连接失败\n请检查网络连接是否正常");
             }
         });
     }
-  function searchSeriesName(){
-      var sopenid=user.split('@')[1];
-      $.ajax({
-          type: "POST",
-          url: "/mservice/getSeries",
-          data: {'sopenId':sopenid},
-          dataType: "json",
-          success: function (result,status) {
-              var seriesStr="<option>请选择</option>";
-              for(var i=0;i<result.length;i++){
-                  seriesStr+="<option value="+ result[i].seriesCode +">"+result[i].series+"</option>"
-              }
-              document.getElementById('seriesName').innerHTML=seriesStr;
-          },
-          error:function(XMLHttpRequest, textStatus, errorThrown){
-              //alert("连接失败\n请检查网络连接是否正常");
-          }
-      });
-  }
+    function getBrand(){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/brandData",
+            data: {'user':user},
+            dataType: "json",
+            success:function(result,status){
+                document.getElementById('brand').value=result.brandCode;
+            }
+        });
+    }
+    function setSeries(sCode){
+        $.ajax({
+            type: "POST",
+            url: "/mservice/getSeries",
+            data: {'sopenId':user.split('@')[1]},
+            dataType: "json",
+            success:function(result,status){
+                var str="<option value='-1'>请选择</option>";
+                for(var i=0;i<result.length;i++){
+                    var selected = '';
+                    str+="<option "+selected+" value='"+result[i].seriesCode+"'>"+result[i].series+"</option>";
+                }
+                //alert(str);
+                document.getElementById("seriesName").innerHTML=str;
+                if(sCode){
+                    $('#seriesName').val(sCode);
+                    $('#seriesName').selectmenu("refresh");
+                }else{
+                    $('#seriesName').val('-1');
+                    $('#seriesName').selectmenu("refresh");
+                }
+            }
+        });
+
+    }
     function submitTrialrun(){
-        //alert("begin");
         var postData={};
         var temp=user.split('@');
         postData.wx_oid=temp[0]+":"+temp[1];
         postData.acc_id=document.getElementById("acc_id").value;
         postData.s4_id=document.getElementById("s4_id").value;
-        postData.name=document.getElementById("name").value;
+        postData.name=document.getElementById("nick").value;
         postData.phone=document.getElementById("phone").value;
         postData.seriesName= $("#seriesName").find("option:selected").text(); // document.getElementById("seriesName").value;
         postData.bookDate=document.getElementById("start").value;
         postData.bookTime=document.getElementById("end").value;
 
+        /**试乘试驾预约信息验证--start by JL*/
+        if(postData.name == ""){
+            alert("请填写预约车主姓名!");
+            return;
+        }
+        if(postData.phone == "")
+        {
+            alert("请填写预约电话!");
+            return;
+        }
+        if(postData.seriesName == "请选择")
+        {
+            alert("请选择车型!");
+            return;
+        }
+        today=new Date();
+        if(parseInt(postData.bookDate.substring(0,4)) < parseInt(defaultDate().substring(0,4)))
+        {
+            alert("该时间已过期!");
+            return;
+        }else if(parseInt(postData.bookDate.substring(0,4)) == parseInt(defaultDate().substring(0,4)))
+        {
+          if(parseInt(postData.bookDate.substring(5,7)) < parseInt(defaultDate().substring(5,7)))
+          {
+              alert("该时间已过期!");
+              return;
+          }
+          else if(parseInt(postData.bookDate.substring(5,7)) == parseInt(defaultDate().substring(5,7))){
+              if(parseInt(postData.bookDate.substring(8,10)) < parseInt(defaultDate().substring(8,10)))
+              {
+                  alert("该时间已过期!");
+                  return;
+              }
+              else if(parseInt(postData.bookDate.substring(8,10)) == parseInt(defaultDate().substring(8,10))){
+                 if(parseInt(postData.bookDate) == parseInt(defaultDate())){
+                if(parseInt(postData.bookTime.substring(0,2))<parseInt(today.getHours()))
+                {
+                     alert("该时间已过期!");
+                     return;
+                }
+                else if(parseInt(postData.bookTime.substring(0,2))==parseInt(today.getHours())){
+                    if(parseInt(postData.bookTime.substring(3,5))<parseInt(today.getMinutes())){
+                        alert("该时间已过期!");
+                        return;
+                    }
+                }
+              }
+            }
+          }
+        }
         var series = $('#seriesName').val();
-        var args=JSON.stringify({'brand':brand,'series':series});
+        var brand = $("#brand").val();
+        var args=JSON.stringify({'brand':brand,'series':series,nick:postData.name,phone:postData.phone});
         postData.args=args;
         //alert("开始提交");
         $.ajax({
@@ -127,12 +192,15 @@
             data: postData,
             dataType: "json",
             success: function (result,status) {
-                window.location="/msite/trialResult.html?state=1";
-
+                //alert(result.fuelData.length);
+                document.getElementById("bookStatus").innerHTML="<div>"+
+                        "<span class='text_03' id='note'>您的预约申请已提交，<br/>您可以在'我的预约'中查看申请结果，<br/>请您耐心等待，谢谢！</span></div>";
+                document.getElementById('regsiterbutton').innerHTML='';
             },
-            error:function(XMLHttpRequest, textStatus, errorThrown){
-                //alert("连接失败\n请检查网络连接是否正常");
-                window.location="/msite/trialResult.html?state=0";
+            error:function(){
+                document.getElementById("bookStatus").innerHTML="<div>"+
+                        "<span class='text_03' id='note'>预约失败，请检查网络连接！</span></div>";
+                document.getElementById("regsiterbutton").innerHTML='';
             }
         });
     }
@@ -141,16 +209,24 @@
 
     function init(){
         user=getQueryString("user");
+        document.getElementById("start").value=defaultDate();
+        searchUser();
+//        searchSeriesName();
+        getBrand();
+    }
+    function defaultDate()
+    {
         today=new Date();
         year=today.getFullYear();    //获取完整的年份(4位,1970-????)
         month=(today.getMonth()+1>9)?today.getMonth()+1:"0"+(today.getMonth()+1);     //获取当前月份(0-11,0代表1月)
-        day=today.getDate()>9?today.getDate():"0"+today.getDate();;        //获取当前日(1-31)
-        document.getElementById("start").value=year+"-"+month+"-"+day;
-        searchUser();
-        searchSeriesName();
+        day=today.getDate()>9?today.getDate():"0"+today.getDate();        //获取当前日(1-31)
+        return year+"-"+month+"-"+day;
     }
 
-</script>
+    $(document).ready(function(){
+        init();
+    });
 
+</script>
 </body>
 </html>

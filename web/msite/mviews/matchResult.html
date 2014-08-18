@@ -23,11 +23,10 @@
             <div class="detail_titlie center" ng-repeat = "mrl in matchResultList">
                 <h1 id="title">{{mrl.title}}</h1>
                 <h6 class="text_05" id="announce" style="text-align: left">发布时间：{{mrl.tm_announce}}</h6><br>
-                <h6 class="text_05" style="text-align: left">发布单位：{{mrl.name}}</h6><br>
                 <h6 class="text_05" id="start_end" style="text-align: left">活动时间：{{mrl.tm_start}} 至 {{mrl.tm_end}}</h6><br>
                 <h6 class="text_05" id="act_condition" style="text-align: left" >活动要求：活动期间最小里程为{{mrl.min_milage}}</h6><br>
                 <div class="detai_text">
-                    <img src="../../{{mrl.logo_url}}" alt="" style="max-width: 290px">
+                    <!--<img src="../../{{mrl.logo_url}}" alt="" style="max-width: 290px">-->
                     <p class="text_06" id="content" ng-bind-html="mrl.awards"></p>
                 </div>
 

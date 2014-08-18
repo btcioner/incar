@@ -39,7 +39,7 @@ var menuObject = {
                 },
                 {
                     "type": "click",
-                    "name": "行车报告",
+                    "name": "用车报告",
                     "key": "MYCAR.COST"
                 }
             ]
@@ -73,29 +73,29 @@ var menuObject = {
             "name": "发现",
             "sub_button": [
                 {
-                    "type": "view",
+                    "type": "click",
                     "name": "我的活动",
-                    "url": "msite/myActivity.html"
+                    "key": "ETC.MYACT"
                 },
                 {
-                    "type": "view",
+                    "type": "click",
                     "name": "我的预约",
-                    "url": "msite/myBooking.html"
+                    "key": "ETC.MYBKG"
                 },
                 {
-                    "type": "view",
-                    "name": "设置",
-                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=app_id"+
-                        "&redirect_uri=baseurl/msite/infoConfig.html"+
-                        "&response_type=code&scope=snsapi_base&state=app_id_1#wechat_redirect"
+                    "type": "click",
+                    "name": "我的信息",
+                    "key": "ETC.CFG"
                 }
             ]
         }
     ]
 };
 wxMenu.defineTasks = function (tickTasks, callback) {
-    //console.log("menu begins");
-    menuBuilder(tickTasks, menuObject, callback);
+    if(process.env.INCAR_REG_WXMENU || process.env.NODE_ENV !== 'development')
+        menuBuilder(tickTasks, menuObject, callback);
+    else
+        console.info("development环境默认不启用微信菜单注册,除非定义了INCAR_REG_WXMENU=true");
 };
 wxMenu.textMsgRepliers = [];
 
@@ -119,10 +119,10 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
             if (err) {
                 console.error(err);
                 task.B = {
-                        title: '购买并注册OBD获取查看平均油耗、碳排放、驾驶行为、速段统计等更多功能',
-                        description: '请向4S店购买并注册OBD获取此功能',
-                        picurl: url.resolve("http://" + req.headers.host, "data/drive_analyse.jpg"),
-                        url: ''
+                    title: '购买并注册OBD获取查看平均油耗、碳排放、驾驶行为、速段统计等更多功能',
+                    description: '请向4S店购买并注册OBD获取此功能',
+                    picurl: url.resolve("http://" + req.headers.host, "data/drive_analyse.jpg"),
+                    url: ''
                 };
             }
             else {
@@ -138,13 +138,18 @@ wxMenu.onClick['MYCAR.MYDRIVE'] = function (message, req, next) {
         });
     };
     task.end = function () {
-        if(task.finished < 2) return;
+        if (task.finished < 2) return;
         var wxMsg = [task.B];
-        for(var i=0;i<task.A.news.length;i++){
+        for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
+            var logo_url = "";
+            if(news.logo_url)
+            {
+                logo_url = news.logo_url;
+            }
             wxMsg.push({
                 title: news.title,
-                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                picurl: url.resolve("http://" + req.headers.host, logo_url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
@@ -168,34 +173,39 @@ wxMenu.onClick['MYCAR.DRIVERECORD'] = function (message, req, next) {
             if (err) {
                 console.error(err);
                 task.B =
-                    {
-                        title: '请向4S店购买并注册OBD获取此功能',
-                        description: '请向4S店购买并注册OBD获取此功能',
-                        picurl: url.resolve("http://" + req.headers.host, "data/drive_records.jpg"),
-                        url: ''
-                    };
+                {
+                    title: '请向4S店购买并注册OBD获取此功能',
+                    description: '请向4S店购买并注册OBD获取此功能',
+                    picurl: url.resolve("http://" + req.headers.host, "data/drive_records.jpg"),
+                    url: ''
+                };
             }
             else {
                 task.B =
-                    {
-                        title: '点击查看所有行车记录',
-                        description: reportContent,
-                        picurl: url.resolve("http://" + req.headers.host, "data/drive_records.jpg"),
-                        url: url.resolve("http://" + req.headers.host, "msite/driveRecord.html?user=") + message.FromUserName + '@' + message.ToUserName
-                    };
+                {
+                    title: '点击查看所有行车记录',
+                    description: reportContent,
+                    picurl: url.resolve("http://" + req.headers.host, "data/drive_records.jpg"),
+                    url: url.resolve("http://" + req.headers.host, "msite/driveRecord.html?user=") + message.FromUserName + '@' + message.ToUserName
+                };
             }
             task.finished++;
             task.end();
         });
     };
     task.end = function () {
-        if(task.finished < 2) return;
+        if (task.finished < 2) return;
         var wxMsg = [task.B];
-        for(var i=0;i<task.A.news.length;i++){
+        for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
+            var logo_url = "";
+            if(news.logo_url)
+            {
+                logo_url = news.logo_url;
+            }
             wxMsg.push({
                 title: news.title,
-                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                picurl: url.resolve("http://" + req.headers.host, logo_url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
@@ -225,13 +235,18 @@ wxMenu.onClick['MYCAR.MAINTAIN'] = function (message, req, next) {
         task.end();
     };
     task.end = function () {
-        if(task.finished < 2) return;
+        if (task.finished < 2) return;
         var wxMsg = [task.B];
-        for(var i=0;i<task.A.news.length;i++){
+        for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
+            var logo_url = "";
+            if(news.logo_url)
+            {
+                logo_url = news.logo_url;
+            }
             wxMsg.push({
                 title: news.title,
-                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                picurl: url.resolve("http://" + req.headers.host, logo_url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
@@ -263,13 +278,18 @@ wxMenu.onClick['MYCAR.MANUAL'] = function (message, req, next) {
         });
     };
     task.end = function () {
-        if(task.finished < 2) return;
+        if (task.finished < 2) return;
         var wxMsg = [task.B];
-        for(var i=0;i<task.A.news.length;i++){
+        for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
+            var logo_url = "";
+            if(news.logo_url)
+            {
+                logo_url = news.logo_url;
+            }
             wxMsg.push({
                 title: news.title,
-                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                picurl: url.resolve("http://" + req.headers.host, logo_url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
@@ -290,7 +310,7 @@ wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
 
         // task B
         task.B = {
-            title: "点击查看行车报告",
+            title: "点击查看用车报告",
             description: "",
             picurl: url.resolve("http://" + req.headers.host, "data/car_report.jpg"),
             url: url.resolve("http://" + req.headers.host, "msite/travelReport.html?user=" + message.FromUserName + "@" + message.ToUserName)
@@ -299,13 +319,18 @@ wxMenu.onClick['MYCAR.COST'] = function (message, req, next) {
         task.end();
     };
     task.end = function () {
-        if(task.finished < 2) return;
+        if (task.finished < 2) return;
         var wxMsg = [task.B];
-        for(var i=0;i<task.A.news.length;i++){
+        for (var i = 0; i < task.A.news.length; i++) {
             var news = task.A.news[i];
+            var logo_url = "";
+            if(news.logo_url)
+            {
+                logo_url = news.logo_url;
+            }
             wxMsg.push({
                 title: news.title,
-                picurl: url.resolve("http://" + req.headers.host, news.logo_url),
+                picurl: url.resolve("http://" + req.headers.host, logo_url),
                 url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news.id
             });
         }
@@ -325,7 +350,7 @@ wxMenu.onClick['MY4S.PROBE'] = function (message, req, next) {
             {
                 title: '试乘试驾',
                 description: result,
-                picurl: '',
+                picurl: url.resolve("http://" + req.headers.host, 'data/act_info.jpg'),
                 url: url.resolve("http://" + req.headers.host, "msite/trialrun.html?user=") + message.FromUserName + '@' + message.ToUserName
             }
         ]);
@@ -378,4 +403,55 @@ wxMenu.onClick['MY4S.CONTACT'] = function (message, req, next) {
         ]);
     });
 };
+
+wxMenu.onClick['ETC.CFG'] = function(message, req, next){
+    var topMsg = {
+        title: "点击配置我的车辆",
+        description:"点击配置我的车辆",
+        picurl: url.resolve("http://" + req.headers.host, "data/my_config.jpg"),
+        url: url.resolve("http://" + req.headers.host, "msite/infoConfig.html?user=") + message.FromUserName + '@' + message.ToUserName
+    };
+    return onClickETC(topMsg, message, req, next);
+};
+
+wxMenu.onClick['ETC.MYACT'] = function(message, req, next){
+    var topMsg = {
+        title: "点击查看我的活动",
+        description:"点击查看我的活动",
+        picurl: url.resolve("http://" + req.headers.host, "data/my_activities.jpg"),
+        url: url.resolve("http://" + req.headers.host, "msite/myActivity.html?user=") + message.FromUserName + '@' + message.ToUserName
+    };
+    return onClickETC(topMsg, message, req, next);
+};
+
+wxMenu.onClick['ETC.MYBKG'] = function(message, req, next){
+    var topMsg = {
+        title: "点击查看我的预约",
+        description:"点击查看我的预约",
+        picurl: url.resolve("http://" + req.headers.host, "data/my_bookings.jpg"),
+        url: url.resolve("http://" + req.headers.host, "msite/myBooking.html?user=") + message.FromUserName + '@' + message.ToUserName
+    };
+    return onClickETC(topMsg, message, req, next);
+};
+
+function onClickETC(topMsg, message, req, next){
+    var wxMsg = [topMsg];
+    my4S.mostNews(message.FromUserName, message.ToUserName, req.wxsession, function (news) {
+        for (var i = 0; i < news.length; i++) {
+            var logo_url = "";
+            if(news[i].logo_url)
+            {
+                logo_url = news[i].logo_url;
+            }
+            wxMsg.push({
+                title: news[i].title,
+                picurl: url.resolve("http://" + req.headers.host, logo_url),
+                url: url.resolve("http://" + req.headers.host, "msite/activityDetail.html?user=") + message.FromUserName + '@' + message.ToUserName + '&id=' + news[i].id
+            });
+        }
+
+        return next(null, wxMsg);
+    });
+}
+
 exports = module.exports = wxMenu;

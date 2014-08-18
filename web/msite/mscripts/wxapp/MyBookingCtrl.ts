@@ -69,6 +69,7 @@ module wxApp{
                         data[i].work_type = "试驾";
                         this.my_works.push(data[i]);
                     }
+                    this.qry_returned++;
                 })
                 .error((data, status, headers, config)=>{ console.log(status); });
         };
@@ -83,6 +84,7 @@ module wxApp{
                         data[i].seriesName = data[i].license;
                         this.my_works.push(data[i]);
                     }
+                    this.qry_returned++;
                 })
                 .error((data, status, headers, config)=>{ console.log(status); });
         };
@@ -129,6 +131,7 @@ module wxApp{
         private user_openid:string;
         private wx_oid:string;
         private car_license:string;
+        private qry_returned = 0;
         private my_works = [];
         private $http: any;
     }

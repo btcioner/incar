@@ -237,6 +237,8 @@ function s_customerCtrl($scope, $http,$routeParams){
                     $scope.careList[i].working_time =  $.changeDate($scope.careList[i].working_time);
                     $scope.careList[i].created_time =  $.changeDate($scope.careList[i].created_time);
                     $scope.careList[i].updated_time =  $.changeDate($scope.careList[i].updated_time);
+                    $scope.careList[i].json_args.begin_time =  $.changeDate($scope.careList[i].json_args.begin_time);
+                    $scope.careList[i].json_args.end_time =  $.changeDate($scope.careList[i].json_args.end_time);
                     $scope.careList[i].step = $.changeWorkStatus($scope.careList[i].step);
                 }
             }
@@ -273,6 +275,8 @@ function s_customerCtrl($scope, $http,$routeParams){
     $scope.customerDetail = function(id)
     {
         $scope.cusDetail = $scope.carowners[id];
+        $scope.reservationList = true;
+        $scope.reservationAdd = false;
         getReservationRecord();
         $scope.cusDetailDiv = true;
         $scope.cusListDiv = false;
@@ -305,6 +309,8 @@ function s_customerCtrl($scope, $http,$routeParams){
         switch(id)
         {
             case 1:
+                $scope.reservationList = true;
+                $scope.reservationAdd = false;
                 getReservationRecord();
                 break;
             case 2:
@@ -513,6 +519,10 @@ function s_customerCtrl($scope, $http,$routeParams){
             case 4:
                 changeView(3)
                 break;
+            case 5:
+                $scope.reservationList = true;
+                $scope.reservationAdd = false;
+                break;
         }
     }
  //自定义标签相关
@@ -569,7 +579,38 @@ function s_customerCtrl($scope, $http,$routeParams){
                 });
         }
     }
+//手动添加车主保养记录
+  $scope.addReservation = function()
+  {
+      $scope.begin_time = "";
+      $scope.care_mileage = "";
+      $scope.care_items = "";
+      $scope.care_cost = "";
+      $scope.reservationList = false;
+      $scope.reservationAdd = true;
+  }
 
-
-
+//确定手动添加车主保养记录
+  $scope.addReservationConfirm = function()
+  {
+      $scope.reservationList = true;
+      $scope.reservationAdd = false;
+      $scope.postData={begin_time:$scope.begin_time,care_mileage:$scope.care_mileage,
+                      care_items:$scope.care_items,care_cost:$scope.care_cost,step:"done",car_id:$scope.cusDetail.carId,cust_id:$scope.cusDetail.accountId,
+                      working_time:$scope.begin_time,op:"apply"};
+      $http.post(baseurl+'organization/'+$.cookie("s4_id")+'/work/care',$scope.postData).success(function(data){
+           if(data.status == "ok")
+           {
+               alert("添加成功!");
+               getReservationRecord();
+               $scope.reservationAdd = false;
+               $scope.reservationList = true;
+           }
+          else{
+               alert(data.status);
+           }
+      }).error(function(data){
+          alert("请求无响应!");
+      });
+  }
 }

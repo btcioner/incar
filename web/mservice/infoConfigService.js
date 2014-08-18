@@ -57,6 +57,7 @@ function getAccountInfo(db, userName, callback) {
                 report.phone = rows[0].phone;
                 report.nick = rows[0].nick;
                 report.wx_oid = rows[0].wx_oid;
+                if(report.nick == "微信匿名用户")report.nick ="";
                 callback(null, 1);
             } else {
                 // 2014世界杯德国7-1大胜巴西纪念日
@@ -75,6 +76,7 @@ function getAccountInfo(db, userName, callback) {
                                 nick: '微信匿名用户'
                             };
                             var s4_brand = result[0].brand;
+
                             pool.query("INSERT INTO t_account SET ?", [wx_user], function (ex, result) {
                                 if(ex) return callback(ex);
                                 else{

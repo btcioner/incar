@@ -51,7 +51,7 @@
                             <th class="tablestyle-02">{{cusDetail.nickName}}</th>
                             <th class="tablestyle-01">联系电话</th>
                             <th class="tablestyle-02">{{cusDetail.phone}}</th>
-                            <th class="tablestyle-01">OBD编号</th>
+                            <th class="tablestyle-01">终端编号</th>
                             <th class="tablestyle-02">{{cusDetail.obdCode}}</th>
                         </tr>
                         <tr>
@@ -81,21 +81,23 @@
                 </div>
                 <div class="widget-content tab-content" style="border-top-width:0px;border-left-width:0px;">
                     <div id="tab1" class="tab-pane active">
+                       <div ng-show="reservationList" >
                         <table class="table table-bordered data-table">
                             <thead>
+                            <tr>
+                                <th style="text-align: right" colspan="4"><a ng-click="addReservation();" class="btn btn-success btn-mini">添加+</a></th>
+                            </tr>
                             <tr class="bgcolor01">
-                                <th>保养时间</th>
-                                <th>保养来源</th>
+                                <th>保养日期</th>
                                 <th>保养里程</th>
-                                <th>保养类型</th>
+                                <th>保养项目</th>
                                 <th>保养费用(RMB)</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr class="gradeX" ng-repeat="cl in careList">
-                                <td id="tdc">{{cl.working_time}}</td>
-                                <td id="tdc">微信</td>
-                                <td id="tdc"></td>
+                                <td id="tdc">{{cl.json_args.begin_time}}</td>
+                                <td id="tdc">{{cl.json_args.care_mileage}}</td>
                                 <td id="tdc">{{cl.json_args.care_items}}</td>
                                 <td id="tdc">{{cl.json_args.care_cost}}</td>
                             </tr>
@@ -108,7 +110,51 @@
                             <option>1</option>
                         </select>页
                         </div>
+                       </div>
+                       <!--手动添加保养记录 start-->
+                       <div class="widget-box" ng-show="reservationAdd">
+                               <div class="widget-title">
+                                   <span class="icon"><i class="icon-th"></i></span>
+                                   <h5>添加保养</h5>
+                               </div>
+                               <div class="widget-content nopadding">
+                                   <form class="form-horizontal formstyle_box03">
+                                       <div class="control-group w_44 fl" >
+                                           <label class="control-label pad_l20 w_100">保养日期：</label>
+                                           <div class="controls pad_t_b_10">
+                                               <input type="text" class="span11"  ng-model="begin_time" placeholder="格式:2014-06-28" style="width:300px;"/>
+                                           </div>
+                                       </div>
+                                       <div class="control-group w_44 fl" >
+                                           <label class="control-label pad_l20 w_100">保养项目：</label>
+                                           <div class="controls pad_t_b_10">
+                                               <textarea class="span11"  ng-model="care_items" style="width:300px;"></textarea>
+                                           </div>
+                                       </div>
+                                       <div class="control-group w_44 fl" >
+                                           <label class="control-label pad_l20 w_100">保养费用：</label>
+                                           <div class="controls pad_t_b_10">
+                                               <input type="text" class="span11"  ng-model="care_cost" style="width:300px;"/>(RMB)
+                                           </div>
+                                       </div>
+                                       <div class="control-group w_44 fl" >
+                                           <label class="control-label pad_l20 w_100">保养里程：</label>
+                                           <div class="controls pad_t_b_10">
+                                               <input type="text" class="span11"  ng-model="care_mileage" style="width:300px;"/>
+                                           </div>
+                                       </div>
+                                       <div class="clearfix"></div>
+                                       <!--button_box01 start-->
+                                       <div class="button_box01">
+                                           <button type="button" style="margin-right:40px;"  class="btn btn-large btn-success" ng-click="addReservationConfirm();">确&nbsp;&nbsp;定</button>
+                                           <button type="button"  class="btn btn-large btn-danger"   ng-click="gotoBack(5)">取&nbsp;&nbsp;消</button>
+                                       </div><!--button_box01 start-->
+                                   </form>
+                               </div>
+                           </div>
+                       <!--手动添加保养记录 end-->
                     </div>
+
                     <div id="tab2" class="tab-pane">
                         <table class="table table-bordered data-table">
                             <thead>
@@ -187,7 +233,7 @@
                                 <th>4S店</th>
                                 <th>品牌</th>
                                 <th>车系</th>
-                                <th>OBD编号</th>
+                                <th>终端编号</th>
                                 <th>VIN码</th>
                                 <th>点火时间</th>
                                 <th>本次行驶里程(km)</th>
@@ -233,7 +279,7 @@
                                 <th class="tablestyle-02">{{custInfo.nick}}</th>
                                 <th class="tablestyle-01">联系电话</th>
                                 <th class="tablestyle-02">{{custInfo.phone}}</th>
-                                <th class="tablestyle-01">OBD编号</th>
+                                <th class="tablestyle-01">终端编号</th>
                                 <th class="tablestyle-02">{{carInfo.obd_code}}</th>
                                 <th class="tablestyle-01">SIM卡号</th>
                                 <th class="tablestyle-02">{{carInfo.sim_number}}</th>
@@ -293,7 +339,7 @@
                         <table class="table table-bordered" ng-show="oneDetailDiv">
                             <thead>
                             <tr class="bgcolor01">
-                                <th>OBD设备编号</th>
+                                <th>终端编号</th>
                                 <th>行驶编号</th>
                                 <th>创建时间</th>
                                 <th>操作</th>
@@ -406,7 +452,7 @@
                             <th>联系电话</th>
                             <th>车型</th>
                             <th>车款</th>
-                            <th>OBD编号</th>
+                            <th>终端编号</th>
                             <th>车牌号</th>
                             <th>操作</th>
                         </tr>
@@ -484,7 +530,7 @@
                 <div class="widget-content">
                     <form class="form-horizontal formstyle_box03">
                         <div class="control-group w_44 fl" >
-                            <label class="control-label pad_l20 w_100">OBD编号：</label>
+                            <label class="control-label pad_l20 w_100">终端编号：</label>
                             <div class="controls pad_t_b_10">
                                 <input type="text"  class="span11"  ng-model="label_name" style="width:300px;" />
                             </div>

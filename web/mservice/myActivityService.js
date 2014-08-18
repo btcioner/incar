@@ -47,7 +47,7 @@ function search(db, acc_id, s4id, callback) {
                                 callback(null, myActData);
                             }
                         }
-                    }
+                    };
                     for (var i = 0; i < rows.length; i++) {
                         //console.log("value:"+rows[i].act_id+"_"+s4id);
                         var st = rows[i].status;
@@ -74,6 +74,7 @@ function search(db, acc_id, s4id, callback) {
                                 act_detail.end();
                             });
                     }
+                    if(rows.length === 0) act_detail.end();
                 } else callback(new Error("t_activity_member data error."));
             }
         });

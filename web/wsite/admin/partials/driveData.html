@@ -29,7 +29,7 @@
                           <th class="tablestyle-02">{{deviceDetail.cust_name}}</th>
                           <th class="tablestyle-01">联系电话</th>
                           <th class="tablestyle-02">{{deviceDetail.cust_phone}}</th>
-                          <th class="tablestyle-01">OBD编号</th>
+                          <th class="tablestyle-01">终端编号</th>
                           <th class="tablestyle-02">{{chooseOC}}</th>
                           <th class="tablestyle-01">SIM卡号</th>
                           <th class="tablestyle-02">{{deviceDetail.sim_number}}</th>
@@ -92,7 +92,7 @@
                   <table class="table table-bordered">
                      <thead>
                           <tr class="bgcolor01">
-                              <th>OBD设备编号</th>
+                              <th>终端设备编号</th>
                               <th>行驶编号</th>
                               <th>创建时间</th>
                               <th>操作</th>
@@ -164,8 +164,8 @@
                         <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4S店：&nbsp;&nbsp;&nbsp;
                             <select style="width:150px;" ng-model="s4_id" ng-options="s4.id as s4.name for s4 in s4s">
                         </select></th>
-                        <th style="vertical-align: middle;">OBD编号： &nbsp;&nbsp;&nbsp;
-                            <input type="text" class="span11" placeholder="12位OBD编号" style="width:150px;" ng-model="obd_num"/></th>
+                        <th style="vertical-align: middle;">终端编号： &nbsp;&nbsp;&nbsp;
+                            <input type="text" class="span11" placeholder="请输入终端编号" style="width:150px;" ng-model="obd_num"/></th>
                         </tr>
                         <tr>
                         <th style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品牌：&nbsp;&nbsp;&nbsp;
@@ -205,7 +205,7 @@
                         <th>4S店</th>
                         <th>品牌</th>
                         <th>车系</th>
-                        <th>OBD编号</th>
+                        <th>终端编号</th>
                         <th>VIN码</th>
                         <th>点火时间</th>
                         <th>本次行驶里程(km)</th>

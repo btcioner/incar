@@ -9,16 +9,18 @@ module Service{
 
         var task:any = { finished: 0 };
         task.begin = ()=>{
-            var sql = "SELECT C.id, C.obd_code, C2.brand, C2.series,U.acc_id AS owner_id, A.nick AS owner_nick, A.phone As owner_phone,\n" +
-                "\tmax(D.mileage) AS max_mileage, sum(D.runtime)/60 AS max_hour,\n"+
+            var sql = "SELECT C.id, C.obd_code, C2.brand, C2.series, C.age, U.acc_id AS owner_id, A.nick AS owner_nick, A.phone As owner_phone,\n" +
+                "\tmax(D.mileage) AS max_mileage,\n" +
+                "\tdatediff(now(),ifnull(max(W.working_time),C.age))*24 AS care_since_hours,\n"+
                 "\tC2.care_mileage, C2.care_hour\n" +
                 "FROM t_car C\n" +
                 "\tJOIN t_car_dictionary C2 ON C.brand = C2.brandCode and C.series = C2.seriesCode\n" +
                 "\tJOIN t_obd_drive D ON C.obd_code = D.obdCode\n" +
                 "\tLEFT OUTER JOIN t_car_user U ON U.car_id = C.id and U.user_type = 1\n" +
                 "\tLEFT OUTER JOIN t_account A ON A.id = U.acc_id and A.s4_id = U.s4_id\n" +
-                "WHERE C.s4_id = ? and C.id NOT IN(SELECT car_id FROM t_work WHERE work='care' and step in ('applied','approved','refused'))\n" +
-                "GROUP BY C.id HAVING (max_mileage >= C2.care_mileage or max_hour >= C2.care_hour)";
+                "\tLEFT OUTER JOIN t_work W ON W.work = 'care' and W.step = 'step' and W.car_id = C.id\n" +
+                "WHERE C.s4_id = ? -- and C.id NOT IN(SELECT car_id FROM t_work WHERE work='care' and step in ('applied','approved','refused'))\n" +
+                "GROUP BY C.id HAVING (max_mileage >= C2.care_mileage) or care_since_hours >= C2.care_hour";
             var args = [req.params.org_id];
 
             dac.query(sql, args, (ex, result)=>{
@@ -34,13 +36,13 @@ module Service{
             task.A.result.forEach((entry:any)=>{
                 var sql = "SELECT * FROM t_work\n" +
                     "WHERE org_id = ? and car_id = ? and work = 'care' and step = 'done'\n" +
-                    "ORDER BY updated_time DESC LIMIT 1";
+                    "ORDER BY working_time DESC LIMIT 1";
                 dac.query(sql, [req.params.org_id, entry.id], (ex, result)=>{
                     task.finished++;
                     if(ex || result.length === 0){
                         // 无保养纪录,符合条件
                         entry.new_mileage = entry.max_mileage;
-                        entry.new_hour = entry.max_hour;
+                        entry.new_hour = entry.care_since_hours;
                         entry.last_care_time = null;
                         task.B.push(entry);
                     }
@@ -48,10 +50,10 @@ module Service{
                         try{
                             var json_args = JSON.parse(result[0].json_args);
                             if(json_args.care_mileage && json_args.care_hour){
-                                if(entry.max_mileage - json_args.care_mileage >= entry.care_mileage || entry.max_hour - json_args.care_hour >= entry.care_hour){
+                                if(entry.max_mileage - json_args.care_mileage >= entry.care_mileage || entry.care_since_hours >= entry.care_hour){
                                     // 扣除最后一次保养,仍然符合条件的
                                     entry.new_mileage = entry.max_mileage - json_args.care_mileage;
-                                    entry.new_hour = entry.max_hour - json_args.care_hour;
+                                    entry.new_hour = entry.care_since_hours;
                                     entry.last_care_time = result[0].updated_time;
                                     task.B.push(entry);
                                 }
@@ -59,7 +61,7 @@ module Service{
                             else{
                                 // 解析不出保养里程,也算符合条件
                                 entry.new_mileage = entry.max_mileage;
-                                entry.new_hour = entry.max_hour;
+                                entry.new_hour = entry.care_since_hours;
                                 entry.last_care_time = result[0].updated_time;
                                 task.B.push(entry);
                             }
@@ -67,7 +69,7 @@ module Service{
                         catch(e){
                             // 解析不出,也算符合条件
                             entry.new_mileage = entry.max_mileage;
-                            entry.new_hour = entry.max_hour;
+                            entry.new_hour = entry.care_since_hours;
                             entry.last_care_time = result[0].updated_time;
                             task.B.push(entry);
                             console.log(new TaskException(-1, "解析t_work.json_args失败", e));
@@ -265,11 +267,12 @@ module Work{
                 return;
             }
 
-            this.step = "applied";
+            this.step = "done";
             this.org_id = req.params.org_id;
             this.car_id = data.car_id;
             this.cust_id = data.cust_id;
             this.working_time = data.working_time;
+
 
             Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
@@ -303,7 +306,14 @@ module Work{
 
                     task.RegistWork = (booking_id:number)=>{
                         // 向t_work中登记
-                        this.json_args = JSON.stringify({oper:userLogin.dto.nick,via:"web"});
+                        this.json_args = JSON.stringify({
+                            oper:userLogin.dto.nick,
+                            via:"web",
+                            begin_time:data.begin_time,
+                            care_mileage:data.care_mileage,
+                            care_items:data.care_items,
+                            care_cost:data.care_cost
+                        });
                         this.work_ref_id = booking_id;
 
                         var sql2 = "INSERT t_work SET ?";
@@ -339,7 +349,10 @@ module Work{
                         oper: userLogin.dto.nick,
                         brand:data.brand,
                         series:data.series,
-                        license:data.license
+                        license:data.license,
+                        nick:data.nick,
+                        phone:data.phone,
+                        mileage:data.mileage
                     });
                     console.log(this.json_args);
 //                  this.json_args = JSON.stringify({oper:userLogin.dto.nick});
@@ -384,7 +397,10 @@ module Work{
                         brand:req.body.brand,
                         series:req.body.series,
                         reason:req.body.reason,
-                        license:req.body.license
+                        license:req.body.license,
+                        nick:req.body.nick,
+                        phone:req.body.phone,
+                        mileage:req.body.mileage
                     });
 
                     var sql = "UPDATE t_work SET step = 'rejected', json_args = ? WHERE id = ? and step = 'applied'";
@@ -420,7 +436,8 @@ module Work{
             Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return; }
                 else{
-                    var args:any = { oper:userLogin.dto.nick,brand:req.body.brand,series:req.body.series,license:req.body.license};
+                    var args:any = { oper:userLogin.dto.nick,brand:req.body.brand,series:req.body.series,license:req.body.license,nick:req.body.nick,
+                                     phone:req.body.phone,mileage:req.body.mileage};
 
                     if(req.body.reason) args.reason = req.body.reason;
 
@@ -460,7 +477,8 @@ module Work{
             Service.Staff.CreateFromToken(req.cookies.token, (ex, userLogin)=>{
                 if(ex) {res.json(ex); return;}
                 else{
-                    this.json_args = JSON.stringify({oper:userLogin.dto.nick, reason:req.body.reason,brand:req.body.brand,series:req.body.series,license:req.body.license});
+                    this.json_args = JSON.stringify({oper:userLogin.dto.nick, reason:req.body.reason,brand:req.body.brand,series:req.body.series,license:req.body.license,
+                                                     nick:req.body.nick,phone:req.body.phone,mileage:req.body.mileage});
 
                     var sql = "UPDATE t_work SET step = 'aborted', json_args = ? WHERE id = ? and step = 'approved'";
                     var dac = Service.MySqlAccess.RetrievePool();
@@ -515,7 +533,10 @@ module Work{
                             end_time: data.end_time,
                             brand:data.brand,
                             series:data.series,
-                            license:data.license
+                            license:data.license,
+                            nick:data.nick,
+                            phone:data.phone,
+                            mileage:data.mileage
                         });
 
                         var sql = "UPDATE t_work SET step = 'done', json_args = ? WHERE id = ? and step = 'approved'";

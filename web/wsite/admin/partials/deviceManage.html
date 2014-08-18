@@ -12,7 +12,7 @@
 <div class="widget-content" >
     <form class="form-horizontal formstyle_box03">
         <div class="control-group w_44 fl" >
-            <label class="control-label pad_l20 w_100">OBD编号：</label>
+            <label class="control-label pad_l20 w_100">终端编号：</label>
             <div class="controls pad_t_b_10">
                 <input type="text" class="span11"  ng-model="obd_code" style="width:300px;"/>
             </div>
@@ -36,7 +36,7 @@
     <div class="widget-content">
         <form class="form-horizontal formstyle_box02">
             <div class="control-group w_44 fl" >
-                <label class="control-label pad_l20 w_100">OBD编号：</label>
+                <label class="control-label pad_l20 w_100">终端编号：</label>
                 <div class="controls pad_t_b_10">
                     <input type="text"  class="span11" disabled ng-model="deviceDetail.obd_code" style="width:260px;" />
                 </div>
@@ -114,7 +114,7 @@
         <table class="table table-bordered ">
             <thead>
             <tr>
-                <th class="tablestyle-01">OBD编号</th>
+                <th class="tablestyle-01">终端编号</th>
                 <th class="tablestyle-02">{{deviceDetail.obdNum}}</th>
                 <th class="tablestyle-01">SIM卡号</th>
                 <th class="tablestyle-02">{{deviceDetail.sim_number}}</th>
@@ -155,7 +155,7 @@
                 <th>4S店</th>
                 <th>品牌</th>
                 <th>车系</th>
-                <th>OBD编号</th>
+                <th>终端编号</th>
                 <th>VIN码</th>
                 <th>点火时间</th>
                 <th>本次行驶里程(km)</th>
@@ -217,7 +217,7 @@
                 <th class="tablestyle-02">{{deviceDetail.cust_name}}</th>
                 <th class="tablestyle-01">联系电话</th>
                 <th class="tablestyle-02">{{deviceDetail.cust_phone}}</th>
-                <th class="tablestyle-01">OBD编号</th>
+                <th class="tablestyle-01">终端编号</th>
                 <th class="tablestyle-02">{{chooseOC}}</th>
                 <th class="tablestyle-01">SIM卡号</th>
                 <th class="tablestyle-02">{{deviceDetail.sim_number}}</th>
@@ -281,7 +281,7 @@
         <table class="table table-bordered">
             <thead>
             <tr class="bgcolor01">
-                <th>OBD设备编号</th>
+                <th>终端编号</th>
                 <th>行驶编号</th>
                 <th>创建时间</th>
                 <th>操作</th>
@@ -346,7 +346,7 @@
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th style="vertical-align: middle;">OBD编号：&nbsp;&nbsp;
+                <th style="vertical-align: middle;">终端编号：&nbsp;&nbsp;
                     <input type="text"  style="width:150px;" placeholder="" ng-model="ser_obdCode"/></th>
                 <th style="vertical-align: middle;">状态：&nbsp;&nbsp;
                     <select style="width:150px;"  ng-model="act_id" ng-options="act.id as act.name for act in act_status">
@@ -368,7 +368,7 @@
         <table class="table table-bordered ">
             <thead>
             <tr class="bgcolor01">
-                <th>OBD编号</th>
+                <th>终端编号</th>
                 <th>SIM卡号</th>
                 <th>状态</th>
                 <th>添加日期</th>

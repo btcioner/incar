@@ -149,7 +149,7 @@ function s_repairCtrl($scope, $http,$routeParams){
             case "approve":
                 if(confirm("是否已确认?"))
                 {
-                    $scope.postData = {op:"approve"};
+                    $scope.postData = {op:"approve",nick:$scope.triesDetail.json_args.nick,phone:$scope.triesDetail.json_args.phone};
                     $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
                         if(data.status=="ok")
                         {
@@ -244,7 +244,7 @@ function s_repairCtrl($scope, $http,$routeParams){
                 break;
             case 2:
             if(confirm("是否已拒绝?")){
-                $scope.postData={op: "reject", reason:$scope.jj_reason};
+                $scope.postData={op: "reject", reason:$scope.jj_reason,nick:$scope.triesDetail.json_args.nick,phone:$scope.triesDetail.json_args.phone};
                 $http.put(baseurl + 'organization/'+ $.cookie("s4_id")+'/work/drivetry/'+$scope.id,$scope.postData).success(function(data){
                     if(data.status == "ok")
                     {
