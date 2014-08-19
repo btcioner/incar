@@ -79,24 +79,25 @@ exports.loadTravelReport=function(req,res){
                         {
                             title:'行驶里程',
                             unit:'公里',
-                            data:[rows[i].milMe,rows[i].milAll]
+                            data:[{name:'我',y:rows[i].milMe},{name:'大家',y:rows[i].milAll}]
                         },{
                             title:'用车频率',
                             unit:'次',
-                            data:[rows[i].countMe,rows[i].countAll]
+                            data:[{name:'我',y:rows[i].countMe},{name:'大家',y:rows[i].countAll}]
                         },{
                             title:'平均油耗',
                             unit:'升/百公里',
-                            data:[rows[i].avgMe,rows[i].avgAll]
+                            data:[{name:'我',y:rows[i].avgMe},{name:'大家',y:rows[i].avgAll}]
                         },{
                             title:'平均车速',
                             unit:'公里/小时',
-                            data:[rows[i].spdMe,rows[i].spdAll]
+                            data:[{name:'我',y:rows[i].spdMe},{name:'大家',y:rows[i].spdAll}]
                         }]
                     };
                     results[month]=dataMth;
                 }
                 info.data={s4Name:s4Name,results:results};
+                console.log(JSON.stringify(info));
                 res.json(info);
             }
             else{

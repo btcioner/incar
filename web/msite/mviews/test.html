@@ -1,20 +1,66 @@
-<!doctype html>
-<html ng-app="reportApp">
-<head>
-</head>
-<body ng-controller="myTravelReport">
-    <p>{{someText}}</p>
-    <script src="../mscripts/angular.js"></script>
-    <script src="../mscripts/angular-resource.min.js"></script>
-    <script src="../mscripts/angular-route.min.js"></script>
-    <script type="text/javascript">
-        var app = angular.module("reportApp", []);
-        app.controller("myTravelReport", function($scope, $http){
-            $scope.someText='Loading';
-            $http.get('../travelReport/loadTravelReport/1/INCAR000001').success(function(data,status,headers,config){
-                $scope.someText=data;
-            });
-        })
-    </script>
-</body>
-</html>
+<script src="../mscripts/jquery-2.1.1.js" type="text/javascript"></script>
+<script src="../mscripts/highchart4.0/highcharts.js" type="text/javascript"></script>
+<script src="../mscripts/highchart4.0/data.js" type="text/javascript"></script>
+<script src="../mscripts/highchart4.0/drilldown.js" type="text/javascript"></script>
+<script>
+$(function () {
+    var brandsData=[{
+        name:'我',
+        y:12.34
+    },{
+        name:'大家',
+        y:32.34
+    }];
+    $('#container').highcharts({
+        colors: ['#85BB43','#F4AC20'],
+        chart: {
+            type: 'column'
+        },
+        title:{
+            style:{color:"#77787C"}
+        },
+        subtitle:{
+            style:{color:"#A1A2A6"}
+        },
+        credits:{
+            enabled:false   //禁用版权信息
+        },
+        exporting:{
+            enabled:false   //禁用导出
+        },
+        tooltip:{
+            enabled:false   //禁用鼠标提示
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Total percent market share'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}'
+                }
+            }
+        },
+
+        tooltip: {
+            enabled:false
+        },
+
+        series: [{
+            colorByPoint: true,
+            data: brandsData
+        }]
+    });
+});
+</script>
+<div id="container" style="width:160px; height:160px; margin: 0 auto"></div>

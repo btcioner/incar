@@ -11,10 +11,14 @@
     <link type="text/css" rel="stylesheet" href="../mstyles/menustyle.css"/>
     <script src="../mscripts/jquery-2.1.1.js" type="text/javascript"></script>
     <script src="../mscripts/highchart4.0/highcharts.js" type="text/javascript"></script>
-    <script src="../mscripts/highchart4.0/exporting.js" type="text/javascript"></script>
     <script src="../mscripts/angular.js" type="text/javascript"></script>
     <script src="../mscripts/report.js" type="text/javascript"></script>
-
+    <style type="text/css">
+        .selected{
+            color: #FFF;
+            background-color: #43454a;
+        }
+    </style>
 </head>
 <body>
     <div id="wrap" ng-controller="myTravelReport">
@@ -22,7 +26,7 @@
         <div id="menu_box">
             <!--ULmenu start-->
             <ul class="menu" >
-                <li ng-repeat="month in allMonths"><a id="menu_icon1" href="###" ng-click="switchMonth($index)"><span class="nostyle01">{{month}}月</span></a></li>
+                <li ng-repeat="month in allMonths"><a id="menu_icon1" href="#" ng-class="{selected:$index==selectedRow}" ng-click="switchMonth($index)"><span class="nostyle01">{{month}}月</span></a></li>
             </ul>
             <!--ULmenu end-->
             <div class="clear"></div>
@@ -32,10 +36,10 @@
 
         <!--main_wrap start-->
         <div id="main_wrap" ng-show="!noData">
-            <div id="col0" style="width: 140px; height: 160px;float:left;margin-bottom: 10px;"></div>
-            <div id="col1" style="width: 140px; height: 160px;float:left;margin-left: 10px;margin-bottom: 10px;"></div>
-            <div id="col2" style="width: 140px; height: 160px;float:left;"></div>
-            <div id="col3" style="width: 140px; height: 160px;float:left;margin-left: 10px;"></div>
+            <div id="col0" style="width: 150px; height: 170px;float:left;margin-bottom: 10px;"></div>
+            <div id="col1" style="width: 150px; height: 170px;float:left;margin-left: 10px;margin-bottom: 10px;"></div>
+            <div id="col2" style="width: 150px; height: 170px;float:left;"></div>
+            <div id="col3" style="width: 150px; height: 170px;float:left;margin-left: 10px;"></div>
         </div>
     <!--main_wrap end-->
         <div id="noData" ng-show="noData">亲，每月一日产生上月报告，现在没有你的用车报告!</div>

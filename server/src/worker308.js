@@ -813,6 +813,96 @@ function packetProcess_160A(dataBuffer,cb) {
     console.log('接收到160A数据');
     cb();
 }
+function messageCallback(obdCode,data){
+    data=JSON.stringify(data);
+    var opt = {
+        method: "put",
+        host: "localhost",
+        port: 80,
+        path: "/message/carDetectionReceive/"+obdCode,
+        headers: {
+            "Content-Type": "application/json",
+            "Content-Length": Buffer.byteLength(data)
+        }
+    };
+    var req = http.request(opt, function(res) {
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            console.log(obdCode+'短信回复成功发送至Web服务器:'+chunk);
+        });
+    });
+    req.on('error', function(e) {
+        console.log(obdCode+'短信回复发送至Web服务器失败:'+ e.message);
+    });
+    req.write(data);
+    req.end();
+}
+function packetProcess_1621(dataBuffer,cb){
+    dataManager.init(dataBuffer,2);
+    var obdCode=dataManager.nextString();           //OBD编号
+    var tripId=dataManager.nextDoubleWord();        //Trip编号
+    var vid=dataManager.nextString();               //vid
+    var vin=dataManager.nextString();               //VIN码
+    var faultLevel=dataManager.nextByte();          //故障等级
+    var faultCount=dataManager.nextByte();          //故障个数
+    var fault=[];
+    var faultShow='';
+    for(var i=0;i<faultCount;i++){
+        var code=dataManager.nextString();             //故障码
+        var status=dataManager.nextString();           //故障码属性
+        var desc=dataManager.nextString();             //故障码描述
+        fault.push({code:code,status:status,desc:desc});
+        faultShow+=code+":"+desc;
+        if(i==faultCount-1){
+            faultShow+="\n";
+        }
+    }
+    var sql="insert into t_car_detection set ?";
+    var args={
+        obdCode:obdCode,
+        faultCount:faultCount,
+        faultLevel:faultLevel,
+        fault:fault,
+        createTime:new Date()
+    };
+    dao.insertBySql(sql,args,function(info){
+        if(info.err){
+            console.log('无法保存车辆检测信息'+info.err);
+        }
+        else{
+            console.log('车辆检测信息保存成功'+JSON.stringify(info));
+            messageCallback(obdCode,{
+                faultLevel:faultLevel,
+                faultCount:faultCount,
+                faultShow:faultShow
+            });
+        }
+    });
+}
+function packetProcess_1625(dataBuffer){
+    dataManager.init(dataBuffer,2);
+    //1、获得报文内容
+    var obdCode=dataManager.nextString();               //OBD编号
+    var vin=dataManager.nextString();                   //VIN码
+    var brand=dataManager.nextByte();                   //品牌
+    var series=dataManager.nextByte();                  //系列
+    var modelYear=dataManager.nextByte();               //年款
+    var hardwareVersion=dataManager.nextString();       //硬件版本号
+    var firmwareVersion=dataManager.nextString();       //固件版本号
+    var softwareVersion=dataManager.nextString();       //软件版本号
+    var softType=dataManager.nextByte();                //软件类别
+    return {
+        obdCode:obdCode,
+        vin:vin,
+        brand:brand,
+        series:series,
+        modelYear:modelYear,
+        hardwareVersion:hardwareVersion,
+        firmwareVersion:firmwareVersion,
+        softwareVersion:softwareVersion,
+        softType:softType
+    };
+}
 function getDateTimeStamp(time) {
     var date = time?time:new Date();
     var hour = date.getHours();

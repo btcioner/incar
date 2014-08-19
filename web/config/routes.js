@@ -30,8 +30,8 @@ module.exports = function(app) {
     app.get('/alarm/:s4Id',alarmService.allCollideRemind);      //获取碰撞提醒信息
     app.put('/alarm/:remindId',alarmService.careCollideRemind);            //关怀碰撞提醒信息
     //短信
-    app.post('/message/obdTestSend/:obdCode', msgService.obdTestSend);
-    app.post('/message/obdTestReceive/:obdCode', msgService.obdTestReceive);
+    app.post('/message/carDetectionSend', msgService.carDetectionSend);
+    app.post('/message/carDetectionReceive/:obdCode', msgService.carDetectionReceive);
     //定时调度
     app.put('/timing/buildTags',timingStaService.buildTags);             //重算车辆信息并打上标签
     app.put('/timing/buildObdByMonth',timingStaService.buildObdInfoByMonth);//OBD统计信息计算

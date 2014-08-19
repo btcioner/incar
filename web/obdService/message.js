@@ -17,12 +17,23 @@ function getSimByObdCode(obdCode,cb){
         }
     });
 }
-//发送获取OBD检测信息的短信          1622
-exports.obdTestSend=function(req,res){
-    //[故障码，累计平均油耗，累计行驶里程，本次平均油耗，本次行驶里程]
-    var idArray=[0xFE00,0xFE02,0xFE03,0xFE13,0xFE14];
-    var obdCode=req.params.obdCode;
-    getSimByObdCode(obdCode,function(sim){
+function getSimbyUser(userStr){
+    var sql="select c.obd_code as obdCode,c.sim_number as sim " +
+        "from t_account a " +
+        "inner join t_car_user cu on cu.acc_id=a.id " +
+        "inner join t_car c on cu.car_id=c.id " +
+        "where a.wx_oid=?";
+    dao.findBySql(sql,[userStr],function(info){
+        if(info.err){
+            console.log("");
+        }
+    });
+}
+//发送获取OBD检测信息的短信          1621
+exports.carDetectionSend=function(req,res){
+    var query=req.query;
+    var user=query.user;
+    getSimbyUser(obdCode,function(sim){
         var data ={idArray:idArray};
         opt.method="post";
         opt.path="/message/send/"+sim+"/"+0x1622;
@@ -37,7 +48,7 @@ exports.obdTestSend=function(req,res){
     });
 };
 //接收获取OBD检测信息短信的回复数据   1621
-exports.obdTestReceive=function(req,res){
+exports.carDetectionReceive=function(req,res){
     console.log(req.body.dataString);
 };
 //发送获取OBD版本信息的短信         1625

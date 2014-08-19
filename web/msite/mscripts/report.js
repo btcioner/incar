@@ -1,6 +1,3 @@
-/**
- * Created by LM on 14-8-13.
- */
 function cloneJSON(para){
     var rePara = null;
     var type = Object.prototype.toString.call(para);
@@ -17,11 +14,66 @@ function cloneJSON(para){
     return rePara;
 }
 var config={
+    colors: ['#85BB43','#F4AC20'],
+    chart: {
+        type: 'column',
+        backgroundColor:'#DADCE2',
+        borderColor:'#F8F8F8',
+        borderWidth:1
+    },
     title:{
-        style:{color:"#FFFFFF"}
+        style:{color:"#77787C",fontSize:14}
     },
     subtitle:{
-        style:{color:"#FFFFFF"}
+        style:{color:"#A1A2A6"}
+    },
+    credits:{
+        enabled:false   //禁用版权信息
+    },
+    exporting:{
+        enabled:false   //禁用导出
+    },
+    tooltip:{
+        enabled:false   //禁用鼠标提示
+    },
+    xAxis: {
+        type: 'category'
+    },
+    yAxis: {
+        type: 'linear',
+        labels:{enabled:false},
+        title:'',
+        gridLineWidth:0
+    },
+    legend: {
+        enabled: false
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true,
+                color: 'white',
+                style: {
+                    textShadow: '0 0 3px black, 0 0 3px black'
+                }
+            }
+        },
+        series: {
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true,
+                format: '{point.y:.1f}'
+            }
+        }
+    }
+};
+/*var config={
+    title:{
+        style:{color:"#77787C"}
+    },
+    subtitle:{
+        style:{color:"#A1A2A6"}
     },
     credits:{
         enabled:false   //禁用版权信息
@@ -34,12 +86,14 @@ var config={
     },
     chart: {
         type: 'column',
-        backgroundColor:'#B5B8BB',
+        backgroundColor:'#DADCE2',
+        borderColor:'#F8F8F8',
         borderWidth:1
     },
-    colors: ['#90DE69'],
+    colors: ['#85BB43','#F4AC20'],
     xAxis: {
-        categories: ['我','大家']
+        categories: ['我','大家'],
+        lineColor: '#FFFFFF'
     },
     yAxis: {
         type: 'linear',
@@ -61,8 +115,17 @@ var config={
                 }
             }
         }
+    },
+    plotOptions: {
+        series: {
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true,
+                inside:true
+            }
+        }
     }
-};
+};*/
 var cache={};
 var app = angular.module("reportApp", []);
 app.config(['$locationProvider', function($locationProvider){
@@ -71,6 +134,7 @@ app.config(['$locationProvider', function($locationProvider){
 function showColumns(configs){
     for(var i=0;i<configs.length;i++){
         $('#main_wrap>div:eq('+i+')').highcharts(configs[i]);
+
     }
 }
 app.controller("myTravelReport", function($scope, $http, $location){
@@ -82,6 +146,7 @@ app.controller("myTravelReport", function($scope, $http, $location){
             //$scope.s4Name=staInfo.s4Name;
             var results=staInfo.results;
             var allMonths=[];
+            alert(1);
             for(var monthKey in results){
                 allMonths.push(monthKey);
                 var dataMth=results[monthKey].dataMth;
@@ -90,13 +155,17 @@ app.controller("myTravelReport", function($scope, $http, $location){
                     var newConfig=cloneJSON(config);
                     newConfig.title.text=dataMth[i].title;        //标题
                     newConfig.subtitle.text=dataMth[i].unit;      //单位
-                    newConfig.series=[{data:dataMth[i].data}];      //内容
+                    alert(JSON.stringify(dataMth[i].data));
+                    newConfig.series=[{colorByPoint: true,data:dataMth[i].data}];    //内容
                     cache[monthKey][i]=newConfig;
                 }
             }
             showColumns(cache[allMonths[allMonths.length-1]]);
             $scope.allMonths=allMonths;
+            $scope.selectedRow=allMonths.length-1;
+            $('#menu_box>ul.menu>li>a:eq('+(allMonths.length-1)+')').addClass("highlights");
             $scope.switchMonth=function(index){
+                $scope.selectedRow=index;
                 showColumns(cache[allMonths[index]]);
             }
         }
