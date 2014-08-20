@@ -17,7 +17,7 @@ function getSimByObdCode(obdCode,cb){
         }
     });
 }
-function getSimbyUser(userStr){
+function getSimByUser(userStr){
     var sql="select c.obd_code as obdCode,c.sim_number as sim " +
         "from t_account a " +
         "inner join t_car_user cu on cu.acc_id=a.id " +

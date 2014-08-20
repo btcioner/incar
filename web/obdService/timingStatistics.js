@@ -256,7 +256,7 @@ function doRecursionForStatistics(startTime,endTime,sqlArray,sqlArgs,cb){
             "round(3.6*sum(d.currentMileage)/sum(d.runTime),2) as avgSpeed " +
             "from t_obd_drive d inner join t_car c on c.obd_code=d.obdCode " +
             "where d.carStatus in(3,4) " +
-            "and d.fireTime>=? and d.fireTime<? " +
+            "and d.fireTime>=? and d.fireTime<? and c.s4_id is not null " +
             "group by d.obdCode,c.s4_id";
         var args=getMonthStartAndEnd(year,month);
         dao.findBySql(sql,args,function(info){
@@ -287,7 +287,7 @@ function doRecursionForStatistics(startTime,endTime,sqlArray,sqlArgs,cb){
                         month:month,
                         countMth:countMth?Math.round(countMth):0,
                         mileageMth:mileageMth?Math.round(mileageMth):0,
-                        avgOilMth:avgOilMth?Math.round(avgOilMth):0,
+                        avgOilMth:avgOilMth?Math.round(avgOilMth*10)/10:0.0,
                         speedMth:speedMth?Math.round(speedMth):0,
                         type:1,
                         markTime:markTime
@@ -321,7 +321,7 @@ function doRecursionForStatistics(startTime,endTime,sqlArray,sqlArgs,cb){
                         month:month,
                         countMth:Math.round(s4Info.countMth/s4Info.count),
                         mileageMth:Math.round(s4Info.mileageMth/s4Info.count),
-                        avgOilMth:Math.round(s4Info.avgOilMth/s4Info.count),
+                        avgOilMth:Math.round(s4Info.avgOilMth/s4Info.count*10)/10,
                         speedMth:Math.round(s4Info.speedMth/s4Info.count),
                         type:2,
                         markTime:s4Info.markTime
@@ -405,4 +405,4 @@ exports.buildObdInfoByMonth=function(req,res){
     });
 }
 //_buildTags(function(){});
-//_buildObdInfoByMonth(function(){});
+_buildObdInfoByMonth(function(){});

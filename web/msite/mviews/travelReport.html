@@ -18,6 +18,11 @@
             color: #FFF;
             background-color: #43454a;
         }
+        .demoPic{
+            width: auto;
+            height: 360px;
+            background: url('../mimages/img_06.jpg') no-repeat center 11px;
+        }
     </style>
 </head>
 <body>
@@ -25,24 +30,25 @@
         <!--menu_box start-->
         <div id="menu_box">
             <!--ULmenu start-->
-            <ul class="menu" >
+            <ul class="menu" ng-show="!noData">
                 <li ng-repeat="month in allMonths"><a id="menu_icon1" href="#" ng-class="{selected:$index==selectedRow}" ng-click="switchMonth($index)"><span class="nostyle01">{{month}}月</span></a></li>
             </ul>
+            <div id="noData" ng-show="noData" class="text_11">亲，每月一日产生上月报告，现在没有你的用车报告!</div>
             <!--ULmenu end-->
             <div class="clear"></div>
         </div>
         <!--meun_box end-->
         <div class="clear"></div>
-
-        <!--main_wrap start-->
+<!--main_wrap start-->
         <div id="main_wrap" ng-show="!noData">
             <div id="col0" style="width: 150px; height: 170px;float:left;margin-bottom: 10px;"></div>
             <div id="col1" style="width: 150px; height: 170px;float:left;margin-left: 10px;margin-bottom: 10px;"></div>
             <div id="col2" style="width: 150px; height: 170px;float:left;"></div>
             <div id="col3" style="width: 150px; height: 170px;float:left;margin-left: 10px;"></div>
         </div>
+        <div class="demoPic" ng-show="noData"></div>
     <!--main_wrap end-->
-        <div id="noData" ng-show="noData">亲，每月一日产生上月报告，现在没有你的用车报告!</div>
+
     </div>
 </body>
 </html>

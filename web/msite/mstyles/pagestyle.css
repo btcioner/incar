@@ -147,6 +147,11 @@ a.text_07 {
 .text_10 {
 
 }
+.text_11 {
+	line-height: 50px;
+	text-align: center;
+}
+
 .nostyle01 {
 	text-shadow:none;
 	font-size: 14px;

@@ -62,8 +62,7 @@ var config={
         series: {
             borderWidth: 0,
             dataLabels: {
-                enabled: true,
-                format: '{point.y:.1f}'
+                enabled: true
             }
         }
     }
@@ -146,7 +145,6 @@ app.controller("myTravelReport", function($scope, $http, $location){
             //$scope.s4Name=staInfo.s4Name;
             var results=staInfo.results;
             var allMonths=[];
-            alert(1);
             for(var monthKey in results){
                 allMonths.push(monthKey);
                 var dataMth=results[monthKey].dataMth;
@@ -155,7 +153,6 @@ app.controller("myTravelReport", function($scope, $http, $location){
                     var newConfig=cloneJSON(config);
                     newConfig.title.text=dataMth[i].title;        //标题
                     newConfig.subtitle.text=dataMth[i].unit;      //单位
-                    alert(JSON.stringify(dataMth[i].data));
                     newConfig.series=[{colorByPoint: true,data:dataMth[i].data}];    //内容
                     cache[monthKey][i]=newConfig;
                 }

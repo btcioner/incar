@@ -78,19 +78,19 @@ exports.loadTravelReport=function(req,res){
                         dataMth:[
                         {
                             title:'行驶里程',
-                            unit:'公里',
+                            unit:'(公里)',
                             data:[{name:'我',y:rows[i].milMe},{name:'大家',y:rows[i].milAll}]
                         },{
                             title:'用车频率',
-                            unit:'次',
+                            unit:'(次)',
                             data:[{name:'我',y:rows[i].countMe},{name:'大家',y:rows[i].countAll}]
                         },{
                             title:'平均油耗',
-                            unit:'升/百公里',
+                            unit:'(升/百公里)',
                             data:[{name:'我',y:rows[i].avgMe},{name:'大家',y:rows[i].avgAll}]
                         },{
                             title:'平均车速',
-                            unit:'公里/小时',
+                            unit:'(公里/小时)',
                             data:[{name:'我',y:rows[i].spdMe},{name:'大家',y:rows[i].spdAll}]
                         }]
                     };
