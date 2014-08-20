@@ -49,11 +49,10 @@ var config={
         enabled: false
     },
     plotOptions: {
-        column: {
-            stacking: 'normal',
+        series: {
+            borderWidth: 1,
             dataLabels: {
-                enabled: true,
-                color: 'white'
+                enabled: true
             }
         }
     }
