@@ -58,12 +58,6 @@ var config={
                     textShadow: '0 0 3px black, 0 0 3px black'
                 }
             }
-        },
-        series: {
-            borderWidth: 0,
-            dataLabels: {
-                enabled: true
-            }
         }
     }
 };
