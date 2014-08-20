@@ -91,7 +91,7 @@ module wxApp {
                     {
                         alert("您尚没有参加任何活动!");
                         setInterval(function(){
-                            if(WeixinJSBridge){
+                            if(typeof WeixinJSBridge !== "undefined"){
                                 WeixinJSBridge.call('closeWindow');
                             }
                         },1000);

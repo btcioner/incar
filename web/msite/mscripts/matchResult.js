@@ -44,7 +44,7 @@ app.controller("matchResultCtrl", function($scope, $http,$sce){
           {
               alert(data.status);
               setInterval(function(){
-                  if(WeixinJSBridge){
+                  if(typeof WeixinJSBridge !== "undefined"){
                       WeixinJSBridge.call('closeWindow');
                   }
               },1000)

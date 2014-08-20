@@ -240,7 +240,7 @@ module wxApp {
                     if(data.status == "success")
                     {
                         alert(this.printWord);
-                        if(WeixinJSBridge){
+                        if(typeof WeixinJSBridge !== "undefined"){
                             WeixinJSBridge.call('closeWindow');
                         }
                     }

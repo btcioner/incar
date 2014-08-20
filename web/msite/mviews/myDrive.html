@@ -397,7 +397,7 @@ function shareToFriend() {
     var endDate = new Date(myDriveCtrl.tmEnd);
     var title = "我的行车数据";
     var desc = "分享我的行车数据";
-    var link = str.substring(0, str.lastIndexOf('/')) + "/myDriveShare.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
+    var link = str.substring(0, str.lastIndexOf('/')) + "/myDrive.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
     var pic = str.substring(0, str.lastIndexOf('/msite')) + "/data/drive_analyse.jpg";
     weixinShareTimeline(title, desc, link, pic);
 }
@@ -407,7 +407,7 @@ function shareToWeibo() {
     var beginDate = new Date(myDriveCtrl.tmStart);
     var endDate = new Date(myDriveCtrl.tmEnd);
     var title = "我的行车数据";
-    var link = str.substring(0, str.lastIndexOf('/')) + "/myDriveShare.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
+    var link = str.substring(0, str.lastIndexOf('/')) + "/myDrive.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
     weixinShareWeibo(title, link);
 }
 // 发送给好友;
@@ -417,7 +417,7 @@ function shareTo() {
     var endDate = new Date(myDriveCtrl.tmEnd);
     var title = "我的行车数据";
     var desc = "分享我的行车数据";
-    var link = str.substring(0, str.lastIndexOf('/')) + "/myDriveShare.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
+    var link = str.substring(0, str.lastIndexOf('/')) + "/myDrive.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
     var pic = str.substring(0, str.lastIndexOf('/msite')) + "/data/drive_analyse.jpg";
     weixinShareFriend(title, desc, link, pic);
 }

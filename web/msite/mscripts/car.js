@@ -1,5 +1,6 @@
 // 发送给好友;
 function weixinShareFriend(title,desc,link,imgUrl){
+    if(typeof WeixinJSBridge === "undefined") return;
     WeixinJSBridge.on('menu:share:appmessage', function(argv){
         WeixinJSBridge.invoke('sendAppMessage',{
             //"appid":appId,
@@ -15,7 +16,7 @@ function weixinShareFriend(title,desc,link,imgUrl){
 
 //分享到朋友圈
 function weixinShareTimeline(title,desc,link,imgUrl){
-    if(!WeixinJSBridge) return;
+    if(typeof WeixinJSBridge === "undefined") return;
     WeixinJSBridge.on('menu:share:timeline', function(argv){
         WeixinJSBridge.invoke('shareTimeline',{
             "img_url":imgUrl,
@@ -31,6 +32,7 @@ function weixinShareTimeline(title,desc,link,imgUrl){
 }
 //分享到腾讯微博
 function weixinShareWeibo(title,link){
+    if(typeof WeixinJSBridge === "undefined") return;
     var weiboContent = '';
     WeixinJSBridge.on('menu:share:weibo', function(argv){
         WeixinJSBridge.invoke('shareWeibo',{
