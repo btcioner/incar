@@ -18,6 +18,7 @@ module wxApp {
                 this.userCfg = {name:"",nick:"",obd_code:"",modelYear:"",phone:"",license:"",mileage:"",disp:"",id:""}
                 this.InitCarBrand();
                 this.searchUser();
+
             }
             else{
                 // 尚未得到open_id
@@ -31,7 +32,24 @@ module wxApp {
                     this.searchUser();
                 });
             }
+            this.countPageClick("1","12",this.user_openid); //原文点击记录
             $scope.model = this;
+        };
+
+       //原文点击记录--by jl 07/21/14
+        private countPageClick = (countType,pageId,wx_oid)=>{
+            this.$http.post('/mservice/countData', {countType:countType,pageId:pageId,wx_oid:wx_oid})
+                .success((data)=>{
+                    if(data.status == "ok")
+                    {
+                        console.log(data.status);
+                    }else{
+                        alert(data.status);
+                    }
+                })
+                .error((data)=>{
+                    alert(data.status);
+                });
         };
 
         private InitCarBrand = ()=>{

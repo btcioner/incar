@@ -26,7 +26,7 @@ my4S.onBookingMessages = function (message, req, callback) {
 
     console.log(session.slotData);
 
-    return booking.applySblot(message.FromUserName, message.ToUserName, session.slotData.slots[(idx - 1)], function (err, result) {
+    return booking.applySlot(message.FromUserName, message.ToUserName, session.slotData.slots[(idx - 1)], function (err, result) {
         if (err) {
             session.textMsgReplierIndex = null;
             delete session.slotData;
@@ -83,8 +83,6 @@ my4S.book = function (userName, sopenid, session, callback) {
         return fmt;
     };
 
-    var compiled = ejs.compile(tpl);
-
     booking.getPromotionSlots(userName, sopenid, function (err, result) {
         if (err) {
             session.textMsgReplierIndex = null;
@@ -92,11 +90,19 @@ my4S.book = function (userName, sopenid, session, callback) {
             callback(err);
         }
         else {
+            if(result.length === 0){
+                // 修正TPL模版在无特价工位时
+                tpl = ['点击本消息进行预约保养'].join('');
+            }
+
+            var compiled = ejs.compile(tpl);
+
             var data = {};
             data.slots = result;
 
             session.slotData = data;
             session.textMsgReplierIndex = 'my4S.onBooking';
+
             callback(null, compiled(data));
         }
     });
@@ -202,6 +208,7 @@ my4S.mostNews = function (uoid, soid, session, cb) {
             "FROM t_activity A\n" +
             "\tJOIN t_4s S ON A.s4_id = S.id AND S.openid = ?\n" +
             "\tJOIN t_activity_template T ON A.template_id = T.id AND A.s4_id = T.s4_id AND T.template <> 'ActAd'\n" +
+            "WHERE status in(2,3,4,5)\n" +
             "ORDER BY A.tm_announce DESC\n" +
             "LIMIT 1";
         pool.query(sqlOther, [soid], function(ex ,result){
