@@ -50,8 +50,11 @@ app.controller("driveRecordCtrl", function($scope, $http){
     };
 
     // 微信分享
-    alert(WeixinJSBridge);
-    alert(typeof WeixinJSBridge);
+    if(WeixinJSBridge){
+        alert(WeixinJSBridge);
+        alert(typeof WeixinJSBridge);
+    }
+
     if(typeof WeixinJSBridge !== undefined){
         wxShare();
     }
