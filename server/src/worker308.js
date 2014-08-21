@@ -106,12 +106,12 @@ function packetProcess(packetInput,tag,cb) {
     if(commandWord===0x160A){
         packetProcess_160A(dataBuffer,saveAndReturn);
     }
-    if(commandWord>=0x1621&&commandWord<=0x16E0){
+    if(commandWord===0x1621){
+        packetProcess_1621(dataBuffer,saveAndReturn);
+    }
+    /*if(commandWord>=0x1621&&commandWord<=0x16E0){
         sendToMessageServer(dataBuffer,commandWord,saveAndReturn);
-    }
-    if(commandWord===0x9502){
-        saveAndReturn();
-    }
+    }*/
 }
 exports.packetProcess=packetProcess;
 //所有OBD发送过来的数据都会保存进历史表
@@ -813,28 +813,28 @@ function packetProcess_160A(dataBuffer,cb) {
     console.log('接收到160A数据');
     cb();
 }
-function messageCallback(obdCode,data){
-    data=JSON.stringify(data);
+function messageCallback(obdCode,data,cb){
+    var dataString=JSON.stringify({dataString:data});
     var opt = {
-        method: "put",
+        method: "post",
         host: "localhost",
         port: 80,
         path: "/message/carDetectionReceive/"+obdCode,
         headers: {
             "Content-Type": "application/json",
-            "Content-Length": Buffer.byteLength(data)
+            "Content-Length": Buffer.byteLength(dataString)
         }
     };
     var req = http.request(opt, function(res) {
         res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            console.log(obdCode+'短信回复成功发送至Web服务器:'+chunk);
+        res.on('data', function (info) {
+            cb(info);
         });
     });
     req.on('error', function(e) {
-        console.log(obdCode+'短信回复发送至Web服务器失败:'+ e.message);
+        cb({status:'failure',message:err.message});
     });
-    req.write(data);
+    req.write(dataString);
     req.end();
 }
 function packetProcess_1621(dataBuffer,cb){
@@ -853,29 +853,40 @@ function packetProcess_1621(dataBuffer,cb){
         var desc=dataManager.nextString();             //故障码描述
         fault.push({code:code,status:status,desc:desc});
         faultShow+=code+":"+desc;
-        if(i==faultCount-1){
+        if(i<faultCount-1){
             faultShow+="\n";
         }
     }
-    var sql="insert into t_car_detection set ?";
-    var args={
+    messageCallback(obdCode,{
         obdCode:obdCode,
-        faultCount:faultCount,
+        tripId:tripId,
         faultLevel:faultLevel,
-        fault:fault,
-        createTime:new Date()
-    };
-    dao.insertBySql(sql,args,function(info){
-        if(info.err){
-            console.log('无法保存车辆检测信息'+info.err);
+        faultCount:faultCount,
+        faultShow:faultShow
+    },function(info){
+        if(info.status=='success'){
+            console.log(obdCode+"车辆检测回复信息发送至Web服务器成功");
+            var sql="insert into t_car_detection set ?";
+            var args={
+                obdCode:obdCode,
+                tripId:tripId,
+                faultCount:faultCount,
+                faultLevel:faultLevel,
+                fault:JSON.stringify(fault),
+                createTime:new Date()
+            };
+            dao.insertBySql(sql,[args],function(info){
+                if(info.err){
+                    console.log('无法保存车辆检测存档信息'+info.err);
+                }
+                else{
+                    console.log('车辆检测存档信息保存成功'+JSON.stringify(info));
+                    cb();
+                }
+            });
         }
         else{
-            console.log('车辆检测信息保存成功'+JSON.stringify(info));
-            messageCallback(obdCode,{
-                faultLevel:faultLevel,
-                faultCount:faultCount,
-                faultShow:faultShow
-            });
+            console.log(obdCode+"车辆检测回复信息发送至Web服务器失败");
         }
     });
 }

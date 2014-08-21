@@ -13,7 +13,7 @@ exports = module.exports = function() {
         var user = process.env.INCAR_MySQLUser || 'incarapp';
         var pwd = process.env.INCAR_MySQLPwd || 'nodejs4WMQ';
 
-        var dbname = process.env.INCAR_MySQLDatabase || 'incar';
+        var dbname = process.env.INCAR_MySQLDatabase || 'incardev';
 
         global.poolInCar = mysql.createPool({
             host: host,

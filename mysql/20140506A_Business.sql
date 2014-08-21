@@ -153,8 +153,9 @@ CREATE TABLE IF NOT EXISTS t_remind(
 CREATE TABLE IF NOT EXISTS t_car_detection(
     id int auto_increment PRIMARY KEY COMMENT '主键',
     obdCode VARCHAR(32) COMMENT 'OBD设备唯一编码',
+    tripId int COMMENT '行程标识',
     faultLevel tinyint COMMENT '故障等级',
     faultCount tinyint COMMENT '故障个数',
     fault VARCHAR(2000) COMMENT '故障内容',
-    careTime timestamp COMMENT '处理时间'
+    createTime timestamp COMMENT '处理时间'
 );

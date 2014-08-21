@@ -13,10 +13,10 @@ var dataSet = JSON.stringify({
 });
 var data='';
 var opt = {
-    method: "put",
+    method: "post",
     host: "localhost",
     port: 80,
-    path: "/timing/buildObdByMonth",
+    path: "/message/carDetectionSend?user=oAPKMuIYQ0Nz3boq4Now7UffnwF8:gh_2ca6120e0ed0",
     headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(data)

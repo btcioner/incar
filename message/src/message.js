@@ -36,14 +36,16 @@ function sendToSerialPort(){
     if(msgQueue.length==0)return;
     if(spInUse==false){
         spInUse=true;
-        var data=msgQueue[0];
+        var data=msgQueue[0].data;
+        var cb=msgQueue[0].cb;
         serialPort.write(data, function(err, results) {
             if (err) {
                 console.log('err ' + err + '\n');
-                return;
+                cb({status:'failure',message:err.message});
             }
             serialPort.drain(function(){
                 console.log("写入数据(" + results + '字节)：\n'+data.slice(0,17)+toString0X(data.slice(17,results)));
+                cb({status:'success'});
                 spInUse=false;
                 msgQueue.splice(0,1);
                 if(msgQueue.length>0)sendToSerialPort();
@@ -51,9 +53,8 @@ function sendToSerialPort(){
         });
     }
 }
-exports.send=function(data){
-    msgQueue.push(data);
-    console.log(msgQueue);
+exports.send=function(data,cb){
+    msgQueue.push({data:data,cb:cb});
     sendToSerialPort();
 };
 
