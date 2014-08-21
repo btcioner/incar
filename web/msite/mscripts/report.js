@@ -57,65 +57,6 @@ var config={
         }
     }
 };
-/*var config={
-    title:{
-        style:{color:"#77787C"}
-    },
-    subtitle:{
-        style:{color:"#A1A2A6"}
-    },
-    credits:{
-        enabled:false   //禁用版权信息
-    },
-    exporting:{
-        enabled:false   //禁用导出
-    },
-    tooltip:{
-        enabled:false   //禁用鼠标提示
-    },
-    chart: {
-        type: 'column',
-        backgroundColor:'#DADCE2',
-        borderColor:'#F8F8F8',
-        borderWidth:1
-    },
-    colors: ['#85BB43','#F4AC20'],
-    xAxis: {
-        categories: ['我','大家'],
-        lineColor: '#FFFFFF'
-    },
-    yAxis: {
-        type: 'linear',
-        labels:{enabled:false},
-        title:'',
-        gridLineWidth:0
-    },
-    legend: {
-        enabled:false
-    },
-    plotOptions: {
-        column: {
-            stacking: 'normal',
-            dataLabels: {
-                enabled: true,
-                color: 'white',
-                style: {
-                    textShadow: '0 0 3px black, 0 0 3px black'
-                }
-            }
-        }
-    },
-    plotOptions: {
-        series: {
-            borderWidth: 0,
-            dataLabels: {
-                enabled: true,
-                inside:true
-            }
-        }
-    }
-};*/
-
 var cache={};
 var app = angular.module("reportApp", []);
 app.config(['$locationProvider', function($locationProvider){
