@@ -46,7 +46,9 @@ module wxApp {
                     var wxs = new WXShare();
                     var base = window.location.href.match(/\w+:\/\/[^\/]+/);
                     var pic = data.logo_url;
-                    wxs.wxShare(data.title, window.location.href, base+pic, data.brief);
+                    if(pic.charAt(0) !== '/') pic = '/' + pic;
+                    var txt = data.brief.replace(/<[^<>]+>|&nbsp;|\s+/g, "").substr(0,32);
+                    wxs.wxShare(data.title, window.location.href, base+pic, txt);
                 })
                 .error((data, status, headers, config)=> {
                     alert("没有找到相关信息\n或此活动已取消！");
