@@ -13,3 +13,6 @@ declare var angular:{
 
 // jquery声明
 declare var $:any;
+
+// 微信声明
+declare var WeixinJSBridge:any;

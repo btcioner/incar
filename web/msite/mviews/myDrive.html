@@ -32,29 +32,6 @@
     <link href="../mstyles/menustyle.css" rel="stylesheet" type="text/css"/>
     <script src="../mscripts/highcharts.js"></script>
     <!--<script  src="../mscripts/exporting.js"></script>-->
-    <script type="text/javascript">
-        var myDriveCtrl = new wxApp.MyDriveCtrl('myDriveCtrl');
-        //var tabIds=["menu_icon1","menu_icon2","menu_icon3","menu_icon4"];
-        $(function () {
-            //获得样式为menu的ul下面所有li下面所有的a，给他们绑定click事件
-            $("#menu_box>ul>li>a").click(onMenuClick);
-        });
-        function onMenuClick() {
-            var clickId = $(this).attr("id");
-            var boxId = clickId.replace("menu_icon", "mainbox");
-            $("#main_wrap>div").hide();
-            $("#menu_box>ul>li>a").each(function () {
-                var id = $(this).attr("id");
-                if (id === clickId) {
-                    $(this).removeClass().addClass(id + "b");
-                    $("#" + boxId).show();
-                }
-                else {
-                    $(this).removeClass().addClass(id + "a");
-                }
-            });
-        }
-    </script>
     <style scoped>
         #fuel_chart {
             position: relative;
@@ -141,10 +118,10 @@
     <div id="menu_box">
         <!--ULmenu start-->
         <ul class="menu">
-            <li><a id="menu_icon1" href="###" class="menu_icon1b"><span class="nostyle01">油&nbsp;&nbsp;&nbsp;&nbsp;耗</span></a></li>
-            <li><a id="menu_icon2" href="###" class="menu_icon2a"><span class="nostyle01">碳排放量</span></a></li>
-            <li><a id="menu_icon3" href="###" class="menu_icon3a"><span class="nostyle01">驾驶偏好</span></a></li>
-            <li><a id="menu_icon4" href="###" class="menu_icon4a"><span class="nostyle01">速段统计</span></a></li>
+            <li><a id="menu_icon1" href="javascript:void(0)" class="menu_icon1b"><span class="nostyle01">油&nbsp;&nbsp;&nbsp;&nbsp;耗</span></a></li>
+            <li><a id="menu_icon2" href="javascript:void(0)" class="menu_icon2a"><span class="nostyle01">碳排放量</span></a></li>
+            <li><a id="menu_icon3" href="javascript:void(0)" class="menu_icon3a"><span class="nostyle01">驾驶偏好</span></a></li>
+            <li><a id="menu_icon4" href="javascript:void(0)" class="menu_icon4a"><span class="nostyle01">速段统计</span></a></li>
         </ul>
         <!--ULmenu end-->
         <div class="clear"></div>
@@ -387,149 +364,172 @@
     <!--main_wrap end-->
 </div>
 
-
-
-<script>
-//分享到微信朋友圈
-function shareToFriend() {
-    var str = location.href;
-    var beginDate = new Date(myDriveCtrl.tmStart);
-    var endDate = new Date(myDriveCtrl.tmEnd);
-    var title = "我的行车数据";
-    var desc = "分享我的行车数据";
-    var link = str.substring(0, str.lastIndexOf('/')) + "/myDrive.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
-    var pic = str.substring(0, str.lastIndexOf('/msite')) + "/data/drive_analyse.jpg";
-    weixinShareTimeline(title, desc, link, pic);
-}
-//分享到腾讯微博
-function shareToWeibo() {
-    var str = location.href;
-    var beginDate = new Date(myDriveCtrl.tmStart);
-    var endDate = new Date(myDriveCtrl.tmEnd);
-    var title = "我的行车数据";
-    var link = str.substring(0, str.lastIndexOf('/')) + "/myDrive.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
-    weixinShareWeibo(title, link);
-}
-// 发送给好友;
-function shareTo() {
-    var str = location.href;
-    var beginDate = new Date(myDriveCtrl.tmStart);
-    var endDate = new Date(myDriveCtrl.tmEnd);
-    var title = "我的行车数据";
-    var desc = "分享我的行车数据";
-    var link = str.substring(0, str.lastIndexOf('/')) + "/myDrive.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
-    var pic = str.substring(0, str.lastIndexOf('/msite')) + "/data/drive_analyse.jpg";
-    weixinShareFriend(title, desc, link, pic);
-}
-//将传回的油耗数据转换为图表控件所需格式
-function fuelChartDataConvert(data) {
-    var fuelData = new Array();
-    fuelData[0] = {};
-    fuelData[0].color = "#c05020";
-    fuelData[0].data = new Array();
-    for (i = 0; i < data.length; i++) {
-        fuelData[0].data[i] = {}
-        fuelData[0].data[i].x = i;
-        fuelData[0].data[i].y = parseFloat(data[i].fuel);
+<script type="text/javascript">
+    var myDriveCtrl = new wxApp.MyDriveCtrl('myDriveCtrl');
+    //var tabIds=["menu_icon1","menu_icon2","menu_icon3","menu_icon4"];
+    //获得样式为menu的ul下面所有li下面所有的a，给他们绑定click事件
+    function onMenuClick() {
+        var clickId = $(this).attr("id");
+        var boxId = clickId.replace("menu_icon", "mainbox");
+        $("#main_wrap>div").hide();
+        $("#menu_box>ul>li>a").each(function () {
+            var id = $(this).attr("id");
+            if (id === clickId) {
+                $(this).removeClass().addClass(id + "b");
+                $("#" + boxId).show();
+            }
+            else {
+                $(this).removeClass().addClass(id + "a");
+            }
+        });
     }
-    return fuelData;
-}
-//将传回的碳排放数据转换为图表控件所需格式
-function carbonChartDataConvert(data) {
-    var carbonData = new Array();
-    carbonData[0] = {};
-    carbonData[0].color = "#c05020";
-    carbonData[0].data = new Array();
-    for (i = 0; i < data.length; i++) {
-        carbonData[0].data[i] = {}
-        carbonData[0].data[i].x = i;
-        carbonData[0].data[i].y = parseFloat(data[i].carbon);
-    }
-    return carbonData;
-}
 
-//创建曲线图
-function createChart() {
-    var fuel_graph = new Rickshaw.Graph({
-        element: document.getElementById("fuel_chart"),
-        renderer: 'line',
-        height: 200,
-        width: 260,
-        series: fuelChartData
-    });
-    var fuel_y_ticks = new Rickshaw.Graph.Axis.Y({
-        graph: fuel_graph,
-        orientation: 'left',
-        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-        element: document.getElementById('fuel_y_axis')
-    });
-    fuel_graph.render();
-    var carbon_graph = new Rickshaw.Graph({
-        element: document.getElementById("carbon_chart"),
-        renderer: 'line',
-        height: 200,
-        width: 260,
-        series: carbonChartData
-    });
-    var carbon_y_ticks = new Rickshaw.Graph.Axis.Y({
-        graph: carbon_graph,
-        orientation: 'left',
-        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-        element: document.getElementById('carbon_y_axis')
-    });
-    carbon_graph.render();
-    var drive_graph = new Rickshaw.Graph({
-        element: document.getElementById("drive_chart"),
-        renderer: 'line',
-        height: 200,
-        width: 260,
-        series: behaviorChartData
-    });
-    var drive_y_ticks = new Rickshaw.Graph.Axis.Y({
-        graph: drive_graph,
-        orientation: 'left',
-        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-        element: document.getElementById('drive_y_axis')
-    });
-    drive_graph.render();
-}
+    $("#menu_box>ul>li>a").click(onMenuClick);
 
-function dochart(result){
-    if (result.fuelData.length > 1) {
-        // 单位转换
-        for(var i in result.fuelData) result.fuelData[i].fuel = myDriveCtrl.$filter("l_per_100km")(result.fuelData[i].fuel);
-        fuelChartData = fuelChartDataConvert(result.fuelData);
+    //分享到微信朋友圈
+    function shareToFriend() {
+        var str = location.href;
+        var beginDate = new Date(myDriveCtrl.tmStart);
+        var endDate = new Date(myDriveCtrl.tmEnd);
+        var title = "我的行车数据";
+        var desc = "分享我的行车数据";
+        var link = str.substring(0, str.lastIndexOf('/')) + "/myDrive.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
+        var pic = str.substring(0, str.lastIndexOf('/msite')) + "/data/drive_analyse.jpg";
+        weixinShareTimeline(title, desc, link, pic);
     }
-    else{
-        fuelChartData = fuelChartDataDemo;
-    }
-    document.getElementById("fuel_chart").innerHTML = "";
-    document.getElementById("fuel_y_axis").innerHTML = "";
 
-    if (result.carbonData.length > 1) {
-        for(var i in result.carbonData) result.carbonData[i].carbon = myDriveCtrl.$filter("kg")(result.carbonData[i].carbon);
-        carbonChartData = carbonChartDataConvert(result.carbonData);
+    //分享到腾讯微博
+    function shareToWeibo() {
+        var str = location.href;
+        var beginDate = new Date(myDriveCtrl.tmStart);
+        var endDate = new Date(myDriveCtrl.tmEnd);
+        var title = "我的行车数据";
+        var link = str.substring(0, str.lastIndexOf('/')) + "/myDrive.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
+        weixinShareWeibo(title, link);
     }
-    else{
-        carbonChartData = carbonChartDataDemo;
+
+    // 发送给好友;
+    function shareTo() {
+        var str = location.href;
+        var beginDate = new Date(myDriveCtrl.tmStart);
+        var endDate = new Date(myDriveCtrl.tmEnd);
+        var title = "我的行车数据";
+        var desc = "分享我的行车数据";
+        var link = str.substring(0, str.lastIndexOf('/')) + "/myDrive.html?user=" + user + "&start=" + beginDate.toDateString() + "&end=" + endDate.toDateString();
+        var pic = str.substring(0, str.lastIndexOf('/msite')) + "/data/drive_analyse.jpg";
+        weixinShareFriend(title, desc, link, pic);
     }
-    document.getElementById("carbon_chart").innerHTML = "";
-    document.getElementById("carbon_y_axis").innerHTML = "";
 
-    if (result.behaviorData.length > 1) {
-        behaviorChartData = driveChartDataConvert(result.behaviorData);
+    //将传回的油耗数据转换为图表控件所需格式
+    function fuelChartDataConvert(data) {
+        var fuelData = new Array();
+        fuelData[0] = {};
+        fuelData[0].color = "#c05020";
+        fuelData[0].data = new Array();
+        for (i = 0; i < data.length; i++) {
+            fuelData[0].data[i] = {}
+            fuelData[0].data[i].x = i;
+            fuelData[0].data[i].y = parseFloat(data[i].fuel);
+        }
+        return fuelData;
     }
-    document.getElementById("drive_chart").innerHTML = "";
-    document.getElementById("drive_y_axis").innerHTML = "";
 
-    createChart();
-    pieChart(result.intervalSpeed.slow, result.intervalSpeed.middle, result.intervalSpeed.high);
-    var colorBG = $('#wrap').css('background-color');
-    $('svg>rect').attr('fill', colorBG);
-}
+    //将传回的碳排放数据转换为图表控件所需格式
+    function carbonChartDataConvert(data) {
+        var carbonData = new Array();
+        carbonData[0] = {};
+        carbonData[0].color = "#c05020";
+        carbonData[0].data = new Array();
+        for (i = 0; i < data.length; i++) {
+            carbonData[0].data[i] = {}
+            carbonData[0].data[i].x = i;
+            carbonData[0].data[i].y = parseFloat(data[i].carbon);
+        }
+        return carbonData;
+    }
 
-//将传回的数据转换为图表控件所需格式
-function driveChartDataConvert(data) {
+    //创建曲线图
+    function createChart() {
+        var fuel_graph = new Rickshaw.Graph({
+            element: document.getElementById("fuel_chart"),
+            renderer: 'line',
+            height: 200,
+            width: 260,
+            series: fuelChartData
+        });
+        var fuel_y_ticks = new Rickshaw.Graph.Axis.Y({
+            graph: fuel_graph,
+            orientation: 'left',
+            tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+            element: document.getElementById('fuel_y_axis')
+        });
+        fuel_graph.render();
+        var carbon_graph = new Rickshaw.Graph({
+            element: document.getElementById("carbon_chart"),
+            renderer: 'line',
+            height: 200,
+            width: 260,
+            series: carbonChartData
+        });
+        var carbon_y_ticks = new Rickshaw.Graph.Axis.Y({
+            graph: carbon_graph,
+            orientation: 'left',
+            tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+            element: document.getElementById('carbon_y_axis')
+        });
+        carbon_graph.render();
+        var drive_graph = new Rickshaw.Graph({
+            element: document.getElementById("drive_chart"),
+            renderer: 'line',
+            height: 200,
+            width: 260,
+            series: behaviorChartData
+        });
+        var drive_y_ticks = new Rickshaw.Graph.Axis.Y({
+            graph: drive_graph,
+            orientation: 'left',
+            tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+            element: document.getElementById('drive_y_axis')
+        });
+        drive_graph.render();
+    }
+
+    function dochart(result, ctrl){
+        if (result.fuelData.length > 1) {
+            // 单位转换
+            for(var i in result.fuelData) result.fuelData[i].fuel = ctrl.$filter("l_per_100km")(result.fuelData[i].fuel);
+            fuelChartData = fuelChartDataConvert(result.fuelData);
+        }
+        else{
+            fuelChartData = fuelChartDataDemo;
+        }
+        document.getElementById("fuel_chart").innerHTML = "";
+        document.getElementById("fuel_y_axis").innerHTML = "";
+
+        if (result.carbonData.length > 1) {
+            for(var i in result.carbonData) result.carbonData[i].carbon = ctrl.$filter("kg")(result.carbonData[i].carbon);
+            carbonChartData = carbonChartDataConvert(result.carbonData);
+        }
+        else{
+            carbonChartData = carbonChartDataDemo;
+        }
+        document.getElementById("carbon_chart").innerHTML = "";
+        document.getElementById("carbon_y_axis").innerHTML = "";
+
+        if (result.behaviorData.length > 1) {
+            behaviorChartData = driveChartDataConvert(result.behaviorData);
+        }
+        document.getElementById("drive_chart").innerHTML = "";
+        document.getElementById("drive_y_axis").innerHTML = "";
+
+        createChart();
+        pieChart(result.intervalSpeed.slow, result.intervalSpeed.middle, result.intervalSpeed.high);
+        var colorBG = $('#wrap').css('background-color');
+        $('svg>rect').attr('fill', colorBG);
+    }
+
+    //将传回的数据转换为图表控件所需格式
+    function driveChartDataConvert(data) {
     var myData = new Array();
     for (var i = 0; i < 3; i++) {
         myData[i] = {};
@@ -556,8 +556,8 @@ function driveChartDataConvert(data) {
 
     return myData;
 }
-//本地数据，用于演示
-behaviorChartData = [
+    //本地数据，用于演示
+    behaviorChartData = [
     {   data: [
         { x: 0, y: 0 },
         { x: 1, y: 0 },
@@ -588,8 +588,6 @@ behaviorChartData = [
         color: "#6060c0"
     }
 ];
-</script>
-<script type="text/javascript">
 
     function pieChart(slow, middle, high) {
         var sum = slow + middle + high;
@@ -637,5 +635,6 @@ behaviorChartData = [
         return Number(value);
     }
 </script>
+
 </body>
 </html>

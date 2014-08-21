@@ -17,6 +17,12 @@ module wxApp {
             this.srvManual = $resource("/wservice/manual");
 
             this.countPageClick("1","3",this.user_openid); //原文点击记录
+
+            // 微信分享
+            var wxs = new WXShare();
+            var base = window.location.href.match(/\w+:\/\/[^\/]+/);
+            var pic = $("meta[name=wx-share-pic]").attr("content");
+            wxs.wxShare($("title").text(), window.location.href, base+pic, "");
         };
 
         //原文点击记录--by jl 07/21/14

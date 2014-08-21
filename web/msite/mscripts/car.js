@@ -26,7 +26,6 @@ function weixinShareTimeline(title,desc,link,imgUrl){
             "desc": desc,
             "title":title
         }, function(res) {
-            alert("分享成功");
         });
     });
 }
@@ -39,7 +38,6 @@ function weixinShareWeibo(title,link){
             "content":title + link,
             "url":link
         }, function(res) {
-            alert("分享成功");
         });
     });
 }
