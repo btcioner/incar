@@ -65,7 +65,6 @@ app.config(['$locationProvider', function($locationProvider){
 function showColumns(configs){
     for(var i=0;i<configs.length;i++){
         $("#main_wrap>div[id='col"+i+"']").highcharts(configs[i]);
-
     }
 }
 app.controller("myTravelReport", function($scope, $http, $location){
