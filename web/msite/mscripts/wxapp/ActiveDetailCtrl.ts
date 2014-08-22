@@ -36,6 +36,7 @@ module wxApp {
         private searchActivity = ()=> {
             this.$http.post("/mservice/getActivityDetail", { user: this.user_openid, id: this.act_id }, { dataType: "json"})
                 .success((data, status, headers, config)=> {
+                    var txt = data.brief.replace(/<[^<>]+>|&nbsp;|\s+/g, "").substr(0,32);
                     data.brief = this.$sce.trustAsHtml(data.brief);
                     this.act = data;
                     if(this.act.tm_start)this.act.tm_start =  this.act.tm_start.substring(0,16);
@@ -47,7 +48,6 @@ module wxApp {
                     var base = window.location.href.match(/\w+:\/\/[^\/]+/);
                     var pic = data.logo_url;
                     if(pic.charAt(0) !== '/') pic = '/' + pic;
-                    var txt = data.brief.replace(/<[^<>]+>|&nbsp;|\s+/g, "").substr(0,32);
                     wxs.wxShare(data.title, window.location.href, base+pic, txt);
                 })
                 .error((data, status, headers, config)=> {

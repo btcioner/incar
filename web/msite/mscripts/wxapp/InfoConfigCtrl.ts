@@ -22,7 +22,7 @@ module wxApp {
                 // 尚未得到open_id
                 var wxoa = new WXOAuth($location);
                 wxoa.findUserOpenId((data)=>{
-                    if(!data.user_openid) alert(data);
+                    if(!data.user_openid) this.openUpbox(data);
                     // 已经获取了open_id,查询数据
                     this.user_openid = data.user_openid;
                     // 初始化车品牌
@@ -32,6 +32,12 @@ module wxApp {
             }
             this.countPageClick("1","12",this.user_openid); //原文点击记录
             $scope.model = this;
+
+            // 微信分享
+            var wxs = new WXShare();
+            var base = window.location.href.match(/\w+:\/\/[^\/]+/);
+            var pic = $("meta[name=wx-share-pic]").attr("content");
+            wxs.wxShare($("title").text(), window.location.href, base+pic, "");
         };
 
        //原文点击记录--by jl 07/21/14
@@ -42,11 +48,11 @@ module wxApp {
                     {
                         console.log(data.status);
                     }else{
-                        alert(data.status);
+                        this.openUpbox(data.status);
                     }
                 })
                 .error((data)=>{
-                    alert(data.status);
+                    this.openUpbox(data.status);
                 });
         };
 
@@ -121,14 +127,23 @@ module wxApp {
                 })
                 .error((data, status, headers, config)=>{
 //                    console.log(status);
-                    alert("您还未注册或未绑定车云终端\n请先注册账号！");
+                    this.openUpbox("网络好像断了，请检查网络连接！");
 //                    this.name_sta = false;
                     this.printWord ="创建成功!";
                     this.flag = "add";
                     this.userCfg = {name:"",nick:"",obd_code:"",modelYear:"",phone:"",license:"",mileage:"",disp:"",id:""};
                 });
         };
-
+        private closeUpbox =()=>{
+             this.tips = "";
+             this.cover_show = false;
+             this.upbox_show = false;
+        }
+        private openUpbox =(tips)=>{
+            this.tips = tips;
+            this.cover_show = true;
+            this.upbox_show = true;
+        }
         private update = ()=>{
             var postData:any = {
                 user: this.user_openid,
@@ -146,12 +161,12 @@ module wxApp {
 
             //判断所有的数据不为空和为有效数据
             if (postData.name == "") {
-                alert('用户名不能为空!');
+                this.openUpbox('用户名不能为空!');
                 return;
             }
 
             if (postData.obd_code == "") {
-                alert('车云终端ID不能为空!');
+                this.openUpbox('车云终端ID不能为空!');
                 return;
             }
             // check pwd
@@ -159,7 +174,7 @@ module wxApp {
             {
                 if(this.pwd || this.pwd2) {
                     if (this.pwd !== this.pwd2){
-                        alert('密码不一致');
+                        this.openUpbox('密码不一致');
                         return;
                     }
                     else{
@@ -171,31 +186,31 @@ module wxApp {
             {
                 if(this.pwd || this.pwd2) {
                     if (this.pwd !== this.pwd2){
-                        alert('密码不一致');
+                        this.openUpbox('密码不一致');
                         return;
                     }
                     else{
                         postData.password = hex_sha1(this.pwd);
                     }
                 }else {
-                    alert('密码不能为空!');
+                    this.openUpbox('密码不能为空!');
                     return;
                 }
             }
             if (postData.nick == "") {
-                alert('车主姓名不能为空!');
+                this.openUpbox('车主姓名不能为空!');
                 return;
             }
             if (postData.phone == "") {
-                alert('联系电话不能为空!');
+                this.openUpbox('联系电话不能为空!');
                 return;
             }
             if (postData.license == "") {
-                alert('车牌号不能为空!');
+                this.openUpbox('车牌号不能为空!');
                 return;
             }
             if (postData.modelYear == "") {
-                alert('年款不能为空!');
+                this.openUpbox('年款不能为空!');
                 return;
             }
             // series
@@ -203,12 +218,12 @@ module wxApp {
                 postData.series = this.mySeries;
             }else
             {
-                alert("系列不能为空!");
+                this.openUpbox("系列不能为空!");
                 return;
             }
              postData.mileage = this.mileage;
             if (postData.mileage == "" || postData.mileage ==0) {
-                alert('行驶总里程不能为空!');
+                this.openUpbox('行驶总里程不能为空!');
                 return;
             }
             else{
@@ -221,14 +236,14 @@ module wxApp {
                 }
             }
             if (postData.disp == "") {
-                alert('排气量不能为空!');
+                this.openUpbox('排气量不能为空!');
                 return;
             }
 
             // age
             if(this.age==="请选择")
             {
-               alert("请选择车龄!");
+                this.openUpbox("请选择车龄!");
                 return;
             }else{
                 for(var i=1;i<this.ages.length+1;i++){
@@ -241,7 +256,7 @@ module wxApp {
             // engine_type
             if(this.eng_type ==="请选择")
             {
-                alert("请选择发动机类型!");
+                this.openUpbox("请选择发动机类型!");
                 return;
             }else{
                 if(this.eng_type === '涡轮增压') postData.engine_type = 'T';
@@ -252,14 +267,16 @@ module wxApp {
                 .success((data, status, headers, config)=>{
                     if(data.status == "success")
                     {
-                        alert(this.printWord);
-                        if(typeof WeixinJSBridge !== "undefined"){
+                        this.openUpbox(this.printWord);
+                        setTimeout(function(){
+                         if(typeof WeixinJSBridge !== "undefined"){
                             WeixinJSBridge.call('closeWindow');
-                        }
+                         }
+                        },1500);
                     }
                     else
                     {
-                        alert(data.status);
+                        this.openUpbox(data.status);
 //                        if(this.flag =="update")
 //                        {
 //                           this.searchUser();
@@ -267,7 +284,7 @@ module wxApp {
                     }
                 })
                 .error((data, status, headers, config)=>{
-                    alert("修改失败\n请检查车云终端ID是否正确");
+                    this.openUpbox("网络好像断了，请检查网络连接！");
                 });
         };
 
@@ -289,6 +306,8 @@ module wxApp {
         private printWord:any;
         private brand_code:any;
         private flag:any;
-
+        private cover_show=false;
+        private upbox_show = false;
+        private tips:string;
     }
 }
