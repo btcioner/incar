@@ -10,16 +10,16 @@ CREATE TABLE IF NOT EXISTS t_remind(
   careTime DATETIME COMMENT '处理时间'
 );
 
--- 行车检测
+-- 远程检测
 CREATE TABLE IF NOT EXISTS t_car_detection(
     id int auto_increment PRIMARY KEY COMMENT '主键',
     obdCode VARCHAR(32) COMMENT 'OBD设备唯一编码',
     tripId int COMMENT '行程标识',
     faultLevel tinyint COMMENT '故障等级',
     faultCount tinyint COMMENT '故障个数',
-    fault VARCHAR(2000) COMMENT '故障内容',
-    createTime DATETIME COMMENT '处理时间'
-);
+    faultShow varchar(1000) COMMENT '故障内容文字描述',
+    fault VARCHAR(1000) COMMENT '故障内容',
+    createTime timestamp COMMENT '处理时间'
 
 CREATE TABLE IF NOT EXISTS t_obd_statistics(
     id int auto_increment COMMENT '主键',
@@ -34,3 +34,4 @@ CREATE TABLE IF NOT EXISTS t_obd_statistics(
     type    tinyint COMMENT '统计类型1普通2当月小计',
     markTime timestamp COMMENT '标识日期',
     primary key (id));
+
