@@ -142,6 +142,10 @@ p {
 	padding: 15px;
 	line-height: 18px;
 }
+.text_bold {
+	font-weight: bold;
+}
+
 .text_01 {
 	line-height: 20px;
 	text-align: center;
@@ -467,4 +471,30 @@ a.text_07 {
 	padding-right: 10px;
 	padding-left: 10px;
 	font-weight: bold;
+}
+.detection_top {
+	height: 80px;
+	width: auto;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.detection_top .detection_box {
+	width: 300px;
+	margin-right: auto;
+	margin-left: auto;
+}
+.detection_top .detection_button {
+	height: 106px;
+	width: 107px;
+	position: relative;
+	top: -66px;
+}
+.detection_top .detection_text {
+	line-height: 34px;
+	width: 190px;
+	margin-top: 30px;
+	margin-left: 20px;
+	padding-left: 90px;
+	background-repeat: repeat-y;
+	background-position: right;
 }

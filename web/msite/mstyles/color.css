@@ -285,3 +285,56 @@ a.text_07 {
     /* [disabled]background-color: #F00; */
 }
 /*regsiter and containe_250(我的活动、我的预约) end*/
+/*detection(远程检测) start*/
+.detection_top {
+	background-color: #43454a;
+}
+.detection_top .detection_button {
+	background-image: url(../mimages/button_04.png);
+}
+.detection_top .detection_text {
+	color: #FFF;
+}
+.detection_top .detection_text_1 {
+	background-color: #70a437;
+	background-image: url(../mimages/bgcolor_1.gif);
+}
+.detection_top .detection_text_2 {
+	background-color: #b4b51e;
+	background-image: url(../mimages/bgcolor_2.gif);
+}
+.detection_top .detection_text_3 {
+	background-color: #c76416;
+	background-image: url(../mimages/bgcolor_3.gif);
+}
+.detection_top .detection_text_4 {
+	background-color: #a2363a;
+	background-image: url(../mimages/bgcolor_4.gif);
+}
+.detection_top .detection_text_5 {
+	background-color: #a3a4a6;
+	background-image: url(../mimages/bgcolor_5.gif);
+}
+.boxstyle_03 {
+	background-color: #cbcdd0;
+}
+#containe_250 .contentbox .content .data-box 
+.bgcolor_1 {
+	background-image: url(../mimages/bgcolor_1.gif);
+}
+#containe_250 .contentbox .content .data-box .bgcolor_2 {
+	background-image: url(../mimages/bgcolor_2.gif);
+}
+#containe_250 .contentbox .content .data-box .bgcolor_3 {
+	background-image: url(../mimages/bgcolor_3.gif);
+}
+#containe_250 .contentbox .content .data-box .bgcolor_4 {
+	background-image: url(../mimages/bgcolor_4.gif);
+}
+.arrow_1a {
+	background-image: url(../mimages/icon_09a.png);
+}
+.arrow_1b {
+	background-image: url(../mimages/icon_09b.png);
+}
+/*detection(远程检测) end*/

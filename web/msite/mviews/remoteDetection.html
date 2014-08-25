@@ -1,33 +1,109 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html ng-app="detectionApp" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>车况检测</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-    p{   margin:40px 0 40px 0;
-		font-size:16px}
-    </style>
-  <script src="../script/jquery.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="wx-share-pic" content="/data/car_checking.jpg"/>
+    <title>远程检测</title>
+    <link href="../mstyles/pagestyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/regsiterstyle.css" rel="stylesheet" type="text/css" />
+    <link href="../mstyles/color.css" rel="stylesheet" type="text/css" />
+    <script src="../mscripts/jquery-2.1.1.js" type="text/javascript"></script>
+    <script src="../mscripts/angular.js" type="text/javascript"></script>
+    <script src="../mscripts/detection.js" type="text/javascript"></script>
 </head>
-<body >
-<div >
-    
-   <hr style="height:10px;" color="#009900"/>
-   <div>
-      <div style="float:left; width:30%; font-size:80px; padding-top:20px;height:80px;text-align:center">90</div>
-      <div style="float:left; width:70%; font-size:30px; padding-top:30px;height:80px;text-align:center">可放心行驶</div>
-   </div>
-   <div style="float:left;height:10px; width:30%"></div><hr style="height:10px;" color="#009900"/>
-   
-   <div style="margin-left:30px; padding-bottom:10px;">
-     <p>动力系统
-     <p>底盘系统
-     <p>车身系统
-     <p>信号系统
-     <p>其他信息
-  </div>
- 
-</div>
+<body>
+<div id="wrap" ng-controller="myRemoteDetection">
+    <div class="detection_top">
+        <div class="detection_box">
+            <div class="detection_text detection_text_4">
+                {{resultShow}}
+            </div>
+            <div class="detection_button"></div>
+        </div>
+    </div>
+    <!--containe_250 start-->
+    <div id="containe_250">
+        <!--检测时间contentbox start-->
+        <div class="contentbox">
+            <div class="columnname">
+                <div class="text_09">检测时间</div>
+            </div>
+            <div class="content">
+                <div class="data-box">{{currentInfo.createTime}}</div>
+            </div>
+        </div><!--检测时间contentbox end-->
+        <!--=============================================-->
+        <!--检测结果contentbox start-->
+        <div class="contentbox">
+            <div class="columnname">
+                <div class="text_09">检测结果</div>
+            </div>
+            <div class="content">
+                <div class="data-box"><span class="text_bold">{{current.result}}:</span>{{current.title}}</div>
+            </div>
+        </div><!--检测结果contentbox end-->
+        <!--=============================================-->
+        <!--故障信息contentbox start-->
+        <div class="contentbox">
+            <div class="columnname">
+                <div class="text_09">故障信息</div>
+            </div>
+            <div class="content">
+                <div class="data-box">
+                    <div ng-repeat="fault in current.fault">
+                        <span class="text_bold">{{fault.code}}:</span>{{fault.desc}}<br />
+                    </div>
+                </div>
+            </div>
+        </div><!--故障信息contentbox end-->
+        <!--=============================================-->
+        <!--历史检测记录contentbox start-->
+        <div class="contentbox">
+            <div class="columnname">
+                <div class="text_09">历史检测记录</div>
+            </div>
+            <div class="content">
+                <div class="data-box">
+                    <!--boxstyle_03 start-->
+                    <div class="boxstyle_03 bgcolor_1">
+                        <div class="textbox_01">2014-12-12 12:12:12
+                            <div><span class="text_bold">检测结果：</span>系统正常<br /><span class="text_bold">故障信息：</span><span id="test">1.P0304:第4缸曾经失火;2.P0223:节气门/踏板位置传感器开关B电路高.</span></div>
+                        </div>
+                        <div class="arrow_1 arrow_1a"></div>
+                        <div class="clear"></div>
+                    </div><!--boxstyle_03 end-->
+                    <!--==========================================-->
+                    <!--boxstyle_03 start-->
+                    <div class="boxstyle_03 bgcolor_3">
+                        <div class="textbox_01">2014-12-12 12:12:12
+                            <div style="display:none"><span class="text_bold">检测结果：</span>系统正常<br /><span class="text_bold">故障信息：</span>1.P0304:第4缸曾经失火;2.P0223:节气门/踏板位置传感器开关B电路高.</div>
+                        </div>
+                        <div class="arrow_1 arrow_1b"></div>
+                        <div class="clear"></div>
+                    </div><!--boxstyle_03 end-->
+                    <!--==========================================-->
+                    <!--boxstyle_03 start-->
+                    <div class="boxstyle_03 bgcolor_2">
+                        <div class="textbox_01">2014-12-12 12:12:12
+                            <div style="display:none"><span class="text_bold">检测结果：</span>系统正常<br /><span class="text_bold">故障信息：</span>1.P0304:第4缸曾经失火;2.P0223:节气门/踏板位置传感器开关B电路高.</div>
+                        </div>
+                        <div class="arrow_1 arrow_1b"></div>
+                        <div class="clear"></div>
+                    </div><!--boxstyle_03 end-->
+                    <!--==========================================-->
+                    <!--boxstyle_03 start-->
+                    <div class="boxstyle_03 bgcolor_4">
+                        <div class="textbox_01">2014-12-12 12:12:12
+                            <div style="display:none"><span class="text_bold">检测结果：</span>系统正常<br /><span class="text_bold">故障信息：</span>1.P0304:第4缸曾经失火;2.P0223:节气门/踏板位置传感器开关B电路高.</div>
+                        </div>
+                        <div class="arrow_1 arrow_1b"></div>
+                        <div class="clear"></div>
+                    </div><!--boxstyle_03 end-->
+                </div>
+            </div>
+        </div><!--历史检测记录contentbox end-->
+    </div><!--containe_250 end-->
+</div><!--wrap end-->
 </body>
 </html>

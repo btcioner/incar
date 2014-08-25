@@ -60,3 +60,27 @@
 	text-align: center;
 	padding-top: 10px;
 }
+#containe_250 .contentbox .content .data-box {
+	list-style-type: none;
+	line-height: 22px;
+}
+#containe_250 .contentbox .content .data-box .boxstyle_03 {
+	background-repeat: repeat-y;
+	background-position: right;
+	margin-top: 10px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 4px;
+}
+#containe_250 .contentbox .content .data-box .boxstyle_03 .arrow_1 {
+	height: 17px;
+	width: 13px;
+	float: left;
+	background-repeat: no-repeat;
+	background-position: 0 4px;
+	cursor: pointer;
+}
+#containe_250 .contentbox .content .data-box .boxstyle_03 .textbox_01 {
+	float: left;
+	width: 196px;
+}

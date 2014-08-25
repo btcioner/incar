@@ -813,8 +813,13 @@ function packetProcess_160A(dataBuffer,cb) {
     console.log('接收到160A数据');
     cb();
 }
-function messageCallback(obdCode,data,cb){
-    var dataString=JSON.stringify({dataString:data});
+function messageCallback(obdCode,detection,cb){
+    var detInfo={
+        faultLevel:detection.faultLevel,
+        fault:detection.fault,
+        createTime:getDateTimeStamp(detection.createTime)
+    };
+    var dataString=JSON.stringify({dataString:detInfo});
     var opt = {
         method: "post",
         host: "localhost",
@@ -831,7 +836,7 @@ function messageCallback(obdCode,data,cb){
             cb(info);
         });
     });
-    req.on('error', function(e) {
+    req.on('error', function(err) {
         cb({status:'failure',message:err.message});
     });
     req.write(dataString);
@@ -857,25 +862,21 @@ function packetProcess_1621(dataBuffer,cb){
             faultShow+="\n";
         }
     }
-    messageCallback(obdCode,{
+    var detection={
         obdCode:obdCode,
         tripId:tripId,
-        faultLevel:faultLevel,
         faultCount:faultCount,
-        faultShow:faultShow
-    },function(info){
+        faultLevel:faultLevel,
+        faultShow:faultShow,
+        fault:JSON.stringify(fault),
+        createTime:new Date()
+    };
+    messageCallback(obdCode,detection,function(info){
+        info=JSON.parse(info);
         if(info.status=='success'){
             console.log(obdCode+"车辆检测回复信息发送至Web服务器成功");
             var sql="insert into t_car_detection set ?";
-            var args={
-                obdCode:obdCode,
-                tripId:tripId,
-                faultCount:faultCount,
-                faultLevel:faultLevel,
-                fault:JSON.stringify(fault),
-                createTime:new Date()
-            };
-            dao.insertBySql(sql,[args],function(info){
+            dao.insertBySql(sql,detection,function(info){
                 if(info.err){
                     console.log('无法保存车辆检测存档信息'+info.err);
                 }

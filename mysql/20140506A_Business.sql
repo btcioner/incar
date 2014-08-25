@@ -156,6 +156,7 @@ CREATE TABLE IF NOT EXISTS t_car_detection(
     tripId int COMMENT '行程标识',
     faultLevel tinyint COMMENT '故障等级',
     faultCount tinyint COMMENT '故障个数',
-    fault VARCHAR(2000) COMMENT '故障内容',
+    faultShow varchar(1000) COMMENT '故障内容文字描述',
+    fault VARCHAR(1000) COMMENT '故障内容',
     createTime timestamp COMMENT '处理时间'
 );

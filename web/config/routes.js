@@ -29,9 +29,13 @@ module.exports = function(app) {
     //碰撞报警
     app.get('/alarm/:s4Id',alarmService.allCollideRemind);      //获取碰撞提醒信息
     app.put('/alarm/:remindId',alarmService.careCollideRemind);            //关怀碰撞提醒信息
-    //短信
-    app.post('/message/carDetectionSend', msgService.carDetectionSend);
-    app.post('/message/carDetectionReceive/:obdCode', msgService.carDetectionReceive);
+    //远程检测
+    app.post('/message/carDetectionSend', msgService.carDetectionSend);     //远程检测
+    app.post('/message/carDetectionReceive/:obdCode', msgService.carDetectionReceive);//接收数据服务器发送过来的远程检测对应的短信回复数据
+    app.get('/message/getCurrentDetection/:obdCode', msgService.getCurrentDetection);   //轮询远程检测结果
+    app.get('/message/getAllDetection', msgService.getAllDetection);//获得当前用户远程检测的初始页面数据
+
+
     //定时调度
     app.put('/timing/buildTags',timingStaService.buildTags);             //重算车辆信息并打上标签
     app.put('/timing/buildObdByMonth',timingStaService.buildObdInfoByMonth);//OBD统计信息计算
