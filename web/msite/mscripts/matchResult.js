@@ -13,6 +13,22 @@ app.controller("matchResultCtrl", function($scope, $http,$sce){
 
     $scope.postData={user:$scope.user_openid,id:$scope.match_id};
 
+    $scope.tips = "";
+    $scope.cover_show = false;
+    $scope.upbox_show = false;
+
+    $scope.closeUpbox = function(){
+        $scope.tips = "";
+        $scope.cover_show = false;
+        $scope.upbox_show = false;
+    }
+    $scope.openUpbox = function(tips){
+        $scope.tips = tips;
+        $scope.cover_show = true;
+        $scope.upbox_show = true;
+    }
+
+
     countPageClick("1","14", $scope.user_openid);//原文点击记录
 
     //原文点击记录--by jl 07/21/14
@@ -23,13 +39,15 @@ app.controller("matchResultCtrl", function($scope, $http,$sce){
                 {
                     console.log(data.status);
                 }else{
-                    alert(data.status);
+                    $scope.openUpbox(data.status);
                 }
             })
             .error(function(data){
-                alert(data.status);
+                $scope.openUpbox(data.status);
             });
     };
+
+
 
     $http.post("/mservice/matchResult",$scope.postData).success(function(data){
           if(data.status == "ok")
@@ -42,7 +60,7 @@ app.controller("matchResultCtrl", function($scope, $http,$sce){
               $scope.matchResultList[0].tm_announce =  $scope.matchResultList[0].tm_announce.substring(0,16);
           }else
           {
-              alert(data.status);
+              $scope.openUpbox(data.status);
               setInterval(function(){
                   if(typeof WeixinJSBridge !== "undefined"){
                       WeixinJSBridge.call('closeWindow');
@@ -50,6 +68,6 @@ app.controller("matchResultCtrl", function($scope, $http,$sce){
               },1000)
           }
     }).error(function(data){
-            alert("请求无响应!");
+            $scope.openUpbox("网络好像断了，请检查网络连接！!");
         });
 });

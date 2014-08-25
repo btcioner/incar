@@ -25,13 +25,24 @@ module wxApp {
                     {
                         console.log(data.status);
                     }else{
-                        alert(data.status);
+                        this.openUpbox(data.status);
                     }
                 })
                 .error((data)=>{
-                    alert(data.status);
+                    this.openUpbox(data.status);
                 });
         };
+
+        private closeUpbox =()=>{
+            this.tips = "";
+            this.cover_show = false;
+            this.upbox_show = false;
+        }
+        private openUpbox =(tips)=>{
+            this.tips = tips;
+            this.cover_show = true;
+            this.upbox_show = true;
+        }
 
         private searchActivity = ()=> {
             this.$http.post("/mservice/getActivityDetail", { user: this.user_openid, id: this.act_id }, { dataType: "json"})
@@ -51,7 +62,7 @@ module wxApp {
                     wxs.wxShare(data.title, window.location.href, base+pic, txt);
                 })
                 .error((data, status, headers, config)=> {
-                    alert("没有找到相关信息\n或此活动已取消！");
+                    this.openUpbox("没有找到相关信息\n或此活动已取消！");
                 });
         };
 
@@ -59,11 +70,11 @@ module wxApp {
             this.$http.post("/mservice/applyActivity", {user:this.user_openid, id:this.act_id, tags:this.act.tags})
                 .success((data, status, headers, config)=> {
                     if(data.re == 1){
-                        alert("报名成功！");
+                        this.openUpbox("报名成功！");
                         window.location.href = "/msite/myActivity.html?user="+this.user_openid;
                     }
                     else{
-                        alert("报名失败\n你已经报名或不符报名条件！");
+                        this.openUpbox("报名失败\n你已经报名或不符报名条件！");
                     }
                 })
                 .error((data, status, headers, config)=> { console.log(status); });
@@ -75,6 +86,9 @@ module wxApp {
         private $http:any;
         private $sce:any;
         private $scope:any;
+        private cover_show=false;
+        private upbox_show = false;
+        private tips:string;
 
     }
 }

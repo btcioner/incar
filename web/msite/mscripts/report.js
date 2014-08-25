@@ -69,8 +69,44 @@ function showColumns(configs){
     }
 }
 app.controller("myTravelReport", function($scope, $http, $location){
+
     var userStr = $location.search().user;
     var user=userStr.replace('@',':');
+
+    $scope.tips = "";
+    $scope.cover_show = false;
+    $scope.upbox_show = false;
+
+    $scope.closeUpbox = function(){
+        $scope.tips = "";
+        $scope.cover_show = false;
+        $scope.upbox_show = false;
+    }
+    $scope.openUpbox = function(tips){
+
+        $scope.tips = tips;
+        $scope.cover_show = true;
+        $scope.upbox_show = true;
+    }
+
+    countPageClick("1","5", userStr);//原文点击记录
+
+    //原文点击记录--by jl 07/21/14
+    function countPageClick  (countType,pageId,wx_oid){
+        $http.post('/mservice/countData', {countType:countType,pageId:pageId,wx_oid:wx_oid})
+            .success(function(data){
+                if(data.status == "ok")
+                {
+                    console.log(data.status);
+                }else{
+                    $scope.openUpbox(data.status);
+                }
+            })
+            .error(function(data){
+                $scope.openUpbox(data.status);
+            });
+    };
+
     $http.get('../travelReport/loadTravelReport?user='+user).success(function(data,status,headers,cfg){
         if(data.status=='success'){
             var staInfo=data.data;
@@ -99,7 +135,9 @@ app.controller("myTravelReport", function($scope, $http, $location){
             }
         }
         else{
+//            $scope.openUpbox("亲，每月一日产生上月报告，现在没有你的用车报告!");
             $scope.noData=true;
+
         }
 
     });

@@ -131,32 +131,3 @@ CREATE TABLE IF NOT EXISTS t_car_tag(
     UNIQUE unq_car_tag(tag_id,car_id),
     INDEX idx_car_tag(tag_id,car_id)
 );
--- 提醒信息
-CREATE TABLE IF NOT EXISTS t_remind(
-  id int auto_increment PRIMARY KEY COMMENT '提醒编号',
-  obdCode VARCHAR(32) COMMENT 'OBD设备唯一编码',
-  remindType tinyint COMMENT '提醒类型(1-碰撞提醒)',
-  remindStatus tinyint COMMENT '提醒状态(1-未处理，2-已处理)',
-  createTime timestamp COMMENT '创建时间',
-  careTime timestamp COMMENT '处理时间'
-);
--- 提醒信息
-CREATE TABLE IF NOT EXISTS t_remind(
-  id int auto_increment PRIMARY KEY COMMENT '提醒编号',
-  obdCode VARCHAR(32) COMMENT 'OBD设备唯一编码',
-  remindType tinyint COMMENT '提醒类型(1-碰撞提醒)',
-  remindStatus tinyint COMMENT '提醒状态(1-未处理，2-已处理)',
-  createTime timestamp COMMENT '创建时间',
-  careTime timestamp COMMENT '处理时间'
-);
--- 行车检测
-CREATE TABLE IF NOT EXISTS t_car_detection(
-    id int auto_increment PRIMARY KEY COMMENT '主键',
-    obdCode VARCHAR(32) COMMENT 'OBD设备唯一编码',
-    tripId int COMMENT '行程标识',
-    faultLevel tinyint COMMENT '故障等级',
-    faultCount tinyint COMMENT '故障个数',
-    faultShow varchar(1000) COMMENT '故障内容文字描述',
-    fault VARCHAR(1000) COMMENT '故障内容',
-    createTime timestamp COMMENT '处理时间'
-);

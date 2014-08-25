@@ -45,7 +45,7 @@ module wxApp {
                 // 尚未得到open_id
                 var wxoa = new WXOAuth($location);
                 wxoa.findUserOpenId((data)=>{
-                    if(!data.openid) alert(data);
+                    if(!data.openid) this.openUpbox(data);
                     // 已经获取了open_id,查询数据
                     this.user_openid = data.user_openid;
                     this.searchUser();
@@ -69,13 +69,24 @@ module wxApp {
                     {
                         console.log(data.status);
                     }else{
-                        alert(data.status);
+                        this.openUpbox(data.status);
                     }
                 })
                 .error((data)=>{
-                    alert(data.status);
+                    this.openUpbox(data.status);
                 });
         };
+
+        private closeUpbox =()=>{
+            this.tips = "";
+            this.cover_show = false;
+            this.upbox_show = false;
+        }
+        private openUpbox =(tips)=>{
+            this.tips = tips;
+            this.cover_show = true;
+            this.upbox_show = true;
+        }
 
         private searchUser = () => {
             this.$http.post("/mservice/infoConfig", { user:this.user_openid }, {dataType:"json"})
@@ -85,7 +96,7 @@ module wxApp {
                     this.searchActivity();
                 })
                 .error((data, status, headers, config)=>{
-                    alert("您还未注册或未绑定车云终端\n请先注册账号！");
+                    this.openUpbox("您还未注册或未绑定车云终端\n请先注册账号！");
                     window.location.href = "/msite/infoConfig.html?user="+this.user_openid;
                 });
         };
@@ -95,19 +106,19 @@ module wxApp {
                 .success((data, status, headers, config)=>{
                     if(data.length === 0)
                     {
-                        alert("您尚没有参加任何活动!");
+                        this.openUpbox("您尚没有参加任何活动!");
                         setInterval(function(){
                             if(typeof WeixinJSBridge !== "undefined"){
                                 WeixinJSBridge.call('closeWindow');
                             }
-                        },1000);
+                        },1500);
                     }
                     else
                     {
                         this.activities = data;
                     }
                 })
-                .error((data, status, headers, config)=>{ alert("未找到您参加的活动"); });
+                .error((data, status, headers, config)=>{ this.openUpbox("未找到您参加的活动"); });
         };
 
         private onSwitchView = (e)=>{
@@ -122,5 +133,8 @@ module wxApp {
         private $http: any;
         private $scope: any;
         private $location: any;
+        private cover_show=false;
+        private upbox_show = false;
+        private tips:string;
     }
 }

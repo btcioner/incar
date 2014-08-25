@@ -268,7 +268,7 @@ module wxApp {
                     if(data.status == "success")
                     {
                         this.openUpbox(this.printWord);
-                        setTimeout(function(){
+                        setInterval(function(){
                          if(typeof WeixinJSBridge !== "undefined"){
                             WeixinJSBridge.call('closeWindow');
                          }

@@ -5,7 +5,7 @@ module wxApp {
     export class DriveManualCtrl {
         constructor(ctrlName:string) {
             // 向angular注册控制器
-            _module.controller(ctrlName, ['$scope', '$resource', '$http','$location',this.init]);
+            _module.controller(ctrlName, ['$scope', '$resource', '$http','$location',this.init])
         }
 
         private init = ($scope, $resource,$http,$location) => {
@@ -33,13 +33,24 @@ module wxApp {
                     {
                         console.log(data.status);
                     }else{
-                        alert(data.status);
+                        this.openUpbox(data.status);
                     }
                 })
                 .error((data)=>{
-                    alert(data.status);
+                    this.openUpbox(data.status);
                 });
         };
+
+        private closeUpbox =()=>{
+            this.tips = "";
+            this.cover_show = false;
+            this.upbox_show = false;
+        }
+        private openUpbox =(tips)=>{
+            this.tips = tips;
+            this.cover_show = true;
+            this.upbox_show = true;
+        }
 
         public search2 = ($event) => {
             if ($event.keyCode === 13) this.search();
@@ -71,6 +82,9 @@ module wxApp {
         private searchResult:Array<ManualItem> = [];
         private user_openid:string;
         private $http: any;
+        private cover_show=false;
+        private upbox_show = false;
+        private tips:string;
     }
 
     class ManualItem {

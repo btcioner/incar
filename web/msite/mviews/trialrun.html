@@ -9,7 +9,7 @@
 
     <script  src="../mscripts/jquery-1.7.1.min.js"></script>
     <script  src="../mscripts/jquery.mobile.min.js"></script>
-    <script  src="../mscripts/jqm-datebox-1.4.0.comp.flipbox.min.js"><!--日期控件资源  --></script>
+    <!--<script  src="../mscripts/jqm-datebox-1.4.0.comp.flipbox.min.js">&lt;!&ndash;日期控件资源  &ndash;&gt;</script>-->
     <script src="../mscripts/angular.min.js"></script>
     <script src="../mscripts/angular-resource.min.js"></script>
     <script src="../mscripts/angular-route.min.js"></script>
@@ -61,6 +61,17 @@
         <!--regsiterbutton start--><div id="regsiterbutton"><span class="text_02" style="text-shadow:none;">*号为必填项</span><br /><a href="javascript:void(0)" class="button01" onClick="submitTrialrun()"><span class="nostyle01">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</span></a></div><!--regsiterbutton end-->
     </div><!--main_wrap end-->
 </div>
+<!--upbox_wrap start-->
+<div class="cover" id="cover"  style="display: none;"></div>
+<div class="upbox_wrap" id="upbox_wrap"  style="display: none;">
+    <div class="upbox" id="upbox" style="display: none;">
+        <div class="close_icon"><a href="#" onclick="closeUpbox()"><img src="../mimages/close_icon.gif" width="16" height="16"></a></div>
+        <div class="text_12" style="padding-top: 10px;padding-bottom: 17px;" id="tips"></div>
+        <div>
+            <a href="javascript:void(0)" onclick="closeUpbox()"><div class="button02">关闭</div></a>
+        </div>
+    </div>
+</div><!--upbox_wrap end-->
 <script>
     var user;
     var today;
@@ -81,7 +92,7 @@
              setSeries(result.series);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown){
-                //alert("连接失败\n请检查网络连接是否正常");
+                openUpbox("连接失败\n请检查网络连接是否正常");
             }
         });
     }
@@ -109,16 +120,30 @@
                     str+="<option "+selected+" value='"+result[i].seriesCode+"'>"+result[i].series+"</option>";
                 }
                 document.getElementById("seriesName").innerHTML=str;
+                var snx = $('#seriesName');
                 if(sCode){
-                    $('#seriesName').val(sCode);
-                    $('#seriesName').selectmenu("refresh");
+                    snx.val(sCode);
+                    snx.selectmenu("refresh");
                 }else{
-                    $('#seriesName').val('-1');
-                    $('#seriesName').selectmenu("refresh");
+                    snx.val('-1');
+                    snx.selectmenu("refresh");
                 }
             }
         });
+    }
 
+    function closeUpbox(){
+        $("#tips").html("");
+        $("#cover").css("display","none");
+        $("#upbox_wrap").css("display","none");
+        $("#upbox").css("display","none");
+    }
+    function openUpbox(tips){
+        $("#tips").html(tips);
+        $("#upbox").css("z-index",99);
+        $("#cover").css("display","block");
+        $("#upbox_wrap").css("display","block");
+        $("#upbox").css("display","block");
     }
     function submitTrialrun(){
         var postData={};
@@ -134,47 +159,47 @@
 
         /**试乘试驾预约信息验证--start by JL*/
         if(postData.name == ""){
-            alert("请填写预约车主姓名!");
+            openUpbox("请填写预约车主姓名!");
             return;
         }
         if(postData.phone == "")
         {
-            alert("请填写预约电话!");
+            openUpbox("请填写预约电话!");
             return;
         }
         if(postData.seriesName == "请选择")
         {
-            alert("请选择车型!");
+            openUpbox("请选择车型!");
             return;
         }
         today=new Date();
         if(parseInt(postData.bookDate.substring(0,4)) < parseInt(defaultDate().substring(0,4)))
         {
-            alert("该时间已过期!");
+            openUpbox("该时间已过期!");
             return;
         }else if(parseInt(postData.bookDate.substring(0,4)) == parseInt(defaultDate().substring(0,4)))
         {
           if(parseInt(postData.bookDate.substring(5,7)) < parseInt(defaultDate().substring(5,7)))
           {
-              alert("该时间已过期!");
+              openUpbox("该时间已过期!");
               return;
           }
           else if(parseInt(postData.bookDate.substring(5,7)) == parseInt(defaultDate().substring(5,7))){
               if(parseInt(postData.bookDate.substring(8,10)) < parseInt(defaultDate().substring(8,10)))
               {
-                  alert("该时间已过期!");
+                  openUpbox("该时间已过期!");
                   return;
               }
               else if(parseInt(postData.bookDate.substring(8,10)) == parseInt(defaultDate().substring(8,10))){
                  if(parseInt(postData.bookDate) == parseInt(defaultDate())){
                 if(parseInt(postData.bookTime.substring(0,2))<parseInt(today.getHours()))
                 {
-                     alert("该时间已过期!");
+                    openUpbox("该时间已过期!");
                      return;
                 }
                 else if(parseInt(postData.bookTime.substring(0,2))==parseInt(today.getHours())){
                     if(parseInt(postData.bookTime.substring(3,5))<parseInt(today.getMinutes())){
-                        alert("该时间已过期!");
+                        openUpbox("该时间已过期!");
                         return;
                     }
                 }
@@ -186,17 +211,16 @@
         var brand = $("#brand").val();
         var args=JSON.stringify({'brand':brand,'series':series,nick:postData.name,phone:postData.phone});
         postData.args=args;
-        //alert("开始提交");
         $.ajax({
             type: "POST",
             url: "/mservice/trialrun",
             data: postData,
             dataType: "json",
             success: function (result,status) {
-                //alert(result.fuelData.length);
                 var height=$(window).height();
-                $("#wrap").css("min-height",height);
-                $("#wrap").css("_height",height);
+                var xWrap = $("#wrap");
+                xWrap.css("min-height",height);
+                xWrap.css("_height",height);
                 document.getElementById("bookStatus").innerHTML="<div>"+
                         "<span class='text_03' id='note'>您的预约申请已提交，<br/>您可以在'我的预约'中查看申请结果，<br/>请您耐心等待，谢谢！</span></div>";
                 document.getElementById('regsiterbutton').innerHTML='';
@@ -213,9 +237,10 @@
 
     function init(){
         user=getQueryString("user");
-        document.getElementById("start").value=defaultDate();
+        var dateStart = $('#start');
+        dateStart.css('min-width', '150px');
+        dateStart.val(defaultDate());
         searchUser();
-//        searchSeriesName();
         getBrand();
     }
     function defaultDate()
@@ -228,6 +253,15 @@
     }
 
     $(document).ready(function(){
+        //调整弹框出现的位置
+        var xWrap = $("#wrap");
+        xWrap.css("min-height",$(window).height());
+        var height=xWrap.height();
+        $("#cover").css("height",height);
+        setTimeout(function(){
+            var height=$("#wrap").height();
+            $("#cover").css("height",height);
+        },2000);
         init();
     });
 

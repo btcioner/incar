@@ -29,13 +29,24 @@ module wxApp {
                     {
                         console.log(data.status);
                     }else{
-                        alert(data.status);
+                        this.openUpbox(data.status);
                     }
                 })
                 .error((data)=>{
-                    alert(data.status);
+                    this.openUpbox(data.status);
                 });
         };
+
+        private closeUpbox =()=>{
+            this.tips = "";
+            this.cover_show = false;
+            this.upbox_show = false;
+        }
+        private openUpbox =(tips)=>{
+            this.tips = tips;
+            this.cover_show = true;
+            this.upbox_show = true;
+        }
 
         private search4sInfo = ()=> {
             this.$http.post("/mservice/my4sInfo", { user: this.user_openid }, { dataType: "json"})
@@ -54,5 +65,8 @@ module wxApp {
         private ads = [];
         private $http:any;
         private $scope:any;
+        private cover_show=false;
+        private upbox_show = false;
+        private tips:string;
     }
 }
