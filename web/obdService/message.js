@@ -59,23 +59,16 @@ function sendMessage(sim,cmd,data,cb){
 }
 //发送获取OBD检测信息的短信          1621
 exports.carDetectionSend=function(req,res){
-    var query=req.query;
-    var user=query.user;
-    getSimByUser(user,function(err,obdCode,sim){
-        if(err){
-            res.json(err);
+    var obdCode=req.params.obdCode;
+    var sim=req.params.sim;
+    sendMessage(sim,0x1621,'',function(result){
+        if(result.status=='success'){
+            console.log(obdCode+"车辆检测短信发送成功，等待数据服务器回复...");
+            res.json({status:'success',obdCode:obdCode});
         }
         else{
-            sendMessage(sim,0x1621,'',function(result){
-                if(result.status=='success'){
-                    console.log(obdCode+"车辆检测短信发送成功，等待数据服务器回复...");
-                    res.json({status:'success',obdCode:obdCode});
-                }
-                else{
-                    console.log(obdCode+"车辆检测短信发送失败...");
-                    res.json({status:'failure'});
-                }
-            });
+            console.log(obdCode+"车辆检测短信发送失败...");
+            res.json({status:'failure'});
         }
     });
 };
@@ -119,13 +112,14 @@ exports.carDetectionReceive=function(req,res){
     var detection=req.body.dataString;
 
     if(obdCode&&detection){
-        var detInfo=getCurrentDetection(detection);
-        detectionMap[obdCode+'|'+0x1621]={
+        var d=getCurrentDetection(detection);
+        var detInfo={
             status:'success',
             obdCode:obdCode,
-            result:detInfo.result,
-            current:detInfo
+            result:d.result,
+            current:d
         };
+        detectionMap[obdCode+'|'+0x1621]=detInfo;
         console.log("收到："+JSON.stringify(detInfo));
         res.json({status:'success'});
     }
@@ -169,14 +163,13 @@ exports.getAllDetection=function(req,res){
                 var lastDetection=rows[0];
                 var obdCode=lastDetection.obdCode;
                 var sim=lastDetection.sim;
+                lastDetection.fault=JSON.parse(lastDetection.fault);
                 var history=[];
                 for(var i=1;i<rows.length;i++){
                     var det=rows[i];
-                    history.push({
-                        faultLevel:det.faultLevel,
-                        faultShow:det.faultShow,
-                        createTime:lastDetection.createTime
-                    });
+                    var historyItem=getCurrentDetection(det);
+                    delete historyItem.title;
+                    history.push(historyItem);
                 }
                 var detInfo=detectionMap[obdCode+'|'+0x1621];
                 if(detInfo){
@@ -187,13 +180,10 @@ exports.getAllDetection=function(req,res){
                         status:'success',
                         obdCode:obdCode,
                         result:"<<<点击左侧按钮开始检测",
-                        current:{
-                            faultLevel:lastDetection.faultLevel,
-                            fault:lastDetection.fault,
-                            createTime:lastDetection.createTime
-                        }
+                        current:getCurrentDetection(lastDetection)
                     }
                 }
+                detInfo.sim=sim;
                 detInfo.history=history;
                 res.json(detInfo);
             }

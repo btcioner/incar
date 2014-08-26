@@ -38,6 +38,7 @@ function sendToSerialPort(){
         spInUse=true;
         var data=msgQueue[0].data;
         var cb=msgQueue[0].cb;
+        console.log(data);
         serialPort.write(data, function(err, results) {
             if (err) {
                 console.log('err ' + err + '\n');
@@ -45,9 +46,9 @@ function sendToSerialPort(){
             }
             serialPort.drain(function(){
                 console.log("写入数据(" + results + '字节)：\n'+data.slice(0,17)+toString0X(data.slice(17,results)));
-                cb({status:'success'});
                 spInUse=false;
                 msgQueue.splice(0,1);
+                cb({status:'success'});
                 if(msgQueue.length>0)sendToSerialPort();
             });
         });

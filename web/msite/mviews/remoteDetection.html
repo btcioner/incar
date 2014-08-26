@@ -16,10 +16,10 @@
 <div id="wrap" ng-controller="myRemoteDetection">
     <div class="detection_top">
         <div class="detection_box">
-            <div class="detection_text detection_text_4">
+            <div class="detection_text detection_text_{{currentInfo.faultLevel+1}}">
                 {{resultShow}}
             </div>
-            <div class="detection_button"></div>
+            <div class="detection_button" ng-click="detecting()" bnDirective></div>
         </div>
     </div>
     <!--containe_250 start-->
@@ -40,7 +40,7 @@
                 <div class="text_09">检测结果</div>
             </div>
             <div class="content">
-                <div class="data-box"><span class="text_bold">{{current.result}}:</span>{{current.title}}</div>
+                <div class="data-box"><span class="text_bold">{{currentInfo.result}}:</span>{{currentInfo.title}}</div>
             </div>
         </div><!--检测结果contentbox end-->
         <!--=============================================-->
@@ -51,7 +51,7 @@
             </div>
             <div class="content">
                 <div class="data-box">
-                    <div ng-repeat="fault in current.fault">
+                    <div ng-repeat="fault in currentInfo.fault">
                         <span class="text_bold">{{fault.code}}:</span>{{fault.desc}}<br />
                     </div>
                 </div>
@@ -66,38 +66,11 @@
             <div class="content">
                 <div class="data-box">
                     <!--boxstyle_03 start-->
-                    <div class="boxstyle_03 bgcolor_1">
-                        <div class="textbox_01">2014-12-12 12:12:12
-                            <div><span class="text_bold">检测结果：</span>系统正常<br /><span class="text_bold">故障信息：</span><span id="test">1.P0304:第4缸曾经失火;2.P0223:节气门/踏板位置传感器开关B电路高.</span></div>
+                    <div class="boxstyle_03 bgcolor_{{det.faultLevel+1}}" ng-repeat="det in historyList" ng-click="showDetail($index)">
+                        <div class="textbox_01">{{det.createTime}}
+                            <div ng-show="hisShow[$index]"><span class="text_bold">检测结果：</span>{{det.result}}<br /><span class="text_bold">故障信息：</span><span>{{det.faultShow}}</span></div>
                         </div>
                         <div class="arrow_1 arrow_1a"></div>
-                        <div class="clear"></div>
-                    </div><!--boxstyle_03 end-->
-                    <!--==========================================-->
-                    <!--boxstyle_03 start-->
-                    <div class="boxstyle_03 bgcolor_3">
-                        <div class="textbox_01">2014-12-12 12:12:12
-                            <div style="display:none"><span class="text_bold">检测结果：</span>系统正常<br /><span class="text_bold">故障信息：</span>1.P0304:第4缸曾经失火;2.P0223:节气门/踏板位置传感器开关B电路高.</div>
-                        </div>
-                        <div class="arrow_1 arrow_1b"></div>
-                        <div class="clear"></div>
-                    </div><!--boxstyle_03 end-->
-                    <!--==========================================-->
-                    <!--boxstyle_03 start-->
-                    <div class="boxstyle_03 bgcolor_2">
-                        <div class="textbox_01">2014-12-12 12:12:12
-                            <div style="display:none"><span class="text_bold">检测结果：</span>系统正常<br /><span class="text_bold">故障信息：</span>1.P0304:第4缸曾经失火;2.P0223:节气门/踏板位置传感器开关B电路高.</div>
-                        </div>
-                        <div class="arrow_1 arrow_1b"></div>
-                        <div class="clear"></div>
-                    </div><!--boxstyle_03 end-->
-                    <!--==========================================-->
-                    <!--boxstyle_03 start-->
-                    <div class="boxstyle_03 bgcolor_4">
-                        <div class="textbox_01">2014-12-12 12:12:12
-                            <div style="display:none"><span class="text_bold">检测结果：</span>系统正常<br /><span class="text_bold">故障信息：</span>1.P0304:第4缸曾经失火;2.P0223:节气门/踏板位置传感器开关B电路高.</div>
-                        </div>
-                        <div class="arrow_1 arrow_1b"></div>
                         <div class="clear"></div>
                     </div><!--boxstyle_03 end-->
                 </div>

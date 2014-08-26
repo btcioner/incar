@@ -816,7 +816,7 @@ function packetProcess_160A(dataBuffer,cb) {
 function messageCallback(obdCode,detection,cb){
     var detInfo={
         faultLevel:detection.faultLevel,
-        fault:detection.fault,
+        fault:JSON.parse(detection.fault),
         createTime:getDateTimeStamp(detection.createTime)
     };
     var dataString=JSON.stringify({dataString:detInfo});

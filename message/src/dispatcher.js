@@ -32,7 +32,7 @@ function send1623(sim,obdInfo,cb){
     message.send(dataManager.getBuffer(),cb);
 }
 //1622获得OBD相关信息，传入[id1,id2]返回{id1:val1,id2:val2},ID来源4.01以及4.02
-function send1622(sim,idArray){
+function send1622(sim,idArray,cb){
     dataManager.init(new Buffer(1024),0);
     dataManager.writeString("SMS"+sim+"#LD");
     dataManager.setOffset(dataManager.getOffset()-1);//消息不带0x00
@@ -41,7 +41,7 @@ function send1622(sim,idArray){
     for(var i=0;i<idArray.length;i++){
         dataManager.writeWord(idArray[i]);
     }
-    message.send(dataManager.getBuffer());
+    message.send(dataManager.getBuffer(),cb);
 }
 
 //1624清空累计平均油耗
@@ -87,6 +87,7 @@ exports.receiveMessageRequest=function(req,res){
     console.log(body);
     var back={status:'success'};
     var callBack=function(info){
+        console.log("回调："+info);
         res.json(info);
     }
     switch(cmd){
@@ -95,8 +96,8 @@ exports.receiveMessageRequest=function(req,res){
             return;
         case 0x1622:
             var idArray=body['idArray'];
-            send1622(sim,idArray);
-            break;
+            send1622(sim,idArray,callBack);
+            return;
         case 0x1623:
             var obdInfo=body['obdInfo'];
             send1623(sim,obdInfo,callBack);
