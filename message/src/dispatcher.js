@@ -87,7 +87,6 @@ exports.receiveMessageRequest=function(req,res){
     console.log(body);
     var back={status:'success'};
     var callBack=function(info){
-        console.log("回调："+info);
         res.json(info);
     }
     switch(cmd){

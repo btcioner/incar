@@ -633,10 +633,14 @@ function get1603Response(obd){
     return dataManager.getBuffer();
 }
 
-function get1603Default(){
+function get1603Default(obdCode){
     var serverType=process.env.NODE_ENV;
     var hostName="114.215.172.92";
     if(serverType&&serverType==="development"){
+        hostName="115.28.218.170";
+    }
+    var tail=parseInt(obdCode.substring(7));
+    if(tail>0&&tail<=5){
         hostName="115.28.218.170";
     }
     var port=9005;
@@ -707,7 +711,7 @@ function packetProcess_1603(dataBuffer,cb) {
         "t.disp,t.initCode,t.act_type from t_car t where t.obd_code=?";
     dao.findBySql(sql,[obdCode],function(info) {
         if(info.err){
-            throw err;
+            throw info.err;
         }
         else{
             //3、如果找到了则校验传入的OBD信息和数据库中的OBD信息，若不同则更新
@@ -738,7 +742,7 @@ function packetProcess_1603(dataBuffer,cb) {
                         }
                     });
                 }
-                var obdInfo=get1603Default();
+                var obdInfo=get1603Default(obdCode);
                 obdInfo.carUpdateCount=0x05;            //车辆信息更新数量(0x00或0x05)
                 obdInfo.vid=obd.id;                     //vid
                 obdInfo.brand=obd.brand;                //品牌

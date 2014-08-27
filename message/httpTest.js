@@ -2,14 +2,14 @@
 
 var http = require("http");
 var dataSet = JSON.stringify({obdInfo:{
-    0xFE05:"lahmyyc2014.vicp.cc",
-    0xFE06:48928,
-    0xFE07:"lahmyyc2014.vicp.cc",
-    0xFE08:48928,
-    0xFE09:"lahmyyc2014.vicp.cc",
-    0xFE0A:48928,
-    0xFE0B:"lahmyyc2014.vicp.cc",
-    0xFE0C:48928
+    0xFE05:"115.28.218.170",
+    0xFE06:9005,
+    0xFE07:"115.28.218.170",
+    0xFE08:9005,
+    0xFE09:"115.28.218.170",
+    0xFE0A:9005,
+    0xFE0B:"115.28.218.170",
+    0xFE0C:9005
 }});
 var dataGet = JSON.stringify({idArray:[0xFE05,0xFE06,0xFE07,0xFE08,
     0xFE09,0xFE0A,0xFE0B,0xFE0C,0xFE1C,0xFE1D]});
