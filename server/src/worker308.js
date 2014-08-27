@@ -524,6 +524,7 @@ function packetProcess_1602(dataBuffer,cb) {
 
 //生成要回复的报文内容并返回，回复和数据库操作异步处理
 function get1603Response(obd){
+
     var responseBuffer = new Buffer(1024*10);
     dataManager.init(responseBuffer,0);
     dataManager.writeWord(0x1603);
@@ -566,7 +567,8 @@ function get1603Response(obd){
         else if(ed.length>1){
             edStr=edNum.toString();
         }
-        dataManager.writeString(edStr+obd.engineType?obd.engineType:'L');
+        var engine=edStr+(obd.engineType?obd.engineType:'L');
+        dataManager.writeString(engine);
     }
     //服务器配置
     dataManager.writeByte(obd.serverConfigCount);
