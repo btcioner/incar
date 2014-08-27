@@ -690,7 +690,6 @@ function get1603Default(obdCode){
 
         updateId:"0.0.0"                //软件升级Id
     };
-    console.log(returnInfo);
     return returnInfo;
 };
 function packetProcess_1603(dataBuffer,cb) {
