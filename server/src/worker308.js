@@ -634,8 +634,13 @@ function get1603Response(obd){
 }
 
 function get1603Default(){
-    console.log("--------------------55-----------------"+process.env.NODE_ENV);
-    return {
+    var serverType=process.env.NODE_ENV;
+    var hostName="114.215.172.92";
+    if(serverType&&serverType==="development"){
+        hostName="115.28.218.170";
+    }
+    var port=9005;
+    var returnInfo={
         createTime:new Date(),          //时间戳
         lastUpdateTime:new Date(),
 
@@ -646,16 +651,16 @@ function get1603Default(){
         carUpdateCount:0x00,            //车辆信息更新数量(0x00或0x05)
 
         serverConfigCount:0x05,         //网络参数更新数量(0x00-0x05)
-        addressParam:"115.28.218.170",  //获取参数数据地址
-        portParam:9005,                 //获取参数数据端口
-        addressUpload:"115.28.218.170", //主动上传数据地址
-        portUpload:9005,                //主动上传数据端口
-        addressAlarm:"115.28.218.170",  //报警数据上传地址
-        portAlarm:9005,                 //报警数据上传端口
-        addressMessage:"115.28.218.170",//短信回复数据地址
-        portMessage:9005,               //短信回复数据端口
-        addressLocation:"115.28.218.170",//定位数据地址
-        portLocation:9005,              //定位数据端口
+        addressParam:hostName,          //获取参数数据地址
+        portParam:port,                 //获取参数数据端口
+        addressUpload:hostName,         //主动上传数据地址
+        portUpload:port,                //主动上传数据端口
+        addressAlarm:hostName,          //报警数据上传地址
+        portAlarm:port,                 //报警数据上传端口
+        addressMessage:hostName,        //短信回复数据地址
+        portMessage:port,               //短信回复数据端口
+        addressLocation:hostName,       //定位数据地址
+        portLocation:port,              //定位数据端口
 
         speedGroup:"1,45,90,255",       //车速分段统计
 
@@ -681,6 +686,8 @@ function get1603Default(){
 
         updateId:"0.0.0"                //软件升级Id
     };
+    console.log(returnInfo);
+    return returnInfo;
 };
 function packetProcess_1603(dataBuffer,cb) {
     dataManager.init(dataBuffer,2);
