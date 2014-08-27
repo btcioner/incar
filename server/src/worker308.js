@@ -670,7 +670,7 @@ function get1603Default(obdCode){
 
         speedGroup:"1,45,90,255",       //车速分段统计
 
-        locationCount:0x03,             //定位信息更新数量(0x00或0x03)
+        locationCount:0x00,             //定位信息更新数量(0x00或0x03)
         metrePerLocation:75,            //每行驶多少米定位一次
         secondsPerLocation:9,           //每过多少秒定位一次
         locationModel:0x00,             //定位模式/距离与时间的关系
